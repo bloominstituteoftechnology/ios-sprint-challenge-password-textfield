@@ -40,6 +40,8 @@ In addition, look at the built-in calculator app on your iOS device. Or play wit
 
 This repository contains a basic project that includes artwork, colors, and basic layout constants defined for the custom control. Use this project as the basis for your work.
 
+![Demo GIF of functionality](https://raw.githubusercontent.com/LambdaSchool/ios-sprint-challenge-password-textfield/master/ui-demo.gif)
+
 Your finished project must include all of the following requirements:
 
 * A label that provides directions to the user for the purpose of the control ("enter password").
