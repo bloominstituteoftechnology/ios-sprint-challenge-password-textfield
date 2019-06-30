@@ -85,22 +85,26 @@ class PasswordField: UIControl {
         
         weakView    = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 10))
         weakView.backgroundColor = .red
-        addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(weakView)
+        
 
         mediumView  = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 10))
         mediumView.backgroundColor = .yellow
-        addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mediumView)
+        
 
         strongView  = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 10))
         strongView.backgroundColor = .green
-        addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strongView)
+        
 
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
         addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
