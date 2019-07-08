@@ -24,9 +24,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="115" id="Ijv-J8-3Rw"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="returnKeyTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="FdF-Rx-YeW"/>
+                                </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v0c-JS-lYF" secondAttribute="trailing" constant="20" id="Mbj-HC-p2R"/>
                             <constraint firstItem="v0c-JS-lYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bYC-zh-lzp"/>
