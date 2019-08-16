@@ -31,6 +31,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="backgroundView" destination="8bC-Xf-vdC" id="3ke-VW-W68"/>
+                        <outlet property="passwordField" destination="v0c-JS-lYF" id="P7W-jj-ORS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
