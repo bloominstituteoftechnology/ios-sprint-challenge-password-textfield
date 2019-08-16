@@ -62,6 +62,25 @@ class PasswordField: UIControl {
 									  width: 30,
 									  height: 30)
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+		
+		addSubview(weakView)
+		weakView.backgroundColor = weakColor
+		weakView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		
+		addSubview(mediumView)
+		mediumView.backgroundColor = unusedColor
+		mediumView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		
+		addSubview(strongView)
+		strongView.backgroundColor = unusedColor
+		strongView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		
+		addSubview(strengthDescriptionLabel)
+		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+		strengthDescriptionLabel.text = "Too Weak"
+		strengthDescriptionLabel.textColor = labelTextColor
+		strengthDescriptionLabel.font = labelFont
+		
     }
     
     required init?(coder aDecoder: NSCoder) {
