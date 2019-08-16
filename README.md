@@ -30,11 +30,9 @@ Validate your work through testing the app on the simulator and ensure that your
 
 ## Project Set Up
 
-This repository contains a starter project that includes the UI for the calculator screen already set up. Use this project as the basis for your work.
+This repository contains a starter project. Use this project as the basis for your work.
 
 Please fork this repository and clone the fork to your machine to begin work.
-
-In addition, look at the built-in calculator app on your iOS device. Or play with a standard calculator if you have one. You'll be implementing the same basic functionality, so use the app or a real calculator to help you reason about how write the code for this project.
 
 ## Minimum Viable Product
 
