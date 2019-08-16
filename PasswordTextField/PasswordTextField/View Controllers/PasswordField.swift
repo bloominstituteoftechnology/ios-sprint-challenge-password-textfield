@@ -24,6 +24,8 @@ class PasswordField: UIControl {
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
+    private var buttonWasTapped: Bool = false
+    
     // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
@@ -74,6 +76,7 @@ class PasswordField: UIControl {
         showHideButton.backgroundColor = .clear
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.frame = CGRect(x: 340.0, y: 38.0, width: 20.0, height: 20.0)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         let showHideButtonLeading = showHideButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 340)
         let showHideButtonTop = showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4)
@@ -82,7 +85,7 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         
         //weakView Set up
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = .gray
         weakView.frame = CGRect(x: 8, y: 70.0, width: 60.0, height: 5)
         addSubview(weakView)
         
@@ -108,14 +111,39 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonLeading, showHideButtonTop, showHideButtonTrailing, weakViewLeading, weakViewTop, strongViewLeading])
     }
     
+    @objc func showHideButtonTapped(sender: UIButton!) {
+        buttonWasTapped.toggle()
+        if buttonWasTapped == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
     
-    private func updateStatus(from wordCount: Int) {
-        let wordCount = wordCount
+    private func updateStatus(with wordCount: Int) {
         
+        if wordCount >= 1 && wordCount < 10 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = .gray
+            strongView.backgroundColor = .gray
+            weakView.performFlare()
+        } else if wordCount >= 10 && wordCount < 20 {
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = .gray
+            mediumView.performFlare()
+        } else if wordCount >= 20 {
+            strongView.backgroundColor = strongColor
+            strongView.performFlare()
+        } else {
+            weakView.backgroundColor = .gray
+            mediumView.backgroundColor = .gray
+            strongView.backgroundColor = .gray
+        }
         
     }
     
@@ -128,9 +156,21 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         let wordCount = newText.count
         // TODO: send new text to the determine strength method
-        print(wordCount)
+        updateStatus(with: wordCount)
         
         return true
+    }
+}
+
+extension UIView {
+    // "Flare view" animation sequence
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
 
