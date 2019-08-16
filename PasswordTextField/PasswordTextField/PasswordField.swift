@@ -10,6 +10,12 @@ import UIKit
 
 class PasswordField: UIControl {
     
+    enum PasswordStrength: String {
+        case weak = "Too Weak"
+        case medium = "Could Be Stronger"
+        case strong = "Strong Password"
+    }
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -40,9 +46,24 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.text = "Enter Password"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        self.backgroundColor = .lightGray
+        
+        //password text field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderWidth = 2
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+        textField.isSecureTextEntry = true
+        textField.layer.cornerRadius = 5
+        
+        NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin), textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -textFieldMargin), textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin), textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)])
     }
     
     required init?(coder aDecoder: NSCoder) {
