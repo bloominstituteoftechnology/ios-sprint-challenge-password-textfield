@@ -54,6 +54,8 @@ class PasswordField: UIControl {
         titleLabel.font = labelFont
         self.backgroundColor = .lightGray
         
+        NSLayoutConstraint.activate([titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: standardMargin), titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: standardMargin), titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: standardMargin)])
+        
         //password text field
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
