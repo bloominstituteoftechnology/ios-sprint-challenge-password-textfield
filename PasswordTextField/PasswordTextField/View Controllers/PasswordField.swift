@@ -46,10 +46,8 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
-
     
     func setup() {
-        
         self.backgroundColor = bgColor
         
         // Title Label Set Up
@@ -65,19 +63,19 @@ class PasswordField: UIControl {
         
         // TextField Set Up
         textField.placeholder = "Enter Password"
-        textField.font = labelFont
-        textField.borderStyle = UITextField.BorderStyle.roundedRect
-        textField.keyboardType = UIKeyboardType.default
-        textField.returnKeyType = UIReturnKeyType.done
+        textField.font                     = labelFont
+        textField.borderStyle              = UITextField.BorderStyle.roundedRect
+        textField.keyboardType             = UIKeyboardType.default
+        textField.returnKeyType            = UIReturnKeyType.done
         textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
-        textField.isSecureTextEntry = true
-        textField.delegate = self
+        textField.isSecureTextEntry        = true
+        textField.delegate                 = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
         
         // TextField Constraints
-        let textFieldLeadingAnchor = textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
-        let textFieldTopAnchor = textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin)
+        let textFieldLeadingAnchor  = textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
+        let textFieldTopAnchor      = textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin)
         let textFieldTrailingAnchor = textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8)
 
         // ShowHide Button Set up
@@ -88,58 +86,64 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         
         // ShowHide Button Constraints
-        let showHideButtonTop = showHideButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40)
+        let showHideButtonTop      = showHideButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40)
         let showHideButtonTrailing = showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20)
-        let showHideButtonWidth = showHideButton.widthAnchor.constraint(equalToConstant: eyeSize.width)
-        let showHideButtonHeight = showHideButton.heightAnchor.constraint(equalToConstant: eyeSize.height)
+        let showHideButtonWidth    = showHideButton.widthAnchor.constraint(equalToConstant: eyeSize.width)
+        let showHideButtonHeight   = showHideButton.heightAnchor.constraint(equalToConstant: eyeSize.height)
         
         // weakView Set up
-        weakView.backgroundColor = .gray
+        weakView.backgroundColor                           = .gray
         weakView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(weakView)
         
         // weakview constraints
-        let weakViewWidth = weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
-        let weakViewHeight = weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let weakViewWidth   = weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let weakViewHeight  = weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         let weakViewLeading = weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
-        let weakViewTop = weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        let weakViewTop     = weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
         
         // MediumView SetUp
         
-        mediumView.backgroundColor = .gray
+        mediumView.backgroundColor                           = .gray
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mediumView)
         
         // mediumView Constraints
-        let medViewWidth = mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
-        let medViewHeight = mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let medViewWidth   = mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let medViewHeight  = mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         let medViewLeading = mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin)
-        let medViewTop = mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        let medViewTop     = mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
 
         // strongView Setup
-        strongView.backgroundColor = .gray
+        strongView.backgroundColor                           = .gray
         strongView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strongView)
         
         // strongView Constraints
-        let strViewWidth = strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
-        let strViewHeight = strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let strViewWidth   = strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let strViewHeight  = strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         let strViewLeading = strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin)
-        let strViewTop = strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        let strViewTop     = strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
 
         // strengthDiscriptionLabel Setup
-        strengthDescriptionLabel.text = "Too Weak"
-        strengthDescriptionLabel.font = labelFont
-        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text                                      = "Too Weak"
+        strengthDescriptionLabel.font                                      = labelFont
+        strengthDescriptionLabel.textColor                                 = labelTextColor
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strengthDescriptionLabel)
         
         // strengthDiscriptionLabel Constraints
         let descriptionLeading = strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
-        let descriptionTop = strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2)
+        let descriptionTop     = strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2)
         
         
-        NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonTop, showHideButtonTrailing,showHideButtonWidth, showHideButtonHeight, weakViewWidth, weakViewHeight, weakViewLeading, weakViewTop, medViewWidth, medViewHeight, medViewLeading, medViewTop, strViewWidth, strViewHeight, strViewLeading, strViewTop, descriptionLeading, descriptionTop])
+        NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop,
+                                     textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor,
+                                     showHideButtonTop, showHideButtonTrailing,showHideButtonWidth, showHideButtonHeight,
+                                     weakViewWidth, weakViewHeight, weakViewLeading, weakViewTop,
+                                     medViewWidth, medViewHeight, medViewLeading, medViewTop,
+                                     strViewWidth, strViewHeight, strViewLeading, strViewTop,
+                                     descriptionLeading, descriptionTop])
     }
     
     @objc func showHideButtonTapped(sender: UIButton!) {
@@ -154,30 +158,35 @@ class PasswordField: UIControl {
     }
     
     private func updateStatus(with wordCount: Int) {
-        
          if wordCount >= 1 && wordCount < 10 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = .gray
             strongView.backgroundColor = .gray
             strengthDescriptionLabel.text = "Too weak"
-            weakView.performFlare()
         } else if wordCount >= 10 && wordCount < 20 {
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = .gray
-            mediumView.performFlare()
             strengthDescriptionLabel.text = "Could be stronger"
         } else if wordCount >= 20 {
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong Password"
-            strongView.performFlare()
         } else {
             weakView.backgroundColor = .gray
             mediumView.backgroundColor = .gray
             strongView.backgroundColor = .gray
         }
         
+        switch wordCount {
+        case 1:
+            weakView.performFlare()
+        case 10:
+            mediumView.performFlare()
+        case 20:
+            strongView.performFlare()
+        default:
+            return
+        }
     }
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -205,7 +214,7 @@ extension PasswordField: UITextFieldDelegate {
 extension UIView {
     // "Flare view" animation sequence
     func performFlare() {
-        func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func flare()   { transform = CGAffineTransform(scaleX: 0.8, y: 0.8) }
         func unflare() { transform = .identity }
         
         UIView.animate(withDuration: 0.3,
