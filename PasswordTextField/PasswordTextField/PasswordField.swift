@@ -52,7 +52,7 @@ class PasswordField: UIControl {
         titleLabel.text = "Enter Password"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
-        self.backgroundColor = .clear
+        self.backgroundColor = bgColor
         
         NSLayoutConstraint.activate([titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: standardMargin), titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: standardMargin), titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: standardMargin)])
         
@@ -92,7 +92,7 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.frame = CGRect(x: 330, y: 44, width: 30, height: 30)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-                                    
+        showHideButton.addTarget(self, action: #selector(hideText), for: .touchUpInside)
     }
     
     @objc func hideText() {
