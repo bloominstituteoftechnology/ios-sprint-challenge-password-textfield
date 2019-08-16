@@ -27,4 +27,8 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+	
+	@IBAction func passwordUpdated(_ sender: PasswordField) {
+		print("New password: \(sender.password) is \(sender.passwordStrength.toString)")
+	}
 }

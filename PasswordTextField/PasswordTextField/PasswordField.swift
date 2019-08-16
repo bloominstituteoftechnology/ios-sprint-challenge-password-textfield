@@ -8,10 +8,28 @@
 
 import UIKit
 
+enum PasswordStrength: Int {
+	case weak = 9
+	case medium = 19
+	case strong = 30
+	
+	var toString: String {
+		switch self {
+		case .weak:
+			return "weak"
+		case .medium:
+			return "medium"
+		case .strong:
+			return "strong"
+		}
+	}
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+	private (set) var passwordStrength = PasswordStrength.weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -66,6 +84,7 @@ class PasswordField: UIControl {
 		
 		//PasswordTextField
 		
+		textField.delegate = self
 		textField.backgroundColor = .clear
 		textField.borderStyle = .roundedRect
 		textField.layer.borderWidth = 2
@@ -100,7 +119,6 @@ class PasswordField: UIControl {
 		
 		//StrengthDescriptionLbl
 		
-		strengthDescriptionLabel.text = "Too weak"
 		strengthDescriptionLabel.font = labelFont
 		strengthDescriptionLabel.textColor = labelTextColor
 		
@@ -122,6 +140,19 @@ class PasswordField: UIControl {
 		textField.isSecureTextEntry.toggle()
 		showHideButton.setImage(UIImage(named: textField.isSecureTextEntry ? "eyes-closed" : "eyes-open"), for: .normal)
 	}
+	
+	private func determineStrength(of password: String) {
+		switch password.count {
+		case (PasswordStrength.weak.rawValue + 1)...PasswordStrength.medium.rawValue:
+			passwordStrength = .medium
+		case (PasswordStrength.medium.rawValue + 1)...PasswordStrength.strong.rawValue:
+			passwordStrength = .strong
+		default:
+			passwordStrength = .weak
+		}
+		
+		sendActions(for: [.valueChanged])
+	}
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -129,7 +160,10 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+		
         // TODO: send new text to the determine strength method
+		determineStrength(of: newText)
+		
         return true
     }
 }
