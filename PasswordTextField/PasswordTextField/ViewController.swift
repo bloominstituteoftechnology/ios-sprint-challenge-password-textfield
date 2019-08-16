@@ -27,4 +27,7 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    @IBAction func passwordSet(_ sender: PasswordField) {
+        print(sender.password, sender.strength.rawValue)
+    }
 }

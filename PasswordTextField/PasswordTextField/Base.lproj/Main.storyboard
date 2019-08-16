@@ -19,11 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNe-Nm-lsq" customClass="PasswordField" customModule="PasswordTextField" customModuleProvider="target">
-                                <rect key="frame" x="20" y="64" width="374" height="120"/>
+                                <rect key="frame" x="20" y="64" width="374" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="0G1-Ex-Lhb"/>
+                                    <constraint firstAttribute="height" constant="150" id="0G1-Ex-Lhb"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="passwordSet:" destination="elA-4r-Uh6" eventType="valueChanged" id="XHh-si-HN0"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

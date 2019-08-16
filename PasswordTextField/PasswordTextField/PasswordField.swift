@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strength: Strength!
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -129,16 +130,19 @@ extension PasswordField: UITextFieldDelegate {
         let strength = determineStrength(of: newText)
         switch strength {
         case .weak:
+            self.strength = .weak
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too Weak"
         case .medium:
+            self.strength = .medium
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
         case .strong:
+            self.strength = .strong
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
@@ -146,9 +150,17 @@ extension PasswordField: UITextFieldDelegate {
         }
         return true
     }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text, !text.isEmpty else {
+            return false
+        }
+        password = text
+        sendActions(for: [.valueChanged])
+        return true
+    }
 }
 extension PasswordField {
-    enum Strength {
+    enum Strength: String {
         case weak
         case medium
         case strong
