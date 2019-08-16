@@ -27,4 +27,10 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+
+
+	@IBOutlet weak var passwordControl: PasswordField!
+
+
+
 }
