@@ -49,6 +49,14 @@ class PasswordField: UIControl {
 		
 		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
+		textField.layer.borderWidth = 3
+		textField.layer.cornerRadius = 12
+		textField.backgroundColor = bgColor
+		textField.borderStyle = .bezel
+		textField.isSecureTextEntry = true
+		
+		addSubview(showHideButton)
+		showHideButton.frame
     }
     
     required init?(coder aDecoder: NSCoder) {
