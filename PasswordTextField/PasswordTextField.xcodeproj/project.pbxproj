@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		320F52C3230708EA00BB8D98 /* AppearanceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320F52C2230708EA00BB8D98 /* AppearanceHelper.swift */; };
+		320F52C6230751C100BB8D98 /* StrengthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320F52C5230751C100BB8D98 /* StrengthHelper.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		320F52C2230708EA00BB8D98 /* AppearanceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceHelper.swift; sourceTree = "<group>"; };
+		320F52C5230751C100BB8D98 /* StrengthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrengthHelper.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,10 +67,10 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		320F52C4230708EE00BB8D98 /* Helpers */ = {
+		320F52C7230751D700BB8D98 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				320F52C2230708EA00BB8D98 /* AppearanceHelper.swift */,
+				320F52C5230751C100BB8D98 /* StrengthHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -96,8 +96,8 @@
 			children = (
 				320F52C1230708B900BB8D98 /* View Controllers */,
 				320F52BF2307089700BB8D98 /* Views */,
+				320F52C7230751D700BB8D98 /* Helpers */,
 				320F52C0230708AE00BB8D98 /* Resources */,
-				320F52C4230708EE00BB8D98 /* Helpers */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -174,8 +174,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
-				320F52C3230708EA00BB8D98 /* AppearanceHelper.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
+				320F52C6230751C100BB8D98 /* StrengthHelper.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
