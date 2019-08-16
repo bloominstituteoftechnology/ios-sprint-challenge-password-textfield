@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordRating: String = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -40,6 +41,10 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
 
     
     func setup() {
@@ -66,8 +71,10 @@ class PasswordField: UIControl {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
         textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        textField.isSecureTextEntry = true
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.addTarget(ViewController.self, action: #selector(returnKeyTapped), for: .valueChanged)
         addSubview(textField)
         
         //TextField Constraints
@@ -115,9 +122,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.frame = CGRect(x: 220.0, y: 70.0, width: 200.0, height: 14.0)
         addSubview(strengthDescriptionLabel)
         
-      
-        
-        
         NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonLeading, showHideButtonTop, showHideButtonTrailing, weakViewLeading, weakViewTop, strongViewLeading])
     }
     
@@ -132,14 +136,17 @@ class PasswordField: UIControl {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
+    @objc func returnKeyTapped(sender: Any!) {
+        guard let text = textField.text,
+            let rating = strengthDescriptionLabel.text,
+            !text.isEmpty else { return }
+        password = text
+        passwordRating = rating
     }
     
     private func updateStatus(with wordCount: Int) {
         
-        if wordCount >= 1 && wordCount < 10 {
+         if wordCount >= 1 && wordCount < 10 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = .gray
             strongView.backgroundColor = .gray
@@ -170,10 +177,18 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         let wordCount = newText.count
-        // TODO: send new text to the determine strength method
         updateStatus(with: wordCount)
-        
         return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        if let text = textField.text,
+            let rating = strengthDescriptionLabel.text,
+            !text.isEmpty {
+            password = text
+            passwordRating = rating
+        }
+        return false
     }
 }
 
