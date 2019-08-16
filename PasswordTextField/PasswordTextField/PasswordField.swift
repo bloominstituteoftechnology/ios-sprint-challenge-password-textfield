@@ -83,6 +83,17 @@ class PasswordField: UIControl {
 		strengthBarsStackview.distribution = .fill
 		strengthBarsStackview.spacing = standardMargin
 
+		// TextField Setup
+		textField.isSecureTextEntry = true
+		textField.layer.borderColor = textFieldBorderColor.cgColor
+		textField.layer.borderWidth = 2
+		textField.layer.cornerRadius = 8
+		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin * 2, height: textFieldContainerHeight))
+		textField.leftViewMode = .always
+		textField.rightView = showHideButton
+		textField.rightViewMode = .always
+		textField.clearButtonMode = .whileEditing
+
 		// Additional Setup
 		titleLabel.text = "ENTER PASSOWRD"
 		titleLabel.font = labelFont
@@ -92,7 +103,7 @@ class PasswordField: UIControl {
 			addSubview($0)
 			$0.translatesAutoresizingMaskIntoConstraints = false
 		}
-		strengthDescriptionLabel.text = "Test"
+		strengthDescriptionLabel.text = "Strength"
 		strengthDescriptionLabel.font = labelFont
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
@@ -104,17 +115,6 @@ class PasswordField: UIControl {
 			$0.layer.cornerRadius = colorViewSize.height / 2
 			$0.backgroundColor = unusedColor
 		}
-
-		// TextField Setup
-		textField.isSecureTextEntry = true
-		textField.layer.borderColor = textFieldBorderColor.cgColor
-		textField.layer.borderWidth = 2
-		textField.layer.cornerRadius = 8
-		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin * 2, height: textFieldContainerHeight))
-		textField.leftViewMode = .always
-		textField.rightView = showHideButton
-		textField.rightViewMode = .always
-		textField.clearButtonMode = .whileEditing
 
 		// Constraints
 		NSLayoutConstraint.activate([
@@ -144,9 +144,12 @@ class PasswordField: UIControl {
 			case .tooWeak:
 				weakView.backgroundColor = weakColor
 				strengthDescriptionLabel.text = passwordStrength.rawValue
+				mediumView.backgroundColor = unusedColor
+				strongView.backgroundColor = unusedColor
 			case .couldBeStronger:
 				weakView.backgroundColor = weakColor
 				mediumView.backgroundColor = mediumColor
+				strongView.backgroundColor = unusedColor
 				strengthDescriptionLabel.text = passwordStrength.rawValue
 			case .strong:
 				weakView.backgroundColor = weakColor
