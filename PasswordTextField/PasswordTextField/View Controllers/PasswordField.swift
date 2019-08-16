@@ -73,7 +73,6 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.addTarget(self, action: #selector(returnKeyTapped), for: .valueChanged)
         addSubview(textField)
         
         // TextField Constraints
@@ -154,14 +153,6 @@ class PasswordField: UIControl {
         }
     }
     
-    @objc func returnKeyTapped(sender: UITextField) {
-        guard let text = textField.text,
-            let rating = strengthDescriptionLabel.text,
-            !text.isEmpty else { return }
-        password = text
-        passwordRating = rating
-    }
-    
     private func updateStatus(with wordCount: Int) {
         
          if wordCount >= 1 && wordCount < 10 {
@@ -205,6 +196,7 @@ extension PasswordField: UITextFieldDelegate {
             !text.isEmpty {
             password = text
             passwordRating = rating
+            sendActions(for: [.valueChanged])
         }
         return false
     }
