@@ -151,6 +151,7 @@ class PasswordField: UIControl {
 			passwordStrength = .weak
 		}
 		
+		self.password = password
 		sendActions(for: [.valueChanged])
 	}
 }
@@ -162,8 +163,11 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
 		
         // TODO: send new text to the determine strength method
-		determineStrength(of: newText)
+		if newText.count <= PasswordStrength.strong.rawValue {
+			determineStrength(of: newText)
+			return true
+		}
 		
-        return true
+		return false
     }
 }
