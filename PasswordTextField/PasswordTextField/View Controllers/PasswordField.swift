@@ -18,6 +18,7 @@ class PasswordField: UIControl {
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let eyeSize: CGSize = CGSize(width: 20.0, height: 20.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -51,20 +52,18 @@ class PasswordField: UIControl {
         
         self.backgroundColor = bgColor
         
-        //Title Label Set Up
+        // Title Label Set Up
         titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         
-        //Title Label Constraints
+        // Title Label Constraints
         let titleLabelLeading = titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
         let titleLabelTop = titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: standardMargin)
         
-        
-        
-        //TextField Set Up
+        // TextField Set Up
         textField.placeholder = "Enter Password"
         textField.font = labelFont
         textField.borderStyle = UITextField.BorderStyle.roundedRect
@@ -77,52 +76,71 @@ class PasswordField: UIControl {
         textField.addTarget(self, action: #selector(returnKeyTapped), for: .valueChanged)
         addSubview(textField)
         
-        //TextField Constraints
+        // TextField Constraints
         let textFieldLeadingAnchor = textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
         let textFieldTopAnchor = textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin)
         let textFieldTrailingAnchor = textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8)
 
-        //ShowHide Button Set up
+        // ShowHide Button Set up
         showHideButton.backgroundColor = .clear
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.frame = CGRect(x: 340.0, y: 38.0, width: 20.0, height: 20.0)
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
-        
-        let showHideButtonLeading = showHideButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 340)
-        let showHideButtonTop = showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4)
-        let showHideButtonTrailing = showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 4)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         
-        //weakView Set up
+        // ShowHide Button Constraints
+        let showHideButtonTop = showHideButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40)
+        let showHideButtonTrailing = showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        let showHideButtonWidth = showHideButton.widthAnchor.constraint(equalToConstant: eyeSize.width)
+        let showHideButtonHeight = showHideButton.heightAnchor.constraint(equalToConstant: eyeSize.height)
+        
+        // weakView Set up
         weakView.backgroundColor = .gray
-        weakView.frame = CGRect(x: 8, y: 70.0, width: 60.0, height: 5)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(weakView)
         
+        // weakview constraints
+        let weakViewWidth = weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let weakViewHeight = weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         let weakViewLeading = weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin)
         let weakViewTop = weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
         
-        //MediumView SetUp
+        // MediumView SetUp
         
         mediumView.backgroundColor = .gray
-        mediumView.frame = CGRect(x: weakView.bounds.width + 16, y: 70.0, width: 60.0, height: 5)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mediumView)
         
-        //StringView SetUp
-        
+        // mediumView Constraints
+        let medViewWidth = mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let medViewHeight = mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let medViewLeading = mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin)
+        let medViewTop = mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+
+        // strongView Setup
         strongView.backgroundColor = .gray
-        strongView.frame = CGRect(x: weakView.bounds.width + mediumView.bounds.width + 24, y: 70.0, width: 60.0, height: 5)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strongView)
         
-        let strongViewLeading = strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6)
-        // TODO: - Constraints
-        
+        // strongView Constraints
+        let strViewWidth = strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let strViewHeight = strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let strViewLeading = strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin)
+        let strViewTop = strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+
+        // strengthDiscriptionLabel Setup
         strengthDescriptionLabel.text = "Too Weak"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.frame = CGRect(x: 220.0, y: 70.0, width: 200.0, height: 14.0)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strengthDescriptionLabel)
         
-        NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonLeading, showHideButtonTop, showHideButtonTrailing, weakViewLeading, weakViewTop, strongViewLeading])
+        // strengthDiscriptionLabel Constraints
+        let descriptionLeading = strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
+        let descriptionTop = strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2)
+        
+        
+        NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonTop, showHideButtonTrailing,showHideButtonWidth, showHideButtonHeight, weakViewWidth, weakViewHeight, weakViewLeading, weakViewTop, medViewWidth, medViewHeight, medViewLeading, medViewTop, strViewWidth, strViewHeight, strViewLeading, strViewTop, descriptionLeading, descriptionTop])
     }
     
     @objc func showHideButtonTapped(sender: UIButton!) {
