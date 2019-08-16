@@ -75,9 +75,9 @@ class PasswordField: UIControl {
         
         weakView.backgroundColor = weakColor
         weakView.frame.size = colorViewSize
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.frame.size = colorViewSize
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.frame.size = colorViewSize
         
         let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
@@ -166,16 +166,29 @@ extension PasswordField {
         case strong
     }
     func determineStrength(of password: String) ->Strength {
+        var currentStrength : Strength = .weak
         switch password.count {
         case 0...9:
-            return .weak
+            currentStrength = .weak
         case 10...19:
-            return .medium
+            currentStrength = .medium
         case 20...:
-            return .strong
+            currentStrength = .strong
         default:
             break
         }
-        return .weak
+        
+        if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+            switch currentStrength {
+            case .weak:
+                currentStrength = .weak
+            case .medium:
+                currentStrength = .weak
+            case .strong:
+                currentStrength = .medium
+            }
+        }
+        
+        return currentStrength
     }
 }
