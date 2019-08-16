@@ -43,6 +43,9 @@ class PasswordField: UIControl {
 
     
     func setup() {
+        
+        self.backgroundColor = bgColor
+        
         //Title Label Set Up
         titleLabel.text = "I AM THE LABEL"
         titleLabel.font = labelFont
@@ -81,7 +84,6 @@ class PasswordField: UIControl {
         let showHideButtonLeading = showHideButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 340)
         let showHideButtonTop = showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4)
         let showHideButtonTrailing = showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 4)
-        
         addSubview(showHideButton)
         
         //weakView Set up
@@ -107,6 +109,14 @@ class PasswordField: UIControl {
         let strongViewLeading = strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6)
         // TODO: - Constraints
         
+        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.frame = CGRect(x: 220.0, y: 70.0, width: 200.0, height: 14.0)
+        addSubview(strengthDescriptionLabel)
+        
+      
+        
         
         NSLayoutConstraint.activate([titleLabelLeading, titleLabelTop, textFieldLeadingAnchor, textFieldTopAnchor, textFieldTrailingAnchor, showHideButtonLeading, showHideButtonTop, showHideButtonTrailing, weakViewLeading, weakViewTop, strongViewLeading])
     }
@@ -115,8 +125,10 @@ class PasswordField: UIControl {
         buttonWasTapped.toggle()
         if buttonWasTapped == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
     
@@ -131,13 +143,16 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = .gray
             strongView.backgroundColor = .gray
+            strengthDescriptionLabel.text = "Too weak"
             weakView.performFlare()
         } else if wordCount >= 10 && wordCount < 20 {
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = .gray
             mediumView.performFlare()
+            strengthDescriptionLabel.text = "Could be stronger"
         } else if wordCount >= 20 {
             strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong Password"
             strongView.performFlare()
         } else {
             weakView.backgroundColor = .gray
