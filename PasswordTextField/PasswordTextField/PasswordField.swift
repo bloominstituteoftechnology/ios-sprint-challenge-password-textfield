@@ -55,8 +55,13 @@ class PasswordField: UIControl {
 		textField.borderStyle = .bezel
 		textField.isSecureTextEntry = true
 		
+		//TODO
 		addSubview(showHideButton)
-		showHideButton.frame
+		showHideButton.frame = CGRect(x: 300,
+									  y: 40,
+									  width: 30,
+									  height: 30)
+		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
     }
     
     required init?(coder aDecoder: NSCoder) {
