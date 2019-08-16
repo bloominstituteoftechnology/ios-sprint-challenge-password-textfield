@@ -40,20 +40,25 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+		
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.text = "Enter your password"
 		titleLabel.textColor = labelTextColor
 		titleLabel.font = labelFont
 		
+		NSLayoutConstraint.activate([titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin), titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin), titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin)])
+
+		
 		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.layer.borderWidth = 3
-		textField.layer.cornerRadius = 12
+		textField.layer.backgroundColor = textFieldBorderColor.cgColor
 		textField.backgroundColor = bgColor
 		textField.borderStyle = .bezel
 		textField.isSecureTextEntry = true
+		
+		NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin), textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin), textField.topAnchor.constraint(equalTo: self.topAnchor, constant: textFieldMargin), textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: textFieldMargin)])
 		
 		//TODO
 		addSubview(showHideButton)
@@ -63,17 +68,19 @@ class PasswordField: UIControl {
 									  height: 30)
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		
+		
+		
 		addSubview(weakView)
 		weakView.backgroundColor = weakColor
-		weakView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		weakView.frame = CGRect(x: standardMargin, y: 100, width: colorViewSize.width, height: colorViewSize.height)
 		
 		addSubview(mediumView)
 		mediumView.backgroundColor = unusedColor
-		mediumView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		mediumView.frame = CGRect(x: standardMargin * 2, y: 100, width: colorViewSize.width, height: colorViewSize.height)
 		
 		addSubview(strongView)
 		strongView.backgroundColor = unusedColor
-		strongView.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+		strongView.frame = CGRect(x: standardMargin * 3, y: 100, width: colorViewSize.width, height: colorViewSize.height)
 		
 		addSubview(strengthDescriptionLabel)
 		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -81,11 +88,15 @@ class PasswordField: UIControl {
 		strengthDescriptionLabel.textColor = labelTextColor
 		strengthDescriptionLabel.font = labelFont
 		
-    }
-    
+		NSLayoutConstraint.activate([strengthDescriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin), strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin), strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin )])
+		
+	}
+	
+	
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+		textField.delegate = self
     }
 }
 
