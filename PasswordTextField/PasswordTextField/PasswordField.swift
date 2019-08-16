@@ -66,6 +66,19 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 5
         
         NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin), textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -textFieldMargin), textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin), textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)])
+        
+        //password strength meter
+        addSubview(weakView)
+        weakView.backgroundColor = weakColor
+        weakView.frame = CGRect(x: standardMargin, y: 97, width: colorViewSize.width, height: colorViewSize.height)
+        
+        addSubview(mediumView)
+        mediumView.backgroundColor = unusedColor
+        mediumView.frame = CGRect(x: standardMargin * 2 + colorViewSize.width, y: 97, width: colorViewSize.width, height: colorViewSize.height)
+        
+        addSubview(strongView)
+        strongView.backgroundColor = unusedColor
+        strongView.frame = CGRect(x: standardMargin * 3 + colorViewSize.width * 2, y: 97, width: colorViewSize.width, height: colorViewSize.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
