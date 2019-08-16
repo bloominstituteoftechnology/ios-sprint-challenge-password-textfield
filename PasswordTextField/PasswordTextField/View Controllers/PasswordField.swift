@@ -52,9 +52,9 @@ class PasswordField: UIControl {
         self.backgroundColor = bgColor
         
         //Title Label Set Up
-        titleLabel.text = "I AM THE LABEL"
+        titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
-        titleLabel.textColor = UIColor.black
+        titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         
@@ -74,7 +74,7 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.addTarget(ViewController.self, action: #selector(returnKeyTapped), for: .valueChanged)
+        textField.addTarget(self, action: #selector(returnKeyTapped), for: .valueChanged)
         addSubview(textField)
         
         //TextField Constraints
@@ -136,7 +136,7 @@ class PasswordField: UIControl {
         }
     }
     
-    @objc func returnKeyTapped(sender: Any!) {
+    @objc func returnKeyTapped(sender: UITextField) {
         guard let text = textField.text,
             let rating = strengthDescriptionLabel.text,
             !text.isEmpty else { return }
