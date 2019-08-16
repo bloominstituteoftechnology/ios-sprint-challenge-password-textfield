@@ -9,12 +9,15 @@
 import UIKit
 
 enum PasswordStrength: Int {
-	case weak = 9
-	case medium = 19
-	case strong = 30
+	case none = 0
+	case weak = 5
+	case medium = 9
+	case strong = 20
 	
 	var toString: String {
 		switch self {
+		case .none:
+			return "empty"
 		case .weak:
 			return "weak"
 		case .medium:
@@ -143,16 +146,56 @@ class PasswordField: UIControl {
 	
 	private func determineStrength(of password: String) {
 		switch password.count {
+		case (PasswordStrength.none.rawValue + 1)...PasswordStrength.weak.rawValue:
+			passwordStrength = .weak
 		case (PasswordStrength.weak.rawValue + 1)...PasswordStrength.medium.rawValue:
 			passwordStrength = .medium
 		case (PasswordStrength.medium.rawValue + 1)...PasswordStrength.strong.rawValue:
 			passwordStrength = .strong
 		default:
-			passwordStrength = .weak
+			passwordStrength = .none
+		}
+		
+		if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+			switch passwordStrength {
+			case .strong:
+				passwordStrength = .medium
+			case .medium:
+				passwordStrength = .weak
+			default:
+				passwordStrength = .none
+			}
 		}
 		
 		self.password = password
+		updateStrengthColor()
 		sendActions(for: [.valueChanged])
+	}
+	
+	private func updateStrengthColor() {
+		switch passwordStrength {
+		case .none:
+			weakView.backgroundColor = unusedColor
+			mediumView.backgroundColor = unusedColor
+			strongView.backgroundColor = unusedColor
+		case .weak:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = unusedColor
+			strongView.backgroundColor = unusedColor
+		case .medium:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strongView.backgroundColor = unusedColor
+		case .strong:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strongView.backgroundColor = strongColor
+		}
+	}
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesBegan(touches, with: event)
+		endEditing(true)
 	}
 }
 
@@ -170,4 +213,9 @@ extension PasswordField: UITextFieldDelegate {
 		
 		return false
     }
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		endEditing(true)
+		return true
+	}
 }
