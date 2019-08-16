@@ -10,6 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBAction func returnKeyTapped(_ sender: PasswordField) {
+        switch sender.password.count {
+        case 10...19:
+            print("Password is: \(sender.password), medium")
+        case 20...Int.max:
+            print("Password is: \(sender.password), strong")
+        default:
+            print("Password is: \(sender.password), weak")
+        }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -26,5 +36,5 @@ class ViewController: UIViewController {
 //        let str = "lambda"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
-//    }
+    }
 }
