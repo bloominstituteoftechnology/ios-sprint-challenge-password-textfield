@@ -40,7 +40,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-		
+		self.backgroundColor = .darkGray
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.text = "Enter your password"
@@ -52,23 +52,19 @@ class PasswordField: UIControl {
 		
 		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.layer.borderWidth = 3
+		textField.layer.borderWidth = 2
 		textField.layer.backgroundColor = textFieldBorderColor.cgColor
 		textField.backgroundColor = bgColor
 		textField.borderStyle = .bezel
 		textField.isSecureTextEntry = true
 		
-		NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin), textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin), textField.topAnchor.constraint(equalTo: self.topAnchor, constant: textFieldMargin), textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: textFieldMargin)])
+		NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin), textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -textFieldMargin), textField.topAnchor.constraint(equalTo: self.topAnchor, constant: textFieldMargin)])
 		
 		//TODO
 		addSubview(showHideButton)
-		showHideButton.frame = CGRect(x: 300,
-									  y: 40,
-									  width: 30,
-									  height: 30)
+		showHideButton.frame = CGRect(x: 330, y: 50, width: 30, height: 30)
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-		
-		
+		showHideButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 		
 		addSubview(weakView)
 		weakView.backgroundColor = weakColor
@@ -88,10 +84,18 @@ class PasswordField: UIControl {
 		strengthDescriptionLabel.textColor = labelTextColor
 		strengthDescriptionLabel.font = labelFont
 		
-		NSLayoutConstraint.activate([strengthDescriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin), strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin), strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin )])
-		
+		NSLayoutConstraint.activate([strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin), strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin), strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -standardMargin)])
 	}
 	
+	@objc func buttonTapped() {
+		if showHideButton.currentImage!.isEqual(UIImage(named: "eyes-closed")) {
+			textField.isSecureTextEntry = false
+			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+		} else {
+			textField.isSecureTextEntry = true
+			showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+		}
+	}
 	
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
