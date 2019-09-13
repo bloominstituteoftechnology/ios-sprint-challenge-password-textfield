@@ -88,7 +88,12 @@ class PasswordField: UIControl {
         weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
         weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
-        weakView.backgroundColor = weakColor
+        if password.count > 0, password.count <= 4 {
+            weakView.backgroundColor = weakColor;
+            strengthDescriptionLabel.text = "Weak"
+        } else {
+            weakView.backgroundColor = unusedColor
+        }
         
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +101,13 @@ class PasswordField: UIControl {
         mediumView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         mediumView.trailingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 50).isActive = true
         mediumView.bottomAnchor.constraint(equalTo: mediumView.topAnchor, constant: 3).isActive = true
-        mediumView.backgroundColor = mediumColor
+        if password.count > 4, password.count <= 8 {
+            weakView.backgroundColor = weakColor;
+            mediumView.backgroundColor = mediumColor;
+            strengthDescriptionLabel.text = "Medium"
+        } else {
+            mediumView.backgroundColor = unusedColor
+        }
         
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,17 +115,25 @@ class PasswordField: UIControl {
         strongView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         strongView.trailingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: 50).isActive = true
         strongView.bottomAnchor.constraint(equalTo: strongView.topAnchor, constant: 3).isActive = true
-        strongView.backgroundColor = strongColor
+        if password.count > 9 {
+            weakView.backgroundColor = weakColor;
+            mediumView.backgroundColor = mediumColor;
+            strongView.backgroundColor = strongColor;
+            strengthDescriptionLabel.text = "Strong"
+        } else {
+            strongView.backgroundColor = unusedColor
+        }
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
         strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 4).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor).isActive = true
-        strengthDescriptionLabel.text = "Enter email"
+        //strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 10.0, weight: .light)
         
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
