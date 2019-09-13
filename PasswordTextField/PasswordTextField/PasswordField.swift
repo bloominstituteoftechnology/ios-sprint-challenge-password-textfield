@@ -127,7 +127,7 @@ class PasswordField: UIControl {
         mediumView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: 3).isActive = true
         mediumView.backgroundColor = unusedColor
-        
+
         // strong view
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +136,7 @@ class PasswordField: UIControl {
         strongView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: 3).isActive = true
         strongView.backgroundColor = unusedColor
-        
+
         // strength description
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -146,7 +146,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = " "
-        
     }
     
     @objc func animateWeak() {
@@ -186,12 +185,21 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         
-        if newText.count < 6 {
+        if newText.count == 0 {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
+        } else if newText.count != 0 && newText.count < 6 {
             weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
             animateWeak()
         } else if newText.count >= 6 && newText.count < 12 {
+            weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
             animateMedium()
         } else {
