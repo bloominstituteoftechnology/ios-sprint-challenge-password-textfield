@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
+    
+    
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -27,4 +32,8 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    @IBAction func updatePassword(_ passwordField: PasswordField) {
+        print("\(passwordField.password) \(passwordField.passwordRating)")
+    }
 }
