@@ -41,14 +41,72 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        // Set up titleLabel
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         titleLabel.text = "ENTER PASSWORD:"
+        titleLabel.font = labelFont
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
         
-        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin)
+        // Create and set up textFieldContainer
+        let textFieldContainer = UIView()
         
+        addSubview(textFieldContainer)
+        textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        textFieldContainer.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textFieldContainer.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textFieldContainer.layer.cornerRadius = 8
+        textFieldContainer.layer.borderWidth = 2
+        textFieldContainer.layer.borderColor = textFieldBorderColor.cgColor
+        
+        
+        textFieldContainer.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: standardMargin).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
+        showHideButton.widthAnchor.constraint(equalToConstant: textFieldContainerHeight - standardMargin * 2).isActive = true
+        
+        showHideButton.imageView?.image = UIImage(named: "eyes-closed")
+        
+        
+        // Set up textField in textFieldContainer
+        textFieldContainer.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: standardMargin).isActive = true
+        textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor, constant: -standardMargin).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin).isActive = true
+        textField.isUserInteractionEnabled = true
+//        textField.backgroundColor = .lightGray
+        textField.placeholder = "Password"
+        
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        weakView.backgroundColor = weakColor
+        
+        weakView.heightAnchor.constraint(equalToConstant: 5)
+        weakView.widthAnchor.constraint(equalToConstant: 20)
+        
+        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.text = "Testing"
+        strengthDescriptionLabel.font = labelFont
         
     }
     
