@@ -74,14 +74,11 @@ class PasswordField: UIControl {
 		textField.placeholder = "Password"
 		
 		// Hide Button
-		textField.addSubview(showHideButton)
-		showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 8)
-		showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 8)
-		showHideButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -8)
-		
-		showHideButton.frame = CGRect(x: 330, y: 50, width: 30, height: 30)
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-
+		showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+		showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+		textField.rightView = showHideButton
+		textField.rightViewMode = .always
 		
     }
     
@@ -89,13 +86,7 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
-	
-
-	
-	
 }
-
-
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
