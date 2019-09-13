@@ -12,6 +12,8 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    var closedEye: UIImage = UIImage()
+    var openEye: UIImage = UIImage()
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -65,8 +67,52 @@ class PasswordField: UIControl {
         passwordContainer.layer.borderWidth = 2
         passwordContainer.layer.cornerRadius = 8
         
+        passwordContainer.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.leadingAnchor.constraint(equalTo: passwordContainer.leadingAnchor, constant: 4).isActive = true
+        textField.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 2).isActive = true
+        textField.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -2).isActive = true
+        textField.bottomAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: -2).isActive = true
+        textField.placeholder = "Enter password here"
         
+        passwordContainer.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 1).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: 2).isActive = true
+        showHideButton.image(for: .normal)
         
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
+        weakView.backgroundColor = weakColor
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 3).isActive = true
+        mediumView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        mediumView.trailingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 50).isActive = true
+        mediumView.bottomAnchor.constraint(equalTo: mediumView.topAnchor, constant: 3).isActive = true
+        mediumView.backgroundColor = mediumColor
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 3).isActive = true
+        strongView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        strongView.trailingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: 50).isActive = true
+        strongView.bottomAnchor.constraint(equalTo: strongView.topAnchor, constant: 3).isActive = true
+        strongView.backgroundColor = strongColor
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 4).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor).isActive = true
+        strengthDescriptionLabel.text = "Enter email"
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 10.0, weight: .light)
         
     }
     
