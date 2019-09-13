@@ -39,6 +39,7 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     private let backgroundImageView: UIImageView = UIImageView()
+    private let passwordContainerView: UIView = UIView()
     
     
     
@@ -61,6 +62,19 @@ class PasswordField: UIControl {
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         titleLabel.text = "Enter Password"
         titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        
+        //Password Container
+        addSubview(passwordContainerView)
+        passwordContainerView.translatesAutoresizingMaskIntoConstraints = false
+        passwordContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        passwordContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
+        passwordContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        passwordContainerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        passwordContainerView.layer.borderColor = UIColor.black.cgColor
+        passwordContainerView.layer.borderWidth = 2.0
+        passwordContainerView.layer.cornerRadius = 5.0
+        
+        
         
      
         
