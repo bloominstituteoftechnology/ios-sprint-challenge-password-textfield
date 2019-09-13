@@ -39,7 +39,18 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var isPasswordHidden: Bool = true
     
+    @objc func showHideButtonTapped() {
+        if isPasswordHidden {
+            eyeImageView.image = UIImage(named: "eyes-open")
+            textField.isSecureTextEntry = false
+        } else {
+            eyeImageView.image = UIImage(named: "eyes-closed")
+            textField.isSecureTextEntry = true
+        }
+        isPasswordHidden.toggle()
+    }
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -91,12 +102,13 @@ class PasswordField: UIControl {
         eyeImageView.image = UIImage(named: "eyes-closed")
 
         // eye button
-        eyeImageView.addSubview(showHideButton)
+        passwordContainerView.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.topAnchor.constraint(equalTo: eyeImageView.topAnchor, constant: standardMargin * 2).isActive = true
-        showHideButton.leadingAnchor.constraint(equalTo: eyeImageView.leadingAnchor, constant: standardMargin * 2).isActive = true
-        showHideButton.trailingAnchor.constraint(equalTo: eyeImageView.trailingAnchor, constant: -standardMargin * 2).isActive = true
-        showHideButton.bottomAnchor.constraint(equalTo: eyeImageView.bottomAnchor, constant: -standardMargin * 2).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: eyeImageView.topAnchor).isActive = true
+        showHideButton.leadingAnchor.constraint(equalTo: eyeImageView.leadingAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: eyeImageView.trailingAnchor).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: eyeImageView.bottomAnchor).isActive = true
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -147,7 +159,7 @@ extension PasswordField: UITextFieldDelegate {
         if newText.count < 6 {
             weakView.backgroundColor = weakColor
             strengthDescriptionLabel.text = "Too weak"
-        } else if newText.count >= 6 && newText.count < 10 {
+        } else if newText.count >= 6 && newText.count < 12 {
             mediumView.backgroundColor = mediumColor
             strengthDescriptionLabel.text = "Could be stronger"
         } else {
