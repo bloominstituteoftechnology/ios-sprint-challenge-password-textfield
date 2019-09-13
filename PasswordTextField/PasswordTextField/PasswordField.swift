@@ -77,10 +77,13 @@ class PasswordField: UIControl {
         
         passwordContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 1).isActive = true
-        showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: 2).isActive = true
-        showHideButton.image(for: .normal)
+        showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
+        if showHideButton.isSelected == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
