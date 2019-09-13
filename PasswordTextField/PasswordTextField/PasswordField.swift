@@ -74,6 +74,7 @@ class PasswordField: UIControl {
 		textField.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: -8).isActive = true
 		textField.placeholder = "Password"
 		
+		
 		// Hide Button
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
@@ -133,3 +134,4 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
