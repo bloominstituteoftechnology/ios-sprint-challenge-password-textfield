@@ -31,6 +31,7 @@ class PasswordField: UIControl {
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
+	private var titleContainerView: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -62,6 +63,15 @@ class PasswordField: UIControl {
 		titleContainerView.layer.borderColor = UIColor.blue.cgColor
 		titleContainerView.layer.borderWidth = 2.0
 		titleContainerView.layer.cornerRadius = 5.0
+		
+		// Text Field
+		titleContainerView.addSubview(textField)
+		textField.translatesAutoresizingMaskIntoConstraints = false
+		textField.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor, constant: 8).isActive = true
+		textField.topAnchor.constraint(equalTo: titleContainerView.topAnchor, constant: 8).isActive = true
+		textField.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -8).isActive = true
+		textField.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: -8).isActive = true
+		textField.placeholder = "Password"
 		
     }
     
