@@ -19,10 +19,10 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
-    private let standardMargin: CGFloat = 8.0
+    private let standardMargin: CGFloat = 8
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
-    private let colorViewSize: CGSize = CGSize(width: 30.0, height: 2.0)
+    private let colorViewSize: CGSize = CGSize(width: 63.0, height: 8.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -65,18 +65,19 @@ class PasswordField: UIControl {
         
         addSubview(textField)
         securityButton.isUserInteractionEnabled = true
-        securityButton.addTarget(self, action: #selector(self.passwordSecurity), for: .touchUpInside)
+        securityButton.addTarget(self, action: #selector(passwordSecurity), for: .touchUpInside)
         securityButton.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
-        securityButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
-        securityButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
+        securityButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        securityButton.frame = CGRect(x: 0, y: 0, width: 32, height: 28)
         
+        textField.isSecureTextEntry = true
         textField.rightView = securityButton
         textField.rightViewMode = .always
+        textField.clearButtonMode = .whileEditing
         
         let spacerView = UIView(frame:CGRect(x:0, y:0, width: 5, height:5))
         textField.leftViewMode = UITextField.ViewMode.always
         textField.leftView = spacerView
-        textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = bgColor
         textField.borderStyle = .bezel
@@ -97,7 +98,7 @@ class PasswordField: UIControl {
         stackView.axis = .horizontal
         stackView.spacing = standardMargin
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         
         
         addSubview(stackView)
@@ -105,29 +106,49 @@ class PasswordField: UIControl {
         stackView.addArrangedSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.backgroundColor = unusedColor
-        weakView.frame.size = colorViewSize
+        weakView.layer.cornerRadius = 4
+        weakView.clipsToBounds = true
         
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         
         stackView.addArrangedSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = unusedColor
-        mediumView.frame.size = colorViewSize
+        mediumView.layer.cornerRadius = 4
+        mediumView.clipsToBounds = true
+        
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         
         stackView.addArrangedSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = unusedColor
-        strongView.frame.size = colorViewSize
+        strongView.layer.cornerRadius = 4
+        strongView.clipsToBounds = true
+        
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         
         stackView.addArrangedSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.textAlignment = .right
+        strengthDescriptionLabel.textAlignment = .left
         strengthDescriptionLabel.textColor = .gray
-        strengthDescriptionLabel.font = .boldSystemFont(ofSize: 12)
-        strengthDescriptionLabel.text = "Password strength: Weak"
+        strengthDescriptionLabel.font = .boldSystemFont(ofSize: 10)
+        strengthDescriptionLabel.text = "Password strength: N/A"
+        strengthDescriptionLabel.allowsDefaultTighteningForTruncation = true
+        strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
+        strengthDescriptionLabel.minimumScaleFactor = 0.9
         
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        
+        
+        
+        
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
         stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -160,11 +181,16 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = mediumColor
             strengthDescriptionLabel.text = "Password strength: \(Strength.moderade.rawValue)"
             
-        } else {
+        } else if (13...22).contains(count) {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Password strength: \(Strength.strong.rawValue)"
+        } else {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Password strength: N/A"
         }
         
     }
