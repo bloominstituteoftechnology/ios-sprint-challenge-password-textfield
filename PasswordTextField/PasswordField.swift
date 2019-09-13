@@ -45,6 +45,7 @@ class PasswordField: UIControl {
     private var passwordIndicatorWeakView: UIView = UIView()
     private var passwordIndicatorMediumView: UIView = UIView()
     private var passwordIndicatorStrongView: UIView = UIView()
+    private var passwordTextField: UITextField = UITextField()
     
     // MARK: - Methods and Functions
     func setup() {
@@ -111,7 +112,16 @@ class PasswordField: UIControl {
         passwordIndicatorStrongView.layer.backgroundColor = UIColor.red.cgColor
         passwordIndicatorStrongView.layer.borderWidth = 0.5
         
-        // 
+        // Password Text Field
+        passwordContainerView.addSubview(passwordTextField)
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor, constant: 0).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: 0).isActive = true
+        passwordTextField.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: 0).isActive = true
+        passwordTextField.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: 0).isActive = true
+        passwordTextField.placeholder = "Hello"
+        passwordTextField.backgroundColor = UIColor(displayP3Red: 216/255, green: 216/255, blue: 216/255, alpha: 0.5)
+        
         
     }
     
