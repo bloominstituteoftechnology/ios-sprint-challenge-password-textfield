@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum Strength: String {
+    case weak = "Weak"
+    case moderade = "Moderate"
+    case strong = "Strong"
+}
+
 class PasswordField: UIControl {
     
     // password secure
@@ -42,8 +48,9 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var securityButton: UIButton = UIButton(type: .custom)
     
+    let notificationCenter = NotificationCenter.default
     
-    func setup() {
+    func setSubViews() {
         // Lay out your subviews here
         
         addSubview(titleLabel)
@@ -61,21 +68,17 @@ class PasswordField: UIControl {
         
         addSubview(textField)
         securityButton.isUserInteractionEnabled = true
-        securityButton.addTarget(self, action: #selector(self.passwordSecurity), for: .allTouchEvents)
+        securityButton.addTarget(self, action: #selector(self.passwordSecurity), for: .touchUpInside)
         securityButton.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
+        securityButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
         securityButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
-        
-        //        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        //        textField.layoutMargins = insets
-        //        textField.layoutMarginsGuide.leadingAnchor.constraint(equalTo: textField.safeAreaLayoutGuide.leadingAnchor, constant: 10)
-        textField.insetsLayoutMarginsFromSafeArea = true
         
         textField.rightView = securityButton
         textField.rightViewMode = .always
-        //
-        //        let spacerView = UIView(frame:CGRect(x:0, y:0, width: 10, height:10))
-        //        textField.leftViewMode = UITextField.ViewMode.always
-        //        textField.leftView = spacerView
+        
+        let spacerView = UIView(frame:CGRect(x:0, y:0, width: 5, height:5))
+        textField.leftViewMode = UITextField.ViewMode.always
+        textField.leftView = spacerView
         textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = bgColor
@@ -96,9 +99,9 @@ class PasswordField: UIControl {
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.sizeToFit()
         weakView.backgroundColor = unusedColor
-        weakView.tintColor = unusedColor
+        
+        weakView.frame.size = colorViewSize
         
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
         weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
@@ -107,6 +110,8 @@ class PasswordField: UIControl {
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = unusedColor
+        mediumView.frame.size = colorViewSize
+        
         
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2).isActive = true
@@ -115,6 +120,7 @@ class PasswordField: UIControl {
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = unusedColor
+        strongView.frame.size = colorViewSize
         
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 2).isActive = true
@@ -122,7 +128,7 @@ class PasswordField: UIControl {
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.textAlignment = .left
+        strengthDescriptionLabel.textAlignment = .right
         strengthDescriptionLabel.textColor = .gray
         strengthDescriptionLabel.font = .boldSystemFont(ofSize: 12)
         strengthDescriptionLabel.text = "Password strength: Weak"
@@ -136,7 +142,7 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
+        setSubViews()
     }
     
     @objc func passwordSecurity(_ sender: UIButton) {
@@ -154,27 +160,22 @@ class PasswordField: UIControl {
     
     func passwordStrengthCheck(_ password: String) {
         
-        let strong = "Strong"
-        let medium = "Medium"
-        let weak = "Weak"
-        
         let count = password.count
         
-        if count < 9 {
+        if count <= 5 {
             weakView.backgroundColor = weakColor
-            strengthDescriptionLabel.text = "Password strength: \(weak)"
+            strengthDescriptionLabel.text = "Password strength: \(Strength.weak.rawValue)"
             
-        } else if count < 16 {
+        } else if (6...12).contains(count) {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
-            strengthDescriptionLabel.text = "Password strength: \(medium)"
-            
+            strengthDescriptionLabel.text = "Password strength: \(Strength.moderade.rawValue)"
             
         } else {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
-            strengthDescriptionLabel.text = "Password strength: \(strong)"
+            strengthDescriptionLabel.text = "Password strength: \(Strength.strong.rawValue)"
         }
         
     }
@@ -192,12 +193,15 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         
+        self.password = newText
         self.passwordStrengthCheck(newText)
         
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        print(password)
         
     }
     
