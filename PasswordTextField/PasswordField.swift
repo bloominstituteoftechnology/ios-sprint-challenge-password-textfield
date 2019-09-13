@@ -40,11 +40,32 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    // MARK: - Properties
+    private var containerView: UIView = UIView()
+    
+    // MARK: - Methods and Functions
     func setup() {
         // Lay out your subviews here
         
+        // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -200).isActive = true
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
+        titleLabel.textColor = .gray
+        
+        // Title container view
+        addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        containerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        containerView.layer.borderColor = UIColor.black.cgColor
+        containerView.layer.borderWidth = 2.0
+        containerView.layer.cornerRadius = 5.0
     }
     
     required init?(coder aDecoder: NSCoder) {
