@@ -90,10 +90,17 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 150.0).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
-        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.backgroundColor = weakColor
+        weakView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        weakView.topAnchor.constraint(equalToSystemSpacingBelow: passwordContainerView.bottomAnchor, multiplier: 1).isActive = true
         
+        weakView.layer.borderWidth = 2.0
+        weakView.layer.backgroundColor = weakColor.cgColor
         
         
         
@@ -116,6 +123,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
         
         
         
