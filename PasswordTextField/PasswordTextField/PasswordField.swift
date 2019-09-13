@@ -73,13 +73,40 @@ class PasswordField: UIControl {
         
         // Strength Indicators
         // Weak
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 1.75).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        weakView.backgroundColor = weakColor
         
         // Medium
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 1.75).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        mediumView.backgroundColor = mediumColor
         
         //Strong
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 2).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 1.75).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        strongView.backgroundColor = strongColor
         
-        
-        
+        // Strength Description Label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: textFieldMargin).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.text = "Password Strength"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {
