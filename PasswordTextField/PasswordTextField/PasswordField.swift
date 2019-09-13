@@ -145,8 +145,10 @@ class PasswordField: UIControl {
     func showHideTapped(_ sender: UIButton) {
         if sender.currentImage == UIImage(named: "eyes-closed") {
             sender.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
         } else {
             sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
     
@@ -161,7 +163,19 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        if oldText.count < 5 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if oldText.count < 10 {
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            strongView.backgroundColor = unusedColor
+        } else if oldText.count < 15 {
+            strongView.backgroundColor = strongColor
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+        }
         return true
     }
 }
