@@ -8,12 +8,11 @@
 
 import UIKit
 
-enum StrengthOfPassword: Int {
-	case weak = 0
-	case meduim = 9
-	case strong = 20
+enum StrengthOfPassword: String {
+	case weak = "Too Weak"
+	case meduim = "Passable"
+	case strong = "Very Strong"
 }
-
 
 
 class PasswordField: UIControl {
@@ -92,11 +91,11 @@ class PasswordField: UIControl {
 		showHideButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 		
 		// Views
-		weakView.backgroundColor = weakColor
+		weakView.backgroundColor = unusedColor
 		weakView.frame.size = colorViewSize
-		mediumView.backgroundColor = mediumColor
+		mediumView.backgroundColor = unusedColor
 		mediumView.frame.size = colorViewSize
-		strongView.backgroundColor = strongColor
+		strongView.backgroundColor = unusedColor
 		strongView.frame.size = colorViewSize
 		
 		// Views Stacked
@@ -130,6 +129,8 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+		textField.delegate = self
+
     }
 
 	@objc func buttonTapped() {
@@ -142,9 +143,31 @@ class PasswordField: UIControl {
 		}
 	}
 	
-	
-	
-	
+	func passwordStrength(_ password: String) {
+		
+		let count = password.count
+
+		if count <= 8 {
+			weakView.backgroundColor = weakColor
+			strengthDescriptionLabel.text = "Too weak of password"
+
+		} else if (9...12).contains(count) {
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strengthDescriptionLabel.text = "Passable password"
+
+		} else if (13...22).contains(count) {
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strongView.backgroundColor = strongColor
+			strengthDescriptionLabel.text = "Strong password"
+		} else {
+			weakView.backgroundColor = unusedColor
+			mediumView.backgroundColor = unusedColor
+			strongView.backgroundColor = unusedColor
+			strengthDescriptionLabel.text = "Empty"
+		}
+	}
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -153,6 +176,9 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+		self.password = newText
+		self.passwordStrength(newText)
+		
         return true
     }
 }
