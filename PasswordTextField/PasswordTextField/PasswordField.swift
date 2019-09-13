@@ -54,7 +54,7 @@ class PasswordField: UIControl {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
 		titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
-		titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+		titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
 
 		titleLabel.text = "ENTER PASSWORD"
 		titleLabel.font = labelFont
@@ -75,27 +75,82 @@ class PasswordField: UIControl {
 		// Password text Field
 		addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: 8).isActive = true
-		textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20).isActive = true
-		textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: -8).isActive = true
+		textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
+		textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: standardMargin).isActive = true
+		textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -standardMargin).isActive = true
 		textField.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
 		textField.placeholder = "testing"
-		//textField.isSecureTextEntry = true
+		textField.isSecureTextEntry = true
 		textField.rightView = showHideButton
 		textField.rightViewMode = .always
 		textField.delegate = self
+		textField.becomeFirstResponder()
+		textField.layer.borderColor = textFieldBorderColor.cgColor
+		textField.layer.borderWidth = 2.0
 
 
 
 		 // Show/Hide Button
-		addSubview(showHideButton)
+		//addSubview(showHideButton)
 		showHideButton.translatesAutoresizingMaskIntoConstraints = false
-		showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 8).isActive = true
-		showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
+		//showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 8).isActive = true
+		//showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
 
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+
+		// Color views
+		addSubview(weakView)
+		weakView.translatesAutoresizingMaskIntoConstraints = false
+		weakView.backgroundColor = weakColor
+		weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+		weakView.layer.cornerRadius = colorViewSize.height / 2
+
+		addSubview(mediumView)
+		mediumView.translatesAutoresizingMaskIntoConstraints = false
+		mediumView.backgroundColor = mediumColor
+		mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+		mediumView.layer.cornerRadius = colorViewSize.height / 2
+
+		addSubview(strongView)
+		strongView.translatesAutoresizingMaskIntoConstraints = false
+		strongView.backgroundColor = strongColor
+		strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+		strongView.layer.cornerRadius = colorViewSize.height / 2
+
+
+		let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+
+		// Take out this line to cause an error and not being able to see subviews
+		//addSubview(stackView)
+
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+
+		addSubview(stackView)
+		stackView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
+		stackView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 16.0).isActive = true
+		//stackView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+
+		stackView.axis = .horizontal
+		stackView.distribution = .fill
+		stackView.spacing = 2.0
+		stackView.alignment = .center
+
+
+		addSubview(strengthDescriptionLabel)
+		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+		strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin).isActive = true
+		strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin).isActive = true
+		//strengthDescriptionLabeleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
+
+		strengthDescriptionLabel.text = "testing"
+		strengthDescriptionLabel.font = labelFont
+		strengthDescriptionLabel.textColor = labelTextColor
+
 
     }
 
