@@ -148,6 +148,36 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.text = " "
         
     }
+    
+    @objc func animateWeak() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.weakView.transform = CGAffineTransform(scaleX: 1, y: 2)
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.weakView.transform = .identity
+            })
+        }
+    }
+    
+    @objc func animateMedium() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 2)
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mediumView.transform = .identity
+            })
+        }
+    }
+    
+    @objc func animateStrong() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.strongView.transform = CGAffineTransform(scaleX: 1, y: 2)
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.strongView.transform = .identity
+            })
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -159,12 +189,15 @@ extension PasswordField: UITextFieldDelegate {
         if newText.count < 6 {
             weakView.backgroundColor = weakColor
             strengthDescriptionLabel.text = "Too weak"
+            animateWeak()
         } else if newText.count >= 6 && newText.count < 12 {
             mediumView.backgroundColor = mediumColor
             strengthDescriptionLabel.text = "Could be stronger"
+            animateMedium()
         } else {
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
+            animateStrong()
         }
         return true
     }
