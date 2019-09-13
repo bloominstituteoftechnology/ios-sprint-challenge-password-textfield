@@ -16,16 +16,13 @@ enum Strength: String {
 
 class PasswordField: UIControl {
     
-    // password secure
-    private var passwordSecure: Bool = true
-    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
-    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let colorViewSize: CGSize = CGSize(width: 30.0, height: 2.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -88,7 +85,6 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 6
         textField.clipsToBounds = true
         textField.becomeFirstResponder()
-        textField.delegate = self
         
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
@@ -96,60 +92,53 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = standardMargin
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
         
-        addSubview(weakView)
+        
+        addSubview(stackView)
+        
+        stackView.addArrangedSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.backgroundColor = unusedColor
-        
         weakView.frame.size = colorViewSize
         
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
-        weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         
-        
-        addSubview(mediumView)
+        stackView.addArrangedSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = unusedColor
         mediumView.frame.size = colorViewSize
         
-        
-        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
-        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2).isActive = true
-        
-        
-        addSubview(strongView)
+        stackView.addArrangedSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = unusedColor
         strongView.frame.size = colorViewSize
         
-        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
-        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 2).isActive = true
-        
-        
-        addSubview(strengthDescriptionLabel)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.textAlignment = .right
         strengthDescriptionLabel.textColor = .gray
         strengthDescriptionLabel.font = .boldSystemFont(ofSize: 12)
         strengthDescriptionLabel.text = "Password strength: Weak"
         
-        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
-        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 0).isActive = true
-        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
-        
-        
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setSubViews()
     }
     
     @objc func passwordSecurity(_ sender: UIButton) {
         
-        passwordSecure = !passwordSecure
-        
-        if passwordSecure {
+        if textField.isSecureTextEntry == true {
             sender.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
         } else {
