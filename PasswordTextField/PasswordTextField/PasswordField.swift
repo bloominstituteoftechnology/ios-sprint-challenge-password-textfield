@@ -13,7 +13,7 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
-    private let standardMargin: CGFloat = 8.0
+    private let standardMargin: CGFloat = 15.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
@@ -42,7 +42,6 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
 		
-		
 		// Title Label
 		addSubview(titleLabel)
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +50,7 @@ class PasswordField: UIControl {
 		titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
 		
 		titleLabel.text = "Enter Password:"
-		titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+		titleLabel.font = labelFont
 		
 		// Title Container View
 		addSubview(titleContainerView)
@@ -64,6 +63,7 @@ class PasswordField: UIControl {
 		titleContainerView.layer.borderColor = UIColor.blue.cgColor
 		titleContainerView.layer.borderWidth = 2.0
 		titleContainerView.layer.cornerRadius = 5.0
+//		titleContainerView.backgroundColor = bgColor
 		
 		// Text Field
 		titleContainerView.addSubview(textField)
@@ -100,10 +100,21 @@ class PasswordField: UIControl {
 		// Views in stack constraints
 		addSubview(stackView)
 		stackView.translatesAutoresizingMaskIntoConstraints = false
-		stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 7.5).isActive = true
+		stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
 		stackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
 		stackView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
 		stackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+		
+		// Strength Description Label
+		addSubview(strengthDescriptionLabel)
+		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+		strengthDescriptionLabel.topAnchor.constraint(equalTo: titleContainerView.bottomAnchor).isActive = true
+		strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView
+			.trailingAnchor).isActive = true
+
+		
+		strengthDescriptionLabel.text = "Weak"
+		strengthDescriptionLabel.font = labelFont
 		
 		
     }
@@ -123,6 +134,9 @@ class PasswordField: UIControl {
 		}
 	}
 	
+	
+	
+	
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -131,6 +145,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+
         return true
     }
 }
