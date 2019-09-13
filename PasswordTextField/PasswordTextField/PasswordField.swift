@@ -91,7 +91,7 @@ class PasswordField: UIControl {
         textField.isUserInteractionEnabled = true
 //        textField.backgroundColor = .lightGray
         textField.placeholder = "Password"
-        
+        textField.addTarget(self, action: #selector(updateStrength), for: .editingChanged)
         
         
         // Set up StrengthLabels and StrengthLabel
@@ -152,6 +152,23 @@ class PasswordField: UIControl {
         }
     }
     
+    @objc
+    func updateStrength() {
+        if textField.text?.count ?? 0 < 5 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if textField.text?.count ?? 0 < 10 {
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            strongView.backgroundColor = unusedColor
+        } else if textField.text?.count ?? 0 < 15 {
+            strongView.backgroundColor = strongColor
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -163,19 +180,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        if oldText.count < 5 {
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-        } else if oldText.count < 10 {
-            mediumView.backgroundColor = mediumColor
-            weakView.backgroundColor = weakColor
-            strongView.backgroundColor = unusedColor
-        } else if oldText.count < 15 {
-            strongView.backgroundColor = strongColor
-            mediumView.backgroundColor = mediumColor
-            weakView.backgroundColor = weakColor
-        }
+        
         return true
     }
 }
