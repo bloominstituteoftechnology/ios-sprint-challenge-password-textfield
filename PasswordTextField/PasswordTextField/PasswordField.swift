@@ -49,7 +49,7 @@ class PasswordField: UIControl {
         titleLabel.font = labelFont
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 100 + standardMargin).isActive = true
         
         // Create and set up textFieldContainer
         let textFieldContainer = UIView()
@@ -75,6 +75,7 @@ class PasswordField: UIControl {
         showHideButton.widthAnchor.constraint(equalToConstant: textFieldContainerHeight - standardMargin * 2).isActive = true
         
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideTapped), for: .touchUpInside)
         
         
         // Set up textField in textFieldContainer
@@ -84,18 +85,20 @@ class PasswordField: UIControl {
         textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: standardMargin).isActive = true
         textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor, constant: -standardMargin).isActive = true
-//        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight - standardMargin).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin).isActive = true
         
+        textField.isSecureTextEntry = true
         textField.isUserInteractionEnabled = true
 //        textField.backgroundColor = .lightGray
         textField.placeholder = "Password"
         
         
+        
+        // Set up StrengthLabels and StrengthLabel
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         weakView.layer.cornerRadius = 3
         
         weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor).isActive = true
@@ -107,7 +110,7 @@ class PasswordField: UIControl {
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.layer.cornerRadius = 3
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 1).isActive = true
         mediumView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
@@ -118,7 +121,7 @@ class PasswordField: UIControl {
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.layer.cornerRadius = 3
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 1).isActive = true
         strongView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
@@ -133,9 +136,18 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
         
-        strengthDescriptionLabel.text = "Testing"
+        strengthDescriptionLabel.text = "Empty"
         strengthDescriptionLabel.font = labelFont
         
+    }
+    
+    @objc
+    func showHideTapped(_ sender: UIButton) {
+        if sender.currentImage == UIImage(named: "eyes-closed") {
+            sender.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
