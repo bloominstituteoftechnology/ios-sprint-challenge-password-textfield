@@ -74,6 +74,15 @@ class PasswordField: UIControl {
         passwordContainerView.layer.borderWidth = 2.0
         passwordContainerView.layer.cornerRadius = 5.0
         
+        //Text FIeld
+        passwordContainerView.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor, constant: 8.0).isActive = true
+        textField.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: 8.0).isActive = true
+        textField.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -8.0).isActive = true
+        textField.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -8).isActive = true
+        textField.placeholder = "Enter Your Password"
+
         
         
      
