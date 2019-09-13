@@ -12,8 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    var closedEye: UIImage = UIImage()
-    var openEye: UIImage = UIImage()
+    
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -74,15 +73,25 @@ class PasswordField: UIControl {
         textField.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -2).isActive = true
         textField.bottomAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: -2).isActive = true
         textField.placeholder = "Enter password here"
+        textField.textColor = UIColor.black
+        textField.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
+        
+        let password = textField.text
+        guard let aPassword = password else { return }
         
         passwordContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
+        showHideButton.isSelected = false
         if showHideButton.isSelected == true {
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal);
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            
+            for letter in aPassword {
+                
+            }
         }
         
         addSubview(weakView)
@@ -91,7 +100,8 @@ class PasswordField: UIControl {
         weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
         weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
-        if password.count > 0, password.count <= 4 {
+        
+        if aPassword.count > 0, aPassword.count <= 4 {
             weakView.backgroundColor = weakColor;
             strengthDescriptionLabel.text = "Weak"
         } else {
@@ -104,7 +114,8 @@ class PasswordField: UIControl {
         mediumView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         mediumView.trailingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 50).isActive = true
         mediumView.bottomAnchor.constraint(equalTo: mediumView.topAnchor, constant: 3).isActive = true
-        if password.count > 4, password.count <= 8 {
+        
+        if aPassword.count > 4, aPassword.count <= 8 {
             weakView.backgroundColor = weakColor;
             mediumView.backgroundColor = mediumColor;
             strengthDescriptionLabel.text = "Medium"
@@ -118,7 +129,7 @@ class PasswordField: UIControl {
         strongView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         strongView.trailingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: 50).isActive = true
         strongView.bottomAnchor.constraint(equalTo: strongView.topAnchor, constant: 3).isActive = true
-        if password.count > 9 {
+        if aPassword.count > 9 {
             weakView.backgroundColor = weakColor;
             mediumView.backgroundColor = mediumColor;
             strongView.backgroundColor = strongColor;
