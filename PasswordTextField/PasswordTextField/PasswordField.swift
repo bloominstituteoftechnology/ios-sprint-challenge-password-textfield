@@ -77,11 +77,12 @@ class PasswordField: UIControl {
         showHideButton.leadingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 3).isActive = true
         showHideButton.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: 15).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -20 ).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -5)
         
         addSubview(weakView)
         weakView.layer.borderWidth = 1
         weakView.layer.cornerRadius = 5
-        weakView.backgroundColor = UIColor.red
+        weakView.backgroundColor = unusedColor
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.topAnchor.constraint(equalToSystemSpacingBelow: passwordContainerView.bottomAnchor, multiplier: 1).isActive = true
         weakView.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor,constant: 8).isActive = true
@@ -91,7 +92,7 @@ class PasswordField: UIControl {
        addSubview(mediumView)
         mediumView.layer.borderWidth = 1
         mediumView.layer.cornerRadius = 5
-        mediumView.backgroundColor = .orange
+        mediumView.backgroundColor = unusedColor
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.topAnchor.constraint(equalToSystemSpacingBelow: passwordContainerView.bottomAnchor, multiplier: 1).isActive = true
         mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 0.5).isActive = true
@@ -101,7 +102,7 @@ class PasswordField: UIControl {
         addSubview(strongView)
         strongView.layer.borderWidth = 1
         strongView.layer.cornerRadius = 5
-        strongView.backgroundColor = .green
+        strongView.backgroundColor = unusedColor
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.topAnchor.constraint(equalToSystemSpacingBelow: passwordContainerView.bottomAnchor, multiplier: 1).isActive = true
         strongView.leadingAnchor.constraint(equalToSystemSpacingAfter: mediumView.trailingAnchor, multiplier: 0.5).isActive = true
@@ -118,11 +119,56 @@ class PasswordField: UIControl {
 
     }
     
-    @objc private func showHideButtonTapped() {}
+    @objc private func showHideButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    
+    private func determineStrength(for password: String) {
+    
+        if password.count == 0 {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if password.count <= 9 {
+            weakView.backgroundColor = weakColor
+        } else if password.count <= 19 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+        } else if password.count > 20 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        sendActions(for: .touchDown)
+        return true
+    }
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let touch = touch.location(in: self)
+        if self.bounds.contains(touch) {
+            
+        }
+        
+        return true
+    }
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+     
+        
+        
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: .touchCancel)
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
 }
 
@@ -132,6 +178,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        self.determineStrength(for: newText)
         return true
     }
 }
