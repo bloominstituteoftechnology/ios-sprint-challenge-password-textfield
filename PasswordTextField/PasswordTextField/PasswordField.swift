@@ -31,6 +31,7 @@ class PasswordField: UIControl {
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
+	private var textFieldContainerView: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -41,8 +42,26 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+		// Enter password label
+		addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+		titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+		titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+		titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+		titleLabel.text = "ENTER PASSWORD"
+		titleLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+
+		// Password Container
+		addSubview(textFieldContainerView)
+		textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
+		textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+		textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
+		textFieldContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+		textFieldContainerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+		textFieldContainerView.layer.borderColor = UIColor.blue.cgColor
+		textFieldContainerView.layer.borderWidth = 1.5
+		textFieldContainerView.layer.cornerRadius = 5.0
+
     }
     
     required init?(coder aDecoder: NSCoder) {
