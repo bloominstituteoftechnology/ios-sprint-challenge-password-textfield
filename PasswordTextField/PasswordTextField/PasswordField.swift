@@ -16,6 +16,7 @@ class PasswordField: UIControl {
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
+    
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
@@ -70,7 +71,7 @@ class PasswordField: UIControl {
         passwordContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
         passwordContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
         passwordContainerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        passwordContainerView.layer.borderColor = UIColor.black.cgColor
+        passwordContainerView.layer.borderColor = UIColor.blue.cgColor
         passwordContainerView.layer.borderWidth = 2.0
         passwordContainerView.layer.cornerRadius = 5.0
         
@@ -83,6 +84,20 @@ class PasswordField: UIControl {
         textField.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -8).isActive = true
         textField.placeholder = "Enter Your Password"
 
+        
+        //Button
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 150.0).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        
+        
+        
+        
+        
+        
         
         
      
@@ -101,6 +116,9 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+        
+        
         return true
     }
 }
