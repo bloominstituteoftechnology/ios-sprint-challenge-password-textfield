@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum StrengthOfPassword: Int {
+	case weak = 0
+	case meduim = 9
+	case strong = 20
+}
+
+
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -145,8 +153,6 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-
         return true
     }
 }
-
