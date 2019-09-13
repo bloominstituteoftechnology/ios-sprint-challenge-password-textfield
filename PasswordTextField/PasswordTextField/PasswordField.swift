@@ -38,19 +38,32 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private let backgroundImageView: UIImageView = UIImageView()
     
     
     
     func setup() {
         // Lay out your subviews here
         
+        addSubview(backgroundImageView)
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        backgroundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        backgroundImageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        backgroundImageView.image = UIImage(named: "SnowTest")
+        
+        //Enter Password Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 150).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         titleLabel.text = "Enter Password"
-        titleLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .light)
+        titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        
+     
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
