@@ -79,6 +79,9 @@ class PasswordField: UIControl {
 		showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
 		textField.rightView = showHideButton
 		textField.rightViewMode = .always
+		showHideButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+		
+		
 		
     }
     
@@ -86,6 +89,17 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+
+	@objc func buttonTapped() {
+		if showHideButton.currentImage!.isEqual(UIImage(named: "eyes-closed")) {
+			textField.isSecureTextEntry = false
+			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+		} else {
+			textField.isSecureTextEntry = true
+			showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+		}
+	}
+	
 }
 
 extension PasswordField: UITextFieldDelegate {
