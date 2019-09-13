@@ -69,12 +69,12 @@ class PasswordField: UIControl {
         textFieldContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
-        showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: standardMargin).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -standardMargin).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin).isActive = true
-        showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin).isActive = true
         showHideButton.widthAnchor.constraint(equalToConstant: textFieldContainerHeight - standardMargin * 2).isActive = true
         
-        showHideButton.imageView?.image = UIImage(named: "eyes-closed")
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
         
         // Set up textField in textFieldContainer
@@ -84,7 +84,9 @@ class PasswordField: UIControl {
         textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: standardMargin).isActive = true
         textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor, constant: -standardMargin).isActive = true
+//        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight - standardMargin).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin).isActive = true
+        
         textField.isUserInteractionEnabled = true
 //        textField.backgroundColor = .lightGray
         textField.placeholder = "Password"
@@ -94,16 +96,42 @@ class PasswordField: UIControl {
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
         weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 3
         
-        weakView.heightAnchor.constraint(equalToConstant: 5)
-        weakView.widthAnchor.constraint(equalToConstant: 20)
+        weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor).isActive = true
+        weakView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 67).isActive = true
         
-        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         
+        addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.backgroundColor = mediumColor
+        mediumView.layer.cornerRadius = 3
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 1).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 67).isActive = true
+        
+        
+        addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.backgroundColor = strongColor
+        strongView.layer.cornerRadius = 3
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 1).isActive = true
+        strongView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 67).isActive = true
+        
+        
+        addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 5).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -standardMargin).isActive = true
+        strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
         
         strengthDescriptionLabel.text = "Testing"
         strengthDescriptionLabel.font = labelFont
