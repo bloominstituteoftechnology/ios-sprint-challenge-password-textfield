@@ -136,7 +136,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
         
-        strengthDescriptionLabel.text = "Empty"
+        strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.font = labelFont
         
     }
@@ -154,18 +154,26 @@ class PasswordField: UIControl {
     
     @objc
     func updateStrength() {
-        if textField.text?.count ?? 0 < 5 {
+        if textField.text?.count ?? 0 < 1 {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
+        } else if textField.text?.count ?? 0 < 9 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-        } else if textField.text?.count ?? 0 < 10 {
+            strengthDescriptionLabel.text = "Too weak"
+        } else if textField.text?.count ?? 0 < 19 {
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
             strongView.backgroundColor = unusedColor
-        } else if textField.text?.count ?? 0 < 15 {
+            strengthDescriptionLabel.text = "Could be stronger"
+        } else if textField.text?.count ?? 0 > 20 {
             strongView.backgroundColor = strongColor
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
+            strengthDescriptionLabel.text = "Strong password"
         }
     }
     
