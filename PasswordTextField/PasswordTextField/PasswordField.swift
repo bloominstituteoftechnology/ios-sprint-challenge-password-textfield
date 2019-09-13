@@ -43,6 +43,13 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.text = "ENTER PASSWORD:"
+        
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin)
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
