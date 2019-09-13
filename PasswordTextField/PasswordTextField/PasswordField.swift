@@ -83,20 +83,21 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
-        showHideButton.isSelected = false
-        if showHideButton.isSelected == true {
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal);
-        } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-            
-            for letter in aPassword {
-                
-            }
-        }
+        showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
+        changeImage()
+//        if showHideButton.isSelected == true {
+//            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal);
+//        } else {
+//            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+//            for _ in aPassword {
+//                _ = "*"
+//            }
+//        }
+        
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: passwordContainer.leadingAnchor, constant:  8).isActive = true
         weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
         weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
@@ -146,6 +147,71 @@ class PasswordField: UIControl {
         //strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 10.0, weight: .light)
         
+    }
+    
+    @objc func changeImage() {
+        if showHideButton.isSelected == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal);
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal);
+            for _ in password {
+                _ = "*"
+            }
+            
+    }
+    }
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        
+        // Get the location of the touch to get the color at that point
+        
+        let touchPoint = touch.location(in: showHideButton)
+        
+        if showHideButton.bounds.contains(touchPoint) {
+//            selectedColor = colorWheel.color(for: touchPoint)
+            sendActions(for: [.valueChanged, .touchUpInside])
+        } else {
+            sendActions(for: [.touchUpInside])
+            // If we touched initially outside of the color wheel, we don't need to keep tracking that touch
+            return false
+        }
+        
+        // If you return true, then you will continue tracking touches
+        return true
+    }
+    
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        
+        let touchPoint = touch.location(in: showHideButton)
+        
+        if showHideButton.bounds.contains(touchPoint) {
+//            selectedColor = colorWheel.color(for: touchPoint)
+            sendActions(for: [.valueChanged, .touchUpInside])
+        } else {
+            sendActions(for: [.touchUpInside])
+        }
+        
+        return true
+    }
+    
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        
+        // Anything in the defer's closure will get run right before we exit this scope.
+        defer {
+            super.endTracking(touch, with: event)
+        }
+        
+        guard let touchPoint = touch?.location(in: showHideButton) else { return }
+        
+        if showHideButton.bounds.contains(touchPoint) {
+//            selectedColor = colorWheel.color(for: touchPoint)
+            sendActions(for: [.valueChanged, .touchUpInside])
+        } else {
+            sendActions(for: [.touchDragOutside])
+        }
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: [.touchCancel])
     }
     
     
