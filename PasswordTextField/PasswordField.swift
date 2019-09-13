@@ -41,7 +41,10 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     // MARK: - Properties
-    private var containerView: UIView = UIView()
+    private var passwordContainerView: UIView = UIView()
+    private var passwordIndicatorWeakView: UIView = UIView()
+    private var passwordIndicatorMediumView: UIView = UIView()
+    private var passwordIndicatorStrongView: UIView = UIView()
     
     // MARK: - Methods and Functions
     func setup() {
@@ -57,15 +60,59 @@ class PasswordField: UIControl {
         titleLabel.textColor = .gray
         
         // Title container view
-        addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
-        containerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        containerView.layer.borderColor = UIColor.black.cgColor
-        containerView.layer.borderWidth = 2.0
-        containerView.layer.cornerRadius = 5.0
+        addSubview(passwordContainerView)
+        passwordContainerView.translatesAutoresizingMaskIntoConstraints = false
+        passwordContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        passwordContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1).isActive = true
+        passwordContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
+        passwordContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        passwordContainerView.layer.borderColor = UIColor.black.cgColor
+        passwordContainerView.layer.borderWidth = 2.0
+        passwordContainerView.layer.cornerRadius = 5.0
+        
+        // Password Strength Indicators
+        
+        // Weak
+        addSubview(passwordIndicatorWeakView)
+        passwordIndicatorWeakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordIndicatorWeakView.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -10).isActive = true
+        passwordIndicatorWeakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
+        
+        passwordIndicatorWeakView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        passwordIndicatorWeakView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+
+        passwordIndicatorWeakView.layer.backgroundColor = UIColor.green.cgColor
+        passwordIndicatorWeakView.layer.borderWidth = 0.5
+        
+        // Medium
+        addSubview(passwordIndicatorMediumView)
+        passwordIndicatorMediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordIndicatorMediumView.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -10).isActive = true
+        passwordIndicatorMediumView.leadingAnchor.constraint(equalTo: passwordIndicatorWeakView.trailingAnchor, constant: 5).isActive = true
+        
+        passwordIndicatorMediumView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        passwordIndicatorMediumView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        passwordIndicatorMediumView.layer.backgroundColor = UIColor.yellow.cgColor
+        passwordIndicatorMediumView.layer.borderWidth = 0.5
+        
+        // Strong
+        addSubview(passwordIndicatorStrongView)
+        passwordIndicatorStrongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordIndicatorStrongView.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -10).isActive = true
+        passwordIndicatorStrongView.leadingAnchor.constraint(equalTo: passwordIndicatorMediumView.trailingAnchor, constant: 5).isActive = true
+        
+        passwordIndicatorStrongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        passwordIndicatorStrongView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        passwordIndicatorStrongView.layer.backgroundColor = UIColor.red.cgColor
+        passwordIndicatorStrongView.layer.borderWidth = 0.5
+        
+        // 
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
