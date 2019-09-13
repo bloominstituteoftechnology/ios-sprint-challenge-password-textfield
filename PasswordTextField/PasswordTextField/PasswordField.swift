@@ -41,7 +41,8 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+		
+		
 		// Title Label
 		addSubview(titleLabel)
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +82,27 @@ class PasswordField: UIControl {
 		textField.rightViewMode = .always
 		showHideButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 		
+		// Views
+		weakView.backgroundColor = weakColor
+		weakView.frame.size = colorViewSize
+		mediumView.backgroundColor = mediumColor
+		mediumView.frame.size = colorViewSize
+		strongView.backgroundColor = strongColor
+		strongView.frame.size = colorViewSize
+		
+		// Views Stacked
+		let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+		stackView.distribution = .fillEqually
+		stackView.spacing = 8
+		stackView.axis = .horizontal
+		
+		// Views in stack constraints
+		addSubview(stackView)
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 7.5).isActive = true
+		stackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+		stackView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+		stackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
 		
 		
     }
