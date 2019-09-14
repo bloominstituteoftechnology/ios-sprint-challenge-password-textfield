@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+	case weak = "too weak"
+	case medium =  "could be stronger"
+	case strong = "strong password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -72,52 +78,53 @@ class PasswordField: UIControl {
 		textFieldContainerView.layer.borderWidth = 1.5
 		textFieldContainerView.layer.cornerRadius = 5.0
 
+
 		// Password text Field
-		addSubview(textField)
+		textFieldContainerView.addSubview(textField)
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
 		textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: standardMargin).isActive = true
 		textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -standardMargin).isActive = true
-		textField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+		textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -standardMargin).isActive = true
 
 		textField.placeholder = "testing"
 		textField.isSecureTextEntry = true
 		textField.rightView = showHideButton
 		textField.rightViewMode = .always
-		textField.delegate = self
-		textField.becomeFirstResponder()
-		textField.layer.borderColor = textFieldBorderColor.cgColor
-		textField.layer.borderWidth = 2.0
+		//textField.delegate = self
+		//textField.becomeFirstResponder()
+		//.layer.borderColor = textFieldBorderColor.cgColor
+		//textField.layer.borderWidth = 2.0
+
 
 
 
 		 // Show/Hide Button
 		//addSubview(showHideButton)
+		// Why does commenting this out take out the image?
 		showHideButton.translatesAutoresizingMaskIntoConstraints = false
-		//showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 8).isActive = true
-		//showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
-
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchDown)
 
 		// Color views
 		addSubview(weakView)
 		weakView.translatesAutoresizingMaskIntoConstraints = false
-		weakView.backgroundColor = weakColor
+		weakView.backgroundColor = unusedColor
 		weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
 		weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 		weakView.layer.cornerRadius = colorViewSize.height / 2
 
 		addSubview(mediumView)
 		mediumView.translatesAutoresizingMaskIntoConstraints = false
-		mediumView.backgroundColor = mediumColor
+		mediumView.backgroundColor = unusedColor
 		mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
 		mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 		mediumView.layer.cornerRadius = colorViewSize.height / 2
 
 		addSubview(strongView)
 		strongView.translatesAutoresizingMaskIntoConstraints = false
-		strongView.backgroundColor = strongColor
+		strongView.backgroundColor = unusedColor
 		strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
 		strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 		strongView.layer.cornerRadius = colorViewSize.height / 2
@@ -127,13 +134,10 @@ class PasswordField: UIControl {
 
 		// Take out this line to cause an error and not being able to see subviews
 		//addSubview(stackView)
-
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-
 		addSubview(stackView)
+		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
 		stackView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 16.0).isActive = true
-		//stackView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
 
 		stackView.axis = .horizontal
 		stackView.distribution = .fill
@@ -145,22 +149,25 @@ class PasswordField: UIControl {
 		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin).isActive = true
 		strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin).isActive = true
-		//strengthDescriptionLabeleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
 
 		strengthDescriptionLabel.text = "testing"
 		strengthDescriptionLabel.font = labelFont
 		strengthDescriptionLabel.textColor = labelTextColor
-
-
     }
 
-	@objc private func showPassword(sender: UIButton) {
+
+
+
+	@objc private func showPassword() {
+		print("click")
+		textField.isSecureTextEntry.toggle()
 
 		if textField.isSecureTextEntry {
 			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-			textField.isSecureTextEntry = false
+			//textField.isSecureTextEntry = false
 		} else {
 			showHideButton.setImage(UIImage(named: "eyes=closed"), for: .normal)
+			//textField.isSecureTextEntry = true
 		}
 	}
 
