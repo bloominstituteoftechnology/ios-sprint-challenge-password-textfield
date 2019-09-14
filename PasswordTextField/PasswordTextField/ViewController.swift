@@ -11,8 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     
     
-    @IBAction func textfieldValueChanged(_ sender: Any) {
-        
+    @IBAction func textfieldValueChanged(_ customControl: PasswordField) {
+        print("hi!!")
     }
 //     For use in the stretch goal
 //
