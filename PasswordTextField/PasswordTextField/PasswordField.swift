@@ -64,6 +64,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 6.0
         textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = true
         textField.addTarget(self, action: #selector(textFieldStart), for: .touchUpInside)
         
         // Show/Hide Button
@@ -73,7 +74,7 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin * -1).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin * -1).isActive = true
-        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchDown)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         // Strength Indicators
         // Weak
@@ -131,8 +132,10 @@ class PasswordField: UIControl {
         
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
+            textField.isSecureTextEntry = false
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
     
@@ -176,9 +179,14 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.isEnabled = true
-        sendActions(for: .touchUpInside)
-        return true
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
+    
+//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        textField.isEnabled = true
+//        sendActions(for: .touchUpInside)
+//        return true
+//    }
 }
