@@ -41,7 +41,7 @@ class PasswordField: UIControl {
     func setup() {
         // MARK: - Setup for UIControl
         // Lay out your subviews here
-        self.backgroundColor = .green
+        self.backgroundColor = .clear
         // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -59,6 +59,7 @@ class PasswordField: UIControl {
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        print(textField.heightAnchor)
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 6.0
         textField.layer.borderWidth = 2.0
@@ -151,11 +152,12 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Password Strong 💪"
         default:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = "Password Strong 💪"
+            strengthDescriptionLabel.text = "Too weak"
         }
         
         sendActions(for: .valueChanged)
@@ -164,14 +166,6 @@ class PasswordField: UIControl {
 
 extension PasswordField: UITextFieldDelegate {
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.isEnabled = true
-        sendActions(for: .touchUpInside)
-        return true
-    }
-    
-    
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
@@ -179,6 +173,12 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         
         strengthLevel(newText)
+        return true
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.isEnabled = true
+        sendActions(for: .touchUpInside)
         return true
     }
 }
