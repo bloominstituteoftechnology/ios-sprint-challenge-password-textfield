@@ -145,9 +145,11 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case 10...19:
-            if mediumAnimationShown == false {
-                strengthDescriptionLabel.text = "Could be stronger"
-                passwordStrength = "Could be stronger"
+            strengthDescriptionLabel.text = "Could be stronger"
+            passwordStrength = "Could be stronger"
+            
+            if !mediumAnimationShown {
+                strongView.backgroundColor = unusedColor
                 UIView.animate(withDuration: 0.5) {
                     self.mediumView.backgroundColor = self.mediumColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
@@ -158,9 +160,10 @@ class PasswordField: UIControl {
                 mediumAnimationShown = true
             }
         default:
-            if strongAnimationShown == false {
-                strengthDescriptionLabel.text = "Strong password"
-                passwordStrength = "Strong password"
+            strengthDescriptionLabel.text = "Strong password"
+            passwordStrength = "Strong password"
+            
+            if !strongAnimationShown {
                 UIView.animate(withDuration: 0.5) {
                     self.strongView.backgroundColor = self.strongColor
                     self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
@@ -169,7 +172,7 @@ class PasswordField: UIControl {
                     self.strongView.transform = .identity
                 }, completion: nil)
                 strongAnimationShown = true
-            }
+            } 
         }
     }
     
