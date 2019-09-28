@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -41,8 +47,75 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        backgroundColor = .lightGray
+        
+        // Add subviews
         addSubview(titleLabel)
+        addSubview(textField)
+        textField.addSubview(showHideButton)
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        addSubview(strengthDescriptionLabel)
+        
+        // Turn off Autoresizing Mask translation
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constrain
+        let widthBy6 = frame.width / 6
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textField.widthAnchor.constraint(equalTo: widthAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.heightAnchor.constraint(equalTo: textField.heightAnchor, multiplier: 0.7),
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
+            
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weakView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
+            weakView.widthAnchor.constraint(equalToConstant: widthBy6),
+            weakView.heightAnchor.constraint(equalToConstant: 4.0),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin / 2),
+            mediumView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
+            mediumView.widthAnchor.constraint(equalToConstant: widthBy6),
+            mediumView.heightAnchor.constraint(equalTo: weakView.heightAnchor),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin / 2),
+            strongView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
+            strongView.widthAnchor.constraint(equalToConstant: widthBy6),
+            strongView.heightAnchor.constraint(equalTo: weakView.heightAnchor),
+            
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
+            
+        ])
+        
+        // Initialize labels and text field
+        titleLabel.text = "ENTER PASSWORD"
+        textField.placeholder = "Choose a strong password"
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isEnabled = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        
+        weakView.backgroundColor = unusedColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
