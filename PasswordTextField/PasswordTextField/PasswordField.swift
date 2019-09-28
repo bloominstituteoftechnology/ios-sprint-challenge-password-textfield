@@ -10,6 +10,8 @@ import UIKit
 
 class PasswordField: UIControl {
     
+    
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -39,10 +41,69 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+        // Title Label
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: standardMargin).isActive = true
+        
+        // Text Field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: standardMargin).isActive = true
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        // Show Hide Button
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        showHideButton.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
+        
+        // Weak View
+        weakView.backgroundColor = unusedColor
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        
+        // Medium View
+        mediumView.backgroundColor = unusedColor
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
+        mediumView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        
+        // Strong View
+        strongView.backgroundColor = unusedColor
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.leadingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: standardMargin).isActive = true
+        strongView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        
+        // Strength Description Label
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: standardMargin).isActive = true
+        
+       
     }
     
     required init?(coder aDecoder: NSCoder) {
