@@ -160,7 +160,6 @@ class PasswordField: UIControl {
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
                 self.strongView.transform = .identity
             }, completion: nil)
-            
         }
     }
     
@@ -184,6 +183,7 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.endEditing(true)
+        sendActions(for: [.valueChanged])
         return false
     }
 }
