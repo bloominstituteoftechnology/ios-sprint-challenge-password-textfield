@@ -40,6 +40,9 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var mediumAnimationShown = false
+    private var strongAnimationShown = false
+    
     func setup() {
         // Lay out your subviews here
         backgroundColor = bgColor
@@ -134,32 +137,38 @@ class PasswordField: UIControl {
         }
     }
     
+    
     func determineStrength(password: String) {
         switch password.count {
         case 0...9:
             strengthDescriptionLabel.text = "Too weak"
             passwordStrength = "Too weak"
         case 10...19:
-            strengthDescriptionLabel.text = "Could be stronger"
-            passwordStrength = "Could be stronger"
-            UIView.animate(withDuration: 0.5) {
-                self.mediumView.backgroundColor = self.mediumColor
-                self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+            if mediumAnimationShown == false {
+                strengthDescriptionLabel.text = "Could be stronger"
+                passwordStrength = "Could be stronger"
+                UIView.animate(withDuration: 0.5) {
+                    self.mediumView.backgroundColor = self.mediumColor
+                    self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+                }
+                UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
+                    self.mediumView.transform = .identity
+                }, completion: nil)
+                mediumAnimationShown = true
             }
-            UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
-                self.mediumView.transform = .identity
-            }, completion: nil)
-            
         default:
-            strengthDescriptionLabel.text = "Strong password"
-            passwordStrength = "Strong password"
-            UIView.animate(withDuration: 0.5) {
-                self.strongView.backgroundColor = self.strongColor
-                self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+            if strongAnimationShown == false {
+                strengthDescriptionLabel.text = "Strong password"
+                passwordStrength = "Strong password"
+                UIView.animate(withDuration: 0.5) {
+                    self.strongView.backgroundColor = self.strongColor
+                    self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+                }
+                UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
+                    self.strongView.transform = .identity
+                }, completion: nil)
+                strongAnimationShown = true
             }
-            UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
-                self.strongView.transform = .identity
-            }, completion: nil)
         }
     }
     
@@ -184,6 +193,9 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.endEditing(true)
         sendActions(for: [.valueChanged])
+        textField.text = ""
+        password = ""
+        determineStrength(password: password)
         return false
     }
 }
