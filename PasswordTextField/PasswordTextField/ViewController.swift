@@ -13,7 +13,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var rectangle: PasswordField!
     
     
-    
+    @IBAction func passwordChanged(_ password: PasswordField) {
+        print(password.password)
+        print(password.passwordStrength)
+    }
     
 
     

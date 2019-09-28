@@ -69,7 +69,15 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
         
-        strengthDescriptionLabel.text = "Too weak"
+        switch passwordStrength {
+        case .weak:
+            strengthDescriptionLabel.text = "Too weak"
+        case .medium:
+            strengthDescriptionLabel.text = "Could be stronger"
+        case .strong:
+            strengthDescriptionLabel.text = "Strong password"
+        }
+        
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = strengthLabelFont
 
@@ -82,6 +90,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 5.0
         textField.layer.borderWidth = 2.0
         textField.backgroundColor = bgColor
+        textField.delegate = self
         
         
         NSLayoutConstraint.activate([
@@ -139,13 +148,16 @@ class PasswordField: UIControl {
         
     }
     
-    func determineStrength(string: String) {
-        if string.count < 9 {
+    func determineStrength(with charcterCount: Int) {
+        if charcterCount < 9 {
             passwordStrength = .weak
-        } else if string.count <= 19 {
+            setup()
+        } else if charcterCount <= 19 {
             passwordStrength = .medium
+            setup()
         } else {
             passwordStrength = .strong
+            setup()
         }
     }
 
@@ -159,8 +171,19 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         
-        determineStrength(string: newText)
+        determineStrength(with: newText.count)
+        
         
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if let password = textField.text, !password.isEmpty {
+            self.password = password
+        }
+        
+        self.endEditing(true)
+        return false
     }
 }
