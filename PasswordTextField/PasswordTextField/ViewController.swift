@@ -10,6 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var rectangle: PasswordField!
+    
+    
+    @IBAction func passwordChanged(_ password: PasswordField) {
+        print("Password: \(password.password)")
+        print("Strength: \(password.passwordStrength)")
+    }
+    
+
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
