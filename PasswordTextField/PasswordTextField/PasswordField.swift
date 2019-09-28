@@ -17,6 +17,7 @@ enum StrengthLevel {
 class PasswordField: UIControl {
     
     var passwordStrength: StrengthLevel = .weak
+    var visibility: Bool = false
     
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -62,7 +63,14 @@ class PasswordField: UIControl {
         
         backgroundColor = bgColor
         
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        if visibility == false {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+        }
+        
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         weakView.backgroundColor = weakColor
@@ -154,7 +162,13 @@ class PasswordField: UIControl {
     }
     
     @objc func showHideButtonTapped() {
-        
+        if visibility == true {
+            visibility = false
+            setup()
+        } else {
+            visibility = true
+            setup()
+        }
     }
     
     func determineStrength(with charcterCount: Int) {
