@@ -32,6 +32,7 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
+
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
@@ -40,9 +41,24 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Enter Password"
+        titleLabel.textColor = .gray
+        titleLabel.textAlignment = .left
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        
+        addSubview(textField)
+        textField.isSecureTextEntry = true
+        textField.placeholder?.append(contentsOf: "Password")
+        
+        
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
