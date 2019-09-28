@@ -117,7 +117,7 @@ class PasswordField: UIControl {
                                      strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor),
                                      strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 3),
                                      strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                     strengthDescriptionLabel.widthAnchor.constraint(equalToConstant: frame.size.width / 5),
+                                     strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
                                      strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 4)
                                     ])
     }
@@ -149,6 +149,7 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
     }
 }
