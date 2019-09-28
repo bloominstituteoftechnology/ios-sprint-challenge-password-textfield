@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     
     
     @IBAction func passwordChanged(_ password: PasswordField) {
-        print(password.password)
-        print(password.passwordStrength)
+        print("Password: \(password.password)")
+        print("Strength: \(password.passwordStrength)")
     }
     
 

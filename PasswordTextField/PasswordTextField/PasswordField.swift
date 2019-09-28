@@ -158,15 +158,24 @@ class PasswordField: UIControl {
     }
     
     func determineStrength(with charcterCount: Int) {
-        if charcterCount < 9 {
+        if charcterCount <= 9 {
             passwordStrength = .weak
             setup()
+            if charcterCount == 1 {
+                weakView.performFlare()
+            }
         } else if charcterCount <= 19 {
             passwordStrength = .medium
             setup()
+            if charcterCount == 10 {
+                mediumView.performFlare()
+            }
         } else {
             passwordStrength = .strong
             setup()
+            if charcterCount == 20 {
+                strongView.performFlare()
+            }
         }
     }
 
@@ -191,8 +200,21 @@ extension PasswordField: UITextFieldDelegate {
         if let password = textField.text, !password.isEmpty {
             self.password = password
         }
-        
+        self.sendActions(for: .valueChanged)
         self.endEditing(true)
         return false
     }
+}
+
+
+extension UIView {
+  // "Flare view" animation sequence
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.0, y: 1.4) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
 }
