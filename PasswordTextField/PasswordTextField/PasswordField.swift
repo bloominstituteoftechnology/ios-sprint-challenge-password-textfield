@@ -115,10 +115,9 @@ class PasswordField: UIControl {
                                      strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
                                      strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 20),
                                      strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor),
-                                     strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 3),
+                                     strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
                                      strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                     strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
-                                     strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 4)
+                                     strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
                                     ])
     }
     
@@ -137,13 +136,27 @@ class PasswordField: UIControl {
     func determineStrength(password: String) {
         switch password.count {
         case 0...9:
-            strengthDescriptionLabel.text = "too weak"
+            strengthDescriptionLabel.text = "Too weak"
         case 10...19:
-            strengthDescriptionLabel.text = "could be stronger"
-            mediumView.backgroundColor = mediumColor
+            strengthDescriptionLabel.text = "Could be stronger"
+            UIView.animate(withDuration: 0.5) {
+                self.mediumView.backgroundColor = self.mediumColor
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+            }
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
+                self.mediumView.transform = .identity
+            }, completion: nil)
+            
         default:
-            strengthDescriptionLabel.text = "strong password"
-            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong password"
+            UIView.animate(withDuration: 0.5) {
+                self.strongView.backgroundColor = self.strongColor
+                self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
+            }
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
+                self.strongView.transform = .identity
+            }, completion: nil)
+            
         }
     }
     
