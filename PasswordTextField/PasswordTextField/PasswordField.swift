@@ -42,7 +42,24 @@ class PasswordField: UIControl {
         // Lay out your subviews here
         
         addSubview(titleLabel)
+        addSubview(showHideButton)
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        addSubview(textField)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+//        showHideButton.topAnchor.constraint(equalTo: )
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: topAnchor)
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
