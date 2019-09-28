@@ -72,10 +72,19 @@ class PasswordField: UIControl {
         switch passwordStrength {
         case .weak:
             strengthDescriptionLabel.text = "Too weak"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         case .medium:
             strengthDescriptionLabel.text = "Could be stronger"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         case .strong:
             strengthDescriptionLabel.text = "Strong password"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
         }
         
         strengthDescriptionLabel.textColor = labelTextColor
