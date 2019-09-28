@@ -137,12 +137,13 @@ class PasswordField: UIControl {
         }
     }
     
-    
     func determineStrength(password: String) {
         switch password.count {
         case 0...9:
             strengthDescriptionLabel.text = "Too weak"
             passwordStrength = "Too weak"
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         case 10...19:
             if mediumAnimationShown == false {
                 strengthDescriptionLabel.text = "Could be stronger"
