@@ -47,16 +47,46 @@ class PasswordField: UIControl {
         addSubview(mediumView)
         addSubview(strongView)
         addSubview(textField)
+        addSubview(strengthDescriptionLabel)
+        
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
-//        showHideButton.topAnchor.constraint(equalTo: )
-        weakView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        
+
+       
+        
+        
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.topAnchor.constraint(equalTo: topAnchor)
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
+        textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.blue.cgColor
+        
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        
+        strengthDescriptionLabel.text = "Too Weak"
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        showHideButton.setImage(, for: .normal)
+        
+        
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor).isActive = true
+        
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
         
@@ -74,6 +104,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        strengthDescriptionLabel.text = newText
         return true
     }
 }
