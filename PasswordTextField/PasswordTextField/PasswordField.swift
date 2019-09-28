@@ -38,6 +38,7 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var hidebuttonImage: UIImage = UIImage()
     
     func setup() {
         // Lay out your subviews here
@@ -60,13 +61,60 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 8
         textField.backgroundColor = bgColor
-        
-        
-        
+
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        let passStrength: UIStackView = UIStackView()
+        passStrength.translatesAutoresizingMaskIntoConstraints = false
+        passStrength.axis = .horizontal
+        passStrength.distribution = .fillProportionally
+        addSubview(passStrength)
+        
+        passStrength.addArrangedSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.layer.cornerRadius = 4
+        weakView.clipsToBounds = true
+        weakView.backgroundColor = unusedColor
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        
+        passStrength.addArrangedSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.layer.cornerRadius = 4
+        mediumView.clipsToBounds = true
+        mediumView.backgroundColor = unusedColor
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        
+        passStrength.addArrangedSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.layer.cornerRadius = 4
+        strongView.clipsToBounds = true
+        strongView.backgroundColor = unusedColor
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        
+        passStrength.addArrangedSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = .black
+        strengthDescriptionLabel.text = "Testing"
+        strengthDescriptionLabel.font = .boldSystemFont(ofSize: 12)
+        strengthDescriptionLabel.textAlignment = .left
+        strengthDescriptionLabel.minimumScaleFactor = 0.7
+        strengthDescriptionLabel.allowsDefaultTighteningForTruncation = true
+        strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
+        strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        
+        
+        passStrength.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10).isActive = true
+        passStrength.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
+        passStrength.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
-//
+//        
 //        // Uncomment this portion to set up the dictionary
 //        let str = "lambda"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
