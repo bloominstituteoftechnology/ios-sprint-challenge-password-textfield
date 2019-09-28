@@ -106,22 +106,26 @@ class PasswordField: UIControl {
         textField.placeholder = "Choose a strong password"
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.isEnabled = true
+        textField.delegate = self
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideTapped), for: .touchUpInside)
         strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
         
         weakView.backgroundColor = unusedColor
         mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
-        
-        
-        
+                
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    @objc private func showHideTapped() {
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -130,6 +134,11 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        return true
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("begin editing")
         return true
     }
 }
