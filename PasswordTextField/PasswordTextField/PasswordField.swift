@@ -52,7 +52,15 @@ class PasswordField: UIControl {
         
         addSubview(textField)
         textField.isSecureTextEntry = true
-        textField.placeholder?.append(contentsOf: "Password")
+        textField.isUserInteractionEnabled = true
+        textField.placeholder = "Password"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 8
+        textField.backgroundColor = bgColor
+        
         
         
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
