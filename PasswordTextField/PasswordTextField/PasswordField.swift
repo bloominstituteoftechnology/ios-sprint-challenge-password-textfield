@@ -40,9 +40,40 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
+        backgroundColor = bgColor
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textAlignment = .left
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([titleLabel.topAnchor.constraint(equalTo: topAnchor),
+                                     titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+                                     titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+                                     titleLabel.heightAnchor.constraint(equalToConstant: 16),
+                                     textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+                                     textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+                                     textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+                                     textField.heightAnchor.constraint(equalToConstant: 50)
+                                    ])
     }
     
     required init?(coder aDecoder: NSCoder) {
