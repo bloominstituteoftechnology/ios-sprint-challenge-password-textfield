@@ -29,6 +29,6 @@ class ViewController: UIViewController {
 //    }
     
     @IBAction func returnPressed(_ sender: PasswordField) {
-        
+        print("Password: \(sender.password)\nPassword strength: \(sender.passwordStrength)")
     }
 }

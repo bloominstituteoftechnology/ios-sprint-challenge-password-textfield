@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: String = ""
     private var passwordHidden = true
     
     private let standardMargin: CGFloat = 8.0
@@ -137,8 +138,10 @@ class PasswordField: UIControl {
         switch password.count {
         case 0...9:
             strengthDescriptionLabel.text = "Too weak"
+            passwordStrength = "Too weak"
         case 10...19:
             strengthDescriptionLabel.text = "Could be stronger"
+            passwordStrength = "Could be stronger"
             UIView.animate(withDuration: 0.5) {
                 self.mediumView.backgroundColor = self.mediumColor
                 self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
@@ -149,6 +152,7 @@ class PasswordField: UIControl {
             
         default:
             strengthDescriptionLabel.text = "Strong password"
+            passwordStrength = "Strong password"
             UIView.animate(withDuration: 0.5) {
                 self.strongView.backgroundColor = self.strongColor
                 self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 1.3)
@@ -174,6 +178,12 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         determineStrength(password: newText)
+        password = newText
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        return false
     }
 }
