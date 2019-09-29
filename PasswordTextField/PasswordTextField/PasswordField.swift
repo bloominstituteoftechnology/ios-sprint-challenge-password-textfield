@@ -69,6 +69,8 @@ class PasswordField: UIControl {
         
         // Show/Hide Button
         textField.addSubview(showHideButton)
+        textField.rightViewMode = .always
+        textField.rightView = showHideButton
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin).isActive = true
