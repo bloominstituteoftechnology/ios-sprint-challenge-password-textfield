@@ -37,12 +37,96 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private let stackView = UIStackView()
+    private let mainStackView = UIStackView()
     
     func setup() {
         // Lay out your subviews here
-        
+
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Enter Password".uppercased()
+        titleLabel.font = labelFont.withSize(14)
+        titleLabel.textColor = UIColor.gray
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor)
+        ])
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderWidth = 3.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.cornerRadius = 4.0
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textField.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1.0, constant: textFieldContainerHeight),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let text = "Show"
+        let attributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10),
+            NSAttributedString.Key.foregroundColor: UIColor.gray
+        ]
+        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        showHideButton.setAttributedTitle(attributedString, for: .normal)
+
+        NSLayoutConstraint.activate([
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin)
+        ])
+        
+        addSubview(mainStackView)
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.addArrangedSubview(stackView)
+        mainStackView.addArrangedSubview(strengthDescriptionLabel)
+        mainStackView.axis = .horizontal
+        mainStackView.alignment = .center
+        mainStackView.distribution = .fill
+        mainStackView.spacing = standardMargin
+       
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = standardMargin / 4
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 4.0
+
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.backgroundColor = mediumColor
+        mediumView.layer.cornerRadius = 4.0
+                
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.backgroundColor = strongColor
+        strongView.layer.cornerRadius = 4.0
+        
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = "Strong password"
+        strengthDescriptionLabel.textColor = UIColor.gray
+        strengthDescriptionLabel.font = labelFont.withSize(10)
+        
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.heightAnchor.constraint(equalToConstant: 20),
+            stackView.heightAnchor.constraint(equalToConstant: 8),
+            strengthDescriptionLabel.widthAnchor.constraint(equalToConstant: 120)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
