@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var passwordField: PasswordField!
     
     // For use in the stretch goal
     //
@@ -18,6 +19,10 @@ class ViewController: UIViewController {
     // to install (you can use the first one "American English"). Tap
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
+    
+    @IBAction func passwordFieldChanged(_ sender: Any) {
+        print(self.passwordField.password)
+    }
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)

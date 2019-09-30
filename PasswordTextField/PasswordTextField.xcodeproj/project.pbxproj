@@ -13,6 +13,8 @@
 		CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D022C2C576008F9894 /* Assets.xcassets */; };
 		CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */; };
 		CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordField.swift */; };
+		E397E3D6234196C400B6FB4B /* PasswordStrengthChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397E3D5234196C400B6FB4B /* PasswordStrengthChecker.swift */; };
+		E397E3D823419B3500B6FB4B /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397E3D723419B3500B6FB4B /* InsetTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		CE0883D322C2C576008F9894 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0883D522C2C576008F9894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0883DB22C3DAAB008F9894 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
+		E397E3D5234196C400B6FB4B /* PasswordStrengthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthChecker.swift; sourceTree = "<group>"; };
+		E397E3D723419B3500B6FB4B /* InsetTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,8 @@
 			children = (
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+				E397E3D5234196C400B6FB4B /* PasswordStrengthChecker.swift */,
+				E397E3D723419B3500B6FB4B /* InsetTextField.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
 				CE0883CD22C2C575008F9894 /* Main.storyboard */,
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
@@ -139,8 +145,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
+				E397E3D823419B3500B6FB4B /* InsetTextField.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
+				E397E3D6234196C400B6FB4B /* PasswordStrengthChecker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
