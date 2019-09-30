@@ -215,6 +215,9 @@ class PasswordField: UIControl {
                 weakViewActive = false
                 mediumViewActive = false
                 strongViewActive = false
+                weakView.backgroundColor = unusedColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
             }
         
         // Weak password case for 1...9 characters in text field
