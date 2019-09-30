@@ -168,7 +168,6 @@ class PasswordField: UIControl {
 			textField.isSecureTextEntry = true
 		default:
 			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-			textField.isSecureTextEntry = false
 		}
 	}
 
