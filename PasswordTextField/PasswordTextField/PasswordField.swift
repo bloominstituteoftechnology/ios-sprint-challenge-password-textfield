@@ -35,6 +35,11 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    let attributes = [
+        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10),
+        NSAttributedString.Key.foregroundColor: UIColor.gray
+    ]
+    
     private var titleLabel: UILabel = UILabel()
     private var textField = InsetTextField()
     private var showHideButton: UIButton = UIButton()
@@ -73,6 +78,7 @@ class PasswordField: UIControl {
             self.strongView.backgroundColor = self.strongColor
             if didChange { self.strongView.performFlare() }
         }
+        
     }
     
     private func setup() {
@@ -106,13 +112,9 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let text = "Show"
-        let attributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10),
-            NSAttributedString.Key.foregroundColor: UIColor.gray
-        ]
-        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        let attributedString = NSAttributedString(string: "Show", attributes: attributes)
         showHideButton.setAttributedTitle(attributedString, for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideToggle), for: .primaryActionTriggered)
 
         NSLayoutConstraint.activate([
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
@@ -166,6 +168,18 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.widthAnchor.constraint(equalToConstant: 120),
             
         ])
+    }
+    
+    @objc
+    private func showHideToggle() {
+        self.textField.isSecureTextEntry.toggle()
+        if self.textField.isSecureTextEntry {
+            let attributedString = NSAttributedString(string: "Show", attributes: attributes)
+            self.showHideButton.setAttributedTitle(attributedString, for: .normal)
+        } else {
+            let attributedString = NSAttributedString(string: "Hide", attributes: attributes)
+            self.showHideButton.setAttributedTitle(attributedString, for: .normal)
+        }
     }
 }
 
