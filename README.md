@@ -1,3 +1,6 @@
+# Completed Project
+<img src="https://github.com/thomasdye/ios-sprint-challenge-password-textfield/blob/master/password.gif" height="500px">
+
 # Sprint Challenge: iOS User Interface - Password TextField
 
 This challenge allows you to practice the concepts and techniques learned over the past week and apply them in a concrete project. This sprint provided an exploration of building interfaces for iOS apps. In your challenge this week, you will demonstrate proficiency by creating an application that uses a custom `UIControl` to show a password field and measure the strength of passwords entered.
