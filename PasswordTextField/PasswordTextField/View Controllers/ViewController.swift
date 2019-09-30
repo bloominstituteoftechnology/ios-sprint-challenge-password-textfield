@@ -10,10 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //IBAction to listen for password value changing, and then print out the value and strength of the password.
     @IBAction func passwordHasChangedValue(_ passwordField: PasswordField) {
         let currentPassword = passwordField.password
         let passwordStrength = passwordField.passwordStrength.rawValue
-        
         print("Entered Password: \(currentPassword). Password Strength: \(passwordStrength.capitalized)")
     }
 
@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     // to install (you can use the first one "American English"). Tap
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
-//    
+//
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
 //

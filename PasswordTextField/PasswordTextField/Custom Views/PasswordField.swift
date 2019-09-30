@@ -8,6 +8,7 @@
 
 import UIKit
 
+//Enumeration to determine the strength of the entered password
 enum PasswordStrength: String {
     case empty
     case weak
@@ -262,6 +263,7 @@ class PasswordField: UIControl {
         }
     }
     
+    //Evaluate if password is a word in the dictionary, and if so, downgrade the passwordStrength by one level, and update corresponding views accordingly
     private func isPasswordDictionaryWord(for text: String) {
         if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
             if passwordStrength == .strong {
@@ -279,6 +281,7 @@ class PasswordField: UIControl {
     
 }
 
+//Extenstion to add UITextFieldDelegate to PasswordField Class
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
