@@ -18,20 +18,21 @@ class PasswordField: UIControl {
     // Custom sizes
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
-    private let textFieldMargin = UIEdgeInsets(top: 0, left: 100, bottom: 0, right: 10)
-    private let colorViewSize: CGSize = CGSize(width: 10.0, height: 5.0)
+    private let textFieldMargin: CGFloat = 6.0
+    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     private let viewCornerRadius: CGFloat = 1.0
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     private let strengthDescriptionFont = UIFont.systemFont(ofSize: 14.0, weight: .medium)
     
     // Custom colors
-    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+    
+    private let bgColor = UIColor.white
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
+    private var textFieldBorderColor = UIColor.gray
     
     // Setting these up to keep track if the view is active or not
     private var weakViewActive = false
@@ -139,7 +140,7 @@ class PasswordField: UIControl {
             
             // showHideButton constraints
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin),
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -standardMargin),
             showHideButton.widthAnchor.constraint(equalToConstant: 40),
                       
@@ -193,11 +194,15 @@ class PasswordField: UIControl {
         // Empty password case for when text field is empty
         case 0:
             strengthDescriptionLabel.text = PasswordStrength.blank.rawValue
+            self.textField.tintColor = self.unusedColor
+            self.textFieldBorderColor = self.unusedColor
+            
             
             if weakViewActive == true {
 
                 UIView.animate(withDuration: 0.3) {
                     self.weakView.backgroundColor = self.unusedColor
+                    self.textField.layer.borderColor = self.unusedColor.cgColor
                     self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
                 UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
@@ -208,6 +213,8 @@ class PasswordField: UIControl {
                     self.weakView.transform = .identity
                 }, completion: nil)
                 weakViewActive = false
+                mediumViewActive = false
+                strongViewActive = false
             }
         
         // Weak password case for 1...9 characters in text field
@@ -218,6 +225,8 @@ class PasswordField: UIControl {
                 strongView.backgroundColor = unusedColor
                 mediumView.backgroundColor = unusedColor
                 UIView.animate(withDuration: 0.3) {
+                    self.textField.tintColor = self.weakColor
+                    self.textField.layer.borderColor = self.weakColor.cgColor
                     self.weakView.backgroundColor = self.weakColor
                     self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
@@ -234,7 +243,9 @@ class PasswordField: UIControl {
             if mediumViewActive == true {
 
                 UIView.animate(withDuration: 0.3) {
+                    self.textField.tintColor = self.weakColor
                     self.mediumView.backgroundColor = self.unusedColor
+                    self.textField.layer.borderColor = self.weakColor.cgColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
                 UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
@@ -245,6 +256,7 @@ class PasswordField: UIControl {
                     self.mediumView.transform = .identity
                 }, completion: nil)
                 mediumViewActive = false
+                strongViewActive = false
             }
             
             
@@ -256,6 +268,8 @@ class PasswordField: UIControl {
             if mediumViewActive == false {
                 strongView.backgroundColor = unusedColor
                 UIView.animate(withDuration: 0.3) {
+                    self.textField.layer.borderColor = self.mediumColor.cgColor
+                    self.textField.tintColor = self.mediumColor
                     self.mediumView.backgroundColor = self.mediumColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
@@ -272,6 +286,8 @@ class PasswordField: UIControl {
             if strongViewActive == true {
 
                 UIView.animate(withDuration: 0.3) {
+                    self.textField.layer.borderColor = self.mediumColor.cgColor
+                    self.textField.tintColor = self.mediumColor
                     self.strongView.backgroundColor = self.unusedColor
                     self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
@@ -291,6 +307,8 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.textColor = strongColor
             if strongViewActive == false {
                 UIView.animate(withDuration: 0.3) {
+                    self.textField.layer.borderColor = self.strongColor.cgColor
+                    self.textField.tintColor = self.strongColor
                     self.strongView.backgroundColor = self.strongColor
                     self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
