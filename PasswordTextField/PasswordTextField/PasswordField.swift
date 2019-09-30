@@ -76,7 +76,7 @@ class PasswordField: UIControl {
         // Add title label to view, enable title label, set title label text, uppercase the title label, set title label's font, set title label's color, align title label left
         addSubview(titleLabel)
         enableLabel(named: titleLabel)
-        titleLabel.text = "enter password"
+        titleLabel.text = "Enter Password"
         titleLabel.text = titleLabel.text?.uppercased()
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -192,23 +192,27 @@ class PasswordField: UIControl {
             
         // Empty password case for when text field is empty
         case 0:
-            strengthDescriptionLabel.text = ""
-            weakView.backgroundColor = unusedColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-            weakViewActive = false
-            mediumViewActive = false
-            strongViewActive = false
+            strengthDescriptionLabel.text = PasswordStrength.blank.rawValue
+            
+            if weakViewActive == true {
+
+                UIView.animate(withDuration: 0.3) {
+                    self.weakView.backgroundColor = self.unusedColor
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    
+                },
+                completion: nil)
+                UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
+                    self.weakView.transform = .identity
+                }, completion: nil)
+                weakViewActive = false
+            }
         
         // Weak password case for 1...9 characters in text field
         case 1...9:
-            strengthDescriptionLabel.text = "Too Weak"
-            strengthDescriptionLabel.textColor = weakColor
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-            mediumViewActive = false
-            strongViewActive = false
+            strengthDescriptionLabel.text = PasswordStrength.tooWeak.rawValue
             
             if weakViewActive == false {
                 strongView.backgroundColor = unusedColor
@@ -217,19 +221,37 @@ class PasswordField: UIControl {
                     self.weakView.backgroundColor = self.weakColor
                     self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    self.strengthDescriptionLabel.textColor = self.weakColor
+                },
+                completion: nil)
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
                     self.weakView.transform = .identity
                 }, completion: nil)
                 weakViewActive = true
             }
+            
+            if mediumViewActive == true {
 
+                UIView.animate(withDuration: 0.3) {
+                    self.mediumView.backgroundColor = self.unusedColor
+                    self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    self.strengthDescriptionLabel.textColor = self.weakColor
+                },
+                completion: nil)
+                UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
+                    self.mediumView.transform = .identity
+                }, completion: nil)
+                mediumViewActive = false
+            }
+            
             
         // Medium Password case for 10...19 characters in text field
         case 10...19:
-            strengthDescriptionLabel.text = "Could Be Stronger"
+            strengthDescriptionLabel.text = PasswordStrength.couldBeStronger.rawValue
             strengthDescriptionLabel.textColor = mediumColor
-            strongView.backgroundColor = unusedColor
-            strongViewActive = false
             
             if mediumViewActive == false {
                 strongView.backgroundColor = unusedColor
@@ -237,21 +259,45 @@ class PasswordField: UIControl {
                     self.mediumView.backgroundColor = self.mediumColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    self.strengthDescriptionLabel.textColor = self.mediumColor
+                },
+                completion: nil)
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
                     self.mediumView.transform = .identity
                 }, completion: nil)
                 mediumViewActive = true
             }
+            
+            if strongViewActive == true {
+
+                UIView.animate(withDuration: 0.3) {
+                    self.strongView.backgroundColor = self.unusedColor
+                    self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    self.strengthDescriptionLabel.textColor = self.mediumColor
+                },
+                completion: nil)
+                UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
+                    self.strongView.transform = .identity
+                }, completion: nil)
+                strongViewActive = false
+            }
         
         // Strong password case (past 19 characters)
         default:
-            strengthDescriptionLabel.text = "Strong Password"
+            strengthDescriptionLabel.text = PasswordStrength.strongPassword.rawValue
             strengthDescriptionLabel.textColor = strongColor
             if strongViewActive == false {
                 UIView.animate(withDuration: 0.3) {
                     self.strongView.backgroundColor = self.strongColor
                     self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                    self.strengthDescriptionLabel.textColor = self.strongColor
+                },
+                completion: nil)
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
                     self.strongView.transform = .identity
                 }, completion: nil)
