@@ -63,7 +63,6 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 8
         textField.backgroundColor = bgColor
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
@@ -121,8 +120,10 @@ class PasswordField: UIControl {
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.isEnabled = true
+        showHideButton.isHidden = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(getter: showHideButton), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 15).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -15).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -15)
@@ -135,13 +136,15 @@ class PasswordField: UIControl {
         setup()
     }
     
-    @objc func showPassword() {
+    @objc private func showPassword() {
         textField.isSecureTextEntry.toggle()
         
-        if textField.isSecureTextEntry {
+        if textField.isSecureTextEntry == false {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = true
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = false
         }
     }
     
@@ -154,13 +157,33 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case 1...9:
-            weakView.backgroundColor = weakColor
+            UIView.animate(withDuration: 0.3) {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.5, y: 2.3)
+                self.weakView.backgroundColor = self.weakColor
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.weakView.transform = .identity
+            }
             strengthDescriptionLabel.text = "Too Weak"
+            
         case 10...19:
-            mediumView.backgroundColor = mediumColor
+            UIView.animate(withDuration: 0.3) {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.5, y: 1.3)
+                self.mediumView.backgroundColor = self.mediumColor
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.mediumView.transform = .identity
+            }
             strengthDescriptionLabel.text = "Could be Stronger"
         default:
-            strongView.backgroundColor = strongColor
+            UIView.animate(withDuration: 0.3) {
+                self.strongView.transform = CGAffineTransform(scaleX: 1.5, y: 1.3)
+                self.strongView.backgroundColor = self.strongColor
+            }
+            UIView.animate(withDuration: 0.3) {
+                self.strongView.transform = .identity
+            }
             strengthDescriptionLabel.text = "Strong Password"
         }
     }
