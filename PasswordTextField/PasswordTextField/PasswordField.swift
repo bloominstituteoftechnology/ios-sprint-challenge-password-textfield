@@ -10,12 +10,22 @@ import UIKit
 
 class PasswordField: UIControl {
     
-    // Public API - these properties are used to fetch the final password and strength values
+    // MARK: - Variables
+    private (set) var password: String = PasswordStrength.blank.rawValue
+    private var weakViewActive = false
+    private var mediumViewActive = false
+    private var strongViewActive = false
     
-    // Create variable for password that is empty for now
-    private (set) var password: String = ""
+    // MARK: - Labels, TextFields, Buttons, Views
+    private var titleLabel: UILabel = UILabel()
+    private var textField: UITextField = UITextField()
+    private var showHideButton: UIButton = UIButton()
+    private var weakView: UIView = UIView()
+    private var mediumView: UIView = UIView()
+    private var strongView: UIView = UIView()
+    private var strengthDescriptionLabel: UILabel = UILabel()
     
-    // Custom sizes
+    // MARK: - Custom Sizes
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -25,8 +35,7 @@ class PasswordField: UIControl {
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     private let strengthDescriptionFont = UIFont.systemFont(ofSize: 14.0, weight: .medium)
     
-    // Custom colors
-    
+    // MARK: - Custom Colors
     private let bgColor = UIColor.white
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
@@ -34,41 +43,25 @@ class PasswordField: UIControl {
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     private var textFieldBorderColor = UIColor.gray
     
-    // Setting these up to keep track if the view is active or not
-    private var weakViewActive = false
-    private var mediumViewActive = false
-    private var strongViewActive = false
-    
-    // Create everything we're putting into the view
-    private var titleLabel: UILabel = UILabel()
-    private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
-    private var weakView: UIView = UIView()
-    private var mediumView: UIView = UIView()
-    private var strongView: UIView = UIView()
-    private var strengthDescriptionLabel: UILabel = UILabel()
-    
-    // This function "enables" labels
+
+    // MARK: - Enable Functions
     func enableLabel(named: UILabel) {
         named.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // This function "enables" textFields
     func enableTextField(named: UITextField) {
         named.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // This function "enables" buttons
     func enableButton(named: UIButton) {
         named.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // This function "enables" views
     func enableView(named: UIView) {
         named.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // Create setup function
+    // MARK: - Setup
     func setup() {
         
         // Set background color
@@ -83,7 +76,6 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.textAlignment = .left
         
-        
         // Add text field to view, enable it, set placeholder text, set border width and corner radius, set color and set to secure entry
         addSubview(textField)
         enableTextField(named: textField)
@@ -93,19 +85,19 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.isSecureTextEntry = true
         
-        // Add showHideButton to view, enable it, set default image to eyes-closed, addTarget (@objc func),
+        // Add showHideButton to view, enable it, set default image to eyes-closed, addTarget (@objc func)
         addSubview(showHideButton)
         enableButton(named: showHideButton)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(passwordVisibility), for: .touchUpInside)
         
-        // Add weakView to view, enable weakView, set cornerRadius, set backgroundColor to unused
+        // Add weakView to view, enable weakView, set cornerRadius, set backgroundColor to unused color
         addSubview(weakView)
         enableView(named: weakView)
         weakView.layer.cornerRadius = viewCornerRadius
         weakView.backgroundColor = unusedColor
         
-        // Add mediumView to view, enable mediumView, set cornerRadius, set backgroundColor to unused,
+        // Add mediumView to view, enable mediumView, set cornerRadius, set backgroundColor to unused color
         addSubview(mediumView)
         enableView(named: mediumView)
         mediumView.layer.cornerRadius = viewCornerRadius
@@ -121,10 +113,9 @@ class PasswordField: UIControl {
         addSubview(strengthDescriptionLabel)
         enableLabel(named: strengthDescriptionLabel)
         strengthDescriptionLabel.font = strengthDescriptionFont
-        strengthDescriptionLabel.text = ""
+        strengthDescriptionLabel.text = PasswordStrength.blank.rawValue
         
-        
-        // Adding Constraints
+        // MARK: - Constraints
         NSLayoutConstraint.activate([
             
             // titleLabel constraints
@@ -178,14 +169,17 @@ class PasswordField: UIControl {
     @objc func passwordVisibility() {
         if textField.isSecureTextEntry == true {
             textField.isSecureTextEntry = false
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            UIView.animate(withDuration: 0.3) {
+                self.showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            }
+            
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
     
-    // Create function to determine password strength
+    // MARK: - Determine Password Strength
     func passwordStrengthDetermined(password: String) {
         
         // Use switch on password.count to animate, change colors, and set active
@@ -197,7 +191,6 @@ class PasswordField: UIControl {
             self.textField.tintColor = self.unusedColor
             self.textFieldBorderColor = self.unusedColor
             
-            
             if weakViewActive == true {
 
                 UIView.animate(withDuration: 0.3) {
@@ -205,13 +198,14 @@ class PasswordField: UIControl {
                     self.textField.layer.borderColor = self.unusedColor.cgColor
                     self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
-                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.3, options: .transitionCrossDissolve, animations: {
                     
                 },
                 completion: nil)
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: [], animations: {
                     self.weakView.transform = .identity
                 }, completion: nil)
+                
                 weakViewActive = false
                 mediumViewActive = false
                 strongViewActive = false
@@ -223,7 +217,6 @@ class PasswordField: UIControl {
         // Weak password case for 1...9 characters in text field
         case 1...9:
             strengthDescriptionLabel.text = PasswordStrength.tooWeak.rawValue
-            
             if weakViewActive == false {
                 strongView.backgroundColor = unusedColor
                 mediumView.backgroundColor = unusedColor
@@ -233,7 +226,7 @@ class PasswordField: UIControl {
                     self.weakView.backgroundColor = self.weakColor
                     self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
-                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.3, options: .transitionCrossDissolve, animations: {
                     self.strengthDescriptionLabel.textColor = self.weakColor
                 },
                 completion: nil)
@@ -244,14 +237,13 @@ class PasswordField: UIControl {
             }
             
             if mediumViewActive == true {
-
                 UIView.animate(withDuration: 0.3) {
                     self.textField.tintColor = self.weakColor
                     self.mediumView.backgroundColor = self.unusedColor
                     self.textField.layer.borderColor = self.weakColor.cgColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
-                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.3, options: .transitionCrossDissolve, animations: {
                     self.strengthDescriptionLabel.textColor = self.weakColor
                 },
                 completion: nil)
@@ -261,7 +253,6 @@ class PasswordField: UIControl {
                 mediumViewActive = false
                 strongViewActive = false
             }
-            
             
         // Medium Password case for 10...19 characters in text field
         case 10...19:
@@ -276,7 +267,7 @@ class PasswordField: UIControl {
                     self.mediumView.backgroundColor = self.mediumColor
                     self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
                 }
-                UIView.transition(with: strengthDescriptionLabel, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                UIView.transition(with: strengthDescriptionLabel, duration: 0.3, options: .transitionCrossDissolve, animations: {
                     self.strengthDescriptionLabel.textColor = self.mediumColor
                 },
                 completion: nil)
@@ -287,7 +278,6 @@ class PasswordField: UIControl {
             }
             
             if strongViewActive == true {
-
                 UIView.animate(withDuration: 0.3) {
                     self.textField.layer.borderColor = self.mediumColor.cgColor
                     self.textField.tintColor = self.mediumColor
