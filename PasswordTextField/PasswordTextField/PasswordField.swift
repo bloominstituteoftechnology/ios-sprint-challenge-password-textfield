@@ -121,6 +121,7 @@ class PasswordField: UIControl {
         ])
         
         // main stack view is for the color indicator and label
+        
         addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
