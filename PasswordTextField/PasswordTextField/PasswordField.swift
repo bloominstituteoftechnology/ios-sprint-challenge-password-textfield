@@ -5,6 +5,7 @@
 //  Created by Ben Gohlke on 6/26/19.
 //  Copyright © 2019 Lambda School. All rights reserved.
 //
+// Sprint Challenge opened
 
 import UIKit
 
