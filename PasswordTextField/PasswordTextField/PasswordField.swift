@@ -18,6 +18,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -43,11 +44,11 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
-    
+
     func setup() {
         // Lay out your subviews here
         
-        backgroundColor = .lightGray
+        backgroundColor = bgColor
         
         // Add subviews
         addSubview(titleLabel)
@@ -106,7 +107,8 @@ class PasswordField: UIControl {
         textField.placeholder = "Choose a strong password"
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.delegate = self
+//        textField.delegate = self
+        textField.isEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideTapped), for: .touchUpInside)
         strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
@@ -116,9 +118,10 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
                 
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
     }
     
@@ -126,6 +129,10 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
     }
     
+    func strengthOf(_ password: String) -> PasswordStrength {
+        return .medium
+    }
+
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -134,11 +141,12 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        passwordStrength = strengthOf(newText)
         return true
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print("begin editing")
-        return true
-    }
+//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        print("begin editing")
+//        return true
+//    }
 }
