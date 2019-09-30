@@ -111,8 +111,8 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let attributedString = NSAttributedString(string: "Show", attributes: attributes)
-        showHideButton.setAttributedTitle(attributedString, for: .normal)
+        let image = UIImage(named: "eyes-closed")
+        showHideButton.setImage(image, for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideToggle), for: .primaryActionTriggered)
 
         NSLayoutConstraint.activate([
@@ -175,11 +175,11 @@ class PasswordField: UIControl {
     private func showHideToggle() {
         self.textField.isSecureTextEntry.toggle()
         if self.textField.isSecureTextEntry {
-            let attributedString = NSAttributedString(string: "Show", attributes: attributes)
-            self.showHideButton.setAttributedTitle(attributedString, for: .normal)
+            let image = UIImage(named: "eyes-closed")
+            showHideButton.setImage(image, for: .normal)
         } else {
-            let attributedString = NSAttributedString(string: "Hide", attributes: attributes)
-            self.showHideButton.setAttributedTitle(attributedString, for: .normal)
+            let image = UIImage(named: "eyes-open")
+            showHideButton.setImage(image, for: .normal)
         }
     }
 }
