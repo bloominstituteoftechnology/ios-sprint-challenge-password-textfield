@@ -261,6 +261,22 @@ class PasswordField: UIControl {
             
         }
     }
+    
+    private func isPasswordDictionaryWord(for text: String) {
+        if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+            if passwordStrength == .strong {
+                passwordStrength = .medium
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Could Be Stronger"
+            } else if passwordStrength == .medium {
+                passwordStrength = .weak
+                strongView.backgroundColor = unusedColor
+                mediumView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Too Weak"
+            }
+        }
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -279,6 +295,7 @@ extension PasswordField: UITextFieldDelegate {
             self.password = password
             sendActions(for: .valueChanged)
         }
+        isPasswordDictionaryWord(for: password)
         return true
     }
     
