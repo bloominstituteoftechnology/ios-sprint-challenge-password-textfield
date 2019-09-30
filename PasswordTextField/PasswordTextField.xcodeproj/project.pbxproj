@@ -13,6 +13,7 @@
 		CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D022C2C576008F9894 /* Assets.xcassets */; };
 		CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */; };
 		CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordField.swift */; };
+		CE4074C12341BC8300DE3B2D /* PasswordStrength.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4074C02341BC8300DE3B2D /* PasswordStrength.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		CE0883D322C2C576008F9894 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0883D522C2C576008F9894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0883DB22C3DAAB008F9894 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
+		CE4074C02341BC8300DE3B2D /* PasswordStrength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrength.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
 				CE0883D522C2C576008F9894 /* Info.plist */,
+				CE4074C02341BC8300DE3B2D /* PasswordStrength.swift */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
+				CE4074C12341BC8300DE3B2D /* PasswordStrength.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +291,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HB72Z627AT;
 				INFOPLIST_FILE = PasswordTextField/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -304,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HB72Z627AT;
 				INFOPLIST_FILE = PasswordTextField/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
