@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -27,4 +28,9 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("Entered password: \(sender.password)")
+        print(sender.passwordStrength.rawValue)
+    }
 }
