@@ -148,7 +148,7 @@ class PasswordField: UIControl {
             weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             weakView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
-            weakView.widthAnchor.constraint(equalToConstant: frame.size.width / 8),
+            weakView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
             weakView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
                  
             
@@ -156,14 +156,14 @@ class PasswordField: UIControl {
             mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 3),
             mediumView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
-            mediumView.widthAnchor.constraint(equalToConstant: frame.size.width / 8),
+            mediumView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
               
             // strongView constraints
             strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
             strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 3),
             strongView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
-            strongView.widthAnchor.constraint(equalToConstant: frame.size.width / 8),
+            strongView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
             strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
             
             // strengthDescriptionLabel constraints
