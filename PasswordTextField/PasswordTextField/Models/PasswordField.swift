@@ -17,60 +17,57 @@ enum PasswordStrength: String {
 class PasswordField: UIControl {
 
 	private var passwordSecure: Bool = true
-    
-    // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
-		
-    
-    private let standardMargin: CGFloat = 8.0
-    private let textFieldContainerHeight: CGFloat = 50.0
-    private let textFieldMargin: CGFloat = 6.0
-    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
-    
-    private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
-    private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
-    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
-    
-    // States of the password strength indicators
-    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
-    private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
-    private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
-    private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
-    
-    private var titleLabel: UILabel = UILabel()
+
+	// Public API - these properties are used to fetch the final password and strength values
+	private (set) var password: String = ""
+
+
+	private let standardMargin: CGFloat = 8.0
+	private let textFieldContainerHeight: CGFloat = 50.0
+	private let textFieldMargin: CGFloat = 6.0
+	private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+
+	private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
+	private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+
+	private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
+	private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+
+	// States of the password strength indicators
+	private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
+	private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
+	private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
+	private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
+
+	private var titleLabel: UILabel = UILabel()
 	private var textFieldContainerView: UIView = UIView()
-    private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
-    private var weakView: UIView = UIView()
-    private var mediumView: UIView = UIView()
-    private var strongView: UIView = UIView()
-    private var strengthDescriptionLabel: UILabel = UILabel()
+	private var textField: UITextField = UITextField()
+	private var showHideButton: UIButton = UIButton()
+	private var weakView: UIView = UIView()
+	private var mediumView: UIView = UIView()
+	private var strongView: UIView = UIView()
+	private var strengthDescriptionLabel: UILabel = UILabel()
 	private var securityButton: UIButton = UIButton(type: .custom)
 
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		textField.delegate = self
 		setup()
 	}
 
-
-
-    
-    func setup() {
+	func setup() {
 
 		layer.cornerRadius = 8
 		leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
 		topAnchor.constraint(equalTo: self.topAnchor).isActive = true
 		trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-		//bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 50).isActive = true
 		heightAnchor.constraint(equalToConstant: 109).isActive = true
 		backgroundColor = bgColor
 
 		// Enter password label
 		addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
 		titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
 		titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
@@ -107,27 +104,8 @@ class PasswordField: UIControl {
 		textField.rightViewMode = .always
 		textField.delegate = self
 		textField.becomeFirstResponder()
-		//.layer.borderColor = textFieldBorderColor.cgColor
-		//textField.layer.borderWidth = 2.0
 
-
-
-
-		 // Show/Hide Button
-		//addSubview(showHideButton)
-		// Why does commenting this out take out the image?
 		showHideButton.translatesAutoresizingMaskIntoConstraints = false
-//		showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: 0).isActive = true
-
-//		showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 8).isActive = true
-//
-//		showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 0).isActive = true
-//
-//		showHideButton.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
-//		showHideButton.heightAnchor.constraint(equalToConstant: 50)
-//		showHideButton.widthAnchor.constraint(equalToConstant: 50)
-//		showHideButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-		//showHideButton.setTitle("Show", for: .normal)
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
 
@@ -177,62 +155,61 @@ class PasswordField: UIControl {
 		strengthDescriptionLabel.text = "testing"
 		strengthDescriptionLabel.font = labelFont
 		strengthDescriptionLabel.textColor = labelTextColor
-    }
-
-
-
+	}
 
 	@objc func showPassword(_ sender: UIButton) {
 		print("click")
 
-
-
 		textField.isSecureTextEntry.toggle()
 
-		if textField.isSecureTextEntry {
+		switch textField.isSecureTextEntry {
+		case true:
 			showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-			textField.isSecureTextEntry = false
-		} else {
-			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
 			textField.isSecureTextEntry = true
+		default:
+			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+			textField.isSecureTextEntry = false
 		}
 	}
 
 	func passwordStrengthCheck(_ password: String) {
 
-		let strong = "Strong"
-		let medium = "Medium"
-		let weak = "Weak"
-
 		let count = password.count
 
-		if count < 9 {
+		switch count {
+		case 1...9:
 			weakView.backgroundColor = weakColor
-			strengthDescriptionLabel.text = "Password strength: \(weak)"
-		} else if count < 16 {
+			strengthDescriptionLabel.text = "Too weak"
+		case 10...16:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strengthDescriptionLabel.text = "Could be stronger"
+		case 16...:
 			weakView.backgroundColor = weakColor
 			mediumView.backgroundColor = mediumColor
 			strongView.backgroundColor = strongColor
-			strengthDescriptionLabel.text = "Password strength: \(strong)"
+			strengthDescriptionLabel.text = "Strong password"
+		default:
+			weakView.backgroundColor = weakColor
+
 		}
 	}
 
 	private func saveText() {
 
 	}
-
 }
 
 
 extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		let oldText = textField.text!
+		let stringRange = Range(range, in: oldText)!
+		let newText = oldText.replacingCharacters(in: stringRange, with: string)
+		// TODO: send new text to the determine strength method
 
 		self.passwordStrengthCheck(newText)
 		
-        return true
-    }
+		return true
+	}
 }

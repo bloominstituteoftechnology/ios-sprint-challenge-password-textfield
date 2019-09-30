@@ -13,7 +13,6 @@ class NewPasswordField: UIControl {
 	// Public API - these properties are used to fetch the final password and strength values
 	private (set) var password: String = ""
 
-
 	private let standardMargin: CGFloat = 8.0
 	private let textFieldContainerHeight: CGFloat = 50.0
 	private let textFieldMargin: CGFloat = 6.0

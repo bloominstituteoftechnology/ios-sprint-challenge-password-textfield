@@ -59,10 +59,9 @@
 			isa = PBXGroup;
 			children = (
 				DD89ACA4232BE7B4006E6108 /* Resources */,
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+				DDDD1BC92341969000827B3D /* View Controller */,
+				DDDD1BC82341967D00827B3D /* Models */,
 				DD89ACA5232BE7E0006E6108 /* Storyboard */,
-				DD4ABE78232F497400684687 /* NewPasswordField.swift */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -84,6 +83,23 @@
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		DDDD1BC82341967D00827B3D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+				DD4ABE78232F497400684687 /* NewPasswordField.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DDDD1BC92341969000827B3D /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+			);
+			path = "View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
