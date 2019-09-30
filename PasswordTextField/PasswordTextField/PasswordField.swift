@@ -20,6 +20,8 @@ class PasswordField: UIControl {
     private (set) var password: String = ""
     private (set) var passwordStrength: PasswordStrength = .weak
     
+    private var passwordHidden = true
+    
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -53,7 +55,8 @@ class PasswordField: UIControl {
         // Add subviews
         addSubview(titleLabel)
         addSubview(textField)
-        textField.addSubview(showHideButton)
+//        textField.addSubview(showHideButton)
+        addSubview(showHideButton)
         addSubview(weakView)
         addSubview(mediumView)
         addSubview(strongView)
@@ -104,14 +107,19 @@ class PasswordField: UIControl {
         
         // Initialize labels and text field
         titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
         textField.placeholder = "Choose a strong password"
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = true
 //        textField.delegate = self
         textField.isEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideTapped), for: .touchUpInside)
         strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         
         weakView.backgroundColor = unusedColor
         mediumView.backgroundColor = unusedColor
@@ -126,11 +134,67 @@ class PasswordField: UIControl {
     }
     
     @objc private func showHideTapped() {
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        if passwordHidden == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+        }
     }
     
     func strengthOf(_ password: String) -> PasswordStrength {
-        return .medium
+        var strength: PasswordStrength
+        
+        switch password.count {
+        case 0...8:
+            strength = .weak
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        case 9...12:
+            strength = .medium
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        default:
+            strength = .strong
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+        
+        strengthDescriptionLabel.text = strength.rawValue
+        
+        if passwordStrength != strength {
+            flare(strength)
+        }
+        
+        return strength
+    }
+    
+    func flare(_ level: PasswordStrength) {
+        var view: UIView
+        
+        switch level {
+        case .weak:
+            view = weakView
+        case .medium:
+            view = mediumView
+        case .strong:
+            view = strongView
+        }
+        
+        let animationBlock = {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.7) {
+                view.transform = CGAffineTransform(scaleX: 1.0, y: 1.7)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.3) {
+                view.transform = .identity
+            }
+        }
+        
+        UIView.animateKeyframes(withDuration: 0.7, delay: 0, options: [], animations: animationBlock, completion: nil)
     }
 
 }
@@ -149,4 +213,11 @@ extension PasswordField: UITextFieldDelegate {
 //        print("begin editing")
 //        return true
 //    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        password = textField.text ?? ""
+        sendActions(for: [.valueChanged])
+        textField.resignFirstResponder()
+        return true
+    }
 }
