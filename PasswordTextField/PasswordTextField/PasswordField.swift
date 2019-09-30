@@ -83,7 +83,6 @@ class PasswordField: UIControl {
     
     private func setup() {
         // Lay out your subviews here
-
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Enter Password".uppercased()
@@ -121,6 +120,7 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin)
         ])
         
+        // main stack view is for the color indicator and label
         addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
