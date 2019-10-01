@@ -40,6 +40,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
+        // TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -50,6 +51,7 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.text = "ENTER PASSWORD"
         
+        // TEXTFIELD
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -57,20 +59,22 @@ class PasswordField: UIControl {
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
-
         ])
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
         
+        // SHOW/HIDE BUTTON
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
-        
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         ])
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
+        // WEAKVIEW
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
