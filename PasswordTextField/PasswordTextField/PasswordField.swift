@@ -64,18 +64,22 @@ class PasswordField: UIControl {
         
         // TEXTFIELD
         addSubview(textField)
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
-            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
-//        textField.isUserInteractionEnabled = true
+        textField.layoutMargins.left = textFieldMargin
+//        textField.layoutMargins.right = textFieldMargin
+
+//        textField.clearsOnBeginEditing = true
         
         // SHOW/HIDE BUTTON
         addSubview(showHideButton)
@@ -84,7 +88,10 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         ])
+        showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+//        textField.rightView = showHideButton
+//        textField.rightViewMode = .always
         
         // ADD STACKVIEW
         addSubview(passwordStrengthStackView)
@@ -107,7 +114,7 @@ class PasswordField: UIControl {
 //            weakView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 //        weakView.systemLayoutSizeFitting(colorViewSize)
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         weakView.layer.cornerRadius = 2.0
         
         // MEDIUM VIEW
@@ -120,7 +127,7 @@ class PasswordField: UIControl {
             mediumView.widthAnchor.constraint(equalToConstant: 60.0)
         ])
 //        mediumView.sizeThatFits(colorViewSize)
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.layer.cornerRadius = 2.0
         
         // STRONG VIEW
@@ -131,12 +138,10 @@ class PasswordField: UIControl {
 //            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             strongView.heightAnchor.constraint(equalToConstant: 5.0),
             strongView.widthAnchor.constraint(equalToConstant: 60.0)
-//            strongView.trailingAnchor.constraint(equalTo: strengthDescriptionLabel.leadingAnchor, constant: -standardMargin)
         ])
 //        strongView.sizeThatFits(colorViewSize)
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.layer.cornerRadius = 2.0
-
         
         // STRENGTH DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
@@ -168,31 +173,49 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+
     func determineStrength(_ textLength: Int) {
         switch textLength {
         case 1..<9:
-            weakView.tintColor = weakColor
-            mediumView.tintColor = unusedColor
-            strongView.tintColor = unusedColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
-
+//            UIView.animate
+            
         case 9..<18:
-            weakView.tintColor = weakColor
-            mediumView.tintColor = mediumColor
-            strongView.tintColor = unusedColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
 
         case 18..<36:
-            weakView.tintColor = weakColor
-            mediumView.tintColor = mediumColor
-            strongView.tintColor = strongColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong"
 
         default:
-            weakView.tintColor = unusedColor
-            mediumView.tintColor = unusedColor
-            strongView.tintColor = unusedColor
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             
+        }
+    }
+    
+    @objc func showHidePassword() {
+        if showHideButton.isSelected {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
+            textField.textContentType = .none
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.textContentType = .password
         }
     }
 }
