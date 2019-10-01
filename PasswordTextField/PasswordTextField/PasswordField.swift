@@ -7,7 +7,7 @@
 //
 
 import UIKit
-@IBDesignable
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -53,9 +53,16 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
-        
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+
         ])
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = standardMargin
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
