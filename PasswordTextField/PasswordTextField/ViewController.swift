@@ -9,11 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let controller = PasswordField(coder: <#NSCoder#>)!
-    
-    @IBAction func returnKeyPressed() {
-        print("\(controller.password) is \(controller.strength)")
+        
+    @IBAction func returnKeyPressed(_ sender: PasswordField) {
+        print("\(sender.password) is \(sender.strength)")
     }
        
     
