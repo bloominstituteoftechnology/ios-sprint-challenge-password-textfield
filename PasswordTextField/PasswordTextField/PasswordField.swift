@@ -207,6 +207,7 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
             animateStrength(weakView)
+            strength = .weak
             
         case 9..<18:
             weakView.backgroundColor = weakColor
@@ -214,6 +215,7 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
             animateStrength(mediumView)
+            strength = .medium
 
         case 18..<36:
             weakView.backgroundColor = weakColor
@@ -221,11 +223,15 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
             animateStrength(strongView)
+            strength = .strong
+
 
         default:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            strength = .none
+
         }
     }
     
