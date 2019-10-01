@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
         
     @IBAction func returnKeyPressed(_ sender: PasswordField) {
+        
         print("\(sender.password) is \(sender.strength)")
     }
        

@@ -182,7 +182,7 @@ extension PasswordField: UITextFieldDelegate {
         
         return true
     }
-//    
+//
 //    func textFieldDidBeginEditing(_ textField: UITextField) {
 //        print("Did Begin was called")
 //    }
@@ -191,44 +191,40 @@ extension PasswordField: UITextFieldDelegate {
 //    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let password = textField.text, !password.isEmpty {
+            self.password = password
+        }
         return true
     }
 
     private func animateStrength(_ strengthView: UIView) {
-        strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 0.95)
-        UIView.animate(withDuration: 2.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.4,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: { strengthView.transform = .identity },
-                       completion: nil)
+        strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 1.09)
+        UIView.animate(withDuration: 1.5, animations: { strengthView.transform = .identity }, completion: nil)
     }
     
     func determineStrength(_ textLength: Int) {
+        if textLength == 1 {
+            animateStrength(weakView)
+        } else if textLength == 9 {
+            animateStrength(mediumView)
+        } else if textLength == 18 {
+            animateStrength(strongView)
+        }
+        
         switch textLength {
         case 1..<9:
             weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
-            animateStrength(weakView)
             strength = .weak
             
         case 9..<18:
-            weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
-            animateStrength(mediumView)
             strength = .medium
 
         case 18..<36:
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
-            animateStrength(strongView)
             strength = .strong
 
         default:
@@ -237,6 +233,8 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = unusedColor
             strength = .none
         }
+        
+        
     }
     
     @objc func showHidePassword() {
