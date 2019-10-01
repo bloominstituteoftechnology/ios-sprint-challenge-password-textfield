@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    let controller = PasswordField(coder: <#NSCoder#>)!
+    
+    @IBAction func returnKeyPressed() {
+        print("\(controller.password) is \(controller.strength)")
+    }
+       
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.

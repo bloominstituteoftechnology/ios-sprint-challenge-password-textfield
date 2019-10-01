@@ -8,10 +8,18 @@
 
 import UIKit
 
+enum Strength {
+    case none
+    case weak
+    case medium
+    case strong
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strength: Strength = .none
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -180,6 +188,17 @@ extension PasswordField: UITextFieldDelegate {
         
     }
 
+    private func animateStrength(_ strengthView: UIView) {
+        strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 0.95)
+        UIView.animate(withDuration: 3.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.4,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: { strengthView.transform = .identity },
+                       completion: nil)
+    }
+    
     func determineStrength(_ textLength: Int) {
         switch textLength {
         case 1..<9:
@@ -187,25 +206,26 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
-//            UIView.animate
+            animateStrength(weakView)
             
         case 9..<18:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
+            animateStrength(mediumView)
 
         case 18..<36:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
-            strengthDescriptionLabel.text = "Strong"
+            strengthDescriptionLabel.text = "Strong password"
+            animateStrength(strongView)
 
         default:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            
         }
     }
     
