@@ -5,10 +5,9 @@
 //  Created by Ben Gohlke on 6/26/19.
 //  Copyright © 2019 Lambda School. All rights reserved.
 //
-// Sprint Challenge opened
 
 import UIKit
-
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -41,9 +40,57 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+        ])
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        titleLabel.text = "ENTER PASSWORD"
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,7 +104,32 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
         // TODO: send new text to the determine strength method
+        determineStrength(newText.count)
+        
         return true
+    }
+    
+    func determineStrength(_ textLength: Int) {
+        switch textLength {
+        case 1..<9:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = unusedColor
+            strongView.tintColor = unusedColor
+        case 9..<18:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = mediumColor
+            strongView.tintColor = unusedColor
+        case 18..<36:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = mediumColor
+            strongView.tintColor = strongColor
+        default:
+            weakView.tintColor = unusedColor
+            mediumView.tintColor = unusedColor
+            strongView.tintColor = unusedColor
+            
+        }
     }
 }
