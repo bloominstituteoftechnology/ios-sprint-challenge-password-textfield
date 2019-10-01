@@ -80,7 +80,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
-        textField.layoutMargins.left = 2 * textFieldMargin
+        textField.layoutMargins.left = textFieldMargin * 2.0
 //        textField.layoutMargins.right = 2 * textFieldMargin
 //        textField.clearsOnBeginEditing = true
         NSLayoutConstraint.activate([
@@ -198,7 +198,7 @@ extension PasswordField: UITextFieldDelegate {
     }
 
     private func animateStrength(_ strengthView: UIView) {
-        strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 1.09)
+        strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 1.15)
         UIView.animate(withDuration: 1.5, animations: { strengthView.transform = .identity }, completion: nil)
     }
     
