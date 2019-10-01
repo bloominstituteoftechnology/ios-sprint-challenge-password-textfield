@@ -73,21 +73,23 @@ class PasswordField: UIControl {
         // TEXTFIELD
         addSubview(textField)
         textField.delegate = self
+        textField.becomeFirstResponder()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
-            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
-        ])
+        textField.isUserInteractionEnabled = true
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
         textField.layoutMargins.left = textFieldMargin
 //        textField.layoutMargins.right = textFieldMargin
-
 //        textField.clearsOnBeginEditing = true
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+        ])
+        
         
         // SHOW/HIDE BUTTON
         addSubview(showHideButton)
@@ -180,17 +182,21 @@ extension PasswordField: UITextFieldDelegate {
         
         return true
     }
+//    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("Did Begin was called")
+//    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        print("Did end was called")
+//    }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
 
     private func animateStrength(_ strengthView: UIView) {
         strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 0.95)
-        UIView.animate(withDuration: 3.0,
+        UIView.animate(withDuration: 2.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.4,
                        initialSpringVelocity: 0.0,
@@ -225,13 +231,11 @@ extension PasswordField: UITextFieldDelegate {
             animateStrength(strongView)
             strength = .strong
 
-
         default:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strength = .none
-
         }
     }
     
