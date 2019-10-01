@@ -80,8 +80,8 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
-        textField.layoutMargins.left = textFieldMargin
-//        textField.layoutMargins.right = textFieldMargin
+        textField.layoutMargins.left = 2 * textFieldMargin
+//        textField.layoutMargins.right = 2 * textFieldMargin
 //        textField.clearsOnBeginEditing = true
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
@@ -90,7 +90,6 @@ class PasswordField: UIControl {
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
-        
         // SHOW/HIDE BUTTON
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,6 +97,7 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         ])
+        showHideButton.isUserInteractionEnabled = true
         showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 //        textField.rightView = showHideButton
@@ -237,9 +237,9 @@ extension PasswordField: UITextFieldDelegate {
         
     }
     
-    @objc func showHidePassword() {
-        if showHideButton.isSelected {
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
+    @objc func showHidePassword(_ sender: UIButton) {
+        if sender == showHideButton {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             textField.textContentType = .none
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
