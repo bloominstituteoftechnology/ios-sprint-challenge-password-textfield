@@ -40,6 +40,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
+        self.backgroundColor = unusedColor
         // TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +65,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
+//        textField.isUserInteractionEnabled = true
         
         // SHOW/HIDE BUTTON
         addSubview(showHideButton)
@@ -74,28 +76,38 @@ class PasswordField: UIControl {
         ])
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
-        // WEAKVIEW
+        // WEAK VIEW
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
+            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
         
         ])
+        weakView.sizeThatFits(colorViewSize)
+        weakView.backgroundColor = .red
+        weakView.layer.cornerRadius = 2.0
         
+        // MEDIUM VIEW
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
-        
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
         ])
+        mediumView.sizeThatFits(colorViewSize)
         
+        // STRONG VIEW
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
-        
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
         ])
+        strongView.sizeThatFits(colorViewSize)
+
         
+        // STRENGTH DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
