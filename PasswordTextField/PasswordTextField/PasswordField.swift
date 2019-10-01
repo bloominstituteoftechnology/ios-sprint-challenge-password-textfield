@@ -40,9 +40,80 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+        self.backgroundColor = unusedColor
+        // TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+        ])
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        titleLabel.text = "ENTER PASSWORD"
+        
+        // TEXTFIELD
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = standardMargin
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+//        textField.isUserInteractionEnabled = true
+        
+        // SHOW/HIDE BUTTON
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+        ])
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        // WEAK VIEW
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+        
+        ])
+        weakView.sizeThatFits(colorViewSize)
+        weakView.backgroundColor = .red
+        weakView.layer.cornerRadius = 2.0
+        
+        // MEDIUM VIEW
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        ])
+        mediumView.sizeThatFits(colorViewSize)
+        
+        // STRONG VIEW
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        ])
+        strongView.sizeThatFits(colorViewSize)
+
+        
+        // STRENGTH DESCRIPTION LABEL
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -56,7 +127,32 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
         // TODO: send new text to the determine strength method
+        determineStrength(newText.count)
+        
         return true
+    }
+    
+    func determineStrength(_ textLength: Int) {
+        switch textLength {
+        case 1..<9:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = unusedColor
+            strongView.tintColor = unusedColor
+        case 9..<18:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = mediumColor
+            strongView.tintColor = unusedColor
+        case 18..<36:
+            weakView.tintColor = weakColor
+            mediumView.tintColor = mediumColor
+            strongView.tintColor = strongColor
+        default:
+            weakView.tintColor = unusedColor
+            mediumView.tintColor = unusedColor
+            strongView.tintColor = unusedColor
+            
+        }
     }
 }
