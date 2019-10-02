@@ -109,18 +109,29 @@ import UIKit
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
 }
 
 
 
 extension PasswordField: UITextFieldDelegate {
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
+        let oldText = self.textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        switch newText.count {
+        case 1...8: strengthDescriptionLabel.text = "Too Weak"
+        case 9...19: strengthDescriptionLabel.text = "Could be Stronger"
+        case 20...2000: strengthDescriptionLabel.text = "Strong Password"
+        default: strengthDescriptionLabel.text = "Too Weak"
+        }
         
+ 
         return true
     }
+    
+
 }
