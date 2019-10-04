@@ -123,10 +123,23 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         switch newText.count {
-        case 1...8: strengthDescriptionLabel.text = "Too Weak"
+        case 1...8:
+            strengthDescriptionLabel.text = "Too Weak"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         case 9...19: strengthDescriptionLabel.text = "Could be Stronger"
+            weakView.backgroundColor = weakColor
+                       mediumView.backgroundColor = mediumColor
+                       strongView.backgroundColor = unusedColor
         case 20...2000: strengthDescriptionLabel.text = "Strong Password"
+            weakView.backgroundColor = weakColor
+                       mediumView.backgroundColor = mediumColor
+                       strongView.backgroundColor = strongColor
         default: strengthDescriptionLabel.text = "Too Weak"
+            weakView.backgroundColor = weakColor
+                    mediumView.backgroundColor = unusedColor
+                    strongView.backgroundColor = unusedColor
         }
         
  
