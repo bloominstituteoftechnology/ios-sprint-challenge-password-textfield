@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "Too Weak"
+    case medium = "Could Be Stronger"
+    case strong = "Strong Password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -39,6 +45,7 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        backgroundColor = bgColor
         // Lay out your subviews here
         
         // DIRECTION TITLE
@@ -56,9 +63,6 @@ class PasswordField: UIControl {
         textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
         textField.contentVerticalAlignment = .center
-        textField.rightView = showHideButton
-        textField.rightViewMode = .always
-        
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
@@ -74,12 +78,16 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage (named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
-        NSLayoutConstraint.activate([showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin)])
+        NSLayoutConstraint.activate([
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin)
+        ])
         
         // WEAK VIEW
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
             weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
@@ -91,7 +99,7 @@ class PasswordField: UIControl {
         // MEDIUM VIEW
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
             mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
@@ -103,7 +111,7 @@ class PasswordField: UIControl {
         // STRONG VIEW
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
             strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
@@ -115,7 +123,7 @@ class PasswordField: UIControl {
         // STRENGTH DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.text = "Strong Password"
+        strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
@@ -127,14 +135,12 @@ class PasswordField: UIControl {
     }
     
     @objc func showHideButtonTapped() {
-        var eyesClosed = true
-        eyesClosed.toggle()
-        if eyesClosed == true {
-            showHideButton.setImage(UIImage (named: "eyes-closed"), for: .normal)
-            textField.isSecureTextEntry = true
-        } else {
+        if showHideButton.currentImage == UIImage(named: "eyes-closed") {
             showHideButton.setImage(UIImage (named: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
+        } else {
+            showHideButton.setImage(UIImage (named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         }
         
     }
@@ -151,6 +157,47 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        password = newText
+        switch password.count {
+        case 1...6:
+            weakView.performFlare()
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        case 7...12:
+            mediumView.performFlare()
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
+        case 13...:
+            strongView.performFlare()
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
+        default:
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
+        }
+        
+        sendActions(for: .valueChanged)
+        
         return true
+    }
+}
+
+extension UIView {
+    // "Flare view" animation sequence
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
