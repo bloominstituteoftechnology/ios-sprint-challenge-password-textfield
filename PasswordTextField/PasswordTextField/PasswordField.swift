@@ -50,6 +50,7 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
     }
     
@@ -91,7 +92,6 @@ class PasswordField: UIControl {
         textField.textColor = UIColor.black
         textField.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
         textField.textAlignment = .left
-        textField.isSecureTextEntry = true
         textField.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
 
         
@@ -99,7 +99,7 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
-        changeImage()
+        changeImage(showHideButton)
         showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
         
 
@@ -110,13 +110,7 @@ class PasswordField: UIControl {
         weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
         weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
-        
-        if password.count > 0, password.count <= 4 {
-            weakView.backgroundColor = weakColor;
-            strengthDescriptionLabel.text = "Weak Password"
-        } else {
-            weakView.backgroundColor = unusedColor
-        }
+        weakView.backgroundColor = unusedColor
         
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,13 +118,8 @@ class PasswordField: UIControl {
         mediumView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         mediumView.trailingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 50).isActive = true
         mediumView.bottomAnchor.constraint(equalTo: mediumView.topAnchor, constant: 3).isActive = true
+        mediumView.backgroundColor = unusedColor
         
-        if password.count > 4, password.count <= 8 {
-            mediumView.backgroundColor = mediumColor;
-            strengthDescriptionLabel.text = "Weak Ok"
-        } else {
-            mediumView.backgroundColor = unusedColor
-        }
         
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,13 +127,8 @@ class PasswordField: UIControl {
         strongView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
         strongView.trailingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: 50).isActive = true
         strongView.bottomAnchor.constraint(equalTo: strongView.topAnchor, constant: 3).isActive = true
-        
-        if password.count > 0, password.count <= 4 {
-            strongView.backgroundColor = strongColor;
-            strengthDescriptionLabel.text = "Strong Password"
-        } else {
-            strongView.backgroundColor = unusedColor
-        }
+        strongView.backgroundColor = unusedColor
+
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -155,15 +139,14 @@ class PasswordField: UIControl {
         
     }
     
-    @objc func changeImage() {
+    @objc func changeImage(_ sender: UIButton) {
         
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
         } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal);
-            for _ in password {
-                _ = "*"
-            }
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
     
