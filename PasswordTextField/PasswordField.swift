@@ -40,27 +40,47 @@ class PasswordField: UIControl {
     
     func setup() {
         
-        titleLabel.text = "ENTER PASSWORD"
         
         // Turning off automatic resizing
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
         
-        // Adding subviews
+        // Adding Subviews
         addSubview(titleLabel)
         addSubview(showHideButton)
+        addSubview(textField)
         
-        // Adding constraints
-        //showHideButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        //showHideButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 20).isActive = true
-        //showHideButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+        // Adding Formatting
         
-        let horizontalConstraint = showHideButton.self.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        /// Misc
+        titleLabel.text = "ENTER PASSWORD"
+        textField.layer.borderWidth = 1.0
+        
+        /// Colors
+        titleLabel.textColor = labelTextColor
+        self.backgroundColor = bgColor
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        
+        
+        // Adding Constraints
+        
+        /// UIControl View
+        self.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        self.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        /// TextField
+        let textFieldWidth = textField.widthAnchor.constraint(equalToConstant: 350)
+        let textFieldHeight = textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        
+        self.addConstraints([textFieldWidth, textFieldHeight])
+        
+        /// ShowHideButton
+        let horizontalConstraint = showHideButton.trailingAnchor.constraint(equalTo: textField.leadingAnchor, constant: 10)
         self.addConstraints([horizontalConstraint])
+        
+        
 
-        
-        
-       
         
         // Show/Hide Button
         if showHideButton.isSelected == true {
