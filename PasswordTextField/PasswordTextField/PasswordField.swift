@@ -85,9 +85,43 @@ class PasswordField: UIControl {
 			textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
 			])
 
+		// MARK: - Add Password text Field
+		textFieldContainerView.addSubview(textField)
+		textField.placeholder = "testing"
+		textField.isSecureTextEntry = true
+		textField.rightView = showHideButton
+		textField.rightViewMode = .always
+		textField.delegate = self
+		textField.becomeFirstResponder()
+
+		textField.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin),
+			textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: standardMargin),
+			textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -standardMargin),
+			textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -standardMargin)
+			])
+
+		showHideButton.translatesAutoresizingMaskIntoConstraints = false
+		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+
+		
 
 
     }
+
+	@objc func showPassword(_ sender: UIButton) {
+
+		textField.isSecureTextEntry.toggle()
+
+		switch textField.isSecureTextEntry {
+		case true:
+			showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+		default:
+			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+		}
+	}
     
 
 }
