@@ -42,6 +42,7 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    // MARK: Properties
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -50,11 +51,40 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var textFieldContainerView: UIView = UIView()
+    private var allElementsStackView: UIStackView = UIStackView()
+    private var strengthBarsStackView: UIStackView = UIStackView()
+    
+    // MARK: Setup Func
     func setup() {
         // Lay out your subviews here
+        layer.cornerRadius = 8
+        backgroundColor = bgColor
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // MARK: AddSubviews
+        [titleLabel, textField, strengthBarsStackView].forEach {
+            allElementsStackView.addArrangedSubview($0) }
+        [weakView, mediumView, strongView, strengthDescriptionLabel].forEach {
+            strengthBarsStackView.addArrangedSubview($0)
+        }
+        
+        // MARK: Size & Spacing
+        textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        allElementsStackView.alignment = .fill
+        allElementsStackView.distribution = .fill
+        allElementsStackView.axis = .vertical
+        
+        strengthBarsStackView.alignment = .center
+        strengthBarsStackView.distribution = .fill
+        strengthBarsStackView.spacing = standardMargin
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,13 +92,19 @@ class PasswordField: UIControl {
         setup()
     }
 }
-
+// MARK: PasswordField Extension
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        password = newText
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }
