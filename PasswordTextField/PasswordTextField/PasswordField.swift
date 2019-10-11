@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum Strength: String {
+    case weak = "Weak"
+    case medium = "Medium"
+    case strong = "Strong"
+}
+
 
 
 class PasswordField: UIControl {
@@ -161,6 +167,33 @@ class PasswordField: UIControl {
         }
     }
     
+    func passwordStrengthCheck(_ password: String) {
+        
+        let count = password.count
+        
+        if count <= 5 {
+            weakView.backgroundColor = weakColor
+            strengthDescriptionLabel.text = "Password strength: \(Strength.weak.rawValue)"
+            
+        } else if (6...12).contains(count) {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strengthDescriptionLabel.text = "Password strength: \(Strength.medium.rawValue)"
+            
+        } else if (13...22).contains(count) {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Password strength: \(Strength.strong.rawValue)"
+        } else {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Password strength: N/A"
+        }
+        
+    }
+    
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         
         let touchPoint = touch.location(in: showHideButton)
@@ -216,6 +249,8 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        self.password = newText
+        self.passwordStrengthCheck(newText)
         return true
     }
 }
