@@ -130,8 +130,18 @@ class PasswordField: UIControl {
         strengthStackView.spacing = 2
         addSubview(strengthStackView)
         
+        let strengthDescriptionLabel = UILabel()
+        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strengthDescriptionLabel)
+        
+        self.strengthDescriptionLabel = strengthDescriptionLabel
+        
         NSLayoutConstraint.activate([
-            strengthStackView.topAnchor.constraint(equalTo: passwordWrapper.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordWrapper.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strengthStackView.trailingAnchor, constant: standardMargin),
+            
+            strengthStackView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             strengthStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
