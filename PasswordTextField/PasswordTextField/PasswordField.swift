@@ -89,17 +89,15 @@ class PasswordField: UIControl {
         
         let passwordWrapper = UIView()
         passwordWrapper.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
+
         passwordWrapper.layer.borderWidth = 2
         passwordWrapper.layer.cornerRadius = 12
         passwordWrapper.layer.borderColor = textFieldBorderColor.cgColor
         
-        let stackView = UIStackView(arrangedSubviews: [textField, showHideButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let passwordStackView = UIStackView(arrangedSubviews: [textField, showHideButton])
+        passwordStackView.translatesAutoresizingMaskIntoConstraints = false
         //stackView.frame = passwordWrapper.frame
-        passwordWrapper.addSubview(stackView)
+        passwordWrapper.addSubview(passwordStackView)
         
         addSubview(passwordWrapper)
         
@@ -111,12 +109,28 @@ class PasswordField: UIControl {
         ])
         
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: passwordWrapper.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: passwordWrapper.leadingAnchor, constant: textFieldMargin),
-            stackView.trailingAnchor.constraint(equalTo: passwordWrapper.trailingAnchor, constant: textFieldMargin * -1),
-            stackView.bottomAnchor.constraint(equalTo: passwordWrapper.bottomAnchor)
+            passwordStackView.topAnchor.constraint(equalTo: passwordWrapper.topAnchor),
+            passwordStackView.leadingAnchor.constraint(equalTo: passwordWrapper.leadingAnchor, constant: textFieldMargin),
+            passwordStackView.trailingAnchor.constraint(equalTo: passwordWrapper.trailingAnchor, constant: textFieldMargin * -1),
+            passwordStackView.bottomAnchor.constraint(equalTo: passwordWrapper.bottomAnchor)
         ])
         
+        let weakView = UIView()
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(weakView)
+        
+        weakView.layer.borderWidth = 8
+        weakView.layer.cornerRadius = colorViewSize.height / 2
+        weakView.layer.borderColor = weakColor.cgColor
+        
+        //weakView.frame.size = colorViewSize
+        
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: passwordWrapper.bottomAnchor, constant: standardMargin),
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
