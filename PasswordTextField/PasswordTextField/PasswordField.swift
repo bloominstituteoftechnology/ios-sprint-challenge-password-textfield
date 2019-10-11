@@ -141,13 +141,18 @@ class PasswordField: UIControl {
     
     @objc func changeImage(_ sender: UIButton) {
         
-        if showHideButton.isSelected == true {
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-            textField.isSecureTextEntry = false
-        } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-            textField.isSecureTextEntry = true
-        }
+        showHideButton.setImage(UIImage(named: textField.isSecureTextEntry ? "eyes-open" : "eyes-closed"), for: .normal)
+        textField.isSecureTextEntry.toggle()
+
+        
+        
+//        if showHideButton.isSelected == true {
+//            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+//            textField.isSecureTextEntry = false
+//        } else {
+//            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+//            textField.isSecureTextEntry = true
+//        }
     }
     
     func passwordStrengthCheck(_ password: String) {
