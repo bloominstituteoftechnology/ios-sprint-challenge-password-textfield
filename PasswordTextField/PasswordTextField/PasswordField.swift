@@ -40,6 +40,11 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var eyeButton: UIButton = UIButton(type: .custom)
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
     func setup() {
         // Lay out your subviews here
         
@@ -126,13 +131,13 @@ class PasswordField: UIControl {
             strongView.backgroundColor = unusedColor
         }
         
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 4).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor).isActive = true
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 10.0, weight: .light)
         
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
     }
     
     @objc func changeImage(_ sender: UIButton) {
@@ -145,6 +150,57 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = true
         }
     }
+    
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        
+        let touchPoint = touch.location(in: showHideButton)
+        
+        if showHideButton.bounds.contains(touchPoint) {
+            sendActions(for: [.valueChanged, .touchUpInside])
+        } else {
+            sendActions(for: [.touchUpInside])
+            
+            return false
+        }
+        
+        return false
+    }
+    
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        
+        let touchPoint = touch.location(in: showHideButton)
+        
+        if showHideButton.bounds.contains(touchPoint) {
+            sendActions(for: [.valueChanged, .touchUpInside])
+            
+        } else {
+            sendActions(for: [.touchUpInside])
+        }
+        
+        return true
+        
+    }
+    
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        
+        defer {
+            super.endTracking(touch, with: event)
+        }
+        
+        guard let touchPoint = touch?.location(in: showHideButton) else { return }
+        
+        if showHideButton.bounds.contains(touchPoint) {
+            sendActions(for: [.valueChanged, .touchUpInside])
+        } else {
+            sendActions(for: [.touchDragOutside])
+        }
+        
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: [.touchCancel])
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
