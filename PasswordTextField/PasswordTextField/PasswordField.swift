@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -62,15 +63,18 @@ class PasswordField: UIControl {
         textField.autocorrectionType = .no
         textField.isEnabled = true
         textField.text = "1234567890"
+        textField.placeholder = "Password"
         textField.isSecureTextEntry = true
         textField.delegate = self
+        textField.becomeFirstResponder()
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         self.textField = textField
         
         let showHideButton = UIButton()
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showPasswordToggle), for: .touchUpInside)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
         self.showHideButton = showHideButton
@@ -160,7 +164,10 @@ class PasswordField: UIControl {
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         ])
         
-        determineStrength(textField.text!)
+        password = textField.text!
+        determineStrength()
+        showPasswordToggle()
+        sendActions(for: .valueChanged)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -168,7 +175,7 @@ class PasswordField: UIControl {
         setup()
     }
     
-    func determineStrength(_ password: String) {
+    func determineStrength() {
         let length = password.count
         
         if length > 19 {
@@ -185,7 +192,19 @@ class PasswordField: UIControl {
             mediumView.layer.borderColor = unusedColor.cgColor
             strengthDescriptionLabel.text = "Too weak"
         }
+    }
+    
+    @objc func showPasswordToggle() {
+        let openImage = UIImage(named: "eyes-open")
+        let closedImage = UIImage(named: "eyes-closed")
         
+        if showHideButton.currentImage == openImage {
+            showHideButton.setImage(closedImage, for: .normal)
+            textField.isSecureTextEntry = true
+        } else {
+            showHideButton.setImage(openImage, for: .normal)
+            textField.isSecureTextEntry = false
+        }
     }
 }
 
@@ -194,7 +213,8 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        determineStrength(newText)
+        password = newText
+        determineStrength()
         return true
     }
     
@@ -234,7 +254,10 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // called when 'return' key pressed. return NO to ignore.
         print("TextField should return method called")
-        // may be useful: textField.resignFirstResponder()
+        textField.resignFirstResponder()
+        
+        sendActions(for: .valueChanged)
+        
         return true
     }
 }
