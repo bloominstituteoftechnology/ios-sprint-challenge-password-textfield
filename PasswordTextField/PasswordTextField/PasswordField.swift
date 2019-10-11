@@ -40,6 +40,8 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        backgroundColor = bgColor
+        
         let titleLabel = UILabel()
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
