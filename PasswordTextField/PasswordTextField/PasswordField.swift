@@ -84,6 +84,49 @@ class PasswordField: UIControl {
         showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
 
         
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.leadingAnchor.constraint(equalTo: passwordContainer.leadingAnchor, constant: 8).isActive = true
+        weakView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        weakView.trailingAnchor.constraint(equalTo: weakView.leadingAnchor, constant: 50).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: weakView.topAnchor, constant: 3).isActive = true
+        
+        if aPassword.count > 0, aPassword.count <= 4 {
+            weakView.backgroundColor = weakColor;
+            strengthDescriptionLabel.text = "Weak Password"
+        } else {
+            weakView.backgroundColor = unusedColor
+        }
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 3).isActive = true
+        mediumView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        mediumView.trailingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 50).isActive = true
+        mediumView.bottomAnchor.constraint(equalTo: mediumView.topAnchor, constant: 3).isActive = true
+        
+        if aPassword.count > 4, aPassword.count <= 8 {
+            mediumView.backgroundColor = mediumColor;
+            strengthDescriptionLabel.text = "Weak Ok"
+        } else {
+            mediumView.backgroundColor = unusedColor
+        }
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8).isActive = true
+        strongView.topAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: 8).isActive = true
+        strongView.trailingAnchor.constraint(equalTo: strongView.leadingAnchor, constant: 50).isActive = true
+        strongView.bottomAnchor.constraint(equalTo: strongView.topAnchor, constant: 3).isActive = true
+        
+        if aPassword.count > 0, aPassword.count <= 4 {
+            strongView.backgroundColor = strongColor;
+            strengthDescriptionLabel.text = "Strong Password"
+        } else {
+            strongView.backgroundColor = unusedColor
+        }
+        
+        
         
     }
     
