@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -29,8 +30,10 @@ class PasswordField: UIControl {
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
-    
+
+	// MARK: - Properties
     private var titleLabel: UILabel = UILabel()
+	private var textFieldContainerView: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -66,6 +69,20 @@ class PasswordField: UIControl {
 			titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
 			titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
 			titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+			])
+
+		// Password Container
+		addSubview(textFieldContainerView)
+		textFieldContainerView.layer.borderColor = textFieldBorderColor.cgColor
+		textFieldContainerView.layer.borderWidth = 1.5
+		textFieldContainerView.layer.cornerRadius = 5.0
+
+		textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+			textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0),
+			textFieldContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+			textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
 			])
 
 
