@@ -151,11 +151,11 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             allElementsStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
             
-            allElementsStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin),
+            allElementsStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin),
             
             allElementsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
             
-            allElementsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin),
+            allElementsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
             
             strengthBarsStackView.heightAnchor.constraint(equalToConstant: 16)
         ])
@@ -191,37 +191,34 @@ class PasswordField: UIControl {
     
     //MARK: Strength Bar Color Func
     func changePasswordStrengthBarColor() {
-    if let passwordStrength = passwordStrength,
-        let password = textField.text,
-        !password.isEmpty {
-        switch passwordStrength {
-        case .tooWeak:
-            
-            weakView.backgroundColor = self.weakColor
-            mediumView.backgroundColor = self.unusedColor
-                self.strongView.backgroundColor = self.unusedColor
-                self.strengthDescriptionLabel.text = passwordStrength.rawValue
-            
-        case .couldBeStronger:
-             
-                           self.weakView.backgroundColor = self.unusedColor
-                           self.mediumView.backgroundColor = self.mediumColor
-                           self.strongView.backgroundColor = self.unusedColor
-                           self.strengthDescriptionLabel.text = passwordStrength.rawValue
-                       
-        case .strong:
-             
-                           self.weakView.backgroundColor = self.unusedColor
-                           self.mediumView.backgroundColor = self.unusedColor
-                           self.strongView.backgroundColor = self.strongColor
-                           self.strengthDescriptionLabel.text = passwordStrength.rawValue
-                       
-        }
-    } else {
-        
-        weakView.backgroundColor = unusedColor;
-        mediumView.backgroundColor = unusedColor;
-        strongView.backgroundColor = unusedColor
+        if let passwordStrength = passwordStrength,
+            let password = textField.text,
+            !password.isEmpty {
+            switch passwordStrength {
+            case .tooWeak:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = passwordStrength.rawValue
+                
+            case .couldBeStronger:
+                
+                weakView.backgroundColor = unusedColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = passwordStrength.rawValue
+                
+            case .strong:
+                weakView.backgroundColor = unusedColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = strongColor
+                strengthDescriptionLabel.text = passwordStrength.rawValue
+                
+            }
+        } else {
+            weakView.backgroundColor = unusedColor;
+            mediumView.backgroundColor = unusedColor;
+            strongView.backgroundColor = unusedColor
         }
     }
 }
