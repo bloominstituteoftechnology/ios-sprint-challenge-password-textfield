@@ -163,7 +163,7 @@ class PasswordField: UIControl {
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         ])
         
-        determineStrength()
+        determineStrength(from: "", to: "")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -171,22 +171,35 @@ class PasswordField: UIControl {
         setup()
     }
     
-    func determineStrength() {
-        let length = password.count
+    func determineStrength(from oldText: String, to newText: String) {
+        let newLength = newText.count
+        let oldLength = oldText.count
         
-        if length > 19 {
+        if newLength > 19 {
             strongView.layer.borderColor = strongColor.cgColor
             strengthDescriptionLabel.text = "Strong password"
+            if oldLength <= 19 {
+                animateStrength(view: strongView)
+            }
         } else {
             strongView.layer.borderColor = unusedColor.cgColor
             strengthDescriptionLabel.text = "Could be stronger"
+            if oldLength > 19 {
+                animateStrength(view: mediumView)
+            }
         }
         
-        if length > 9 {
+        if newLength > 9 {
             mediumView.layer.borderColor = mediumColor.cgColor
+            if oldLength <= 9 {
+                animateStrength(view: mediumView)
+            }
         } else {
             mediumView.layer.borderColor = unusedColor.cgColor
             strengthDescriptionLabel.text = "Too weak"
+            if oldLength > 9 {
+                animateStrength(view: weakView)
+            }
         }
     }
     
@@ -202,6 +215,14 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = false
         }
     }
+    
+    func animateStrength(view: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {
+            view.transform = CGAffineTransform(scaleX: 1, y: 1.8)
+        }) { (_) in
+            view.transform = .identity
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -210,7 +231,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
-        determineStrength()
+        determineStrength(from: oldText, to: newText)
         return true
     }
 
