@@ -10,6 +10,8 @@ import UIKit
 
 @IBDesignable
 class PasswordField: UIControl {
+
+	private var passwordSecure: Bool = true
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -40,9 +42,11 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+	private var securityButton: UIButton = UIButton(type: .custom)
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		textField.delegate = self
 		setup()
 	}
 
@@ -138,6 +142,14 @@ class PasswordField: UIControl {
 		stackView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
 		stackView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2).isActive = true
 
+		addSubview(strengthDescriptionLabel)
+		strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+		strengthDescriptionLabel.text = "testing"
+		strengthDescriptionLabel.font = labelFont
+		strengthDescriptionLabel.textColor = labelTextColor
+
+		strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin).isActive = true
+		strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin).isActive = true
 
     }
 
@@ -152,6 +164,28 @@ class PasswordField: UIControl {
 			showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
 		}
 	}
+
+	func passwordStrengthCheck(_ password: String) {
+
+		let count = password.count
+
+		switch count {
+		case 1...9:
+			weakView.backgroundColor = weakColor
+			strengthDescriptionLabel.text = "Too weak"
+		case 10...16:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strengthDescriptionLabel.text = "Could be stronger"
+		case 16...:
+			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = mediumColor
+			strongView.backgroundColor = strongColor
+			strengthDescriptionLabel.text = "Strong password"
+		default:
+			weakView.backgroundColor = weakColor
+		}
+	}
     
 
 }
@@ -162,6 +196,8 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+
+		self.passwordStrengthCheck(newText)
         return true
     }
 }
