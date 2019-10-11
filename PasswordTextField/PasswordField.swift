@@ -39,16 +39,27 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        
         // Lay out your subviews here
         
+        titleLabel.text = "ENTER PASSWORD"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Show/Hide Button
+        if showHideButton.isSelected == true {
+            showHideButton.setImage("eyes-open", for: .normal)
+        } else {
+            
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
