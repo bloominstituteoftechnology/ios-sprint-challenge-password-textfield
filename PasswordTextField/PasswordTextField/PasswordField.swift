@@ -38,7 +38,6 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
-    private var eyeButton: UIButton = UIButton(type: .custom)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -71,7 +70,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.leadingAnchor.constraint(equalTo: passwordContainer.leadingAnchor, constant: 4).isActive = true
         textField.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 2).isActive = true
-        textField.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -2).isActive = true
+        textField.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
         textField.bottomAnchor.constraint(equalTo: passwordContainer.bottomAnchor, constant: -2).isActive = true
         textField.placeholder = "Enter password here"
         textField.textColor = UIColor.black
@@ -87,6 +86,7 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
         showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
+        changeImage()
 
         
         addSubview(weakView)
@@ -140,14 +140,15 @@ class PasswordField: UIControl {
         
     }
     
-    @objc func changeImage(_ sender: UIButton) {
+    @objc func changeImage() {
         
-        if textField.isSecureTextEntry == true {
-            sender.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
-            textField.isSecureTextEntry = false
+        if showHideButton.isSelected == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         } else {
-            sender.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
-            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal);
+            for _ in password {
+                _ = "*"
+            }
         }
     }
     
