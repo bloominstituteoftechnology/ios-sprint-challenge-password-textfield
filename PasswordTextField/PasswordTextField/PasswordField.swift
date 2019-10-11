@@ -85,6 +85,8 @@ class PasswordField: UIControl {
         textField.textColor = UIColor.black
         textField.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
         textField.textAlignment = .left
+        textField.isSecureTextEntry = true
+        textField.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
 
         
         addSubview(showHideButton)
