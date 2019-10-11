@@ -39,10 +39,84 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
-        
-        addSubview(titleLabel)
+        let titleLabel = UILabel()
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin)
+        ])
+        
+        self.titleLabel = titleLabel
+
+        let textField = UITextField()
+        textField.delegate = self
+        textField.isUserInteractionEnabled = true
+        textField.borderStyle = .none
+        textField.isEnabled = true
+        textField.text = "test"
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        //addSubview(textField)
+        
+//        NSLayoutConstraint.activate([
+//            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+//            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
+//            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin),
+//            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+//        ])
+        
+        //textField.layer.borderWidth = 2
+        //textField.layer.cornerRadius = 12
+        
+        self.textField = textField
+        
+        let showHideButton = UIButton()
+        //showHideButton.setTitle("temp", for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        //addSubview(showHideButton)
+        
+//        NSLayoutConstraint.activate([
+//            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+//            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: standardMargin * -1)
+//        ])
+        
+        let passwordWrapper = UIView()
+        passwordWrapper.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        passwordWrapper.layer.borderWidth = 2
+        passwordWrapper.layer.cornerRadius = 12
+        passwordWrapper.layer.borderColor = textFieldBorderColor.cgColor
+        
+        let stackView = UIStackView(arrangedSubviews: [textField, showHideButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        //stackView.frame = passwordWrapper.frame
+        passwordWrapper.addSubview(stackView)
+        
+        addSubview(passwordWrapper)
+        
+        NSLayoutConstraint.activate([
+            passwordWrapper.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            passwordWrapper.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            passwordWrapper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin * -1),
+            passwordWrapper.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: passwordWrapper.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: passwordWrapper.leadingAnchor, constant: textFieldMargin),
+            stackView.trailingAnchor.constraint(equalTo: passwordWrapper.trailingAnchor, constant: textFieldMargin * -1),
+            stackView.bottomAnchor.constraint(equalTo: passwordWrapper.bottomAnchor)
+        ])
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
