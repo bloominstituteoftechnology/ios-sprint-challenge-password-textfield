@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 class PasswordField: UIControl {
     
     enum PasswordStrength: String {
@@ -59,10 +58,12 @@ class PasswordField: UIControl {
     }
     
     func setup() {
+        backgroundColor = bgColor
         
         // "ENTER PASSWORD"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
@@ -76,31 +77,40 @@ class PasswordField: UIControl {
         // Text Field
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.frame.size.height = textFieldContainerHeight
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 4
+
+        textField.isSecureTextEntry = true
+        textField.isUserInteractionEnabled = true
+        textField.font = labelFont
+        textField.text = "test"
+        textField.becomeFirstResponder()
+        
+        
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
-        textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.layer.borderWidth = 2
-        textField.layer.cornerRadius = 4
-        textField.isSecureTextEntry = true
-        textField.isUserInteractionEnabled = true
-        textField.font = labelFont
-        textField.text = "test"
         
         // Secure Button
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin),
-            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin),
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
-            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor)
-        ])
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame.size = CGSize(width: textFieldContainerHeight - 4, height: textFieldContainerHeight - 4)
         showHideButton.addTarget(self, action: #selector(showHideButtonTabbed), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -4)
+        ])
         
         // Weak View
         addSubview(weakView)
@@ -179,41 +189,50 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Weak"
-            passwordStrength = .weak
             
-            UIView.animate(withDuration: 0.3, animations: {
-                self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
-            }) { (_) in
-                UIView.animate(withDuration: 0.1) {
-                    self.weakView.transform = .identity
+            if passwordStrength != .weak {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
                 }
             }
+            passwordStrength = .weak
+            
         case 8...14:
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
-            passwordStrength = .medium
             
-            UIView.animate(withDuration: 0.3, animations: {
-                self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
-            }) { (_) in
-                UIView.animate(withDuration: 0.1) {
-                    self.mediumView.transform = .identity
+            if passwordStrength != .medium {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.mediumView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.mediumView.transform = .identity
+                    }
                 }
             }
+            passwordStrength = .medium
+            
         case 15...:
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
-            passwordStrength = .strong
             
-            UIView.animate(withDuration: 0.3, animations: {
-                self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
-            }) { (_) in
-                UIView.animate(withDuration: 0.1) {
-                    self.strongView.transform = .identity
+            if passwordStrength != .strong {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.strongView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.strongView.transform = .identity
+                    }
                 }
             }
+            passwordStrength = .strong
+            
         default:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
