@@ -47,6 +47,11 @@ class PasswordField: UIControl {
         setup()
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
     func setup() {
         // Lay out your subviews here
         
@@ -55,7 +60,7 @@ class PasswordField: UIControl {
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+//        titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -86,8 +91,9 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: passwordContainer.topAnchor, constant: 18).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: passwordContainer.trailingAnchor, constant: -8).isActive = true
-        showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
         changeImage()
+        showHideButton.addTarget(self, action: #selector(changeImage), for: .touchUpInside)
+        
 
         
         addSubview(weakView)
@@ -184,10 +190,7 @@ class PasswordField: UIControl {
     }
     
     override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-        
-        defer {
-            super.endTracking(touch, with: event)
-        }
+        super.endTracking(touch, with: event)
         
         guard let touchPoint = touch?.location(in: showHideButton) else { return }
         
