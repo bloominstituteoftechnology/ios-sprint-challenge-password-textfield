@@ -80,7 +80,7 @@ class PasswordField: UIControl {
         // MARK: Size & Spacing
         textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        
+    
         allElementsStackView.alignment = .fill
         allElementsStackView.distribution = .fill
         allElementsStackView.axis = .vertical
@@ -104,6 +104,7 @@ class PasswordField: UIControl {
         textField.clearButtonMode = .whileEditing
         textField.isSecureTextEntry = true
         
+        textField.delegate = self
         // MARK: Additional Setup (Labels, Stackviews)
         
         // Title Label
@@ -135,7 +136,7 @@ class PasswordField: UIControl {
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         weakView.layer.cornerRadius = colorViewSize.height / 2
-        
+        weakView.backgroundColor = weakColor
         // Medium View
         mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
@@ -163,6 +164,7 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        
     }
     
     // MARK: Show Password Func
@@ -194,26 +196,33 @@ class PasswordField: UIControl {
         !password.isEmpty {
         switch passwordStrength {
         case .tooWeak:
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = passwordStrength.rawValue
+            
+            weakView.backgroundColor = self.weakColor
+            mediumView.backgroundColor = self.unusedColor
+                self.strongView.backgroundColor = self.unusedColor
+                self.strengthDescriptionLabel.text = passwordStrength.rawValue
+            
         case .couldBeStronger:
-            weakView.backgroundColor = unusedColor
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = passwordStrength.rawValue
+             
+                           self.weakView.backgroundColor = self.unusedColor
+                           self.mediumView.backgroundColor = self.mediumColor
+                           self.strongView.backgroundColor = self.unusedColor
+                           self.strengthDescriptionLabel.text = passwordStrength.rawValue
+                       
         case .strong:
-            weakView.backgroundColor = unusedColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = strongColor
-            strengthDescriptionLabel.text = passwordStrength.rawValue
+             
+                           self.weakView.backgroundColor = self.unusedColor
+                           self.mediumView.backgroundColor = self.unusedColor
+                           self.strongView.backgroundColor = self.strongColor
+                           self.strengthDescriptionLabel.text = passwordStrength.rawValue
+                       
         }
     } else {
-        }
+        
         weakView.backgroundColor = unusedColor;
         mediumView.backgroundColor = unusedColor;
         strongView.backgroundColor = unusedColor
+        }
     }
 }
 // MARK: PasswordField Extension
@@ -230,5 +239,12 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let textFieldEnd = textField.text {
+            password = textFieldEnd
+        }
+        sendActions(for: .valueChanged)
     }
 }
