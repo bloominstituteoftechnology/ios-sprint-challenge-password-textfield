@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -38,11 +39,67 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var isTextHidden: Bool = true
+    private var showHideImage: UIImage = UIImage()
+    
     func setup() {
         // Lay out your subviews here
         
+        // titleLabel
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Enter Pasword"
+        titleLabel.textAlignment = .left
+        titleLabel.font = labelFont
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+        ])
+        
+        //textField
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textField)
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor), //I might need a constant
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        //show/hide button
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
+        showHideButton.imageView?.image = changeImage()
+        
+         NSLayoutConstraint.activate([
+                   showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor), //I might need a constant
+                   textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+                   textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+                   textField.heightAnchor.constraint(equalToConstant: 40)
+               ])
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    private func changeImage() -> UIImage {
+        if isTextHidden == true {
+            showHideImage = UIImage(named: "eyes-closed")!
+            return showHideImage
+        } else {
+            showHideImage = UIImage(named: "eyes-open")!
+            return showHideImage
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
