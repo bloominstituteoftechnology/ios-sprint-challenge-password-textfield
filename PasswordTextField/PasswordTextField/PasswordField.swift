@@ -41,11 +41,62 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        
+        // DIRECTION TITLE
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
+        
+        // TEXT FIELD
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.frame.size.height = textFieldContainerHeight
+        textField.becomeFirstResponder()
+        textField.isSecureTextEntry = true
+        textField.borderStyle = .bezel
+        textField.keyboardType = .default
+        textField.returnKeyType = .done
+        textField.contentVerticalAlignment = .center
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+        ])
+        
+        // SHOW/HIDE BUTTON
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage (named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        
+        // WEAK VIEW
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.sizeThatFits(colorViewSize)
+        weakView.tintColor = weakColor
+        
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
+        ])
+    }
+    
+    @objc func showHideButtonTapped() {
+        var eyesClosed = true
+        eyesClosed.toggle()
+        if eyesClosed == true {
+            showHideButton.setImage(UIImage (named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+        } else {
+            showHideButton.setImage(UIImage (named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
