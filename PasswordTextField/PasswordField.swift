@@ -40,16 +40,33 @@ class PasswordField: UIControl {
     
     func setup() {
         
-        // Lay out your subviews here
-        
         titleLabel.text = "ENTER PASSWORD"
-        addSubview(titleLabel)
+        
+        // Turning off automatic resizing
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Adding subviews
+        addSubview(titleLabel)
+        addSubview(showHideButton)
+        
+        // Adding constraints
+        //showHideButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        //showHideButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 20).isActive = true
+        //showHideButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+        
+        let horizontalConstraint = showHideButton.self.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        self.addConstraints([horizontalConstraint])
+
+        
+        
+       
         
         // Show/Hide Button
         if showHideButton.isSelected == true {
-            showHideButton.setImage("eyes-open", for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             
         }
     }
