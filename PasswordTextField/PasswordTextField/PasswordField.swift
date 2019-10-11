@@ -62,30 +62,14 @@ class PasswordField: UIControl {
         textField.text = "test"
         textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
-        //addSubview(textField)
-        
-//        NSLayoutConstraint.activate([
-//            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
-//            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
-//            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin),
-//            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
-//        ])
-        
-        //textField.layer.borderWidth = 2
-        //textField.layer.cornerRadius = 12
         
         self.textField = textField
         
         let showHideButton = UIButton()
-        //showHideButton.setTitle("temp", for: .normal)
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        //addSubview(showHideButton)
         
-//        NSLayoutConstraint.activate([
-//            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-//            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: standardMargin * -1)
-//        ])
+        self.showHideButton = showHideButton
         
         let passwordWrapper = UIView()
         passwordWrapper.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +80,6 @@ class PasswordField: UIControl {
         
         let passwordStackView = UIStackView(arrangedSubviews: [textField, showHideButton])
         passwordStackView.translatesAutoresizingMaskIntoConstraints = false
-        //stackView.frame = passwordWrapper.frame
         passwordWrapper.addSubview(passwordStackView)
         
         addSubview(passwordWrapper)
@@ -117,19 +100,48 @@ class PasswordField: UIControl {
         
         let weakView = UIView()
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(weakView)
         
         weakView.layer.borderWidth = 8
         weakView.layer.cornerRadius = colorViewSize.height / 2
         weakView.layer.borderColor = weakColor.cgColor
         
-        //weakView.frame.size = colorViewSize
+        self.weakView = weakView
+        
+        let mediumView = UIView()
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.layer.borderWidth = 8
+        mediumView.layer.cornerRadius = colorViewSize.height / 2
+        mediumView.layer.borderColor = mediumColor.cgColor
+        
+        self.mediumView = mediumView
+        
+        let strongView = UIView()
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.layer.borderWidth = 8
+        strongView.layer.cornerRadius = colorViewSize.height / 2
+        strongView.layer.borderColor = strongColor.cgColor
+        
+        self.strongView = strongView
+        
+        let strengthStackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+        strengthStackView.translatesAutoresizingMaskIntoConstraints = false
+        strengthStackView.spacing = 2
+        addSubview(strengthStackView)
         
         NSLayoutConstraint.activate([
-            weakView.topAnchor.constraint(equalTo: passwordWrapper.bottomAnchor, constant: standardMargin),
-            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            strengthStackView.topAnchor.constraint(equalTo: passwordWrapper.bottomAnchor, constant: standardMargin),
+            strengthStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
-            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         ])
     }
     
