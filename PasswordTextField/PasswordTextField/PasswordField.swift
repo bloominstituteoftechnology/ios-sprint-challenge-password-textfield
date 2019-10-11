@@ -106,7 +106,37 @@ class PasswordField: UIControl {
 		showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
 		showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
 
-		
+		// MARK: - Color Views: weak, medium, strong
+		weakView.translatesAutoresizingMaskIntoConstraints = false
+		weakView.backgroundColor = unusedColor
+		weakView.layer.cornerRadius = colorViewSize.height / 2
+		weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+
+		mediumView.translatesAutoresizingMaskIntoConstraints = false
+		mediumView.backgroundColor = unusedColor
+		mediumView.layer.cornerRadius = colorViewSize.height / 2
+		mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+
+		strongView.translatesAutoresizingMaskIntoConstraints = false
+		strongView.backgroundColor = unusedColor
+		strongView.layer.cornerRadius = colorViewSize.height / 2
+		strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+		strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+
+		// Add all the colorViews to the stackView
+		let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+
+		addSubview(stackView)
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		stackView.axis = .horizontal
+		stackView.distribution = .fill
+		stackView.spacing = 2.0
+		stackView.alignment = .center
+
+		stackView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: standardMargin).isActive = true
+		stackView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2).isActive = true
 
 
     }
