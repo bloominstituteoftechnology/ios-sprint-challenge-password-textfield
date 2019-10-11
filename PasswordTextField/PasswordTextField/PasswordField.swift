@@ -55,12 +55,16 @@ class PasswordField: UIControl {
         self.titleLabel = titleLabel
 
         let textField = UITextField()
-        textField.delegate = self
+        
         textField.isUserInteractionEnabled = true
         textField.borderStyle = .none
+        textField.keyboardType = .asciiCapable
+        textField.autocorrectionType = .no
         textField.isEnabled = true
-        textField.text = "test"
+        textField.text = "1234567890"
         textField.isSecureTextEntry = true
+        textField.delegate = self
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         self.textField = textField
@@ -112,7 +116,7 @@ class PasswordField: UIControl {
         
         mediumView.layer.borderWidth = 8
         mediumView.layer.cornerRadius = colorViewSize.height / 2
-        mediumView.layer.borderColor = mediumColor.cgColor
+        mediumView.layer.borderColor = unusedColor.cgColor
         
         self.mediumView = mediumView
         
@@ -121,7 +125,7 @@ class PasswordField: UIControl {
         
         strongView.layer.borderWidth = 8
         strongView.layer.cornerRadius = colorViewSize.height / 2
-        strongView.layer.borderColor = strongColor.cgColor
+        strongView.layer.borderColor = unusedColor.cgColor
         
         self.strongView = strongView
         
@@ -132,6 +136,8 @@ class PasswordField: UIControl {
         
         let strengthDescriptionLabel = UILabel()
         strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strengthDescriptionLabel)
         
@@ -153,11 +159,33 @@ class PasswordField: UIControl {
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         ])
+        
+        determineStrength(textField.text!)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    func determineStrength(_ password: String) {
+        let length = password.count
+        
+        if length > 19 {
+            strongView.layer.borderColor = strongColor.cgColor
+            strengthDescriptionLabel.text = "Strong password"
+        } else {
+            strongView.layer.borderColor = unusedColor.cgColor
+            strengthDescriptionLabel.text = "Could be stronger"
+        }
+        
+        if length > 9 {
+            mediumView.layer.borderColor = mediumColor.cgColor
+        } else {
+            mediumView.layer.borderColor = unusedColor.cgColor
+            strengthDescriptionLabel.text = "Too weak"
+        }
+        
     }
 }
 
@@ -166,7 +194,47 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        determineStrength(newText)
+        return true
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        // return NO to disallow editing.
+        print("TextField should begin editing method called")
+        return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // became first responder
+        print("TextField did begin editing method called")
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
+        print("TextField should snd editing method called")
+        return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
+        print("TextField did end editing method called")
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        // if implemented, called in place of textFieldDidEndEditing:
+        print("TextField did end editing with reason method called")
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        // called when clear button pressed. return NO to ignore (no notifications)
+        print("TextField should clear method called")
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // called when 'return' key pressed. return NO to ignore.
+        print("TextField should return method called")
+        // may be useful: textField.resignFirstResponder()
         return true
     }
 }
