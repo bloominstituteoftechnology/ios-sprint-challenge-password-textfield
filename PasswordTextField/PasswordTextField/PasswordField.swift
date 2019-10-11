@@ -8,7 +8,19 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case tooWeak = "Too Weak"
+    case couldBeStronger = "Could Be Stronger"
+    case strong = "Strong Password"
+}
+
+
 class PasswordField: UIControl {
+    
+    // MARK: Properties
+    private var passwordStrength: PasswordStrength? {
+        
+    }
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
