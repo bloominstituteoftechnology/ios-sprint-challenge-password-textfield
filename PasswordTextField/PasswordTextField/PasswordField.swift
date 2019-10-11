@@ -37,18 +37,42 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
-    
+
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		setup()
+	}
+
     func setup() {
         // Lay out your subviews here
-        
+
+		layer.cornerRadius = 0
+		backgroundColor = bgColor
+
+		NSLayoutConstraint.activate([
+			leadingAnchor.constraint(equalTo: self.leadingAnchor),
+			topAnchor.constraint(equalTo: self.topAnchor),
+			trailingAnchor.constraint(equalTo: self.trailingAnchor),
+			heightAnchor.constraint(equalToConstant: 109)
+			])
+
         addSubview(titleLabel)
+		titleLabel.text = "Enter password"
+		titleLabel.font = labelFont
+		titleLabel.textColor = labelTextColor
+
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+			titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
+			titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+			])
+
+
+
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+
 }
 
 extension PasswordField: UITextFieldDelegate {

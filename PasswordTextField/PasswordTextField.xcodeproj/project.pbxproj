@@ -56,15 +56,31 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
+				DD53D7312350D2B70030AC44 /* Resources */,
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
-				CE0883CD22C2C575008F9894 /* Main.storyboard */,
-				CE0883D022C2C576008F9894 /* Assets.xcassets */,
-				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
-				CE0883D522C2C576008F9894 /* Info.plist */,
+				DD53D7322350D2D00030AC44 /* Storyboard */,
 			);
 			path = PasswordTextField;
+			sourceTree = "<group>";
+		};
+		DD53D7312350D2B70030AC44 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
+				CE0883D022C2C576008F9894 /* Assets.xcassets */,
+				CE0883D522C2C576008F9894 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DD53D7322350D2D00030AC44 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,7 +303,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				DEVELOPMENT_TEAM = T87Y8KB3R4;
+				INFOPLIST_FILE = "$(SRCROOT)/PasswordTextField/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +321,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				DEVELOPMENT_TEAM = T87Y8KB3R4;
+				INFOPLIST_FILE = "$(SRCROOT)/PasswordTextField/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
