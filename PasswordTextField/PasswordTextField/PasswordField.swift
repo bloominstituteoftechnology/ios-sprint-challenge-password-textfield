@@ -18,12 +18,18 @@ enum PasswordStrength: String {
 class PasswordField: UIControl {
     
     // MARK: Properties
-    private var passwordStrength: PasswordStrength? {
-        changeStrengthBarColor()
+    private(set) var passwordStrength: PasswordStrength? {
+        didSet {
+            changePasswordStrengthBarColor()
+        }
     }
     
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
+    private (set) var password: String = "" {
+        didSet {
+            determinePasswordStrength()
+        }
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -56,7 +62,7 @@ class PasswordField: UIControl {
     private var strengthBarsStackView: UIStackView = UIStackView()
     
     // MARK: Setup Func
-    func setup() {
+   private func setup() {
         // Lay out your subviews here
         layer.cornerRadius = 8
         backgroundColor = bgColor
@@ -122,7 +128,7 @@ class PasswordField: UIControl {
         showHideButton.frame = CGRect(x: 0, y: 0,
                                       width: 50,
                                       height: 38)
-        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: standardMargin)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
         
         // Weak View
@@ -150,7 +156,7 @@ class PasswordField: UIControl {
             
             allElementsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin),
             
-            strengthBarsStackView.heightAnchor.constraint(equalTo: 16)
+            strengthBarsStackView.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
     
@@ -172,13 +178,17 @@ class PasswordField: UIControl {
     }
     //MARK: Determine Strength Func
     func determinePasswordStrength() {
-        if password.count <10 {
+        if password.count < 10 {
             passwordStrength = .tooWeak
-            
+        } else if (10...19).contains(password.count) {
+            passwordStrength = .couldBeStronger
+        } else {
+            passwordStrength = .strong
         }
     }
+    
     //MARK: Strength Bar Color Func
-    func changePasswordStregthBarColor() {
+    func changePasswordStrengthBarColor() {
     if let passwordStrength = passwordStrength,
         let password = textField.text,
         !password.isEmpty {
