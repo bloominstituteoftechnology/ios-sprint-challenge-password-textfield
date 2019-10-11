@@ -39,10 +39,109 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
         
+        // "ENTER PASSWORD"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
+        ])
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textAlignment = .left
+        
+        // Text Field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 4
+        textField.isSecureTextEntry = true
+        textField.isUserInteractionEnabled = true
+        textField.font = labelFont
+        textField.text = ""
+        
+        // Secure Button
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor)
+        ])
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTabbed), for: .touchUpInside)
+        
+        // Weak View
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 3
+        
+        // Medium View
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        mediumView.backgroundColor = unusedColor
+        mediumView.layer.cornerRadius = 3
+        
+        // Strong View
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 2),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        strongView.backgroundColor = unusedColor
+        strongView.layer.cornerRadius = 3
+        
+        // Strength Description Label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 4),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+        ])
+        strengthDescriptionLabel.text = "Weak"
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.textAlignment = .left
+        
+    }
+    
+    @objc func showHideButtonTabbed() {
+        if textField.isSecureTextEntry == true {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
