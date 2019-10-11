@@ -48,7 +48,7 @@ class PasswordField: UIControl {
         // titleLabel
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Enter Pasword"
+        titleLabel.text = "Enter Pasword: "
         titleLabel.textAlignment = .left
         titleLabel.font = labelFont
         
@@ -62,6 +62,8 @@ class PasswordField: UIControl {
         //textField
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
+        textField.borderStyle = .roundedRect
+        
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor), //I might need a constant
@@ -106,6 +108,8 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -113,7 +117,19 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
+        
+        
         // TODO: send new text to the determine strength method
+        
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        <#code#>
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        <#code#>
     }
 }
