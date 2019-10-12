@@ -38,6 +38,11 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
     func setup() {
         
         // Turning off automatic resizing
@@ -47,10 +52,14 @@ class PasswordField: UIControl {
         
         // Adding Subviews
         addSubview(titleLabel)
-        addSubview(showHideButton)
         addSubview(textField)
+        textField.addSubview(showHideButton)
         
-        // Adding Formatting
+        // Setting up button
+        showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        // Formatting
         
         /// Misc
         titleLabel.text = "ENTER PASSWORD"
@@ -81,19 +90,25 @@ class PasswordField: UIControl {
         self.addConstraints([showHideButtonTrailing, showHideButtonCenterY])
 
         
+
+    }
+    
+    @objc func showHideButtonAction() {
+        
+        print("Inside action function")
         // Setting image for Show/Hide Button
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            showHideButton.isSelected = false
+            print("true")
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-            
+            showHideButton.isSelected = true
+            print("false")
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+
     
     
 }
