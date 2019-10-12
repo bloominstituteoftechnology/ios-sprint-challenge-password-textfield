@@ -133,12 +133,20 @@ class PasswordField: UIControl {
         let showHideButtonCenterY = showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         self.addConstraints([showHideButtonTrailing, showHideButtonCenterY])
         
+        // Labels
+        
         /// StrengthDescriptionLabel
         
         let strengthDescriptionLeading = strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
         let strengthDescriptionBottom = strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * standardMargin)
-        //strengthDescriptionLabel.text = "hello"
         self.addConstraints([strengthDescriptionLeading, strengthDescriptionBottom])
+        
+        // EnterPassword Label
+        
+        let enterPasswordLeading = titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin)
+        let enterPasswordTop = titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin)
+        
+        self.addConstraints([enterPasswordLeading, enterPasswordTop])
         
     }
     
