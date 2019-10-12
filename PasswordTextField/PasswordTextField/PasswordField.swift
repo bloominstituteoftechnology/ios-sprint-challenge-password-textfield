@@ -55,9 +55,6 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         
-        // CONTAINER VIEW
-        let containerView
-        
         // TEXT FIELD
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -84,8 +81,7 @@ class PasswordField: UIControl {
         showHideButton.isEnabled = true
         
         NSLayoutConstraint.activate([
-            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
-            showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: standardMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin)
         ])
