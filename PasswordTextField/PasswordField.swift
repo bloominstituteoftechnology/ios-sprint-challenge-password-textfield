@@ -40,7 +40,6 @@ class PasswordField: UIControl {
     
     func setup() {
         
-        
         // Turning off automatic resizing
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -55,34 +54,34 @@ class PasswordField: UIControl {
         
         /// Misc
         titleLabel.text = "ENTER PASSWORD"
-        textField.layer.borderWidth = 1.0
+        textField.layer.borderWidth = 2
         
         /// Colors
         titleLabel.textColor = labelTextColor
         self.backgroundColor = bgColor
         textField.layer.borderColor = textFieldBorderColor.cgColor
         
-        
         // Adding Constraints
         
         /// UIControl View
-        self.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        //self.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        //self.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         /// TextField
-        let textFieldWidth = textField.widthAnchor.constraint(equalToConstant: 350)
         let textFieldHeight = textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        let textFieldLeading = textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin)
+        let textFieldTrailing = textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * textFieldMargin)
+        let textFieldCenterY = textField.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         
-        self.addConstraints([textFieldWidth, textFieldHeight])
+        self.addConstraints([textFieldHeight, textFieldLeading, textFieldTrailing, textFieldCenterY])
         
         /// ShowHideButton
-        let horizontalConstraint = showHideButton.trailingAnchor.constraint(equalTo: textField.leadingAnchor, constant: 10)
-        self.addConstraints([horizontalConstraint])
-        
-        
+        let showHideButtonTrailing = showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -4 * standardMargin)
+        let showHideButtonCenterY = showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+        self.addConstraints([showHideButtonTrailing, showHideButtonCenterY])
 
         
-        // Show/Hide Button
+        // Setting image for Show/Hide Button
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         } else {
