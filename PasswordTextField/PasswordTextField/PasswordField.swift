@@ -8,9 +8,10 @@
 
 import UIKit
 
-@IBDesignable
-class PasswordField: UIControl {
+//@IBDesignable
+class PasswordField: UIControl{
 
+	//let viewController = UIViewController()
 	private var passwordSecure: Bool = true
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -49,6 +50,7 @@ class PasswordField: UIControl {
 		textField.delegate = self
 		setup()
 	}
+
 
     func setup() {
         // Lay out your subviews here
@@ -169,25 +171,43 @@ class PasswordField: UIControl {
 
 		let count = password.count
 
+		 if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+
+		}
+
+
 		switch count {
 		case 1...9:
 			weakView.backgroundColor = weakColor
 			strengthDescriptionLabel.text = "Too weak"
 		case 10...16:
-			weakView.backgroundColor = weakColor
+			if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+				weakView.backgroundColor = weakColor
+				mediumView.backgroundColor = unusedColor
+				strengthDescriptionLabel.text = "Too weak"
+			} else {
+			weakView.backgroundColor = mediumColor
 			mediumView.backgroundColor = mediumColor
 			strengthDescriptionLabel.text = "Could be stronger"
+			}
 		case 16...:
-			weakView.backgroundColor = weakColor
-			mediumView.backgroundColor = mediumColor
+			if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+				mediumView.backgroundColor = mediumColor
+				strengthDescriptionLabel.text = "Could be stronger"
+			} else {
+			weakView.backgroundColor = strongColor
+			mediumView.backgroundColor = strongColor
 			strongView.backgroundColor = strongColor
 			strengthDescriptionLabel.text = "Strong password"
+			}
 		default:
 			weakView.backgroundColor = weakColor
+			mediumView.backgroundColor = unusedColor
+			strongView.backgroundColor = unusedColor
 		}
 	}
-    
 
+	
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -197,7 +217,11 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
 
+
 		self.passwordStrengthCheck(newText)
+
+
         return true
     }
 }
+
