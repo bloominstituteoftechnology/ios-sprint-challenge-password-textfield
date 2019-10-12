@@ -53,9 +53,11 @@ class PasswordField: UIControl {
         weakView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Adding Subviews
         addSubview(titleLabel)
+        addSubview(strengthDescriptionLabel)
         addSubview(textField)
         textField.addSubview(showHideButton)
         addSubview(weakView)
@@ -67,23 +69,33 @@ class PasswordField: UIControl {
         mediumView.isHidden = true
         strongView.isHidden = true
         
-        // Misc
+        // ShowHide Button
+        showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.isSelected = false
         
-        /// Misc
-        titleLabel.text = "ENTER PASSWORD"
+        // Formmating
+        
+        // Borders
         textField.layer.borderWidth = 2
+        
+        /// Text
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        
+        strengthDescriptionLabel.text = ""
+        strengthDescriptionLabel.font = labelFont
         
         /// Colors
         titleLabel.textColor = labelTextColor
+        strengthDescriptionLabel.textColor = labelTextColor
+        
         self.backgroundColor = bgColor
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        
         weakView.layer.backgroundColor = weakColor.cgColor
         mediumView.layer.backgroundColor = mediumColor.cgColor
         strongView.layer.backgroundColor = strongColor.cgColor
-        
-        // Button
-        showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
         // Adding Constraints
         
@@ -120,6 +132,13 @@ class PasswordField: UIControl {
         let showHideButtonCenterY = showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         self.addConstraints([showHideButtonTrailing, showHideButtonCenterY])
         
+        /// StrengthDescriptionLabel
+        
+        let strengthDescriptionLeading = strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
+        let strengthDescriptionBottom = strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * standardMargin)
+        //strengthDescriptionLabel.text = "hello"
+        self.addConstraints([strengthDescriptionLeading, strengthDescriptionBottom])
+        
     }
     
     func determineStrength(string: String) {
@@ -128,14 +147,17 @@ class PasswordField: UIControl {
             weakView.isHidden = false
             mediumView.isHidden = true
             strongView.isHidden = true
+            strengthDescriptionLabel.text = "Too weak"
         } else if string.count >= 10 && string.count <= 19  {
             weakView.isHidden = false
             mediumView.isHidden = false
             strongView.isHidden = true
+            strengthDescriptionLabel.text = "Could be stronger"
         } else if string.count >= 20 {
             weakView.isHidden = false
             mediumView.isHidden = false
             strongView.isHidden = false
+            strengthDescriptionLabel.text = "Strong password"
         }
     }
     
@@ -143,10 +165,10 @@ class PasswordField: UIControl {
         
         // Setting image for Show/Hide Button
         if showHideButton.isSelected == true {
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             showHideButton.isSelected = false
         } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             showHideButton.isSelected = true
         }
     }
