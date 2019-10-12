@@ -82,6 +82,7 @@ class PasswordField: UIControl {
         /// Text
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
+        textField.isSecureTextEntry = true
         
         strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.font = labelFont
@@ -167,9 +168,11 @@ class PasswordField: UIControl {
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             showHideButton.isSelected = false
+            textField.isSecureTextEntry = true
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             showHideButton.isSelected = true
+            textField.isSecureTextEntry = false
         }
     }
 }
@@ -184,6 +187,12 @@ extension PasswordField: UITextFieldDelegate {
 
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     
 //    func textFieldDidBeginEditing(_ textField: UITextField) {
 //        textField.backgroundColor = UIColor.green
