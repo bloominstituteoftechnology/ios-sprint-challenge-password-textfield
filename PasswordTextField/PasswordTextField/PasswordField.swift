@@ -171,10 +171,6 @@ class PasswordField: UIControl{
 
 		let count = password.count
 
-		 if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
-
-		}
-
 
 		switch count {
 		case 1...9:
@@ -201,7 +197,7 @@ class PasswordField: UIControl{
 			strengthDescriptionLabel.text = "Strong password"
 			}
 		default:
-			weakView.backgroundColor = weakColor
+			weakView.backgroundColor = unusedColor
 			mediumView.backgroundColor = unusedColor
 			strongView.backgroundColor = unusedColor
 		}
