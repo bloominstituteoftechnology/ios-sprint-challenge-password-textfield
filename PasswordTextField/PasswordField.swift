@@ -41,6 +41,7 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
     
     func setup() {
@@ -49,17 +50,24 @@ class PasswordField: UIControl {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         
         // Adding Subviews
         addSubview(titleLabel)
         addSubview(textField)
         textField.addSubview(showHideButton)
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
         
-        // Setting up button
-        showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        // Hiding views until prerequisites met
+        weakView.isHidden = true
+        mediumView.isHidden = true
+        strongView.isHidden = true
         
-        // Formatting
+        // Misc
         
         /// Misc
         titleLabel.text = "ENTER PASSWORD"
@@ -69,12 +77,35 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         self.backgroundColor = bgColor
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        weakView.layer.backgroundColor = weakColor.cgColor
+        mediumView.layer.backgroundColor = mediumColor.cgColor
+        strongView.layer.backgroundColor = strongColor.cgColor
+        
+        // Button
+        showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
         // Adding Constraints
         
-        /// UIControl View
-        //self.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        //self.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        /// Password strength views
+        let weakViewHeight = weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let weakViewWidth = weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let weakViewBottom = weakView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * standardMargin)
+        
+        let mediumViewHeight = mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let mediumViewWidth = mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let mediumViewBottom = mediumView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * standardMargin)
+        let mediumViewLeading = mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin)
+        
+        let strongViewHeight = strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        let strongViewWidth = strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        let strongViewBottom = strongView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * standardMargin)
+        let strongViewLeading = strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin)
+        
+        self.addConstraints([weakViewWidth, weakViewHeight, weakViewBottom,
+                            mediumViewHeight, mediumViewWidth, mediumViewBottom, mediumViewLeading,
+                            strongViewHeight, strongViewWidth, strongViewBottom, strongViewLeading
+        ])
         
         /// TextField
         let textFieldHeight = textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
@@ -88,29 +119,37 @@ class PasswordField: UIControl {
         let showHideButtonTrailing = showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -4 * standardMargin)
         let showHideButtonCenterY = showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         self.addConstraints([showHideButtonTrailing, showHideButtonCenterY])
-
         
-
+    }
+    
+    func determineStrength(string: String) {
+        
+        if string.count >= 0 && string.count <= 9 {
+            weakView.isHidden = false
+            mediumView.isHidden = true
+            strongView.isHidden = true
+        } else if string.count >= 10 && string.count <= 19  {
+            weakView.isHidden = false
+            mediumView.isHidden = false
+            strongView.isHidden = true
+        } else if string.count >= 20 {
+            weakView.isHidden = false
+            mediumView.isHidden = false
+            strongView.isHidden = false
+        }
     }
     
     @objc func showHideButtonAction() {
         
-        print("Inside action function")
         // Setting image for Show/Hide Button
         if showHideButton.isSelected == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             showHideButton.isSelected = false
-            print("true")
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             showHideButton.isSelected = true
-            print("false")
         }
     }
-    
-
-    
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -118,7 +157,14 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+    
+        determineStrength(string: newText)
+
         return true
     }
+    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        textField.backgroundColor = UIColor.green
+//        print("Editing did begin")
+//    }
 }
