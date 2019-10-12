@@ -9,11 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    var passwordField: PasswordField!
-    
+        
     @IBAction func printPassword(_ sender: PasswordField) {
-        print("The password is: \(passwordField.password) and the strength is: \(PasswordStrength.self)")
+        print("The password is: \(sender.password) and the strength is: \(sender.strength)")
     }
     // For use in the stretch goal
     //
