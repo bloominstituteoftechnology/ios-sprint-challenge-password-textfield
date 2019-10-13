@@ -41,11 +41,28 @@ class PasswordField: UIControl {
     
     private var isTextHidden: Bool = true
     private var showHideImage: UIImage = UIImage()
+    private var currentStrength: Strength = .weak
+    private var strengthLabel: Strength.RawValue = "Too weak"
+    
+    
+//    override func draw(_ rect: CGRect) {
+//        
+//        if let context = UIGraphicsGetCurrentContext() {
+//            
+//            let passwordBorder = CGRect(x: frame.minX / 2 - bounds.minX / 2, y: titleLabel.bounds.maxY + 10, width:  250, height: textFieldContainerHeight)
+//            
+//            
+//            context.addEllipse(in: passwordBorder)
+//            context.setStrokeColor(textFieldBorderColor.cgColor)
+//            
+//            context.strokePath()
+//        }
+//    }
     
     func setup() {
         // Lay out your subviews here
         
-        // titleLabel
+        // Enter password Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Enter Pasword: "
@@ -59,16 +76,20 @@ class PasswordField: UIControl {
             titleLabel.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
-        //textField
-        textField.translatesAutoresizingMaskIntoConstraints = false
+        // Password TextField
         addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
+        textField.isUserInteractionEnabled = false
+        textField.isEnabled = true
+        
+        
         
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor), //I might need a constant
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
             textField.heightAnchor.constraint(equalToConstant: 40)
         ])
         
@@ -79,10 +100,28 @@ class PasswordField: UIControl {
         
          NSLayoutConstraint.activate([
                    showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor), //I might need a constant
-                   textField.leadingAnchor.constraint(equalTo: leadingAnchor),
-                   textField.trailingAnchor.constraint(equalTo: trailingAnchor),
-                   textField.heightAnchor.constraint(equalToConstant: 40)
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 5),
+                   showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+                   showHideButton.heightAnchor.constraint(equalToConstant: 40)
                ])
+        
+        //Strength views
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
+        
+        
+        
+        ])
+        
+        
+//        
+//        textField.addTarget(ViewController, action: #selector(textFieldEditingChanged(_:)), for: UIControlEvents.editingChanged)
+//        
+//        
         
         
         
@@ -104,6 +143,11 @@ class PasswordField: UIControl {
         }
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -122,14 +166,36 @@ extension PasswordField: UITextFieldDelegate {
         
         // TODO: send new text to the determine strength method
         
+        // Changing currentStrength and strengthLabel based on password strength
+        switch newText.count {
+        case 1...9 :
+            currentStrength = .weak
+            strengthLabel = Strength.weak.rawValue
+        case 10...19 :
+            currentStrength = .medium
+            strengthLabel = Strength.medium.rawValue
+        case 20...200 :
+            currentStrength = .strong
+            strengthLabel = Strength.strong.rawValue
+        default:
+            print( "Password entered ether has no characters, or ismore than 200 characters long")
+        }
+        
         return true
     }
     
+    // TODO ShouldReturn
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        <#code#>
+        return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        <#code#>
+        
     }
+}
+
+enum Strength: String {
+    case weak = "Too Weak"
+    case medium = "Coukd be Stronger"
+    case strong = "Strong Password"
 }

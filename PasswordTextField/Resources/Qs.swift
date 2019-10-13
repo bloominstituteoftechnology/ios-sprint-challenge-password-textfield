@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+
+/*
+1. how rto get the blue bordefr?
+
+2. how can I make my password text filed take user input?
+
+ 3. Why can't I get my hide/Show button to apper
+ 
+ 4.
+ 
+ 
+ 
+ */
