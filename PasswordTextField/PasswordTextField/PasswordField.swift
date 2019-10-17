@@ -44,21 +44,6 @@ class PasswordField: UIControl {
     //private var showHideImage: UIImage = UIImage()
     //private var currentStrength: Strength = .we
     
-    
-//    override func draw(_ rect: CGRect) {
-//        
-//        if let context = UIGraphicsGetCurrentContext() {
-//            
-//            let passwordBorder = CGRect(x: frame.minX / 2 - bounds.minX / 2, y: titleLabel.bounds.maxY + 10, width:  250, height: textFieldContainerHeight)
-//            
-//            
-//            context.addEllipse(in: passwordBorder)
-//            context.setStrokeColor(textFieldBorderColor.cgColor)
-//            
-//            context.strokePath()
-//        }
-//    }
-    
     func setup() {
         // Lay out your subviews here
         backgroundColor = bgColor
@@ -176,46 +161,27 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
-//
-//        //Strength views
-//        addSubview(weakView)
-//        weakView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
-//            weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-//            //weakView.
-//
-//
-//
-//        ])
-//
-        
 //        
 //        textField.addTarget(ViewController, action: #selector(textFieldEditingChanged(_:)), for: UIControlEvents.editingChanged)
-//        
-//        
+//
         
+    }
+    func determinePasswordStrength(string: String) {
+        var strength = Strength.weak
         
-        
-        
-        
-        
-        func determinePasswordStrength(string: String) {
-            var strength = Strength.weak
+        // Changing currentStrength and strengthLabel based on password strength
+        switch string.count {
+        case 1...9 :
+            strength = .weak
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             
-            // Changing currentStrength and strengthLabel based on password strength
-            switch string.count {
-            case 1...9 :
-                strength = .weak
-            case 10...19 :
-                strength = .medium
-            default :
-                strength = .strong
-            }
+        case 10...19 :
+            strength = .medium
+            strongView.backgroundColor = unusedColor
+        default :
+            strength = .strong
         }
-        
-        
     }
     
     @objc func changeImage(_ sender: UIButton) {
@@ -244,6 +210,7 @@ extension PasswordField: UITextFieldDelegate {
         
         
         // TODO: send new text to the determine strength method
+        determinePasswordStrength(string: newText)
         
         
         return true
