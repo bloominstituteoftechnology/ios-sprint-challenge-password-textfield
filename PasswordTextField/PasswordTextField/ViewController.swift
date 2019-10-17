@@ -10,6 +10,33 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var passwordFieldControl: PasswordField!
+    
+ 
+    override func viewDidLoad() {
+            super.viewDidLoad()
+
+    
+        
+    }
+    
+    @IBAction func passwordField(_ sender: PasswordField) {
+                print("password is: \(sender.password), strength: \(sender.strength)")
+    }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
