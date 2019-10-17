@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func passwordField(_ sender: PasswordField) {
-       
+                print("password is: \(sender.password), strength: \(sender.strength)")
     }
     
     
