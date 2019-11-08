@@ -110,6 +110,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = fieldPlaceholder
         textField.delegate = self
+        textField.addTarget(self, action: #selector(passwordChanged), for: .valueChanged)
 //        textField.borderStyle = .roundedRect
 //        textField.layer.borderColor = textFieldBorderColor.cgColor
 //        textField.layer.borderWidth = textFieldBorderWidth
@@ -206,6 +207,11 @@ class PasswordField: UIControl {
             textField.becomeFirstResponder()
             print("yay")
         }
+    }
+    
+    @objc func passwordChanged() {
+        print("Password: " + password)
+        print("Strength: \(relativeStrength) (\"\(relativeStrength.rawValue)\")")
     }
     
     private func updateStrengthViews() {
