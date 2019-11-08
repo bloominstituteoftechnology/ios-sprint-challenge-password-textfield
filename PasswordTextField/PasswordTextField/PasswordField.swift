@@ -76,7 +76,38 @@ class PasswordField: UIControl {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
         ])
         
+        // Text field container
+        textFieldContainer.layer.borderWidth = textFieldBorderWidth
+        textFieldContainer.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldContainer.layer.cornerRadius = textFieldCornerRadius
+        textFieldContainer.backgroundColor = bgColor
         
+        NSLayoutConstraint.activate([
+            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textFieldContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textFieldContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        // Text field
+        textField.placeholder = fieldPlaceholder
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor),
+            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: textFieldMargin),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor)
+        ])
+        
+        // Show/Hide button
+        showHideButton.setImage(UIImage(named: eyesClosedImage), for: .normal)
+        showHideButton.setTitleColor(labelTextColor, for: .normal)
+        
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
