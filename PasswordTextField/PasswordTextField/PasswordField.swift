@@ -84,7 +84,7 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
-        showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchDown)
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -45).isActive = true
         showHideButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
