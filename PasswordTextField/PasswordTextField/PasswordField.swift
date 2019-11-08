@@ -14,12 +14,14 @@ class PasswordField: UIControl {
     private (set) var password: String = ""
     private (set) var relativeStrength: RelativePasswordStrength = .none
     
+    // Settings for subviews
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldBorderWidth: CGFloat = 2.0
     private let textFieldCornerRadius: CGFloat = 5.0
     private let textFieldMargin: CGFloat = 6.0
-    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let strengthViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let strengthViewRadius: CGFloat = 2.0
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -108,6 +110,24 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -textFieldMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor)
         ])
+        
+        // Strength views
+        let strengthViews = [weakView, mediumView, strongView]
+        for i in 0..<strengthViews.count {
+            let this = strengthViews[i]
+            
+            this.backgroundColor = unusedColor
+            this.layer.cornerRadius = strengthViewRadius
+            
+            NSLayoutConstraint.activate([
+                this.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
+                this.leadingAnchor.constraint(
+                    equalTo: i == 0 ? leadingAnchor : strengthViews[i-1].trailingAnchor,
+                    constant: standardMargin),
+                this.widthAnchor.constraint(equalToConstant: strengthViewSize.width),
+                this.heightAnchor.constraint(equalToConstant: strengthViewSize.height),
+            ])
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
