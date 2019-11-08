@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     
     @IBAction func passwordChanged(_ sender: PasswordField) {
         print("Password: " + sender.password)
-        print("Strength: \(sender.relativeStrength) (\"\(sender.relativeStrength.rawValue)\")")
+        print("Strength: \(sender.currentRelativeStrength) (\"\(sender.currentRelativeStrength.rawValue)\")")
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -13,11 +13,11 @@ class PasswordField: UIControl {
     // MARK: - Public API
     // these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private (set) var relativeStrength: RelativePasswordStrength = .none //{
-//        didSet {
-//            updateStrengthViews()
-//        }
-//    } // unneeded w/ settargetforaction thingy?
+    private (set) var currentRelativeStrength: RelativePasswordStrength = .none {
+        didSet {
+            updateStrengthViews()
+        }
+    }
     
     // MARK: - State
     
@@ -25,6 +25,7 @@ class PasswordField: UIControl {
     
     // MARK: - Subview Settings
     private let standardMargin: CGFloat = 8.0
+    private let bottomMargin: CGFloat = 16.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldBorderWidth: CGFloat = 2.0
     private let textFieldCornerRadius: CGFloat = 5.0
@@ -73,8 +74,6 @@ class PasswordField: UIControl {
         [
             titleLabel,
             textFieldContainer,
-//            textField,
-//            showHideButton, // these will be added as subviews of textFieldContainer
             weakView,
             mediumView,
             strongView,
@@ -115,17 +114,8 @@ class PasswordField: UIControl {
         textField.isUserInteractionEnabled = true
         textField.placeholder = fieldPlaceholder
         textField.delegate = self
+        textField.isSecureTextEntry = true
         textField.addTarget(self, action: #selector(updateStrengthViews), for: .valueChanged)
-//        textField.borderStyle = .roundedRect
-//        textField.layer.borderColor = textFieldBorderColor.cgColor
-//        textField.layer.borderWidth = textFieldBorderWidth
-//        textField.backgroundColor = bgColor
-//        NSLayoutConstraint.activate([
-//            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-//            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
-//            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin),
-//            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
-//        ])
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: textFieldMargin),
@@ -138,6 +128,11 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: eyesClosedImage), for: .normal)
         showHideButton.setTitleColor(labelTextColor, for: .normal)
         showHideButton.addTarget(self, action: #selector(toggleShowPassword), for: .touchUpInside)
+        // prevent expansion/compression of button when long password is entered and then deleted
+        let horizontalExpansionResistance = showHideButton.contentHuggingPriority(for: .horizontal) + 1
+        showHideButton.setContentHuggingPriority(horizontalExpansionResistance, for: .horizontal)
+        let horizontalCompressionResistance = showHideButton.contentCompressionResistancePriority(for: .horizontal) + 1
+        showHideButton.setContentCompressionResistancePriority(horizontalCompressionResistance, for: .horizontal)
         
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
@@ -155,17 +150,17 @@ class PasswordField: UIControl {
             this.layer.cornerRadius = strengthViewRadius
             
             NSLayoutConstraint.activate([
-                this.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
+                this.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
                 this.leadingAnchor.constraint(
                     equalTo: i == 0 ? leadingAnchor : strengthViews[i-1].trailingAnchor,
-                    constant: textFieldMargin),
+                    constant: i == 0 ? standardMargin : textFieldMargin),
                 this.widthAnchor.constraint(equalToConstant: strengthViewSize.width),
                 this.heightAnchor.constraint(equalToConstant: strengthViewSize.height),
             ])
         }
         
         // Strength text
-        strengthDescriptionLabel.text = relativeStrength.rawValue
+        strengthDescriptionLabel.text = currentRelativeStrength.rawValue
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
@@ -173,55 +168,51 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
         ])
+        
+        // Constrain master view height
+        self.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bottomAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor, constant: standardMargin)
+        ])
     }
     
     // MARK: - Touch Handlers
     
-    override private func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        update(for: touch)
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         sendActions(for: [.touchDown])
         return true
     }
 
-    override private func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         if bounds.contains(touch.location(in: self)) {
             sendActions(for: [.touchDragInside])
-            update(for: touch)
         } else {
             sendActions(for: [.touchDragOutside])
         }
         return true
     }
 
-    override private func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         guard let touch = touch else { return }
         if bounds.contains(touch.location(in: self)) {
             sendActions(for: [.touchUpInside])
-            update(for: touch)
         } else {
             sendActions(for: [.touchUpOutside])
         }
     }
 
-    override private func cancelTracking(with event: UIEvent?) {
+    override func cancelTracking(with event: UIEvent?) {
         sendActions(for: [.touchCancel])
     }
     
     // MARK: - Update Methods
-    
-    private func update(for touch: UITouch) {
-        if textField.frame.contains(touch.location(in: textField)) {
-            //textField.becomeFirstResponder()
-            print("yay")
-        }
-    }
-    
+
     @objc private func updateStrengthViews() {
-        strengthDescriptionLabel.text = relativeStrength.rawValue
+        strengthDescriptionLabel.text = currentRelativeStrength.rawValue
         strengthViews.forEach { (view) in
             view.backgroundColor = unusedColor
         }
-        switch relativeStrength {
+        switch currentRelativeStrength {
         case .none:
             break
         case .weak:
@@ -240,9 +231,9 @@ class PasswordField: UIControl {
     }
     
     private func animateStrength(for strengthView: UIView) {
-        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
+        UIView.animateKeyframes(withDuration: 0.8, delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                strengthView.transform = CGAffineTransform(scaleX: 1, y: 1.5)
+                strengthView.transform = CGAffineTransform(scaleX: 1, y: 2)
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
                 strengthView.transform = .identity
@@ -258,7 +249,7 @@ class PasswordField: UIControl {
     }
     
     enum RelativePasswordStrength: String {
-        case none = ""
+        case none = " "
         case weak = "Too weak"
         case medium = "Could be stronger"
         case strong = "Strong password"
@@ -270,12 +261,15 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        password = newText
         determineStrength(of: newText)
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignFirstResponder()
+        textField.resignFirstResponder()
+        sendActions(for: .valueChanged)
+        return true
     }
     
     func determineStrength(of password: String) {
@@ -292,7 +286,8 @@ extension PasswordField: UITextFieldDelegate {
             strength = .none
         }
         
-        relativeStrength = strength
-        sendActions(for: .valueChanged)
+        if strength != currentRelativeStrength {
+            currentRelativeStrength = strength
+        }
     }
 }
