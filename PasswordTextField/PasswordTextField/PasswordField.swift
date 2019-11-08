@@ -74,6 +74,14 @@ class PasswordField: UIControl {
         viewForFields.layer.borderWidth = 0.5
         viewForFields.layer.cornerRadius = 4
         
+        viewForFields.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.topAnchor.constraint(equalTo: viewForFields.topAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: viewForFields.trailingAnchor).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: viewForFields.bottomAnchor).isActive = true
+        showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
+        showHideButton.layer.cornerRadius = 4
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
         
         
