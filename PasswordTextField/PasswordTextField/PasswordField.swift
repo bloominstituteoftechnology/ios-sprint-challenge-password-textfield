@@ -34,10 +34,11 @@ class PasswordField: UIControl {
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
+    private let textFieldBackgroundColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 0.2)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
     // States of the password strength indicators
-    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
+    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 0.7)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
@@ -84,10 +85,11 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
-        showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchDown)
+     
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -45).isActive = true
         showHideButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+        showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchDown)
        
         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
         showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .selected)
@@ -99,6 +101,7 @@ class PasswordField: UIControl {
         weakView.layer.borderWidth = 1
         weakView.layer.cornerRadius = 6
         weakView.layer.backgroundColor = unusedColor.cgColor
+       
         
         
         addSubview(mediumView)
@@ -108,7 +111,7 @@ class PasswordField: UIControl {
         mediumView.layer.borderWidth = 1
         mediumView.layer.cornerRadius = 6
         mediumView.layer.backgroundColor = unusedColor.cgColor
-        
+      
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -116,6 +119,7 @@ class PasswordField: UIControl {
         strongView.layer.borderWidth = 1
         strongView.layer.cornerRadius = 6
         strongView.layer.backgroundColor = unusedColor.cgColor
+        
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -157,10 +161,13 @@ class PasswordField: UIControl {
         switch strength{
         case .weak:
             weakView.layer.backgroundColor = weakColor.cgColor
+            weakView.layer.borderColor = weakColor.cgColor
             mediumView.layer.backgroundColor = unusedColor.cgColor
             strongView.layer.backgroundColor = unusedColor.cgColor
+            strongView.layer.borderColor = UIColor.black.cgColor
+            mediumView.layer.borderColor = UIColor.black.cgColor
             UIView.animate(withDuration: 0.3, animations: {
-                                      self.weakView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                                      self.weakView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
                                   }) { _ in
                                       UIView.animate(withDuration: 0.3) {
                                           self.weakView.transform = .identity
@@ -170,17 +177,19 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.text = " too weak"
         
         case .medium:
+            mediumView.layer.borderColor = mediumColor.cgColor
             mediumView.layer.backgroundColor = mediumColor.cgColor
             strongView.layer.backgroundColor = unusedColor.cgColor
+            strongView.layer.borderColor = UIColor.black.cgColor
             UIView.animate(withDuration: 0.3, animations: {
-                           self.weakView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                           self.weakView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
                        }) { _ in
                            UIView.animate(withDuration: 0.3) {
                                self.weakView.transform = .identity
                            }
                        }
             UIView.animate(withDuration: 0.3, animations: {
-                self.mediumView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
             }) { _ in
                 UIView.animate(withDuration: 0.3) {
                     self.mediumView.transform = .identity
@@ -191,9 +200,10 @@ class PasswordField: UIControl {
             
         case .strong:
             strongView.layer.backgroundColor = strongColor.cgColor
+            strongView.layer.borderColor = strongColor.cgColor
             strengthDescriptionLabel.text = " Strong!"
             UIView.animate(withDuration: 0.3, animations: {
-                           self.weakView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                           self.weakView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
                        }) { _ in
                            UIView.animate(withDuration: 0.3) {
                                self.weakView.transform = .identity
@@ -201,14 +211,14 @@ class PasswordField: UIControl {
                        }
             
             UIView.animate(withDuration: 0.3, animations: {
-                self.mediumView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
             }) { _ in
                 UIView.animate(withDuration: 0.3) {
                     self.mediumView.transform = .identity
                 }
             }
             UIView.animate(withDuration: 0.3, animations: {
-                           self.strongView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                           self.strongView.transform = CGAffineTransform(scaleX: 1.05, y: 2.0)
                        }) { _ in
                            UIView.animate(withDuration: 0.3) {
                                self.strongView.transform = .identity
@@ -224,12 +234,17 @@ class PasswordField: UIControl {
             if strength != .medium {
                 strength = .medium
             }
-        case 13...50:
+        case 13...:
             if strength != .strong {
                 strength = .strong
             }
         case 1:
             strength = .weak
+        
+        case 2...5:
+            if strength != .weak {
+            strength = .weak
+            }
             
         default:
             return
@@ -239,6 +254,7 @@ class PasswordField: UIControl {
     
     @objc func changeBorderColor() {
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.backgroundColor = textFieldBackgroundColor.cgColor
     }
     
     @objc func hideShowButtonSet() {
