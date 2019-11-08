@@ -11,8 +11,7 @@ import UIKit
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
-    
+    private (set) var password: String = Strength.weak.rawValue
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -41,8 +40,29 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+        backgroundColor = bgColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Enter Password"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        addSubview(titleLabel)
+        
+        textField.placeholder = "Enter your password"
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        addSubview(textField)
+        
+        weakView.backgroundColor = weakColor
+        addSubview(weakView)
+        mediumView.backgroundColor = mediumColor
+        addSubview(mediumView)
+        strongView.backgroundColor = strongColor
+        addSubview(strongView)
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.text = Strength.weak.rawValue
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,4 +79,10 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         return true
     }
+}
+enum Strength: String {
+    case stongest = "Impenetrable"
+    case suitable =  "Almost there"
+    case weak = "This aint gonna work"
+    
 }
