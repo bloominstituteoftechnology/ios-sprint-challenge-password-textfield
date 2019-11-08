@@ -31,6 +31,7 @@ class PasswordField: UIControl {
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
+    private var passwordContainerView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -54,6 +55,20 @@ class PasswordField: UIControl {
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
+        
+        // Password textfield container view
+        addSubview(passwordContainerView)
+        passwordContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            passwordContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            passwordContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            passwordContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            passwordContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+        ])
+        
+        passwordContainerView.layer.borderColor = textFieldBorderColor.cgColor
+        passwordContainerView.layer.borderWidth = 2
         
     }
     
