@@ -30,7 +30,9 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    private var wholeView: UIView = UIView()
     private var titleLabel: UILabel = UILabel()
+    private var viewForFields: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -38,17 +40,40 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    func setup() {
-        // Lay out your subviews here
-        
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    func setup() {
+        
+        // Lay out your subviews here
+        
+        addSubview(wholeView)
+        wholeView.translatesAutoresizingMaskIntoConstraints = false
+        wholeView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        wholeView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        wholeView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        wholeView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        wholeView.layer.backgroundColor = UIColor.red.cgColor
+        
+        addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
+        titleLabel.text = "MESSAGE HERE"
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
