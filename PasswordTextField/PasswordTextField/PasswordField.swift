@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Foundation
 
 class PasswordField: UIControl {
     
+    // MARK: - Public Properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private (set) var passwordStrength: PasswordStrength = .weak {
@@ -17,12 +19,11 @@ class PasswordField: UIControl {
             showPasswordStrength()
         }
     }
-    
-    // MARK: - Private Properties
-    
-    enum PasswordStrength{
+    enum PasswordStrength: String {
         case weak, medium, strong
     }
+    
+    // MARK: - Private Properties
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -49,6 +50,8 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    
+    // MARK: - Private Methods
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -215,7 +218,10 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    
-    
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return true }
+        password = text
+        print("Password: \(password)\nPassword Strength: \(passwordStrength.rawValue.capitalized)")
+        return true
+    }
 }
