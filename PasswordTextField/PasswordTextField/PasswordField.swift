@@ -62,7 +62,8 @@ class PasswordField: UIControl {
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
-        titleLabel.text = "MESSAGE HERE"
+        titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        titleLabel.text = "ENTER PASSWORD"
         
         addSubview(viewForFields)
         viewForFields.translatesAutoresizingMaskIntoConstraints = false
@@ -83,6 +84,24 @@ class PasswordField: UIControl {
         showHideButton.layer.cornerRadius = 4
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
+        viewForFields.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
+        textField.topAnchor.constraint(equalTo: viewForFields.topAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: viewForFields.leadingAnchor, constant: 4).isActive = true
+        textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor).isActive = true
+        textField.bottomAnchor.constraint(equalTo: viewForFields.bottomAnchor).isActive = true
+        textField.isSecureTextEntry = true // this will be changed when the button is tapped.
+        textField.placeholder = "Enter here"
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.topAnchor.constraint(equalTo: viewForFields.bottomAnchor, constant: 12).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        weakView.layer.cornerRadius = 2
+        weakView.layer.backgroundColor = weakColor.cgColor
         
         
         
