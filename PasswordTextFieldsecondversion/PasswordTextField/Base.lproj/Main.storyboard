@@ -18,26 +18,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view verifyAmbiguity="ignoreSizes" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v0c-JS-lYF" customClass="PasswordField" customModule="PasswordTextField" customModuleProvider="target">
-                                <rect key="frame" x="20" y="84" width="374" height="109"/>
-                                <color key="backgroundColor" red="0.90448943660000003" green="0.71855699809999996" blue="0.36490631690000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <connections>
-                                    <action selector="textfieldValueChanged:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i1l-Nt-75A"/>
-                                </connections>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Br3-my-ZdM" customClass="PasswordField" customModule="PasswordTextField" customModuleProvider="target">
+                                <rect key="frame" x="20" y="84" width="374" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Br3-my-ZdM" secondAttribute="height" multiplier="187:64" id="G9p-Sx-KjM"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v0c-JS-lYF" secondAttribute="trailing" constant="20" id="Mbj-HC-p2R"/>
-                            <constraint firstItem="v0c-JS-lYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bYC-zh-lzp"/>
-                            <constraint firstItem="v0c-JS-lYF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="c6r-VF-BzW"/>
+                            <constraint firstItem="Br3-my-ZdM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="VOd-ox-cKN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Br3-my-ZdM" secondAttribute="trailing" constant="20" id="fnm-We-Jt2"/>
+                            <constraint firstItem="Br3-my-ZdM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="wGO-38-aDN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
+            <point key="canvasLocation" x="47.826086956521742" y="20.758928571428569"/>
         </scene>
     </scenes>
 </document>
