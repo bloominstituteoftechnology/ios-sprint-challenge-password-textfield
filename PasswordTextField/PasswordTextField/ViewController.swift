@@ -8,8 +8,23 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class passwordViewController: UIViewController {
     
+    let passwordField = PasswordField()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+    }
+    
+    @IBAction func updateControlValues(_ control: PasswordField) {
+        
+    }
+    
+    
+ 
+
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
