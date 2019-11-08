@@ -18,7 +18,24 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    var strength = Strength.weak
+    private var strength = Strength.weak {
+        didSet {
+            if strength == .weak {
+                strengthDescriptionLabel.text = "Too weak"
+            } else if strength == .medium {
+                strengthDescriptionLabel.text = "Could be stronger"
+            } else {
+                strengthDescriptionLabel.text = "Strong password"
+            }
+            if password.count == 10 {
+                mediumView.performFlare()
+            } else if password.count == 20 {
+                strongView.performFlare()
+            }
+            
+        }
+    
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -69,12 +86,12 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 10
         textField.rightView = showHideButton
         textField.rightViewMode = .always
+        textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
         textField.delegate = self
-        textField.becomeFirstResponder()
         textField.addTarget(self, action: #selector(editing), for: .editingChanged)
         textField.addTarget(self, action: #selector(doneEditing), for: .editingDidEnd)
-        
+        textField.addTarget(self, action: #selector(editing), for: .touchUpInside)
         
         
         addSubview(showHideButton)
@@ -86,7 +103,7 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         showHideButton.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
-        
+        showHideButton.isUserInteractionEnabled = true
         
         
         addSubview(weakView)
@@ -130,16 +147,21 @@ class PasswordField: UIControl {
     }
     
     @objc func editing() {
-        checkPassword()
+        if  password.count < 10 {
+            strength = .weak
+        } else if password.count > 9 && password.count < 20 {
+            strength = .medium
+            mediumView.backgroundColor = mediumColor
+        } else {
+            strength = .strong
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
     }
     
     @objc func doneEditing() {
-        guard let real = textField.text, !real.isEmpty else { return }
-        print("Your password: (\(password)) is \(strength) ")
-    }
-    
-    @objc private func firstResponder() {
-        
+        resignFirstResponder()
+        print("\(self.password) is of strength \(self.strength)")
     }
     
     @objc func toggleButton() {
@@ -157,34 +179,35 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
-    }
-    
-    // Helper Methods
-    
-    func checkPassword() {
-        if  password.count < 10 {
-            strength = .weak
-        } else if password.count > 9 && password.count < 20 {
-            strength = .medium
-            mediumView.backgroundColor = mediumColor
-        } else {
-            strength = .strong
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = strongColor
-        }
+        self.isUserInteractionEnabled = true
     }
 }
-
-
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        password = newText
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        sendActions(for: .editingDidEnd)
         return true
     }
 }
 
 
+extension UIView {
+    // "Flare view" animation sequence
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.2, y: 1.2) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+    }
+}
