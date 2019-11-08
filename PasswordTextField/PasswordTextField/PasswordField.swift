@@ -10,7 +10,7 @@ import UIKit
 
 class PasswordField: UIControl {
     
-    // Public API - these properties are used to fetch the final password and strength values
+    // MARK: - Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
@@ -38,6 +38,8 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    // MARK: - Functions
+
     func setup() {
         // Lay out your subviews here
         
@@ -50,6 +52,10 @@ class PasswordField: UIControl {
         setup()
     }
 }
+
+
+
+// MARK: - Delegates
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
