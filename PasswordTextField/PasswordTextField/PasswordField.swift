@@ -102,7 +102,7 @@ class PasswordField: UIControl {
         textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: viewForFields.bottomAnchor).isActive = true
         textField.isSecureTextEntry = true // this will be changed when the button is tapped.
-        textField.placeholder = "Enter here"
+        textField.placeholder = "Enter password"
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,7 +138,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8.0).isActive = true
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        strengthDescriptionLabel.text = "Strength here"
+        strengthDescriptionLabel.text = "Weak password"
     }
     
     // MARK: - Actions
@@ -222,7 +222,6 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         determineStrength(of: newText)
         return true
     }
