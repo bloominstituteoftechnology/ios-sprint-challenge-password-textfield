@@ -60,6 +60,8 @@ class PasswordField: UIControl {
         setup()
     }
     
+    // MARK: - Set Up UI
+    
     func setup() {
         backgroundColor = bgColor
         // Lay out your subviews here
@@ -139,11 +141,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.text = "Strength here"
     }
     
-//    override var intrinsicContentSize: CGSize {
-//        let height = CGFloat(1)
-//        let width = titleLabel.bounds.size.width
-//        return CGSize(width: width, height: height)
-//    }
+    // MARK: - Actions
     
     @objc private func showHideButtonTapped() {
         textField.isSecureTextEntry.toggle()
@@ -217,6 +215,8 @@ class PasswordField: UIControl {
     
 }
 
+// MARK: - Extensions
+
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
@@ -234,13 +234,3 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
-
-//class DictionaryChecker: UIReferenceLibraryViewController {
-//    override init(term: String) {
-//        super.init(term: term)
-//    }
-//
-//    required init(coder: NSCoder) {
-//        super.init(coder: coder)
-//    }
-//}
