@@ -168,9 +168,36 @@ class PasswordField: UIControl {
         ])
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
+    // MARK: - Touch Handlers
+    
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        update(for: touch)
+        return true
+    }
+    
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        if bounds.contains(touch.location(in: self)) {
+            sendActions(for: [.touchDragInside])
+            update(for: touch)
+        } else {
+            sendActions(for: [.touchDragOutside])
+        }
+        return true
+    }
+    
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        guard let touch = touch else { return }
+        if bounds.contains(touch.location(in: self)) {
+            sendActions(for: [.touchUpInside])
+            update(for: touch)
+        } else {
+            sendActions(for: [.touchUpOutside])
+        }
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: [.touchCancel])
+    }
     }
     
     enum RelativePasswordStrength {
