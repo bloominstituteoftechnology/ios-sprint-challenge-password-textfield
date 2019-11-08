@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -39,7 +40,9 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
+        
     }
     
     func setup() {
@@ -56,6 +59,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderWidth = 1
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = false
         addSubview(textField)
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,18 +80,19 @@ class PasswordField: UIControl {
         
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         addSubview(showHideButton)
-
-    
-    
+        
+        
+        
         NSLayoutConstraint.activate ([
-             
+            
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             
-
-             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             textField.heightAnchor.constraint(equalToConstant: 50),
@@ -98,15 +103,14 @@ class PasswordField: UIControl {
             weakView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
             weakView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
             weakView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
-                 
+            
             
             mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 3),
             mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             mediumView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
             mediumView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
-              
             
-            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 3),
+    strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 3),
             strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
             strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             
@@ -122,25 +126,47 @@ class PasswordField: UIControl {
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin),
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -standardMargin),
-            showHideButton.widthAnchor.constraint(equalToConstant: 40),
-                      
-         
+            showHideButton.widthAnchor.constraint(equalToConstant: 20),
+            
+            
             
         ])
+    }
+    
+    
+    @objc func showHideButtonTapped() {
+        
+        textField.isSecureTextEntry = !(textField.isSecureTextEntry)
+        print("The #selector is working")
+        if textField.isSecureTextEntry == true{
+            
+            self.showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
+    
+    
+    func passwordStrengthDetermined(password: String) {
+        
+        
+        
+        /// I have started all over on this function. I had a mess that wouldn't work so I am redoing it.
+        
+        
     }
     
     
     
 }
 
-    
-
-
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        passwordStrengthDetermined(password: newText)
         // TODO: send new text to the determine strength method
         return true
     }
