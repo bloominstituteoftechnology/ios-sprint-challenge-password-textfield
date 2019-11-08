@@ -51,6 +51,8 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private let strengthInterval = 10
+    
     // MARK: - Private Methods
     
     required init?(coder aDecoder: NSCoder) {
@@ -76,7 +78,7 @@ class PasswordField: UIControl {
         viewForFields.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         viewForFields.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
         viewForFields.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        viewForFields.layer.borderColor = UIColor.darkGray.cgColor
+        viewForFields.layer.borderColor = textFieldBorderColor.cgColor
         viewForFields.layer.borderWidth = 0.5
         viewForFields.layer.cornerRadius = 4
         
@@ -152,12 +154,18 @@ class PasswordField: UIControl {
     }
     
     private func determineStrength(of password: String) {
-        switch password.count {
-        case 10...19:
+        let foundInDictionary = UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password)
+        var count = password.count
+        if foundInDictionary {
+            count -= 10
+        }
+
+        switch count {
+        case strengthInterval...(strengthInterval * 2 - 1):
             if passwordStrength != .medium {
                 passwordStrength = .medium
             }
-        case 20...:
+        case (strengthInterval * 2)...:
             if passwordStrength != .strong {
                 passwordStrength = .strong
             }
@@ -194,6 +202,7 @@ class PasswordField: UIControl {
             }
         case .strong:
             strengthDescriptionLabel.text = "Strong password"
+            mediumView.layer.backgroundColor = mediumColor.cgColor
             UIView.animate(withDuration: 0.3, animations: {
                 self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 1.6)
                 self.strongView.layer.backgroundColor = self.strongColor.cgColor
@@ -225,3 +234,13 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
+//class DictionaryChecker: UIReferenceLibraryViewController {
+//    override init(term: String) {
+//        super.init(term: term)
+//    }
+//
+//    required init(coder: NSCoder) {
+//        super.init(coder: coder)
+//    }
+//}
