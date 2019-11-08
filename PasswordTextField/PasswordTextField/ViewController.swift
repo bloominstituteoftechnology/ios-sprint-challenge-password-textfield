@@ -19,6 +19,12 @@ class ViewController: UIViewController {
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
     
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("Password: " + sender.password)
+        print("Strength: \(sender.relativeStrength) (\"\(sender.relativeStrength.rawValue)\")")
+    }
+    
+    
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
 //

@@ -13,11 +13,11 @@ class PasswordField: UIControl {
     // MARK: - Public API
     // these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private (set) var relativeStrength: RelativePasswordStrength = .none {
-        didSet {
-            updateStrengthViews()
-        }
-    }
+    private (set) var relativeStrength: RelativePasswordStrength = .none //{
+//        didSet {
+//            updateStrengthViews()
+//        }
+//    } // unneeded w/ settargetforaction thingy?
     
     // MARK: - Subview Settings
     private let standardMargin: CGFloat = 8.0
@@ -110,7 +110,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = fieldPlaceholder
         textField.delegate = self
-        textField.addTarget(self, action: #selector(passwordChanged), for: .valueChanged)
+        textField.addTarget(self, action: #selector(updateStrengthViews), for: .valueChanged)
 //        textField.borderStyle = .roundedRect
 //        textField.layer.borderColor = textFieldBorderColor.cgColor
 //        textField.layer.borderWidth = textFieldBorderWidth
@@ -209,12 +209,7 @@ class PasswordField: UIControl {
         }
     }
     
-    @objc func passwordChanged() {
-        print("Password: " + password)
-        print("Strength: \(relativeStrength) (\"\(relativeStrength.rawValue)\")")
-    }
-    
-    private func updateStrengthViews() {
+    @objc private func updateStrengthViews() {
         strengthDescriptionLabel.text = relativeStrength.rawValue
         strengthViews.forEach { (view) in
             view.backgroundColor = unusedColor
@@ -261,7 +256,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        relativeStrength = determineStrength(of: newText)
+        determineStrength(of: newText)
         return true
     }
     
@@ -269,16 +264,21 @@ extension PasswordField: UITextFieldDelegate {
         resignFirstResponder()
     }
     
-    func determineStrength(of password: String) -> RelativePasswordStrength {
+    func determineStrength(of password: String) {
+        let strength: RelativePasswordStrength
+        
         switch password.count {
         case 1...9:
-            return .weak
+            strength = .weak
         case 10...19:
-            return .medium
+            strength = .medium
         case let length where length >= 20:
-            return .strong
+            strength = .strong
         default:
-            return .none
+            strength = .none
         }
+        
+        relativeStrength = strength
+        sendActions(for: .valueChanged)
     }
 }
