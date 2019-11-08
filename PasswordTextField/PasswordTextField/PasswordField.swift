@@ -64,6 +64,15 @@ class PasswordField: UIControl {
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
         titleLabel.text = "MESSAGE HERE"
         
+        addSubview(viewForFields)
+        viewForFields.translatesAutoresizingMaskIntoConstraints = false
+        viewForFields.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+        viewForFields.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        viewForFields.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        viewForFields.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        viewForFields.layer.borderColor = UIColor.darkGray.cgColor
+        viewForFields.layer.borderWidth = 0.5
+        viewForFields.layer.cornerRadius = 4
         
         
         
