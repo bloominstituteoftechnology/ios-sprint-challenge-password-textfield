@@ -77,11 +77,24 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor, constant: textFieldMargin),
-            textField.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -textFieldMargin * 8),
             textField.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -textFieldMargin)
         ])
         
         textField.placeholder = "Password"
+        
+        // Password show/hide button
+        passwordContainerView.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: textFieldMargin),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -textFieldMargin)
+        ])
+        
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         
         // Weak view
         addSubview(weakView)
