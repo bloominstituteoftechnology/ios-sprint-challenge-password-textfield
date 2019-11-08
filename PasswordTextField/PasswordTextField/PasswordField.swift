@@ -52,6 +52,7 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     
+    
    
     
     func setup() {
@@ -64,7 +65,7 @@ class PasswordField: UIControl {
         titleLabel.textAlignment = .center
         titleLabel.textColor = .darkGray
         titleLabel.text = "Enter a password"
-        
+    
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
@@ -77,11 +78,8 @@ class PasswordField: UIControl {
         textField.placeholder = " 0000"
         textField.isSecureTextEntry = true
         textField.font = .systemFont(ofSize: 30)
-        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.addTarget(self, action: #selector(changeBorderColor), for: .touchDown)
 
-        
-       
-        
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -100,7 +98,7 @@ class PasswordField: UIControl {
         weakView.widthAnchor.constraint(equalToConstant: 90).isActive = true
         weakView.layer.borderWidth = 1
         weakView.layer.cornerRadius = 6
-        weakView.layer.backgroundColor = weakColor.cgColor
+        weakView.layer.backgroundColor = unusedColor.cgColor
         
         
         addSubview(mediumView)
@@ -121,15 +119,16 @@ class PasswordField: UIControl {
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.text = "too weak"
+        strengthDescriptionLabel.text = "         "
+        strengthDescriptionLabel.textAlignment = .center
         
         let stackView = UIStackView()
                stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
                
                
-               stackView.axis = .horizontal
-               stackView.distribution = .equalSpacing
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
         stackView.alignment = .leading
         
         stackView.addArrangedSubview(weakView)
@@ -139,7 +138,7 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5),
-        stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
     }
     
@@ -229,15 +228,18 @@ class PasswordField: UIControl {
             if strength != .strong {
                 strength = .strong
             }
-        case 1...5:
-            if strength != .weak {
+        case 1:
             strength = .weak
-            }
+            
         default:
             return
             }
             
         }
+    
+    @objc func changeBorderColor() {
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+    }
     
     @objc func hideShowButtonSet() {
         textField.isSecureTextEntry.toggle()
