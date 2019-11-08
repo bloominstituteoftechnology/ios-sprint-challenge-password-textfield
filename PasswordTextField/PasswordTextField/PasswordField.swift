@@ -8,6 +8,7 @@
 
 import UIKit
 
+// The UIView needs to be constrained from all sides within the Storyboard
 
 @IBDesignable
 class PasswordField: UIControl {
@@ -15,6 +16,8 @@ class PasswordField: UIControl {
     // MARK: - Public API - these properties are used to fetch the final password and strength values
     
     private (set) var password: String = ""
+    var passwordStrengthValue: String = "Weak"
+    
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -43,7 +46,7 @@ class PasswordField: UIControl {
     
     
     // MARK: - Functions
-
+    
     func setup() {
         // Lay out your subviews here
         self.backgroundColor = bgColor
@@ -80,9 +83,8 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 4).isActive = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.isSelected = true
         textField.isSecureTextEntry = true
-        showHideButton.addTarget(self, action: #selector(showHideTapped), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showHideTapped(_:)), for: .touchUpInside)
         
         // Weak View:
         self.addSubview(weakView)
@@ -124,17 +126,18 @@ class PasswordField: UIControl {
         
     }
     
-    @objc func showHideTapped(){
-        if showHideButton.isSelected {
+    // This varies the image being shown when the password text is hidden or not.
+    @objc func showHideTapped(_ sender: UIButton) {
+        if textField.isSecureTextEntry {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-            textField.isSecureTextEntry = false
         } else {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-            textField.isSecureTextEntry = true
+            textField.isSecureTextEntry = false
         }
     }
     
 
+    // Function that checks how powerful the password is, and responds w/ the right color & animations accordingly.
     private func checkPasswordStrength(password: String) {
         let passwordCharacters = password.count
         
@@ -150,17 +153,20 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Slightly Better Password"
+            passwordStrengthValue = "Medium"
             mediumView.performFlare()
         case 20...:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong Password 😎"
+            passwordStrengthValue = "Strong"
             mediumView.performFlare()
         default:
             (print("something wrong"))
         }
-        
+        self.password = password
+        sendActions(for: [.valueChanged])
         
     }
     
@@ -195,14 +201,16 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        guard let text = textField.text, !text.isEmpty else { return }
-        password = text
-        resignFirstResponder()
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
     
     
