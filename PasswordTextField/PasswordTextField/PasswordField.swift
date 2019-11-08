@@ -31,6 +31,7 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -38,6 +39,8 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var textFieldContainerView: UIView = UIView()
+    private var textFieldIconLabel: UILabel = UILabel()
     
 
     
@@ -51,6 +54,39 @@ class PasswordField: UIControl {
         
         titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 12).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
+        
+        addSubview(textFieldContainerView)
+        textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
+        textFieldContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        textFieldContainerView.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        textFieldContainerView.layer.backgroundColor = #colorLiteral(red: 0.9213470245, green: 0.9213470245, blue: 0.9213470245, alpha: 1)
+        textFieldContainerView.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldContainerView.layer.borderWidth = 0.5
+        textFieldContainerView.layer.cornerRadius = 5.0
+        
+        
+        textFieldContainerView.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: textFieldMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        textField.placeholder = "Password"
+        
+//        textFieldIconLabel.text = "👀"
+//        textFieldIconLabel.textAlignment = .right
+//        addSubview(textFieldIconLabel)
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        textFieldIconLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+//        textFieldIconLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+//        textFieldIconLabel.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
+
         
     }
     
