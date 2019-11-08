@@ -37,6 +37,11 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
     func setup() {
         // Lay out your subviews here
         
@@ -48,28 +53,88 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         
         textField.placeholder = "Enter your password"
+        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderWidth = 1
         textField.layer.borderColor = textFieldBorderColor.cgColor
         addSubview(textField)
         
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.backgroundColor = weakColor
         addSubview(weakView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = mediumColor
         addSubview(mediumView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = strongColor
         addSubview(strongView)
         
-        addSubview(strengthDescriptionLabel)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.text = Strength.weak.rawValue
+        addSubview(strengthDescriptionLabel)
         
+        
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        addSubview(showHideButton)
+
+    
+    
+        NSLayoutConstraint.activate ([
+             
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            
+
+             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: 50),
+            
+            
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            weakView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
+            weakView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
+            weakView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
+                 
+            
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 3),
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mediumView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
+            mediumView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
+              
+            
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 3),
+            strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            
+            strongView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin),
+            strongView.widthAnchor.constraint(equalToConstant: frame.size.width / 10),
+            strongView.heightAnchor.constraint(equalToConstant: standardMargin / 2),
+            
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -standardMargin),
+            showHideButton.widthAnchor.constraint(equalToConstant: 40),
+                      
+         
+            
+        ])
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+    
+    
 }
+
+    
+
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
