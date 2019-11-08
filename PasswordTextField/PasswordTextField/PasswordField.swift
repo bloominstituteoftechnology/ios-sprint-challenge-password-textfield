@@ -16,6 +16,8 @@ class PasswordField: UIControl {
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
+    private let textFieldBorderWidth: CGFloat = 2.0
+    private let textFieldCornerRadius: CGFloat = 5.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
@@ -33,6 +35,7 @@ class PasswordField: UIControl {
     
     // Subviews
     private var titleLabel: UILabel = UILabel()
+    private var textFieldContainer: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -40,11 +43,40 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    // Strings
+    private let titleText = "Enter password"
+    private let fieldPlaceholder = "This!saP@$5w0rdyo!!!1"
+    private let eyesOpenImage = "eyes-open"
+    private let eyesClosedImage = "eyes-closed"
+    
     func setup() {
-        // Lay out your subviews here
+        // add all subviews and set up for constraining
+        [
+            titleLabel,
+            textFieldContainer,
+            textField,
+            showHideButton,
+            weakView,
+            mediumView,
+            strongView,
+            strengthDescriptionLabel
+        ].forEach { (view) in
+            view.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(view)
+        }
         
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Title label
+        titleLabel.text = titleText.uppercased()
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
+        ])
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
