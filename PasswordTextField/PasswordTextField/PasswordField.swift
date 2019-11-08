@@ -73,6 +73,7 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.backgroundColor = .clear
+    
         
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -84,14 +85,11 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 10
-        textField.rightView = showHideButton
-        textField.rightViewMode = .always
         textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
         textField.delegate = self
         textField.addTarget(self, action: #selector(editing), for: .editingChanged)
         textField.addTarget(self, action: #selector(doneEditing), for: .editingDidEnd)
-        textField.addTarget(self, action: #selector(editing), for: .touchUpInside)
         
         
         addSubview(showHideButton)
@@ -102,9 +100,9 @@ class PasswordField: UIControl {
         showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
-        showHideButton.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(self.toggleButton), for: .touchDown)
         showHideButton.isUserInteractionEnabled = true
-        
+//
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -149,9 +147,12 @@ class PasswordField: UIControl {
     @objc func editing() {
         if  password.count < 10 {
             strength = .weak
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         } else if password.count > 9 && password.count < 20 {
             strength = .medium
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         } else {
             strength = .strong
             mediumView.backgroundColor = mediumColor
@@ -161,11 +162,10 @@ class PasswordField: UIControl {
     
     @objc func doneEditing() {
         resignFirstResponder()
-        print("\(self.password) is of strength \(self.strength)")
+        print("\(self.password) is of strength: \(self.strength)")
     }
     
     @objc func toggleButton() {
-        print("working")
         showHideButton.isSelected.toggle()
         if showHideButton.isSelected {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
