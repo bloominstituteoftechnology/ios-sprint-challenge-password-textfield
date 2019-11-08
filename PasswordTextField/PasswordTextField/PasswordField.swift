@@ -231,6 +231,16 @@ class PasswordField: UIControl {
         }
     }
     
+    private func animateStrength(for strengthView: UIView) {
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                strengthView.transform = CGAffineTransform(scaleX: 1, y: 1.5)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                strengthView.transform = .identity
+            }
+        }, completion: nil)
+    }
     
     enum RelativePasswordStrength: String {
         case none = ""
