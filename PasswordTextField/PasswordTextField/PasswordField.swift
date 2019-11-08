@@ -198,13 +198,45 @@ class PasswordField: UIControl {
     override func cancelTracking(with event: UIEvent?) {
         sendActions(for: [.touchCancel])
     }
+    
+    // MARK: - Update Methods
+    
+    private func update(for touch: UITouch) {
+        if textField.bounds.contains(touch.location(in: textField)) {
+            textField.becomeFirstResponder()
+            print("yay")
+        }
     }
     
-    enum RelativePasswordStrength {
-        case none
-        case weak
-        case medium
-        case strong
+    private func updateStrengthViews() {
+        strengthDescriptionLabel.text = relativeStrength.rawValue
+        strengthViews.forEach { (view) in
+            view.backgroundColor = unusedColor
+        }
+        switch relativeStrength {
+        case .none:
+            break
+        case .weak:
+            weakView.backgroundColor = weakColor
+            animateStrength(for: weakView)
+        case .medium:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            animateStrength(for: mediumView)
+        case .strong:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            animateStrength(for: strongView)
+        }
+    }
+    
+    
+    enum RelativePasswordStrength: String {
+        case none = ""
+        case weak = "Too weak"
+        case medium = "Could be stronger"
+        case strong = "Strong password"
     }
 }
 
@@ -213,7 +245,24 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        relativeStrength = determineStrength(of: newText)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignFirstResponder()
+    }
+    
+    func determineStrength(of password: String) -> RelativePasswordStrength {
+        switch password.count {
+        case 1...9:
+            return .weak
+        case 10...19:
+            return .medium
+        case let length where length >= 20:
+            return .strong
+        default:
+            return .none
+        }
     }
 }
