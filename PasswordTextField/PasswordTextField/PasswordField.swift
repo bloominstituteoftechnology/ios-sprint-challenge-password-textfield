@@ -88,13 +88,53 @@ class PasswordField: UIControl {
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            weakView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin),
+            weakView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin * 2),
             weakView.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor),
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
-            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
         ])
         
         weakView.backgroundColor = weakColor
+        
+        // Medium view
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin * 2),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin / 2),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        
+        mediumView.backgroundColor = unusedColor
+        
+        // Strong view
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin * 2),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin / 2),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        
+        strongView.backgroundColor = unusedColor
+        
+        // strengthDescriptionLabel
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor)
+        ])
+        
+        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {
