@@ -8,9 +8,11 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // MARK: - Public API - these properties are used to fetch the final password and strength values
+    
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
@@ -38,17 +40,57 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    
     // MARK: - Functions
 
     func setup() {
         // Lay out your subviews here
+        self.backgroundColor = bgColor
         
-        addSubview(titleLabel)
+        // Title Label:
+        self.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+        // Text Field:
+        self.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.becomeFirstResponder()
+        textField.delegate = self
+        
+        textField.placeholder = "Make it something strong!"
+        
+        
+        // Show/Hide Button:
+        self.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -4).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 4).isActive = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setup()
+    }
+    
+    // for IBDesignable to work (ask why you need this)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setup()
     }
 }
