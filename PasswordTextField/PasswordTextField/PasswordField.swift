@@ -70,6 +70,31 @@ class PasswordField: UIControl {
         passwordContainerView.layer.borderColor = textFieldBorderColor.cgColor
         passwordContainerView.layer.borderWidth = 2
         
+        // Password textfield
+        passwordContainerView.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: passwordContainerView.trailingAnchor, constant: -textFieldMargin),
+            textField.bottomAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: -textFieldMargin)
+        ])
+        
+        textField.placeholder = "Password"
+        
+        // Weak view
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: standardMargin),
+            weakView.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        
+        weakView.backgroundColor = weakColor
     }
     
     required init?(coder aDecoder: NSCoder) {
