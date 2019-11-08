@@ -19,11 +19,12 @@ class PasswordField: UIControl {
         }
     }
     
-    // MARK: - State
+    // MARK: - Private Properties
     
+    // State
     private var showingPassword: Bool = false
     
-    // MARK: - Subview Settings
+    // Subview Settings
     private let standardMargin: CGFloat = 8.0
     private let bottomMargin: CGFloat = 16.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -44,6 +45,14 @@ class PasswordField: UIControl {
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
+    
+    // Password strengths
+    private let passwordLengthMinStrengths: [(strength: RelativePasswordStrength, minLength: Int)] = [
+        (strength: .none, minLength: 0),
+        (strength: .weak, minLength: 1),
+        (strength: .medium, minLength: 10),
+        (strength: .strong, minLength: 20),
+    ]
     
     // Subviews
     private var titleLabel: UILabel = UILabel()
@@ -273,21 +282,14 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func determineStrength(of password: String) {
-        let strength: RelativePasswordStrength
+        var newStrength: RelativePasswordStrength = .none
         
-        switch password.count {
-        case 1...9:
-            strength = .weak
-        case 10...19:
-            strength = .medium
-        case let length where length >= 20:
-            strength = .strong
-        default:
-            strength = .none
+        for strength in passwordLengthMinStrengths {
+            if password.count >= strength.minLength { newStrength = strength.strength }
         }
         
-        if strength != currentRelativeStrength {
-            currentRelativeStrength = strength
+        if newStrength != currentRelativeStrength {
+            currentRelativeStrength = newStrength
         }
     }
 }
