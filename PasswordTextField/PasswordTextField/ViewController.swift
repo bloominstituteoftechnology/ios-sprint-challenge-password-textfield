@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var passwordField: PasswordField!
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -24,6 +25,11 @@ class ViewController: UIViewController {
         print("Strength: \(sender.relativeStrength) (\"\(sender.relativeStrength.rawValue)\")")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(passwordField.isUserInteractionEnabled)
+        passwordField.becomeFirstResponder()
+    }
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)

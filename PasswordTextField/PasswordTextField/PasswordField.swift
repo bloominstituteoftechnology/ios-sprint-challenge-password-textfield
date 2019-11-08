@@ -19,6 +19,10 @@ class PasswordField: UIControl {
 //        }
 //    } // unneeded w/ settargetforaction thingy?
     
+    // MARK: - State
+    
+    private var showingPassword: Bool = false
+    
     // MARK: - Subview Settings
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -108,6 +112,7 @@ class PasswordField: UIControl {
         // Text field
         textFieldContainer.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isUserInteractionEnabled = true
         textField.placeholder = fieldPlaceholder
         textField.delegate = self
         textField.addTarget(self, action: #selector(updateStrengthViews), for: .valueChanged)
@@ -132,6 +137,7 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: eyesClosedImage), for: .normal)
         showHideButton.setTitleColor(labelTextColor, for: .normal)
+        showHideButton.addTarget(self, action: #selector(toggleShowPassword), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
@@ -171,12 +177,13 @@ class PasswordField: UIControl {
     
     // MARK: - Touch Handlers
     
-    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+    override private func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         update(for: touch)
+        sendActions(for: [.touchDown])
         return true
     }
-    
-    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+
+    override private func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         if bounds.contains(touch.location(in: self)) {
             sendActions(for: [.touchDragInside])
             update(for: touch)
@@ -185,8 +192,8 @@ class PasswordField: UIControl {
         }
         return true
     }
-    
-    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+
+    override private func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         guard let touch = touch else { return }
         if bounds.contains(touch.location(in: self)) {
             sendActions(for: [.touchUpInside])
@@ -195,16 +202,16 @@ class PasswordField: UIControl {
             sendActions(for: [.touchUpOutside])
         }
     }
-    
-    override func cancelTracking(with event: UIEvent?) {
+
+    override private func cancelTracking(with event: UIEvent?) {
         sendActions(for: [.touchCancel])
     }
     
     // MARK: - Update Methods
     
     private func update(for touch: UITouch) {
-        if textField.bounds.contains(touch.location(in: textField)) {
-            textField.becomeFirstResponder()
+        if textField.frame.contains(touch.location(in: textField)) {
+            //textField.becomeFirstResponder()
             print("yay")
         }
     }
@@ -241,6 +248,13 @@ class PasswordField: UIControl {
                 strengthView.transform = .identity
             }
         }, completion: nil)
+    }
+    
+    @objc private func toggleShowPassword() {
+        showingPassword.toggle()
+        textField.isSecureTextEntry = !showingPassword
+        let showHideImage = showingPassword ? eyesOpenImage : eyesClosedImage
+        showHideButton.setImage(UIImage(named: showHideImage), for: .normal)
     }
     
     enum RelativePasswordStrength: String {
