@@ -103,7 +103,14 @@ class PasswordField: UIControl {
         weakView.layer.cornerRadius = 2
         weakView.layer.backgroundColor = weakColor.cgColor
         
-        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.centerYAnchor.constraint(equalTo: weakView.centerYAnchor).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        mediumView.layer.cornerRadius = 2
+        mediumView.layer.backgroundColor = unusedColor.cgColor
         
         
         
