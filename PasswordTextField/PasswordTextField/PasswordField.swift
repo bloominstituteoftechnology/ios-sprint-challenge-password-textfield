@@ -121,6 +121,13 @@ class PasswordField: UIControl {
         strongView.layer.cornerRadius = 2
         strongView.layer.backgroundColor = unusedColor.cgColor
         
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.centerYAnchor.constraint(equalTo: weakView.centerYAnchor).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 4).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
+        strengthDescriptionLabel.text = "Strength here"
+        
         
         
         
