@@ -10,6 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
     
+  
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+    }
+    
+    
+    @IBAction func textEntered(_ sender: PasswordField) {
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
