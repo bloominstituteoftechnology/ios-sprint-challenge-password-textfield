@@ -77,6 +77,7 @@ class PasswordField: UIControl {
         textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         textField.placeholder = "Password"
+        textField.isSecureTextEntry = true
         
 //        textFieldIconLabel.text = "👀"
 //        textFieldIconLabel.textAlignment = .right
