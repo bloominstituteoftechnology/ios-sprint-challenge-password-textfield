@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var passwordField: PasswordField!
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -18,6 +19,17 @@ class ViewController: UIViewController {
     // to install (you can use the first one "American English"). Tap
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
+    
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("Password: " + sender.password)
+        print("Strength: \(sender.currentRelativeStrength) (\"\(sender.currentRelativeStrength.rawValue)\")")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(passwordField.isUserInteractionEnabled)
+        passwordField.becomeFirstResponder()
+    }
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
