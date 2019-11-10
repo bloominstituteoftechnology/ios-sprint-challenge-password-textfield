@@ -88,7 +88,32 @@ class PasswordField: UIControl {
 //        textFieldIconLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
 //        textFieldIconLabel.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
 
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         
+        weakView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor).isActive = true
+        weakView.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.bottomAnchor, multiplier: 1.8).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        weakView.layer.backgroundColor = unusedColor.cgColor
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.leadingAnchor.constraint(equalTo: weakView.leadingAnchor, constant:  65).isActive = true
+        mediumView.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.bottomAnchor, multiplier: 1.8).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        mediumView.layer.backgroundColor = unusedColor.cgColor
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.leadingAnchor.constraint(equalTo: mediumView.leadingAnchor, constant: 65).isActive = true
+        strongView.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.bottomAnchor, multiplier: 1.8).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        strongView.layer.backgroundColor = unusedColor.cgColor
     }
     
     override init(frame: CGRect) {
