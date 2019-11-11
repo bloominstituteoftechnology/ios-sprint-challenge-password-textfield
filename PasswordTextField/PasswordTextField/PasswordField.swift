@@ -41,7 +41,6 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var textFieldContainerView: UIView = UIView()
-    private var textFieldIconLabel: UILabel = UILabel()
     
     private var strengthStackView = UIStackView()
 
@@ -91,16 +90,16 @@ class PasswordField: UIControl {
         textField.placeholder = "Enter Password"
         textField.isSecureTextEntry = true
         
-//        addSubview(textFieldIconLabel)
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        textFieldIconLabel.text = "Show"
-//        textFieldIconLabel.textAlignment = .right
-//
-//        textFieldIconLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
-//        textFieldIconLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
-//        textFieldIconLabel.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
 
-
+       showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -8).isActive = true
+        
+        showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchDown)
+        
+         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+         showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .selected)
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -201,7 +200,17 @@ class PasswordField: UIControl {
         sendActions(for: .touchCancel)
     }
 
+    @objc func hideShowButtonSet() {
+        textField.isSecureTextEntry.toggle()
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+        }
+    }
 }
+
+
 
 extension PasswordField: UITextFieldDelegate {
     
