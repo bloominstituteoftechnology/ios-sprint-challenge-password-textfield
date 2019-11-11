@@ -93,7 +93,7 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
 
-       showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -8).isActive = true
         
         showHideButton.addTarget(self, action: #selector(hideShowButtonSet), for: .touchDown)
@@ -159,16 +159,39 @@ class PasswordField: UIControl {
             weakView.layer.backgroundColor = weakColor.cgColor
             mediumView.layer.backgroundColor = unusedColor.cgColor
             strongView.layer.backgroundColor = unusedColor.cgColor
+            
+            UIView.animate(withDuration: 0.8, animations:  {
+                self.weakView.transform = CGAffineTransform(scaleX: 1, y: 1.2)
+            }) {_ in UIView.animate(withDuration: 0.42) {
+                self.weakView.transform = .identity
+                }
+            }
+            
         } else if password.count >= 8 && password.count < 16 {
                 strengthDescriptionLabel.text = "Medium"
             weakView.layer.backgroundColor = weakColor.cgColor
             mediumView.layer.backgroundColor = mediumColor.cgColor
             strongView.layer.backgroundColor = unusedColor.cgColor
+            
+            UIView.animate(withDuration: 0.8, animations:  {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.2)
+            }) {_ in UIView.animate(withDuration: 0.2) {
+                self.mediumView.transform = .identity
+                }
+            }
+            
         } else {
             strengthDescriptionLabel.text = "Strong"
             weakView.layer.backgroundColor = weakColor.cgColor
             mediumView.layer.backgroundColor = mediumColor.cgColor
             strongView.layer.backgroundColor = strongColor.cgColor
+            
+            UIView.animate(withDuration: 0.8, animations:  {
+                self.strongView.transform = CGAffineTransform(scaleX: 1, y: 1.2)
+            }) {_ in UIView.animate(withDuration: 0.2) {
+                self.strongView.transform = .identity
+                }
+            }
         }
     }
     
