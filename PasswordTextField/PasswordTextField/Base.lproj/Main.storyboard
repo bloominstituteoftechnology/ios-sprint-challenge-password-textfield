@@ -22,6 +22,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="v0c-JS-lYF" secondAttribute="height" multiplier="374:109" id="u3V-t1-hu6"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="passwordTextFieldChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Sg8-kM-RFW"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -32,9 +35,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <connections>
-                        <outlet property="passwordTextField" destination="v0c-JS-lYF" id="6Wk-d5-UQd"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
