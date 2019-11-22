@@ -8,10 +8,27 @@
 
 import UIKit
 
+
+enum PasswordStrength: String {
+    case tooWeak = "Too Weak"
+    case couldBeStronger = "Could Be Stronger"
+    case strong = "Strong Password"
+}
+
 class PasswordField: UIControl {
     
+    private(set) var passwordStrength: PasswordStrength? {
+        didSet {
+            changePasswordStrengthBarColor()
+        }
+    }
+    
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
+    private (set) var password: String = "" {
+        didSet {
+            determinePasswordStrength()
+        }
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -38,16 +55,61 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    func setup() {
-        // Lay out your subviews here
+    private var textFieldContainerView: UIView = UIView()
+    private var allElementsStackView: UIStackView = UIStackView()
+    private var strengthBarsStackView: UIStackView = UIStackView()
+    
+    private func setup() {
+        layer.cornerRadius = 8
+        backgroundColor = bgColor
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
+        
+        //MARK: ADDSubViews:
+        [titleLabel, textField, strengthBarsStackView].forEach {
+            allElementsStackView.addArrangedSubview($0)}
+        [weakView, mediumView, strongView, strengthDescriptionLabel].forEach {
+            strengthBarsStackView.addArrangedSubview($0)
+        }
+        
+        //Size and spacing:
+        
+        textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        allElementsStackView.alignment = .fill
+        allElementsStackView.distribution = .fill
+        allElementsStackView.axis = .vertical
+        
+        strengthBarsStackView.alignment = .center
+        strengthBarsStackView.distribution = .fill
+        strengthBarsStackView.spacing = standardMargin
+        
+        //Textfield Setup:
+        
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 8
+        
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
+        
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+        textField.rightView = showHideButton
+        
+        textField.clearButtonMode = .whileEditing
+        textField.isSecureTextEntry = true
+        
+        textField.delegate = self
+        
+        
+        //MARK: Additional Setup
+        
+        //Title label:
+        
+        titleLabel.text = "Enter Password"
     }
 }
 
