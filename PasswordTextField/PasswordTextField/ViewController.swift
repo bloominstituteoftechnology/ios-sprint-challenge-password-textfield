@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet var passwordControl: PasswordField!
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
