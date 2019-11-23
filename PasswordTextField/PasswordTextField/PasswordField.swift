@@ -19,7 +19,7 @@ class PasswordField: UIControl {
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
-    private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+    private let labelFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
     
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
@@ -61,7 +61,7 @@ class PasswordField: UIControl {
         textField.placeholder = "   Password"
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2.0
-        textField.layer.cornerRadius = 5.0
+        textField.layer.cornerRadius = 10.0
         textField.isSecureTextEntry = true
         textField.clearButtonMode = .whileEditing
         textField.delegate = self
@@ -90,9 +90,7 @@ class PasswordField: UIControl {
         ])
 
         //MARK: Password Strength Label Set UP
-        strengthDescriptionLabel.text = "Strength Indicator"
-        strengthDescriptionLabel.font = labelFont
-        strengthDescriptionLabel.textColor = labelTextColor
+        
         
         //MARK: WeakView
         addSubview(weakView)
@@ -125,8 +123,11 @@ class PasswordField: UIControl {
                strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         
         //MARK: Strength Label
+        strengthDescriptionLabel.text = "Strength Indicator"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         addSubview(strengthDescriptionLabel)
-
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: standardMargin).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: self.strongView.trailingAnchor, constant: standardMargin).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.textField.trailingAnchor).isActive = true
