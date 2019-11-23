@@ -53,7 +53,7 @@ import UIKit
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
         
 
         
@@ -61,7 +61,7 @@ import UIKit
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 35).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
-        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.blue.cgColor
@@ -69,10 +69,9 @@ import UIKit
         
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
-        
-        showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
-        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 5).isActive = true
         showHideButton.addTarget(self, action: #selector(toggleShowPassword), for: .touchUpInside)
+        textField.rightViewMode = .always
+        textField.rightView = showHideButton
     
         
         weakView.backgroundColor = weakColor
