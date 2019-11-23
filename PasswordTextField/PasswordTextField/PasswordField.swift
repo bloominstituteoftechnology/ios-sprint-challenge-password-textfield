@@ -195,7 +195,23 @@ class PasswordField: UIControl {
             strongView.backgroundColor = unusedColor
         }
     }
-    
+    private func dictionaryWord(for text: String) {
+         if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password){
+             if passwordStrength == .strong {
+                 passwordStrength = .medium
+                 weakView.backgroundColor = unusedColor
+                 mediumView.backgroundColor = mediumColor
+                 strongView.backgroundColor = unusedColor
+                 strengthDescriptionLabel.text = "\(PasswordStrength.medium)"
+             } else if passwordStrength == .medium {
+                 passwordStrength = .weak
+                 weakView.backgroundColor = weakColor
+                 mediumView.backgroundColor = unusedColor
+                 strongView.backgroundColor = unusedColor
+                 strengthDescriptionLabel.text = "\(PasswordStrength.weak)"
+             }
+         }
+     }
     
 }
 //MARK: UITextFieldDelegate
@@ -214,7 +230,9 @@ extension PasswordField: UITextFieldDelegate {
         if let password = textField.text, !password.isEmpty{
             self.password = password
             sendActions(for: .valueChanged)
+            dictionaryWord(for: password)
         }
+        
         return true
     }
     
