@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1FA1970A238792C700C5ACB9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1FA19709238792C700C5ACB9 /* README.md */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1FA19709238792C700C5ACB9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
+				1FA19709238792C700C5ACB9 /* README.md */,
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
@@ -127,6 +130,7 @@
 			files = (
 				CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */,
 				CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */,
+				1FA1970A238792C700C5ACB9 /* README.md in Resources */,
 				CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
