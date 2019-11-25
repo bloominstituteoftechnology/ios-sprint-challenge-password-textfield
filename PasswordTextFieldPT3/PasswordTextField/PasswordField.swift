@@ -47,7 +47,8 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton(type: .system)
+    private var buttonView: UIView = UIView()
+    private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -98,6 +99,29 @@ class PasswordField: UIControl {
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
+//        addSubview(buttonView)
+//        NSLayoutConstraint.activate([
+//            buttonView.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+//            buttonView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+//            buttonView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+//            buttonView.widthAnchor.constraint(equalToConstant: textFieldContainerHeight)
+//        ])
+        
+        // Show/Hide Button
+        addSubview(showHideButton)
+        //        showHideButton.frame = CGRect(x: textField.frame.maxX - 50.0, y: textField.frame.minY, width: 50.0, height: 50.0)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            showHideButton.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+//            showHideButton.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor)
+//        ])
+        NSLayoutConstraint.activate([
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+        ])
+        showHideButton.isUserInteractionEnabled = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
         
         // StackView
         addSubview(strengthStackView)
@@ -149,18 +173,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = "Strength Level"
-        
-        // Show/Hide Button
-        addSubview(showHideButton)
-//        showHideButton.frame = CGRect(x: textField.frame.maxX - 50.0, y: textField.frame.minY, width: 50.0, height: 50.0)
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
-            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
-        ])
-        showHideButton.isUserInteractionEnabled = true
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
