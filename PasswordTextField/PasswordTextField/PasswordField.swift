@@ -58,6 +58,12 @@ class PasswordField: UIControl {
         return stackView
     }()
     
+    
+     required init?(coder aDecoder: NSCoder) {
+         super.init(coder: aDecoder)
+         setup()
+     }
+    
     func setup() {
         // Lay out your subviews here
         self.backgroundColor = unusedColor
@@ -83,7 +89,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = standardMargin
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
-        textField.layoutMargins.left = textFieldMargin * 2.0
+        textField.directionalLayoutMargins.trailing = standardMargin
 //        textField.layoutMargins.right = 2 * textFieldMargin
 //        textField.clearsOnBeginEditing = true
         NSLayoutConstraint.activate([
@@ -99,11 +105,10 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            //showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin)
         ])
         showHideButton.isUserInteractionEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(showHidePassword(_:)), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
 
 //        textField.rightView = showHideButton
 //        textField.rightViewMode = .always
@@ -169,51 +174,17 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = "Strength Level"
     }
+ 
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
-    @objc func showHidePassword(_ sender: UIButton) {
+    @objc func showHidePassword() {
         print("password showing: \(passwordShowing) and \(showHideButton.state)")
         passwordShowing.toggle()
         showHideButton.setImage(UIImage(named: passwordShowing ? "eyes-open" : "eyes-closed"), for: .normal)
-        textField.isSecureTextEntry = !passwordShowing
-    }
-}
+//        textField.isSecureTextEntry = !passwordShowing
+        textField.isSecureTextEntry.toggle()
 
-extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        
-        // TODO: send new text to the determine strength method
-        determineStrength(newText.count)
-        
-        return true
-    }
-//
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        print("Did Begin was called")
-//    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let password = textField.text, !password.isEmpty {
-            self.password = password
-        }
-        sendActions(for: .valueChanged)
-        print("Did end was called")
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.endEditing(true)
-        if let password = textField.text, !password.isEmpty {
-            self.password = password
-        }
-        return true
-    }
-
     private func animateStrength(_ strengthView: UIView) {
         strengthView.transform = CGAffineTransform(scaleX: 1.0, y: 1.15)
         UIView.animate(withDuration: 1.5, animations: { strengthView.transform = .identity }, completion: nil)
@@ -250,5 +221,37 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = unusedColor
             strength = .none
         }
+    }
+}
+
+extension PasswordField: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let oldText = textField.text!
+        let stringRange = Range(range, in: oldText)!
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
+        // TODO: send new text to the determine strength method
+        determineStrength(newText.count)
+        
+        return true
+    }
+//
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("Did Begin was called")
+//    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let password = textField.text, !password.isEmpty {
+            self.password = password
+        }
+        sendActions(for: .valueChanged)
+        print("Did end was called")
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        if let password = textField.text, !password.isEmpty {
+            self.password = password
+        }
+        return true
     }
 }
