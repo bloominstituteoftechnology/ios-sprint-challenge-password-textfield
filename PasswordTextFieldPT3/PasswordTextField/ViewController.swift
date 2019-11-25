@@ -9,13 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-        
+    
     @IBAction func returnKeyPressed(_ sender: PasswordField) {
         
-        print("\(sender.password) is \(sender.strength)")
     }
-       
-    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
