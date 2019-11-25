@@ -49,6 +49,8 @@ class PasswordField: UIControl {
         return stackView
     }()
     
+    private var passwordShowing: Bool = false
+    
     func setup() {
         // Lay out your subviews here
 //        self.backgroundColor = .darkGray
@@ -146,10 +148,14 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determineStrength(newText.count)
+        
         return true
     }
     
     @objc func showPassword() {
-        
+        passwordShowing.toggle()
+        showHideButton.setImage(UIImage(named: passwordShowing ? "eyes-open" : "eyes-closed"), for: .normal)
+        textField.isSecureTextEntry.toggle()
     }
 }
