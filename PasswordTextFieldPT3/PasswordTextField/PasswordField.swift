@@ -42,6 +42,7 @@ class PasswordField: UIControl {
         // Lay out your subviews here
         self.backgroundColor = unusedColor
         
+        // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -52,6 +53,34 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.text = "ENTER PASSWORD"
         
+        // Text Field
+        addSubview(textField)
+        textField.delegate = self
+        textField.becomeFirstResponder()
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isUserInteractionEnabled = true
+// Check this feature
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = standardMargin
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+        textField.directionalLayoutMargins.trailing = standardMargin
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+// Check these constraints
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        // Show/Hide Button
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+        ])
         
     }
     
