@@ -17,6 +17,7 @@ class PasswordField: UIControl {
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let colorViewRadius: CGFloat = 2.0
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -50,7 +51,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        self.backgroundColor = unusedColor
+//        self.backgroundColor = .darkGray
         
         // Title Label
         addSubview(titleLabel)
@@ -106,7 +107,20 @@ class PasswordField: UIControl {
         strengthStackView.addArrangedSubview(strongView)
         
         // Constraint and create strength views
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.sizeThatFits(colorViewSize)
+        weakView.backgroundColor = unusedColor
+        weakView.layer.cornerRadius = colorViewRadius
         
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.sizeThatFits(colorViewSize)
+        mediumView.backgroundColor = unusedColor
+        mediumView.layer.cornerRadius = colorViewRadius
+        
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.sizeThatFits(colorViewSize)
+        strongView.backgroundColor = unusedColor
+        strongView.layer.cornerRadius = colorViewRadius
         
     }
     
