@@ -94,7 +94,7 @@ class PasswordField: UIControl {
         ])
         showHideButton.isUserInteractionEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
         
         // StackView
         addSubview(strengthStackView)
@@ -122,6 +122,16 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
         strongView.layer.cornerRadius = colorViewRadius
         
+        // Strength label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strengthStackView.centerYAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strengthStackView.trailingAnchor, constant: standardMargin)
+        ])
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = "Strength Level"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -139,7 +149,7 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    @objc func showHidePassword() {
+    @objc func showPassword() {
         
     }
 }
