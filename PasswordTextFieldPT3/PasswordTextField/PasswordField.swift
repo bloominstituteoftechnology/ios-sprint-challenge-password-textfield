@@ -38,6 +38,16 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private let strengthStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 2.0
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     func setup() {
         // Lay out your subviews here
         self.backgroundColor = unusedColor
@@ -84,6 +94,20 @@ class PasswordField: UIControl {
         showHideButton.isUserInteractionEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
+        
+        // StackView
+        addSubview(strengthStackView)
+        NSLayoutConstraint.activate([
+            strengthStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strengthStackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor)
+        ])
+        strengthStackView.addArrangedSubview(weakView)
+        strengthStackView.addArrangedSubview(mediumView)
+        strengthStackView.addArrangedSubview(strongView)
+        
+        // Constraint and create strength views
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
