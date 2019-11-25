@@ -81,7 +81,9 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
         ])
-        
+        showHideButton.isUserInteractionEnabled = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,5 +99,9 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         return true
+    }
+    
+    @objc func showHidePassword() {
+        
     }
 }
