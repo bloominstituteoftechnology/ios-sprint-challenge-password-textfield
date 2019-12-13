@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -39,6 +39,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var passwordTextContainerView:UIView = UIView()
+    private var passwordTextField: UITextField = UITextField()
     
     func setup() {
         // Lay out your subviews here
@@ -61,7 +62,7 @@ class PasswordField: UIControl {
         /// PasswordTextContainerView
         addSubview(passwordTextContainerView)
         passwordTextContainerView.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextContainerView.backgroundColor = bgColor 
+        passwordTextContainerView.backgroundColor = bgColor
         NSLayoutConstraint.activate([
             
                passwordTextContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
@@ -80,8 +81,29 @@ class PasswordField: UIControl {
         passwordTextContainerView.layer.borderWidth = 3
         passwordTextContainerView.layer.cornerRadius = 6
         
+        /// Add the passwords text field to the password container view
+        passwordTextContainerView.addSubview(passwordTextField)
+        
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            passwordTextField.topAnchor.constraint(equalTo: passwordTextContainerView.topAnchor, constant: standardMargin),
+            
+            passwordTextField.leadingAnchor.constraint(equalTo: passwordTextContainerView.leadingAnchor, constant: standardMargin),
+            
+    
+            
+            passwordTextField.widthAnchor.constraint(equalToConstant: 250),
+            passwordTextField.bottomAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: -standardMargin)
         
         
+        
+        
+        ])
+        
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.delegate = self
+        passwordTextField.placeholder = "Password"
+        passwordTextField.becomeFirstResponder()
         
     }
     
