@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -43,6 +44,19 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate ([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant:130 + standardMargin),
+            
+            titleLabel.leadingAnchor.constraint(equalTo:leadingAnchor, constant: standardMargin),
+            
+            titleLabel.trailingAnchor.constraint(equalTo:trailingAnchor, constant: -standardMargin)
+            
+            
+        
+        ])
+        titleLabel.text = "ENTER PASSWORD"
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,3 +74,13 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
+
+/*
+ NSLayoutConstraint.activate([
+         colorWheel.topAnchor.constraint(equalTo: topAnchor),
+         colorWheel.leadingAnchor.constraint(equalTo: leadingAnchor),
+         colorWheel.trailingAnchor.constraint(equalTo: trailingAnchor),
+         colorWheel.heightAnchor.constraint(equalTo: colorWheel.widthAnchor)
+     ])
+ */
