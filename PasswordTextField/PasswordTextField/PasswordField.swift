@@ -9,6 +9,12 @@
 import UIKit
 
 //@IBDesignable
+
+enum passwordStrength: String {
+    case weak = "To Weak"
+    case medium = "Could Be Stronger"
+    case strong = "Strong Password"
+}
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -41,11 +47,12 @@ class PasswordField: UIControl {
     private var passwordTextContainerView:UIView = UIView()
     private var passwordTextField: UITextField = UITextField()
     private var showAndHideButton:UIButton = UIButton(type: .system)
+    private var buttonView:UIView = UIView()
     
     
     @objc func showOrHidePassword(){
         passwordTextField.isSecureTextEntry.toggle()
-        if !passwordTextField.isSecureTextEntry{
+        if passwordTextField.isSecureTextEntry{
             showAndHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
@@ -115,19 +122,33 @@ class PasswordField: UIControl {
             passwordTextField.isSecureTextEntry = true
             passwordTextField.delegate = self
             passwordTextField.placeholder = "Password"
+        passwordTextField.becomeFirstResponder()
 
+        
+        /// View to house Button
+        
+        passwordTextContainerView.addSubview(buttonView)
+        buttonView.translatesAutoresizingMaskIntoConstraints = false
+        buttonView.topAnchor.constraint(equalTo: passwordTextContainerView.topAnchor, constant: standardMargin).isActive = true
+        buttonView.leadingAnchor.constraint(equalTo:passwordTextField.trailingAnchor, constant: standardMargin).isActive = true
+        buttonView.trailingAnchor.constraint(equalTo:passwordTextContainerView.trailingAnchor, constant: -standardMargin).isActive = true
+        
+        buttonView.bottomAnchor.constraint(equalTo:passwordTextContainerView.bottomAnchor, constant:standardMargin).isActive = true
+        
+        
+        
         
         /// BUTTON
         
-        passwordTextField.addSubview(showAndHideButton)
+        buttonView.addSubview(showAndHideButton)
         showAndHideButton.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.rightViewMode = .always
-        
-        passwordTextField.rightView = showAndHideButton
-        showAndHideButton .isEnabled = true
-        showAndHideButton.addTarget(self, action: #selector(showOrHidePassword), for: .touchUpInside)
+        showAndHideButton.topAnchor.constraint(equalTo: buttonView.topAnchor).isActive = true
+        showAndHideButton.leadingAnchor.constraint(equalTo:buttonView.leadingAnchor).isActive = true
+        showAndHideButton.trailingAnchor.constraint(equalTo:buttonView.trailingAnchor).isActive = true
+        showAndHideButton.bottomAnchor.constraint(equalTo:buttonView.bottomAnchor).isActive = true
+     
         showAndHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        
+        showAndHideButton.addTarget(self, action: #selector(showOrHidePassword), for: .touchUpInside)
         
         /// Configure Strength Bar Views
         
@@ -146,14 +167,126 @@ class PasswordField: UIControl {
         ])
         weakView.layer.cornerRadius = 6
         weakView.backgroundColor = unusedColor
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: standardMargin),
+            mediumView.leadingAnchor.constraint(equalTo:weakView.trailingAnchor),
+            
+            mediumView.heightAnchor.constraint(equalToConstant: 6),
+            mediumView.widthAnchor.constraint(equalToConstant: 65)
+            
+            
+        
+        
+        ])
+        mediumView.layer.cornerRadius = 6
+        mediumView.backgroundColor = unusedColor
+        
+        
+               addSubview(strongView)
+               strongView.translatesAutoresizingMaskIntoConstraints = false
+               NSLayoutConstraint.activate([
+                   strongView.topAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: standardMargin),
+                   strongView.leadingAnchor.constraint(equalTo:mediumView.trailingAnchor),
+                   
+                   strongView.heightAnchor.constraint(equalToConstant: 6),
+                   strongView.widthAnchor.constraint(equalToConstant: 65)
+                   
+                   
+               
+               
+               ])
+               strongView.layer.cornerRadius = 6
+               strongView.backgroundColor = unusedColor
+        
  
         
+    
+    
+    /// add label for password strength description
+   addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: standardMargin),
+            
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
+        
+        
+        
+        
+        ])
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = ""
+        
+    
+    
     }
+    
+    
+    func DeterminePassStrength(_ password: String) {
+        var passwordStrength: passwordStrength
+        
+        switch password.count {
+        case 0...9:
+            passwordStrength = .weak
+            
+        case 10 ... 19:
+            passwordStrength = .medium
+            
+        default:
+            passwordStrength = .strong
+        }
+        self.password = password
+        strengthBarBackground(passwordStrength)
+        sendActions(for:[.valueChanged])
+        
+    }
+    
+    func strengthBarBackground( _ passwordStrength: passwordStrength){
+        switch passwordStrength {
+        case .weak :
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = passwordStrength.rawValue
+            
+        case .medium:
+            weakView.backgroundColor = weakColor
+              mediumView.backgroundColor = mediumColor
+              strongView.backgroundColor = unusedColor
+              strengthDescriptionLabel.text = passwordStrength.rawValue
+            
+        case .strong:
+            weakView.backgroundColor = weakColor
+              mediumView.backgroundColor = mediumColor
+              strongView.backgroundColor = strongColor
+              strengthDescriptionLabel.text = passwordStrength.rawValue
+              
+        }
+    }
+        
+        
+        
+        
+        
+        
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+  
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        endEditing(true)
+    }
+    
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -161,9 +294,18 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        DeterminePassStrength(newText)
         return true
     }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         endEditing(true)
+    textField.resignFirstResponder()
+         return true
+     }
 }
 
 
@@ -175,3 +317,4 @@ extension PasswordField: UITextFieldDelegate {
          colorWheel.heightAnchor.constraint(equalTo: colorWheel.widthAnchor)
      ])
  */
+
