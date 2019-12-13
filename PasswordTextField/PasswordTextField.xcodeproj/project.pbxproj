@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		635AD10323A4142000A5FF78 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635AD10223A4142000A5FF78 /* PasswordTextField.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		635AD10223A4142000A5FF78 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+				635AD10223A4142000A5FF78 /* PasswordTextField.swift */,
 			);
 			path = "Custom Controls";
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
+				635AD10323A4142000A5FF78 /* PasswordTextField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
