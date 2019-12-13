@@ -27,4 +27,7 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    @IBAction func passwordReturnTapped(_ sender: PasswordField) {
+        print("Password is: \(sender.password) and password strength is \(sender.strength.rawValue)")
+    }
 }
