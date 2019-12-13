@@ -225,7 +225,7 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let text = textField.text else { return false }
         password = text
-        print("Password is: \(password) and strength is: \(strength.rawValue)")
+        sendActions(for: [.valueChanged])
         return true
     }
 }
