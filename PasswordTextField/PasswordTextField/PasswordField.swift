@@ -51,7 +51,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
         
-        addSubview(titleLabel)
+        self.addSubview(titleLabel)
      
         NSLayoutConstraint(item: titleLabel,
                            attribute: .top,
@@ -77,15 +77,37 @@ class PasswordField: UIControl,UITextFieldDelegate {
                            multiplier: 1,
                            constant: -2).isActive = true
         
-        
-        
-        let textField = UITextField(frame: CGRect(x: standardMargin , y: 0.0, width: textFieldMargin, height: textFieldContainerHeight  - 10.0))
-        
-        
+        let textField = UITextField()
+       
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
-        addSubview(textField)
+        self.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: textField,
+                                  attribute: .top,
+                                  relatedBy: .equal,
+                                  toItem: titleLabel,
+                                  attribute: .bottom,
+                                  multiplier: 1,
+                                  constant: 4).isActive = true
+               
+               NSLayoutConstraint(item: textField,
+                                  attribute: .leading,
+                                  relatedBy: .equal,
+                                  toItem: self,
+                                  attribute: .leading,
+                                  multiplier: 1,
+                                  constant: 2).isActive = true
+               
+               NSLayoutConstraint(item: textField,
+                                  attribute: .trailing,
+                                  relatedBy: .equal,
+                                  toItem: self,
+                                  attribute: .trailing,
+                                  multiplier: 1,
+                                  constant: -2).isActive = true
+               
         
         
         
@@ -94,15 +116,15 @@ class PasswordField: UIControl,UITextFieldDelegate {
         strengthDescriptionLabel.textAlignment = .center
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
-        addSubview(strengthDescriptionLabel)
+        self.addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint(item: strengthDescriptionLabel,
                            attribute: .top,
                            relatedBy: .equal,
-                           toItem: titleLabel,
+                           toItem: textField,
                            attribute: .bottom,
-                           multiplier: 5,
+                           multiplier: 1,
                            constant: 4).isActive = true
         
         NSLayoutConstraint(item: strengthDescriptionLabel,
@@ -128,6 +150,9 @@ class PasswordField: UIControl,UITextFieldDelegate {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    // Func that gets the length of the string and makes changes to the weak, medium, strong views accordingly
+    // Func that handles the animations of the labels.
 }
 
 extension PasswordField {
