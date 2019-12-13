@@ -40,6 +40,18 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var passwordTextContainerView:UIView = UIView()
     private var passwordTextField: UITextField = UITextField()
+    private var showAndHideButton:UIButton = UIButton(type: .system)
+    
+    
+    @objc func showOrHidePassword(){
+        passwordTextField.isSecureTextEntry.toggle()
+        if !passwordTextField.isSecureTextEntry{
+            showAndHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
+    
     
     func setup() {
         // Lay out your subviews here
@@ -82,28 +94,59 @@ class PasswordField: UIControl {
         passwordTextContainerView.layer.cornerRadius = 6
         
         /// Add the passwords text field to the password container view
-        passwordTextContainerView.addSubview(passwordTextField)
+           passwordTextContainerView.addSubview(passwordTextField)
+            
+            passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                passwordTextField.topAnchor.constraint(equalTo: passwordTextContainerView.topAnchor, constant: standardMargin),
+                
+                passwordTextField.leadingAnchor.constraint(equalTo: passwordTextContainerView.leadingAnchor, constant: standardMargin),
+                
         
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+                
+                passwordTextField.widthAnchor.constraint(equalToConstant: 250),
+                passwordTextField.bottomAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: -standardMargin)
+            
+            
+            
+            
+            ])
+            
+            passwordTextField.isSecureTextEntry = true
+            passwordTextField.delegate = self
+            passwordTextField.placeholder = "Password"
+
+        
+        /// BUTTON
+        
+        passwordTextField.addSubview(showAndHideButton)
+        showAndHideButton.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.rightViewMode = .always
+        
+        passwordTextField.rightView = showAndHideButton
+        showAndHideButton .isEnabled = true
+        showAndHideButton.addTarget(self, action: #selector(showOrHidePassword), for: .touchUpInside)
+        showAndHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        
+        /// Configure Strength Bar Views
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            passwordTextField.topAnchor.constraint(equalTo: passwordTextContainerView.topAnchor, constant: standardMargin),
+            weakView.topAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: standardMargin),
+            weakView.leadingAnchor.constraint(equalTo:passwordTextContainerView.leadingAnchor),
             
-            passwordTextField.leadingAnchor.constraint(equalTo: passwordTextContainerView.leadingAnchor, constant: standardMargin),
+            weakView.heightAnchor.constraint(equalToConstant: 6),
+            weakView.widthAnchor.constraint(equalToConstant: 65)
             
-    
             
-            passwordTextField.widthAnchor.constraint(equalToConstant: 250),
-            passwordTextField.bottomAnchor.constraint(equalTo: passwordTextContainerView.bottomAnchor, constant: -standardMargin)
-        
-        
         
         
         ])
-        
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.delegate = self
-        passwordTextField.placeholder = "Password"
-        passwordTextField.becomeFirstResponder()
+        weakView.layer.cornerRadius = 6
+        weakView.backgroundColor = unusedColor
+ 
         
     }
     
