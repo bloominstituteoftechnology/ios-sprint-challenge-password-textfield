@@ -8,15 +8,17 @@
 
 import UIKit
 
-class PasswordField: UIControl {
+class PasswordField: UIControl,UITextFieldDelegate {
     
-    // Public API - these properties are used to fetch the final password and strength values
+    // Public API - these prop erties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
-    private let standardMargin: CGFloat = 8.0
+    private var standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    
+    
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -38,12 +40,89 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    
     func setup() {
-        // Lay out your subviews here
+        //         Lay out your subviews here
+        titleLabel.text = " Enter Password "
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textAlignment = .left
         
         addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+     
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 4).isActive = true
+        
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 2).isActive = true
+        
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .trailing,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .trailing,
+                           multiplier: 1,
+                           constant: -2).isActive = true
+        
+        
+        
+        let textField = UITextField(frame: CGRect(x: standardMargin , y: 0.0, width: textFieldMargin, height: textFieldContainerHeight  - 10.0))
+        
+        
+        textField.textAlignment = .center
+        textField.borderStyle = .roundedRect
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        
+        strengthDescriptionLabel.text = " Too Weak "
+        strengthDescriptionLabel.textAlignment = .center
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: titleLabel,
+                           attribute: .bottom,
+                           multiplier: 5,
+                           constant: 4).isActive = true
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 2).isActive = true
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .trailing,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .trailing,
+                           multiplier: 1,
+                           constant: -2).isActive = true
+        
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -51,12 +130,16 @@ class PasswordField: UIControl {
     }
 }
 
-extension PasswordField: UITextFieldDelegate {
+extension PasswordField {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         return true
+    }
+    
+    func updateViews() {
+        
     }
 }
