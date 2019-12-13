@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum passWordPower: String {
+    case weak = "Password is to weak"
+    case medium = "Password could be stronger"
+    case strong = "This is a good password"
+}
+
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -40,6 +47,7 @@ class PasswordField: UIControl {
     
     private var passwordViewContainer: UIView = UIView()
     private var eyeImage: UIImageView = UIImageView()
+    private var hidePassword: Bool = true
     
     
     func setup() {
@@ -96,7 +104,7 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: eyeImage.topAnchor).isActive = true
         showHideButton.leadingAnchor.constraint(equalTo: eyeImage.leadingAnchor).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: eyeImage.trailingAnchor).isActive = true
-        //showHideButton.addTarget(self, action: #selector(<#T##@objc method#>), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showHiddenText), for: .touchUpInside)
         
         
         //weak view
@@ -141,8 +149,71 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    @objc func showHiddenText() {
+        if hidePassword {
+            eyeImage.image = UIImage(named: "eyes-closed")
+            textField.isSecureTextEntry = true
+        } else {
+            eyeImage.image = UIImage(named: "eye-open")
+            textField.isSecureTextEntry = false
+        }
+        hidePassword.toggle()
+    }
+    
+    func passwordStrenght(_ password: String) {
+        var passwordS: passWordPower
+        switch password.count {
+        case 0...4 :
+            passwordS = .weak
+          
+            
+        case 5...7 :
+            passwordS = .medium
+
+            
+        case 8...12:
+            passwordS = .strong
+
+            
+        default:
+            break
+            
+        }
+        self.password = password
+        sendActions(for: [.valueChanged])
+        
+    }
+    
+    
+    func strenghtBarColors(_ passwordStrenght: passWordPower) {
+        switch passwordStrenght {
+        case .weak:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = passwordStrenght.rawValue
+            
+        case .medium:
+            weakView.backgroundColor = weakColor
+            weakView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = passwordStrenght.rawValue
+            
+        case .strong:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = passwordStrenght.rawValue
+    }
+    
+    
+    
+    
+    
 }
 
+}
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
