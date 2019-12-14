@@ -246,6 +246,7 @@ class PasswordField: UIControl {
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+
             
         case .weak :
             weakView.backgroundColor = weakColor
@@ -253,17 +254,46 @@ class PasswordField: UIControl {
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = passwordStrength.rawValue
             
+            UIView.animate(withDuration: 0.5, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1, y:2)
+                
+            }) { (_) in
+                UIView.animate(withDuration: 0.75) {
+                    self.weakView.transform = .identity
+                    }
+                              }
+            
         case .medium:
             weakView.backgroundColor = weakColor
               mediumView.backgroundColor = mediumColor
               strongView.backgroundColor = unusedColor
               strengthDescriptionLabel.text = passwordStrength.rawValue
             
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1, y:2)
+                
+            }) { (_) in
+                UIView.animate(withDuration: 0.75) {
+                    self.mediumView.transform = .identity
+                    }
+                              }
+            
         case .strong:
             weakView.backgroundColor = weakColor
               mediumView.backgroundColor = mediumColor
               strongView.backgroundColor = strongColor
               strengthDescriptionLabel.text = passwordStrength.rawValue
+            
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1, y:2)
+                
+            }) { (_) in
+                UIView.animate(withDuration: 0.75) {
+                    self.strongView.transform = .identity
+                    }
+                              }
               
         }
     }
