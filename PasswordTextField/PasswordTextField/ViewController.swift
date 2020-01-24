@@ -13,8 +13,8 @@ class ViewController: UIViewController {
    
     
     @IBAction func printPasswordAndStrength(_ sender: PasswordField) {
-        print(sender.password)
-        print(sender.passwordStrength)
+        NSLog(sender.password)
+        NSLog("\(sender.passwordStrength)")
         
     }
     // For use in the stretch goal
