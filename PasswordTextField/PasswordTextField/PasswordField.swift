@@ -51,6 +51,7 @@ class PasswordField: UIControl {
         // Lay out your subviews here
         congfigureLabel()
         configureTextField()
+        configureViews()
     }
     
     func congfigureLabel() {
@@ -86,17 +87,61 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         // TextField Button
-        let button = UIButton(type: .custom)
-        addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.frame = CGRect(x: textField.frame.size.width - 25,
-                              y: textField.frame.size.height,
-                              width: textFieldContainerHeight,
-                              height: textFieldContainerHeight)
-        textField.rightView = button
-        textField.rightView?.backgroundColor = .red
-        addSubview(button)
+//        let button = UIButton(type: .custom)
+//        addSubview(button)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+//        button.frame = CGRect(x: textField.frame.size.width - 25,
+//                              y: textField.frame.size.height - 25,
+//                              width: textFieldContainerHeight - 25,
+//                              height: textFieldContainerHeight - 25)
+//        textField.rightView = button
+//        textField.rightView?.backgroundColor = .red
+//        addSubview(button)
+        
+    }
+    
+    func configureViews() {
+        // Weak
+        weakView.backgroundColor = unusedColor
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        // Medium
+        mediumView.backgroundColor = unusedColor
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        // Stronk
+        strongView.backgroundColor = unusedColor
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        // Strength Description Label
+        //strengthDescriptionLabel.backgroundColor = .cyan
+        strengthDescriptionLabel.text = "Too Weak"
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
+        
+        // center vertically with str views?
         
     }
     
