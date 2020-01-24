@@ -42,7 +42,7 @@ import UIKit
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    func setup() {
+    private func setup() {
         backgroundColor = bgColor
         //MARK: Setup title label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -137,12 +137,6 @@ import UIKit
         
     }
     
-    //Bug testing
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setup()
-//    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -158,7 +152,7 @@ import UIKit
         }
     }
     
-    func animate(view: UIView) {
+    private func animate(view: UIView) {
         UIView.animate(withDuration: 0.5, animations: {
             view.transform = CGAffineTransform(scaleX: 1.33, y: 1)
         }) { _ in
