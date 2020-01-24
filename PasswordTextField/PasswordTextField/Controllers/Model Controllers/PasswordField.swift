@@ -161,19 +161,19 @@ class PasswordField: UIControl {
                 mediumView.backgroundColor = unusedColor
                 strongView.backgroundColor = unusedColor
                 strengthDescriptionLabel.text = passStrength.rawValue
-                springAnimationWeak()
+                weakView.performFlare()
             case .medium:
                 weakView.backgroundColor = weakColor
                 mediumView.backgroundColor = mediumColor
                 strongView.backgroundColor = unusedColor
                 strengthDescriptionLabel.text = passStrength.rawValue
-                springAnimationMedium()
+                mediumView.performFlare()
             case .strong:
                 weakView.backgroundColor = weakColor
                 mediumView.backgroundColor = mediumColor
                 strongView.backgroundColor = strongColor
                 strengthDescriptionLabel.text = passStrength.rawValue
-                springAnimationStrong()
+                strongView.performFlare()
             }
         } else {
             weakView.backgroundColor = unusedColor
@@ -238,6 +238,13 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let newPass = textField.text {
+            password = newPass
+            sendActions(for: .valueChanged)
+        }
+        weakView.performFlare()
+        mediumView.performFlare()
+        strongView.performFlare()
         textField.resignFirstResponder()
         return true
     }
@@ -245,7 +252,26 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let textField = textField.text {
             password = textField
+            sendActions(for: .valueChanged)
         }
-        sendActions(for: .valueChanged)
+    }
+}
+
+extension UIView {
+    func performFlare() {
+        func flare() {
+            transform = CGAffineTransform(scaleX: 1, y: 1.8)
+        }
+        func unflare() {
+            transform = .identity
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            flare()
+        }) { _ in
+            UIView.animate(withDuration: 0.1, animations: {
+                unflare()
+            })
+        }
     }
 }
