@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum Strength {
+    case strong
+    case medium
+    case weak
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: Strength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -38,16 +45,63 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var tfBorder: UIView = UIView()
+    
     func setup() {
         // Lay out your subviews here
-        
-        // Title Label
+        congfigureLabel()
+        configureTextField()
+    }
+    
+    func congfigureLabel() {
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+    }
+    
+    func configureTextField() {
+        //textField.borderStyle = .roundedRect
+        tfBorder.backgroundColor = textFieldBorderColor
+        addSubview(tfBorder)
+        tfBorder.translatesAutoresizingMaskIntoConstraints = false
+        
+        tfBorder.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin - 1).isActive = true
+        tfBorder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin - 1).isActive = true
+        tfBorder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin + 1).isActive = true
+        tfBorder.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        // bottom border needs fixing
+
+        textField.backgroundColor = bgColor
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin - textFieldContainerHeight).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        // TextField Button
+        let button = UIButton(type: .custom)
+        addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.frame = CGRect(x: textField.frame.size.width - 25,
+                              y: textField.frame.size.height,
+                              width: textFieldContainerHeight,
+                              height: textFieldContainerHeight)
+        textField.rightView = button
+        textField.rightView?.backgroundColor = .red
+        addSubview(button)
+        
+    }
+    
+    @objc func buttonTapped() {
+        print("button")
     }
     
     required init?(coder aDecoder: NSCoder) {
