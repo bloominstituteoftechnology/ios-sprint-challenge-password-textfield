@@ -19,6 +19,7 @@ import UIKit
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     private let standardCornerRadius: CGFloat = 4.0
     
+    
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
@@ -34,6 +35,7 @@ import UIKit
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
+    private let textFieldContainer = UIView()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
@@ -41,7 +43,6 @@ import UIKit
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        isUserInteractionEnabled = false
         backgroundColor = bgColor
         //MARK: Setup title label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -51,16 +52,19 @@ import UIKit
         titleLabel.font = labelFont
         
         //MARK: Setup textField
+        textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textFieldContainer)
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = textFieldBorderWidth
         textField.layer.cornerRadius = standardCornerRadius
-        
+        textField.becomeFirstResponder()
         textField.delegate = self
         textField.isSecureTextEntry = true
         
-        textField.becomeFirstResponder()
+        //textField.becomeFirstResponder()
         
         //MARK: Setup colorViews
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,20 +94,25 @@ import UIKit
         addSubview(showHideButton)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(eyesWideShut), for: .touchUpInside)
-        showHideButton.isUserInteractionEnabled = true
         
         NSLayoutConstraint.activate([
             //in order as setup above and semantically with view
+            
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -textFieldMargin),
+            textFieldContainer.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textFieldContainer.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
             
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin),
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin),
             
-            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin),
-            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            weakView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: textFieldMargin),
+            weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor),
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             
@@ -128,10 +137,11 @@ import UIKit
         
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
+    //Bug testing
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setup()
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -147,6 +157,15 @@ import UIKit
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
+    
+    func animate(view: UIView) {
+        UIView.animate(withDuration: 0.5, animations: {
+            view.transform = CGAffineTransform(scaleX: 1.33, y: 1)
+        }) { _ in
+            view.transform = .identity
+        }
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -161,11 +180,17 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = unusedColor
         case 10...19:
             strengthDescriptionLabel.text = "Could Be Stronger"
-            mediumView.backgroundColor = mediumColor
+            if mediumView.backgroundColor == unusedColor {
+                animate(view: mediumView)
+                mediumView.backgroundColor = mediumColor
+            }
             strongView.backgroundColor = unusedColor
         default:
             strengthDescriptionLabel.text = "Strong Password"
-            strongView.backgroundColor = strongColor
+            if strongView.backgroundColor == unusedColor {
+                animate(view: strongView)
+                strongView.backgroundColor = strongColor
+            }
         }
         return true
     }
