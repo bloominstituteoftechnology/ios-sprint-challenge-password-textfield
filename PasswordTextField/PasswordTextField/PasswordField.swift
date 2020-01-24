@@ -17,6 +17,16 @@ enum PasswordStrength: Int {
 @IBDesignable class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    var passwordStrength: PasswordStrength {
+        switch password.count {
+        case 0...9:
+            return .weak
+        case 10...19:
+            return .medium
+        default:
+            return .strong
+        }
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -139,6 +149,7 @@ enum PasswordStrength: Int {
         
     }
     
+    //MARK: View Lifecycle
     required override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -149,24 +160,14 @@ enum PasswordStrength: Int {
         setup()
     }
     
-    @objc func eyesWideShut() {
+    //MARK: Private Methodsz
+    @objc private func eyesWideShut() {
         if textField.isSecureTextEntry {
             textField.isSecureTextEntry = false
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        }
-    }
-    
-    func passwordStrength() -> PasswordStrength {
-        switch password.count {
-        case 0...9:
-            return .weak
-        case 10...19:
-            return .medium
-        default:
-            return .strong
         }
     }
     
@@ -180,30 +181,32 @@ enum PasswordStrength: Int {
     
 }
 
+//MARK: TextField Delegate
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
-        
-        switch passwordStrength() {
-        case .weak:
-            strengthDescriptionLabel.text = "Too Weak"
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-        case .medium:
-            strengthDescriptionLabel.text = "Could Be Stronger"
-            if mediumView.backgroundColor == unusedColor {
-                animate(view: mediumView)
-                mediumView.backgroundColor = mediumColor
-            }
-            strongView.backgroundColor = unusedColor
-        case .strong:
-            strengthDescriptionLabel.text = "Strong Password"
-            if strongView.backgroundColor == unusedColor {
-                animate(view: strongView)
-                strongView.backgroundColor = strongColor
+        if newText != "" {
+            switch passwordStrength {
+            case .weak:
+                strengthDescriptionLabel.text = "Too Weak"
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+            case .medium:
+                strengthDescriptionLabel.text = "Could Be Stronger"
+                if mediumView.backgroundColor == unusedColor {
+                    animate(view: mediumView)
+                    mediumView.backgroundColor = mediumColor
+                }
+                strongView.backgroundColor = unusedColor
+            case .strong:
+                strengthDescriptionLabel.text = "Strong Password"
+                if strongView.backgroundColor == unusedColor {
+                    animate(view: strongView)
+                    strongView.backgroundColor = strongColor
+                }
             }
         }
         return true
