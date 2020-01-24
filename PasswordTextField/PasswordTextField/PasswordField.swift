@@ -97,10 +97,10 @@ import UIKit
         
         NSLayoutConstraint.activate([
             //in order as setup above and semantically with view
-            
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            
             textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -textFieldMargin),
             textFieldContainer.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textFieldContainer.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
