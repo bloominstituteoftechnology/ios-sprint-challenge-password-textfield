@@ -8,8 +8,13 @@
 
 import UIKit
 
+enum PasswordStrength: Int {
+    case weak
+    case medium
+    case strong
+}
+
 @IBDesignable class PasswordField: UIControl {
-    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -63,8 +68,6 @@ import UIKit
         textField.becomeFirstResponder()
         textField.delegate = self
         textField.isSecureTextEntry = true
-        
-        //textField.becomeFirstResponder()
         
         //MARK: Setup colorViews
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,9 +135,13 @@ import UIKit
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
-            
         ])
         
+    }
+    
+    required override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -149,6 +156,17 @@ import UIKit
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
+    }
+    
+    func passwordStrength() -> PasswordStrength {
+        switch password.count {
+        case 0...9:
+            return .weak
+        case 10...19:
+            return .medium
+        default:
+            return .strong
         }
     }
     
@@ -167,25 +185,36 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        switch newText.count {
-        case 0...9:
+        password = newText
+        
+        switch passwordStrength() {
+        case .weak:
             strengthDescriptionLabel.text = "Too Weak"
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-        case 10...19:
+        case .medium:
             strengthDescriptionLabel.text = "Could Be Stronger"
             if mediumView.backgroundColor == unusedColor {
                 animate(view: mediumView)
                 mediumView.backgroundColor = mediumColor
             }
             strongView.backgroundColor = unusedColor
-        default:
+        case .strong:
             strengthDescriptionLabel.text = "Strong Password"
             if strongView.backgroundColor == unusedColor {
                 animate(view: strongView)
                 strongView.backgroundColor = strongColor
             }
         }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        strengthDescriptionLabel.text = "Too Weak"
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
+        sendActions(for: .valueChanged)
+        textField.resignFirstResponder()
         return true
     }
 }

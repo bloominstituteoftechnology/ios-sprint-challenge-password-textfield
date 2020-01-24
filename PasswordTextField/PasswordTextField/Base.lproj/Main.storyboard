@@ -22,6 +22,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="v0c-JS-lYF" secondAttribute="height" multiplier="1:0.3" id="x6x-cB-VKq"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="passwordFieldReturned:" destination="BYZ-38-t0r" eventType="valueChanged" id="dnF-Q0-ccO"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
