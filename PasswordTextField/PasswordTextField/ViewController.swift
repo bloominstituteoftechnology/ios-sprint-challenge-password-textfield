@@ -37,7 +37,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var tappedTextField: PasswordField!
     
     @IBAction func tappedTextField(_ field: PasswordField) {
-        print("tapped called")
         print("password: \(field.password), strength: \(field.passwordStrength)")
     }
     

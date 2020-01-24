@@ -76,6 +76,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1.0
         textField.placeholder = "password"
+        textField.isSecureTextEntry = true
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
     
@@ -85,19 +86,14 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         // Button
-        let button = UIButton()
-        button.titleLabel?.text = "btn"
-        addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2.0 * standardMargin, bottom: 0, right: 0)
+        showHideButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        //button.imageView!.image = UIImage(named: "eyes-open")
-        button.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
-        button.leadingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
-        //button.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        //button.widthAnchor.constraint(equalToConstant: textField.frame.width).isActive = true
-        
-        print(button.frame.origin)
     }
     
     func configureViews() {
@@ -146,7 +142,18 @@ class PasswordField: UIControl {
     }
     
     @objc func buttonTapped() {
-        print("button")
+        showHideButton.isSelected.toggle()
+        if showHideButton.isSelected {
+            print("SHOW")
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+        }
+        else {
+            print("HIDE")
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+        }
+        
     }
     
     override init(frame: CGRect) {
