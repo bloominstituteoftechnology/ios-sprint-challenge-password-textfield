@@ -18,10 +18,11 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private var showPassword: Bool = false
     
-    var passwordStrength: PasswordStrength = .weak
+//    var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -148,24 +149,28 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             passwordStrength = .weak
+            password = newPassword
         case 1...9:
             strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             passwordStrength = .weak
+            password = newPassword
         case 10...19:
             strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             passwordStrength = .medium
+            password = newPassword
         case 20...50:
             strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             passwordStrength = .strong
+            password = newPassword
         default:
             strengthDescriptionLabel.text = "Password Too Long"
         }
@@ -199,7 +204,19 @@ extension PasswordField: UITextFieldDelegate {
         passwordStrength(newPassword: newText)
         return true
         }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let newPassword = textField.text {
+            password = newPassword
+            sendActions(for: .valueChanged)
+        }
+        weakView.performFlare()
+        mediumView.performFlare()
+        strongView.performFlare()
+        textField.resignFirstResponder()
+        return true
     }
+}
 
 extension UIView {
     func performFlare() {
