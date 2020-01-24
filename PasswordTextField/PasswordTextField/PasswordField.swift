@@ -61,19 +61,20 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.rightView = showHideButton
+        textField.rightViewMode = .always
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin),
-            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
 
-        
         // Weak View
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
