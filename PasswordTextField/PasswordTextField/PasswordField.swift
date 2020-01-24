@@ -122,8 +122,28 @@ class PasswordField: UIControl {
         ])
     }
     
+    func strength() {
+        guard let password = textField.text else { return }
+        
+        if password.count <= 9 {
+            strengthDescriptionLabel.text = "Too weak"
+            weakView.backgroundColor = weakColor
+        } else if password.count <= 19 {
+            strengthDescriptionLabel.text = "Could be stronger"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+        } else {
+            strengthDescriptionLabel.text = "Strong"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
+        strength()
         setup()
     }
 }
