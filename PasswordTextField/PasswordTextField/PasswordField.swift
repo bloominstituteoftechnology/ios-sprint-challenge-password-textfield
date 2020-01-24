@@ -67,38 +67,48 @@ class PasswordField: UIControl {
     
     func configureTextField() {
         //textField.borderStyle = .roundedRect
-        tfBorder.backgroundColor = textFieldBorderColor
-        addSubview(tfBorder)
-        tfBorder.translatesAutoresizingMaskIntoConstraints = false
-        
-        tfBorder.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin - 1).isActive = true
-        tfBorder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin - 1).isActive = true
-        tfBorder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin + 1).isActive = true
-        tfBorder.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+//        tfBorder.backgroundColor = textFieldBorderColor
+//        addSubview(tfBorder)
+//        tfBorder.translatesAutoresizingMaskIntoConstraints = false
+//
+//        tfBorder.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin - 1).isActive = true
+//        tfBorder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin - 1).isActive = true
+//        tfBorder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin + 1).isActive = true
+//        tfBorder.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         // bottom border needs fixing
 
         textField.backgroundColor = bgColor
-        addSubview(textField)
+        
+        //textField.resignFirstResponder()
+        
+        textField.placeholder = "Enter password"
+        
+        
+        addSubview(textField) //??
+        
+        
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
         
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin - textFieldContainerHeight).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
-        // TextField Button
-//        let button = UIButton(type: .custom)
-//        addSubview(button)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-//        button.frame = CGRect(x: textField.frame.size.width - 25,
-//                              y: textField.frame.size.height - 25,
-//                              width: textFieldContainerHeight - 25,
-//                              height: textFieldContainerHeight - 25)
-//        textField.rightView = button
-//        textField.rightView?.backgroundColor = .red
-//        addSubview(button)
+        // Button
+        let button = UIButton()
+        button.titleLabel?.text = "btn"
+        addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        //button.imageView!.image = UIImage(named: "eyes-open")
+        button.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        button.leadingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        //button.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        //button.widthAnchor.constraint(equalToConstant: textField.frame.width).isActive = true
+        
+        print(button.frame.origin)
     }
     
     func configureViews() {
@@ -149,9 +159,60 @@ class PasswordField: UIControl {
         print("button")
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+        textField.delegate = self
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
+    }
+    
+    func checkStrength() {
+        
+    }
+    
+    // MARK: - Touch Trackers
+    
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let touchPoint = touch.location(in: self)
+        if textField.frame.contains(touchPoint) {
+            print("tapped inside the bounds of textfield")
+        }
+        print("begin tracking") // not printing
+        sendActions(for: [.touchDown, .touchUpInside, .valueChanged])
+        return true
+    }
+    
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let touchPoint = touch.location(in: self)
+        if bounds.contains(touchPoint) {
+            
+            sendActions(for: [.touchDragInside, .valueChanged])
+        } else {
+            sendActions(for: [.touchDragOutside])
+        }
+        return true
+    }
+    
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        defer { super.endTracking(touch, with: event) }
+        guard let touch = touch else { return }
+        
+        let touchPoint = touch.location(in: self)
+        if bounds.contains(touchPoint) {
+            
+            sendActions(for: [.touchUpInside])
+        } else {
+            sendActions(for: [.touchUpOutside])
+        }
+    }
+    
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: [.touchCancel])
     }
 }
 
@@ -163,4 +224,16 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         return true
     }
+}
+
+extension UIView {
+  // "Flare view" animation sequence
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
 }

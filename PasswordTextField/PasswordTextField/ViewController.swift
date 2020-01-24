@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -27,4 +32,11 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    @IBOutlet weak var tappedTextField: PasswordField!
+    
+    @IBAction func tappedTextField(_ sender: PasswordField) {
+        print("tapped textfield")
+    }
+    
 }
