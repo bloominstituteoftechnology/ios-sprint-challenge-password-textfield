@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 enum Strength {
     case strong
@@ -45,10 +46,13 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    private var tfBorder: UIView = UIView()
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 300, height: 300)
+    } // ??
     
     func setup() {
         // Lay out your subviews here
+        backgroundColor = .clear
         congfigureLabel()
         configureTextField()
         configureViews()
@@ -66,33 +70,18 @@ class PasswordField: UIControl {
     }
     
     func configureTextField() {
-        //textField.borderStyle = .roundedRect
-//        tfBorder.backgroundColor = textFieldBorderColor
-//        addSubview(tfBorder)
-//        tfBorder.translatesAutoresizingMaskIntoConstraints = false
-//
-//        tfBorder.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin - 1).isActive = true
-//        tfBorder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin - 1).isActive = true
-//        tfBorder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin + 1).isActive = true
-//        tfBorder.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        // bottom border needs fixing
-
+        // TextField
+        textField.borderStyle = .roundedRect
         textField.backgroundColor = bgColor
-        
-        //textField.resignFirstResponder()
-        
-        textField.placeholder = "Enter password"
-        
-        
-        addSubview(textField) //??
-        
-        
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 1.0
+        textField.placeholder = "password"
+        addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        
+    
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin).isActive = true
-        textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin - textFieldContainerHeight).isActive = true
+        textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         // Button
@@ -113,7 +102,7 @@ class PasswordField: UIControl {
     
     func configureViews() {
         // Weak
-        weakView.backgroundColor = unusedColor
+        weakView.backgroundColor = weakColor
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -153,6 +142,7 @@ class PasswordField: UIControl {
         
         // center vertically with str views?
         
+        
     }
     
     @objc func buttonTapped() {
@@ -171,49 +161,45 @@ class PasswordField: UIControl {
         textField.delegate = self
     }
     
-    func checkStrength() {
+    func checkStrength(pw: String?) {
+        
+        guard let pw = pw else {return}
+        password = pw
+        
+        if pw.count >= 20 {
+            passwordStrength = .strong
+            strongView.backgroundColor = strongColor
+            strongView.performFlare()
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            strengthDescriptionLabel.text = "Strong password"
+        }
+        else if pw.count <= 19 && pw.count >= 10 {
+            passwordStrength = .medium
+            strongView.backgroundColor = unusedColor
+            mediumView.backgroundColor = mediumColor
+            mediumView.performFlare()
+            weakView.backgroundColor = weakColor
+            strengthDescriptionLabel.text = "Could be stronger"
+        }
+        else {
+            passwordStrength = .weak
+            strongView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            weakView.backgroundColor = weakColor
+            weakView.performFlare()
+            strengthDescriptionLabel.text = "Too weak"
+        }
         
     }
     
-    // MARK: - Touch Trackers
-    
-    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        let touchPoint = touch.location(in: self)
-        if textField.frame.contains(touchPoint) {
-            print("tapped inside the bounds of textfield")
-        }
-        print("begin tracking") // not printing
-        sendActions(for: [.touchDown, .touchUpInside, .valueChanged])
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        checkStrength(pw: textField.text)
+        sendActions(for: [.valueChanged])
+        textField.resignFirstResponder()
         return true
     }
-    
-    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        let touchPoint = touch.location(in: self)
-        if bounds.contains(touchPoint) {
-            
-            sendActions(for: [.touchDragInside, .valueChanged])
-        } else {
-            sendActions(for: [.touchDragOutside])
-        }
-        return true
-    }
-    
-    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-        defer { super.endTracking(touch, with: event) }
-        guard let touch = touch else { return }
-        
-        let touchPoint = touch.location(in: self)
-        if bounds.contains(touchPoint) {
-            
-            sendActions(for: [.touchUpInside])
-        } else {
-            sendActions(for: [.touchUpOutside])
-        }
-    }
-    
-    override func cancelTracking(with event: UIEvent?) {
-        sendActions(for: [.touchCancel])
-    }
+
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -222,6 +208,8 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        checkStrength(pw: newText)
+        sendActions(for: [.valueChanged])
         return true
     }
 }
@@ -229,7 +217,7 @@ extension PasswordField: UITextFieldDelegate {
 extension UIView {
   // "Flare view" animation sequence
   func performFlare() {
-    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func flare()   { transform = CGAffineTransform(scaleX: 1.4, y: 1.4) }
     func unflare() { transform = .identity }
     
     UIView.animate(withDuration: 0.3,

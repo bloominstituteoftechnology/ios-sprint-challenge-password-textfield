@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
     }
     
@@ -35,8 +36,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tappedTextField: PasswordField!
     
-    @IBAction func tappedTextField(_ sender: PasswordField) {
-        print("tapped textfield")
+    @IBAction func tappedTextField(_ field: PasswordField) {
+        print("tapped called")
+        print("password: \(field.password), strength: \(field.passwordStrength)")
     }
     
 }
