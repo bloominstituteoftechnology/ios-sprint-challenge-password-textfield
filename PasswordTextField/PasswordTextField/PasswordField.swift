@@ -38,17 +38,77 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    func setup() {
-        // Lay out your subviews here
-        
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setup()
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    func setup() {
+        // Lay out your subviews here
+        
+        backgroundColor = bgColor
+        
+//        NSLayoutConstraint.activate([
+//                    self.widthAnchor.constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor),
+//                    self.heightAnchor.constraint(equalToConstant: 120.0)
+//                ])
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        titleLabel.text = "Enter password"
+        
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textField)
+        textField.borderStyle = .roundedRect
+        
+        //textField.layer .borderColor = textFieldBorderColor
+       
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+
+        NSLayoutConstraint.activate([
+            
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            
+            showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor , constant: -20)
+
+        ])
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
