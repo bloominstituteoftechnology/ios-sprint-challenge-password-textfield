@@ -66,18 +66,19 @@ enum PasswordStrength: Int {
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         
-        //MARK: Setup textField
+        //MARK: Setup textField container
         textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textFieldContainer)
-        
         textField.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(textField)
+        textFieldContainer.addSubview(textField)
+        
+        //MARK: Setup textField
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = textFieldBorderWidth
         textField.layer.cornerRadius = standardCornerRadius
-        textField.becomeFirstResponder()
         textField.delegate = self
         textField.isSecureTextEntry = true
+        textField.setLeftPaddingPoints(textFieldMargin)
         
         //MARK: Setup colorViews
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,15 +115,15 @@ enum PasswordStrength: Int {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             
-            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -textFieldMargin),
+            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
             textFieldContainer.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textFieldContainer.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
             
             textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -standardMargin),
+            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
             
             weakView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: textFieldMargin),
             weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor),
@@ -219,5 +220,15 @@ extension PasswordField: UITextFieldDelegate {
         sendActions(for: .valueChanged)
         textField.resignFirstResponder()
         return true
+    }
+}
+
+//add left hand padding to textField
+//Credit: https://stackoverflow.com/questions/25367502/create-space-at-the-beginning-of-a-uitextfield#answer-40636808
+extension UITextField {
+    func setLeftPaddingPoints(_ amount:CGFloat){
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
+        self.leftView = paddingView
+        self.leftViewMode = .always
     }
 }
