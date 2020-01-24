@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl,UITextFieldDelegate {
     
     // Public API - these prop erties are used to fetch the final password and strength values
@@ -44,47 +45,46 @@ class PasswordField: UIControl,UITextFieldDelegate {
     func setup() {
         //         Lay out your subviews here
         //        titleLabel
-        backgroundColor = bgColor
-        self.addSubview(titleLabel)
-        titleLabel.text = " Enter Password "
+        
+        titleLabel.text = " ENTER PASSWORD "
+        titleLabel.textAlignment = .center
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
+        
+        
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .left
-//        Constraints
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         
+        self.addSubview(titleLabel)
         
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .top,
+                           multiplier: 1,
+                           constant: 4).isActive = true
         
-//        NSLayoutConstraint(item: titleLabel,
-//                           attribute: .top,
-//                           relatedBy: .equal,
-//                           toItem: self,
-//                           attribute: .bottom,
-//                           multiplier: 1,
-//                           constant: 4).isActive = true
-//
-//        NSLayoutConstraint(item: titleLabel,
-//                           attribute: .leading,
-//                           relatedBy: .equal,
-//                           toItem: self,
-//                           attribute: .leading,
-//                           multiplier: 1,
-//                           constant: 2).isActive = true
-//
-//        NSLayoutConstraint(item: titleLabel,
-//                           attribute: .trailing,
-//                           relatedBy: .equal,
-//                           toItem: self,
-//                           attribute: .trailing,
-//                           multiplier: 1,
-//                           constant: -2).isActive = true
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 2).isActive = true
+        
+        NSLayoutConstraint(item: titleLabel,
+                           attribute: .trailing,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .trailing,
+                           multiplier: 1,
+                           constant: -2).isActive = true
         //        textField
         
         let textField = UITextField()
         self.addSubview(textField)
-        
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = 3.0
         textField.layer.borderWidth = 3.0
@@ -93,9 +93,6 @@ class PasswordField: UIControl,UITextFieldDelegate {
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
-//        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
-//        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
-        
         NSLayoutConstraint(item: textField,
                            attribute: .top,
                            relatedBy: .equal,
@@ -103,7 +100,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
                            attribute: .bottom,
                            multiplier: 1,
                            constant: 4).isActive = true
-
+        
         NSLayoutConstraint(item: textField,
                            attribute: .leading,
                            relatedBy: .equal,
@@ -111,7 +108,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
                            attribute: .leading,
                            multiplier: 1,
                            constant: 2).isActive = true
-
+        
         NSLayoutConstraint(item: textField,
                            attribute: .trailing,
                            relatedBy: .equal,
@@ -119,28 +116,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
                            attribute: .trailing,
                            multiplier: 1,
                            constant: -2).isActive = true
-        
-//        hidden button
-//        leading/trailing center y and leading
-        
-        
-        
-//
-//
-//        //               strengthDescripton label
-
-        let strengthDescriptionLabel = UILabel()
-        self.addSubview(strengthDescriptionLabel)
-        strengthDescriptionLabel.text = " Too Weak "
-        strengthDescriptionLabel.textAlignment = .center
-        strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.font = labelFont
-        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: standardMargin).isActive = true
-        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin).isActive = true
-        
-        
+        // Button
         
         let showHideButton = UIButton()
         self.addSubview(showHideButton)
@@ -151,66 +127,123 @@ class PasswordField: UIControl,UITextFieldDelegate {
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6).isActive = true
         
-
-//        showHideButton.addTarget(self, action: #selector(showHideButtonTapped(_:)), for: .touchUpInside)
-
-
-//        NSLayoutConstraint(item: strengthDescriptionLabel,
-//                           attribute: .top,
-//                           relatedBy: .equal,
-//                           toItem: textField,
-//                           attribute: .bottom,
-//                           multiplier: 1,
-//                           constant: 4).isActive = true
-//
-//        NSLayoutConstraint(item: strengthDescriptionLabel,
-//                           attribute: .leading,
-//                           relatedBy: .equal,
-//                           toItem: self,
-//                           attribute: .leading,
-//                           multiplier: 1,
-//                           constant: 2).isActive = true
-//
-//        NSLayoutConstraint(item: strengthDescriptionLabel,
-//                           attribute: .trailing,
-//                           relatedBy: .equal,
-//                           toItem: self,
-//                           attribute: .trailing,
-//                           multiplier: 1,
-//                           constant: -2).isActive = true
+        
+        
+        //               strengthDescripton label
+        
+        let strengthDescriptionLabel = UILabel()
+        strengthDescriptionLabel.text = " Too Weak "
+        strengthDescriptionLabel.textAlignment = .right
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        self.addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: textField,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 32).isActive = true
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 2).isActive = true
+        
+        NSLayoutConstraint(item: strengthDescriptionLabel,
+                           attribute: .trailing,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .trailing,
+                           multiplier: 1,
+                           constant: -60).isActive = true
         
         //        Views
         
-        let weakView = UIView()
-        self.addSubview(weakView)
-        weakView.sizeThatFits(colorViewSize)
-        weakView.backgroundColor = weakColor
         
+        let weakView = UIView()
+        
+        weakView.layer.backgroundColor = weakColor.cgColor
+        weakView.backgroundColor = weakColor
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
-        weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        self.addSubview(weakView)
+        
+        weakView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        
+        NSLayoutConstraint(item: weakView,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: textField,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 40).isActive = true
+        
+        weakView.trailingAnchor.constraint(equalTo: weakView.safeAreaLayoutGuide.trailingAnchor, constant: 10).isActive = true
         
         
         let mediumView = UIView()
-        self.addSubview(mediumView)
-mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.layer.backgroundColor = mediumColor.cgColor
         mediumView.backgroundColor = mediumColor
         mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        mediumView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: standardMargin).isActive = true
-        mediumView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        
+        self.addSubview(mediumView)
+        
+        NSLayoutConstraint(item: mediumView,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: textField,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 40).isActive = true
+        
+        
+        
+        NSLayoutConstraint(item: mediumView,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 70).isActive = true
         
         let strongView = UIView()
-        self.addSubview(strongView)
         strongView.layer.backgroundColor = strongColor.cgColor
         strongView.backgroundColor = strongColor
         strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        strongView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: standardMargin).isActive = true
-        strongView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        self.addSubview(strongView)
         
-   
+        NSLayoutConstraint(item: strongView,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: textField,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 40).isActive = true
+        
+        
+        
+        NSLayoutConstraint(item: strongView,
+                           attribute: .leading,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .leading,
+                           multiplier: 1,
+                           constant: 140).isActive = true
+        
     }
     
     
@@ -219,23 +252,57 @@ mediumView.layer.backgroundColor = mediumColor.cgColor
         setup()
     }
     
+    
+    
     func passwordLength() {
+        enum passwordStrength {
+            case weak
+            case medium
+            case strong
+        }
         
+        var password = passwordStrength.weak
+        switch password {
+        case .medium:
+            strengthDescriptionLabel.text = "Medium Strength"
+        case .strong:
+            strengthDescriptionLabel.text = "Strong Password"
+            
+        case .weak:
+            strengthDescriptionLabel.text = "Too Weak"
+        }
+        
+        //        let password = 1...16
+        //        textField.resignFirstResponder()
+        //        if textField.text = 1...5 {
+        //            strengthDescriptionLabel.text = "Too Weak"
     }
+
+
+
+
+
+@objc private func showHideButtonTapped() {
+    showHideButton.isEnabled = true
     
-    @objc private func showHideButtonTapped() {
-        showHideButton.isEnabled = true
-    
-    }
-    // Func that gets the length of the string and makes changes to the weak, medium, strong views accordingly
-    // Func that handles the animations of the labels.
 }
+// Func that gets the length of the string and makes changes to the weak, medium, strong views accordingly
+
+
+// Func that handles the animations of the labels.
+
+
+
+
+}
+
 
 extension PasswordField {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
         // TODO: send new text to the determine strength method
         return true
     }
@@ -244,3 +311,5 @@ extension PasswordField {
         
     }
 }
+
+
