@@ -111,6 +111,7 @@ class PasswordField: UIControl {
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
         
+        // Strength Description Label
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.text = "Too weak"
@@ -123,9 +124,7 @@ class PasswordField: UIControl {
         ])
     }
     
-    func strength() {
-        guard let password = textField.text else { return }
-        
+    func strength(of password: String) {
         if password.count <= 9 {
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
@@ -143,9 +142,8 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        textField.delegate = self
-        strength()
         setup()
+        textField.delegate = self
     }
 }
 
@@ -155,6 +153,12 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        strength(of: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }
