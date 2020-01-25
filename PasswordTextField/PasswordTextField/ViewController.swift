@@ -11,8 +11,19 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBAction func passwordFieldReturned(_ passwordField: PasswordField) {
-        let statement = "The password is \(passwordField.password) and the strength is \(passwordField.passwordStrength)"
-        print(statement)
+        var pwdStrength: PasswordStrength = .weak
+        if passwordField.isWordInDict() {
+            switch passwordField.passwordStrength {
+            case .weak:
+                pwdStrength = .weak
+            case .medium:
+                pwdStrength = .weak
+            case .strong:
+                pwdStrength = .medium
+            }
+        }
+        #warning("Give it time to spam the console and run")
+        print("The password is \(passwordField.password) and the strength is \(pwdStrength)")
     }
     
     // For use in the stretch goal

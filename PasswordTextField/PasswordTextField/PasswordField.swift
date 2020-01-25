@@ -17,6 +17,7 @@ enum PasswordStrength: Int {
 @IBDesignable class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    
     var passwordStrength: PasswordStrength {
         switch password.count {
         case 0...9:
@@ -26,6 +27,15 @@ enum PasswordStrength: Int {
         default:
             return .strong
         }
+    }
+    
+    //MARK: Stretch Goal
+    #warning("causes lag when invoked, but it works")
+    func isWordInDict() -> Bool {
+        if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+            return true
+        }
+        return false
     }
     
     private let standardMargin: CGFloat = 8.0
@@ -161,7 +171,7 @@ enum PasswordStrength: Int {
         setup()
     }
     
-    //MARK: Private Methodsz
+    //MARK: Private Methods
     @objc private func eyesWideShut() {
         if textField.isSecureTextEntry {
             textField.isSecureTextEntry = false
@@ -190,6 +200,7 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
         if newText != "" {
+            
             switch passwordStrength {
             case .weak:
                 strengthDescriptionLabel.text = "Too Weak"
