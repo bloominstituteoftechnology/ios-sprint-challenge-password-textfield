@@ -83,6 +83,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
                            constant: -2).isActive = true
         //        textField
         
+        
         let textField = UITextField()
         self.addSubview(textField)
         textField.layer.borderColor = textFieldBorderColor.cgColor
@@ -254,23 +255,32 @@ class PasswordField: UIControl,UITextFieldDelegate {
     
     
     
-    func passwordLength() {
+    func passwordLength(newText: String) {
+        
+
+        let passwordChars = newText.count
+        switch passwordChars {
+        case 1...5:
+            strengthDescriptionLabel.text = " Too Weak "
+       
+        case 5...10:
+            strengthDescriptionLabel.text = " Medium Strength "
+        
+        case 10...30:
+            strengthDescriptionLabel.text = " Strong Password"
+            
+        default:
+        strengthDescriptionLabel.text = " Too Weak "
+        
+        }
+        
         enum passwordStrength {
-            case weak
+            case  weak
             case medium
             case strong
         }
         
-        var password = passwordStrength.weak
-        switch password {
-        case .medium:
-            strengthDescriptionLabel.text = "Medium Strength"
-        case .strong:
-            strengthDescriptionLabel.text = "Strong Password"
-            
-        case .weak:
-            strengthDescriptionLabel.text = "Too Weak"
-        }
+    
         
         //        let password = 1...16
         //        textField.resignFirstResponder()
@@ -303,6 +313,7 @@ extension PasswordField {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         
+        passwordLength(newText: newText)
         // TODO: send new text to the determine strength method
         return true
     }
