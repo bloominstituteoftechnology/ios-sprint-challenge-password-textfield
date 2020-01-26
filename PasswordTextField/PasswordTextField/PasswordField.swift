@@ -140,7 +140,7 @@ class PasswordField: UIControl {
         // Strength Description Label
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.text = "Enter a password"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
@@ -153,13 +153,21 @@ class PasswordField: UIControl {
     }
     
     func strength(of password: String) {
-        if password.count <= 9 {
+        if password.count == 0 {
+            strengthDescriptionLabel.text = "Enter a password"
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if password.count <= 9 {
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         } else if password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         } else {
             strengthDescriptionLabel.text = "Strong"
             weakView.backgroundColor = weakColor
