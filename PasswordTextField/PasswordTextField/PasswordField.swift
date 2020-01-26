@@ -85,6 +85,7 @@ class PasswordField: UIControl {
         containerView.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonChanged), for: .touchUpInside)
        
         NSLayoutConstraint.activate([
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
@@ -152,6 +153,16 @@ class PasswordField: UIControl {
         ])
     }
     
+    @objc func showHideButtonChanged() {
+        textField.isSecureTextEntry.toggle()
+        
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
+    
     func strength(of password: String) {
         if password.count == 0 {
             strengthDescriptionLabel.text = "Enter a password"
@@ -198,6 +209,8 @@ class PasswordField: UIControl {
             }, completion: nil)
         }
     }
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
