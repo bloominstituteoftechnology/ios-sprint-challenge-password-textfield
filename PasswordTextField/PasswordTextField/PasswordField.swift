@@ -33,6 +33,7 @@ class PasswordField: UIControl {
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
+    private var containerView: UIView = UIView()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -50,30 +51,46 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+        ])
+        
+        // Container View for TextField
+        addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .clear
+        containerView.layer.borderWidth = 1.5
+        containerView.layer.cornerRadius = 5
+        containerView.layer.borderColor = textFieldBorderColor.cgColor
+        
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
+            containerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: standardMargin),
+            containerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
         // TextField
-        addSubview(textField)
+        containerView.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isSecureTextEntry = true
-        textField.layer.borderWidth = 1.5
-        textField.layer.cornerRadius = 5
-        textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.rightView = showHideButton
-        textField.rightViewMode = .always
+        textField.delegate = self
         
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin),
-            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+            textField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: textFieldMargin),
+            containerView.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin)
         ])
         
-        addSubview(showHideButton)
+        // Show/Hide Button
+        containerView.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+       
+        NSLayoutConstraint.activate([
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
+            containerView.trailingAnchor.constraint(equalTo: showHideButton.trailingAnchor, constant: textFieldMargin)
+        ])
 
         // Weak View
         addSubview(weakView)
@@ -81,8 +98,6 @@ class PasswordField: UIControl {
         weakView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
-            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15),
-            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
@@ -93,8 +108,6 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
-            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15),
-            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: textFieldMargin),
             mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
@@ -105,10 +118,23 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
-            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15),
-            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: textFieldMargin),
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        //StackView
+        let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 3
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ])
         
         // Strength Description Label
@@ -119,8 +145,10 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         
         NSLayoutConstraint.activate([
-            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
-            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: textFieldMargin)
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+            bottomAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor, constant: standardMargin)
         ])
     }
     
@@ -143,7 +171,6 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
-        textField.delegate = self
     }
 }
 
@@ -154,6 +181,10 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         strength(of: newText)
+        return true
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
     
