@@ -10,9 +10,15 @@ import UIKit
 
 class PasswordField: UIControl {
     
+    enum strength {
+        case weak
+        case medium
+        case strong
+    }
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
+    var pwStrength: strength = .weak
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -142,17 +148,20 @@ class PasswordField: UIControl {
     }
     
     func determineStrength(pw: String) {
+        guard textField.text != nil else { return }
         switch pw.count {
         case 0...9:
             weakView.backgroundColor = self.weakColor
             self.mediumView.backgroundColor = self.unusedColor
             self.strongView.backgroundColor = self.unusedColor
             strengthDescriptionLabel.text = "Too weak"
+            self.pwStrength = .weak
         case 10...19:
             UIView.animate(withDuration: 0.4, animations: {
                 self.weakView.backgroundColor = self.weakColor
                 self.mediumView.backgroundColor = self.mediumColor
                 self.strongView.backgroundColor = self.unusedColor
+                self.pwStrength = .medium
             }, completion: nil)
             strengthDescriptionLabel.text = "Could be stronger"
         case 20...100:
@@ -160,6 +169,7 @@ class PasswordField: UIControl {
                 self.weakView.backgroundColor = self.weakColor
                 self.mediumView.backgroundColor = self.mediumColor
                 self.strongView.backgroundColor = self.strongColor
+                self.pwStrength = .strong
             }, completion: nil)
             strengthDescriptionLabel.text = "Strong password"
         default:
@@ -167,6 +177,7 @@ class PasswordField: UIControl {
                 self.weakView.backgroundColor = self.unusedColor
                 self.mediumView.backgroundColor = self.unusedColor
                 self.strongView.backgroundColor = self.unusedColor
+                self.pwStrength = .weak
             }, completion: nil)
             strengthDescriptionLabel.text = ""
         }
