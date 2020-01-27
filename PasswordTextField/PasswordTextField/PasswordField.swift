@@ -122,7 +122,7 @@ class PasswordField: UIControl,UITextFieldDelegate {
         let showHideButton = UIButton()
         self.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.setTitle("🕶", for: .normal)
+        showHideButton.setTitle( "  ", for: .normal)
         
         
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2).isActive = true
@@ -257,21 +257,22 @@ class PasswordField: UIControl,UITextFieldDelegate {
     
     func passwordLength(newText: String) {
         
-
+        
         let passwordChars = newText.count
         switch passwordChars {
         case 1...5:
             strengthDescriptionLabel.text = " Too Weak "
-       
+            
+            
         case 5...10:
             strengthDescriptionLabel.text = " Medium Strength "
-        
+            
         case 10...30:
-            strengthDescriptionLabel.text = " Strong Password"
+            strengthDescriptionLabel.text = " Strong Password "
             
         default:
-        strengthDescriptionLabel.text = " Too Weak "
-        
+            strengthDescriptionLabel.text = " Too Weak "
+            
         }
         
         enum passwordStrength {
@@ -280,31 +281,38 @@ class PasswordField: UIControl,UITextFieldDelegate {
             case strong
         }
         
-    
+        
         
         //        let password = 1...16
         //        textField.resignFirstResponder()
         //        if textField.text = 1...5 {
         //            strengthDescriptionLabel.text = "Too Weak"
     }
-
-
-
-
-
-@objc private func showHideButtonTapped() {
-    showHideButton.isEnabled = true
     
-}
-// Func that gets the length of the string and makes changes to the weak, medium, strong views accordingly
+    
+    
+    
+    
+    @objc private func showHideButtonTapped(sender: UIButton) {
+        showHideButton.isEnabled = true
+        textField.isHidden = true
+        self.weakView.frame.size.width += 2
+        self.weakView.frame.size.height += 2
+        }
+        
+        
+        
+        
+    }
+    // Func that gets the length of the string and makes changes to the weak, medium, strong views accordingly
+    
+    
+    // Func that handles the animations of the labels.
+    
+    
+    
+    
 
-
-// Func that handles the animations of the labels.
-
-
-
-
-}
 
 
 extension PasswordField {
@@ -319,6 +327,7 @@ extension PasswordField {
     }
     
     func updateViews() {
+      
         
     }
 }
