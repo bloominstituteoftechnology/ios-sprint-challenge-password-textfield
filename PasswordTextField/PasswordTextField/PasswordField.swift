@@ -197,7 +197,7 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let passwordText = textField.text, passwordText != "" {
             print(passwordText)
-            print(strengthDescriptionLabel)
+            print("\(pwStrength)")
         }
         textField.resignFirstResponder()
         return true
