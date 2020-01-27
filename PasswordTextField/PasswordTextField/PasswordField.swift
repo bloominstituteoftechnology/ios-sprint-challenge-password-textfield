@@ -37,7 +37,7 @@ class PasswordField: UIControl {
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
-    private var strengthDescriptionLabel: UILabel = UILabel()
+    var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
         backgroundColor = bgColor
@@ -61,6 +61,7 @@ class PasswordField: UIControl {
         containerView.layer.borderWidth = 1.5
         containerView.layer.cornerRadius = 5
         containerView.layer.borderColor = textFieldBorderColor.cgColor
+        containerView.backgroundColor = bgColor
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
@@ -86,13 +87,13 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideButtonChanged), for: .touchUpInside)
-       
+        
         NSLayoutConstraint.activate([
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
             showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
             containerView.trailingAnchor.constraint(equalTo: showHideButton.trailingAnchor, constant: textFieldMargin)
         ])
-
+        
         // Weak View
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -175,7 +176,6 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            
         } else if password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
             animations(for: password)
@@ -210,10 +210,9 @@ class PasswordField: UIControl {
         }
     }
     
-    
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
     }
 }
@@ -225,6 +224,17 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         strength(of: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let password = textField.text,
+            !password.isEmpty else { return false }
+        
+        print(strengthDescriptionLabel)
+        print(password)
+        
+        textField.resignFirstResponder()
         return true
     }
 }
