@@ -115,7 +115,53 @@ class PasswordField: UIControl {
         weakView.backgroundColor = weakColor
         weakView.layer.cornerRadius = 3
         
+        // MARK: - Medium View
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        
+        mediumView.backgroundColor = unusedColor
+        mediumView.layer.cornerRadius = 3
+        
+        // MARK: - Strong View
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strongView.leadingAnchor.constraint(equalToSystemSpacingAfter: mediumView.trailingAnchor, multiplier: 2),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        
+        strongView.backgroundColor = unusedColor
+        strongView.layer.cornerRadius = 3
+        
+        // Strong Description Label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 4),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+        ])
+        
+        strengthDescriptionLabel.text = "weak"
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.textAlignment = .left
     }
+    
+        
+        
+        
+    
+    
+    
         @objc func showHideButtonTapped() {
            
         
