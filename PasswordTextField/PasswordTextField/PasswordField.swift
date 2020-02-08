@@ -234,5 +234,10 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        sendActions(for: .valueChanged)
+        return true
+    }
 }
