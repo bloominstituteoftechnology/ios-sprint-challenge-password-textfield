@@ -21,6 +21,8 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private (set) var showPassword: Bool = false
+    private (set) var passwordStrength: PassStrengthColor = .weak
+    
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -84,7 +86,6 @@ class PasswordField: UIControl {
      
         // show hide button
         addSubview(showHideButton)
-        
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 5).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10).isActive = true
@@ -144,7 +145,7 @@ class PasswordField: UIControl {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
 
-                    }
+        }
     
     func passwordStrength(enteredPassword: String) {
         switch enteredPassword.count {
