@@ -174,12 +174,24 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.text = "Please try again"
         }
         
+        if enteredPassword.count == 1 {
+            weakView.performFlare()
+        } else if enteredPassword.count == 7 {
+            weakView.performFlare()
+            mediumView.performFlare()
+        } else if enteredPassword.count == 12 {
+            weakView.performFlare()
+            mediumView.performFlare()
+            strongView.performFlare()
+        }
+        
     }
          
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
 }
 
@@ -189,6 +201,31 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        passwordStrength(enteredPassword: newText)
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let enteredPassword = textField.text {
+            password = enteredPassword
+            sendActions(for: .valueChanged)
+            }
+            weakView.performFlare()
+            mediumView.performFlare()
+            strongView.performFlare()
+            textField.resignFirstResponder()
+            return true
+        }
+}
+
+extension UIView {
+  // "Flare view" animation sequence
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
 }
