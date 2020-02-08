@@ -15,11 +15,12 @@ enum PassStrengthColor: String {
     case strong = "Strong Password"
 }
 
-@IBDesignable
+//@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var showPassword: Bool = false
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -53,7 +54,7 @@ class PasswordField: UIControl {
         layer.cornerRadius = 10
         backgroundColor = bgColor
         
-        //Title Label
+        //Title Label & constraints
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
@@ -64,19 +65,53 @@ class PasswordField: UIControl {
         titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
         
         
-        // Text Field
+        // Text Field & constraints
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 3.0
+        textField.layer.cornerRadius = 10
+        textField.isSecureTextEntry = true
+        textField.placeholder = "Enter Your Password"
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
         
      
-        
-        
-        
+        // show hide button
         addSubview(showHideButton)
+        
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 5).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -5).isActive = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(hideShowBtnTapped), for: .touchUpInside)
+        
+        // Weak Strength Labels below textfield
         addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.backgroundColor = unusedColor
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+         // Weak Strength Labels
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.backgroundColor = mediumColor
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        // Weak Strength Labels
+        
         addSubview(strongView)
         addSubview(strengthDescriptionLabel)
         
@@ -84,6 +119,20 @@ class PasswordField: UIControl {
 //
         
     }
+    
+    //show hide button
+    @objc func hideShowBtnTapped() {
+        showPassword.toggle()
+        if showPassword {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
+
+                    }
+         
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
