@@ -11,7 +11,7 @@ import UIKit
 enum PassStrengthColor: String {
     case none = "No Password"
     case weak = "Weak Password"
-    case medium = "Medium Strength Password"
+    case medium = "Could Be Stronger"
     case strong = "Strong Password"
 }
 
@@ -110,13 +110,26 @@ class PasswordField: UIControl {
         mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
-        // Weak Strength Labels
-        
+        // Strong Strength Labels
         addSubview(strongView)
-        addSubview(strengthDescriptionLabel)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.backgroundColor = strongColor
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 2).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
-    
-//
+        
+        // Strength Description Labels
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.text = PassStrengthColor.weak.rawValue
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 5).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin).isActive = true
+
         
     }
     
@@ -132,6 +145,36 @@ class PasswordField: UIControl {
         }
 
                     }
+    
+    func passwordStrength(enteredPassword: String) {
+        switch enteredPassword.count {
+        case 0:
+            strengthDescriptionLabel.text = PassStrengthColor.none.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        case 1...6:
+            strengthDescriptionLabel.text = PassStrengthColor.weak.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            
+        case 7...11:
+            strengthDescriptionLabel.text = PassStrengthColor.medium.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        case 12...20:
+            strengthDescriptionLabel.text = PassStrengthColor.strong.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        
+        default:
+            strengthDescriptionLabel.text = "Please try again"
+        }
+        
+    }
          
     
     required init?(coder aDecoder: NSCoder) {
