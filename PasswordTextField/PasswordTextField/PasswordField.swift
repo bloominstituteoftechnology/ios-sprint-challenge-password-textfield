@@ -16,7 +16,7 @@ class PasswordField: UIControl {
         case strong = "Strong"
     }
     
-    var passwordStrenght: PasswordStrength = .weak
+    var passwordStrength: PasswordStrength = .weak
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -58,6 +58,8 @@ class PasswordField: UIControl {
     }
     
     func setup() {
+        backgroundColor = bgColor
+        
         // Lay out your subviews here
         
         // MARK: - Enter Password
@@ -156,12 +158,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textAlignment = .left
     }
     
-        
-        
-        
-    
-    
-    
         @objc func showHideButtonTapped() {
            
         
@@ -176,7 +172,67 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
+        
         // TODO: send new text to the determine strength method
+        password = newText
+        switch password.count {
+        case 0...7:
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "too weak"
+            
+            if passwordStrength != .weak {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            passwordStrength = .weak
+        
+        case 8...14:
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "could be stronger"
+            
+            if passwordStrength != .medium {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            passwordStrength = .medium
+        
+        case 15...:
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "strong password"
+            
+            if passwordStrength != .strong {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            passwordStrength = .strong
+            
+        default:
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Invalid Entry"
+        }
         return true
     }
+    
+    
 }
