@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum PassStrengthColor: String {
+    case none = "No Password"
+    case weak = "Weak Password"
+    case medium = "Medium Strength Password"
+    case strong = "Strong Password"
+}
+
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -39,10 +47,42 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+      
         // Lay out your subviews here
+        // Background
+        layer.cornerRadius = 10
+        backgroundColor = bgColor
         
+        //Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        titleLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
+        
+        
+        // Text Field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin).isActive = true
+        
+     
+        
+        
+        
+        addSubview(showHideButton)
+        addSubview(weakView)
+        addSubview(strongView)
+        addSubview(strengthDescriptionLabel)
+        
+    
+//
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
