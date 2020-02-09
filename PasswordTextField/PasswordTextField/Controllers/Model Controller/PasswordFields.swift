@@ -66,7 +66,7 @@ class PasswordFields: UIControl {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
-        // Subviews USING Stack
+        // Subviews USING Stackview
         
         [titleLabel, textField, passStrengthHorigzontalView].forEach {
             textlabelsStack.addArrangedSubview($0)

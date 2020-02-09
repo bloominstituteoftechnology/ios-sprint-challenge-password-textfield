@@ -30,6 +30,6 @@ class ViewController: UIViewController {
     
     @IBAction func printPassAndStrength(_ sender: PasswordFields) {
         print(sender.password)
-//        print("\(sender.)")
+        print("\(sender.passStrength)")
     }
 }
