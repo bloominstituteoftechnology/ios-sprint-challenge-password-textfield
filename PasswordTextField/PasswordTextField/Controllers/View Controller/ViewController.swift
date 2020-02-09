@@ -28,8 +28,8 @@ class ViewController: UIViewController {
 //        present(referenceVC, animated: true, completion: nil)
 //    }
     
-    @IBAction func printPassAndStrength(_ sender: PasswordField) {
+    @IBAction func printPassAndStrength(_ sender: PasswordFields) {
         print(sender.password)
-        print("\(sender.passwordStrength)")
+//        print("\(sender.)")
     }
 }
