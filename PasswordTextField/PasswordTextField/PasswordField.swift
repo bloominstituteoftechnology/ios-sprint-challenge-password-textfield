@@ -39,6 +39,10 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        //Applies specified backgroundColor to the UIView
+        backgroundColor = bgColor
+        
+        //titleLabel customisation and constraints
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
@@ -48,6 +52,22 @@ class PasswordField: UIControl {
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
         ])
+        
+        //Create textFieldButtonContainerView and customises it's layout
+        let textFieldButtonContainerView = UIView()
+        addSubview(textFieldButtonContainerView)
+        textFieldButtonContainerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textFieldButtonContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textFieldButtonContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textFieldButtonContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textFieldButtonContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin)
+        ])
+        textFieldButtonContainerView.layer.borderWidth = 4.0
+        textFieldButtonContainerView.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldButtonContainerView.layer.cornerRadius = 6.0
+        
+        //Adds UITextField to textFieldButtonContainerView
     }
     
     required init?(coder aDecoder: NSCoder) {
