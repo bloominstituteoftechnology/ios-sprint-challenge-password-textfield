@@ -7,6 +7,12 @@
 //
 
 import UIKit
+//label for password. Hidden characters
+//eye view in label for isOn show password
+//three strength indicators. red, orange, or green.
+//transform the three strength indicators as pop up and go back into its size
+//stregnth of password is lenght
+///need a strength value enum (priavte)
 
 enum PasswordStrengthIndicator: String {
     case unusedColor = ""
@@ -31,9 +37,11 @@ class PasswordField: UIControl {
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     private let textFieldBorderWidth: CGFloat = 1
-    
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+    
+    private let isOnEyes: Bool = false
+    private let showStatusImageButton: UIButton = UIButton(type: .system)
     
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
@@ -98,7 +106,7 @@ class PasswordField: UIControl {
 
        
         
-        // Password Textfield
+        // Container View
         addSubview(textFieldContainerView)
         
         textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -113,6 +121,27 @@ class PasswordField: UIControl {
         
         
         
+        // Eyes Button
+        addSubview(showStatusImageButton)
+        textFieldContainerView.addSubview(showStatusImageButton)
+        showStatusImageButton.translatesAutoresizingMaskIntoConstraints = false
+      
+        showStatusImageButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showStatusImageButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 10.0).isActive = true
+        showStatusImageButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -10.0).isActive = true
+        showStatusImageButton.widthAnchor.constraint(equalTo: showStatusImageButton.heightAnchor).isActive = true
+   
+        //textField
+        
+        textFieldContainerView.addSubview(textField)
+        textField.becomeFirstResponder()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
+        textField.backgroundColor = bgColor
+        textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 10.0).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 10.0).isActive = true
+        textField.trailingAnchor.constraint(equalTo: showStatusImageButton.leadingAnchor, constant: 8).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 2).isActive = true
         
         
         
