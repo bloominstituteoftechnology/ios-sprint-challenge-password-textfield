@@ -31,6 +31,8 @@ class PasswordFields: UIControl {
         }
     }
     
+    // MARK: Variables
+    
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -58,6 +60,8 @@ class PasswordFields: UIControl {
     private var passStrengthHorigzontalView: UIStackView = UIStackView()
     private var textlabelsStack: UIStackView = UIStackView()
     
+    
+    
     func setup() {
         // Lay out your subviews here
         layer.cornerRadius = 10
@@ -84,6 +88,8 @@ class PasswordFields: UIControl {
         textlabelsStack.distribution = .fill
         textlabelsStack.axis = .vertical
         
+        // Textfield
+        
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 4
         textField.layer.cornerRadius = 10
@@ -95,6 +101,8 @@ class PasswordFields: UIControl {
         textField.isSecureTextEntry = true
         textField.delegate = self
         
+        
+        // Text Label
         titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -104,14 +112,22 @@ class PasswordFields: UIControl {
             addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        // Show hide Button
+        
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+               showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+               showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+               showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+        
+       
+        // Stregth Indicator
+        
         strengthDescriptionLabel.text = "Strength Indicator"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
-        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
-        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+         // Stregth Indicator Bar Constriants
         
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
@@ -131,25 +147,6 @@ class PasswordFields: UIControl {
         textlabelsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
         
         
-
-//        //Title Label & constraints
-//        addSubview(titleLabel)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        titleLabel.text = "ENTER PASSWORD"
-//        titleLabel.font = labelFont
-//        titleLabel.textColor = labelTextColor
-//        titleLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
-//        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
-//        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
-//
-//        // textField
-//        addSubview(textField)
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.placeholder = "Enter Password"
-//        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-//        textField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-//        textField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-//
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -158,6 +155,8 @@ class PasswordFields: UIControl {
     }
     
     //MARK: Functions
+    
+    // hide show secure button
     @objc func showPassword() {
         switch textField.isSecureTextEntry {
         case true:
@@ -169,6 +168,7 @@ class PasswordFields: UIControl {
         }
     }
     
+    // Update Password Strength/colors based on total characters
     func passwordString() {
         if password.count == 0 {
             passStrength = .none
@@ -230,12 +230,29 @@ extension PasswordFields: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         password = newText
+//        passStrength(n)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let newPass = textField.text {
+            password = newPass
+            sendActions(for: .valueChanged)
+        }
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let textField = textField.text {
+            password = textField
+            sendActions(for: .valueChanged)
+        }
     }
 }
 
-extension UIView {
   // "Flare view" animation sequence
+extension UIView {
   func performFlare() {
     func flare()   { transform = CGAffineTransform(scaleX: 1.3, y: 1.3) }
     func unflare() { transform = .identity }
