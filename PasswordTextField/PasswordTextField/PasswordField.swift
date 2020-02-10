@@ -14,7 +14,7 @@ enum PasswordStrength: String {
     case strong = "Strong password"
 }
 
-@IBDesignable
+//@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -46,11 +46,21 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var passwordStrengthStackView: UIStackView = UIStackView()
+    private var strengthColorsStackView: UIStackView = UIStackView()
+    
     private func setup() {
-//        backgroundColor = bgColor
+        backgroundColor = .red
+        //backgroundColor = bgColor
         // Lay out your subviews here
-        
-        // Title Label
+        setupTitleLabel()
+        setupTextField()
+        setupPasswordStrengthViews()
+    }
+    
+    // MARK: - Setup Title Label
+    
+    private func setupTitleLabel() {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
@@ -62,6 +72,11 @@ class PasswordField: UIControl {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
         ])
+    }
+    
+    // MARK: - Setup Text Field
+    
+    private func setupTextField() {
         
         // Text Field
         addSubview(textField)
@@ -95,13 +110,56 @@ class PasswordField: UIControl {
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin),
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
         ])
+    }
         
-        // Weak, Medium, and Strong Views
+    // MARK: - Password Strength Views
         
+    private func setupPasswordStrengthViews() {
         
+        // Password Strength StackView
+        addSubview(passwordStrengthStackView)
+        passwordStrengthStackView.translatesAutoresizingMaskIntoConstraints = false
+        passwordStrengthStackView.axis = .horizontal
+        passwordStrengthStackView.alignment = .center
+        passwordStrengthStackView.spacing = standardMargin
         
-        // Strength Description Label
+        NSLayoutConstraint.activate([
+            passwordStrengthStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            passwordStrengthStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+        ])
         
+        // Add Colors StackView
+        setupColorsStackView()
+        passwordStrengthStackView.addArrangedSubview(strengthColorsStackView)
+        
+        // Add Strength Description Label
+        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        passwordStrengthStackView.addArrangedSubview(strengthDescriptionLabel)
+    }
+    
+    private func setupColorsStackView() {
+        strengthColorsStackView.translatesAutoresizingMaskIntoConstraints = false
+        strengthColorsStackView.axis = .horizontal
+        strengthColorsStackView.spacing = 2.0
+        
+        strengthColorsStackView.addArrangedSubview(weakView)
+        strengthColorsStackView.addArrangedSubview(mediumView)
+        strengthColorsStackView.addArrangedSubview(strongView)
+        
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
+        
+        for view in strengthColorsStackView.arrangedSubviews where ((view as? UILabel) == nil) {
+            view.layer.cornerRadius = colorViewSize.height / 2.0
+            
+            NSLayoutConstraint.activate([
+                view.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+                view.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+            ])
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -110,6 +168,7 @@ class PasswordField: UIControl {
     }
 }
 
+/*
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
@@ -119,3 +178,4 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+*/
