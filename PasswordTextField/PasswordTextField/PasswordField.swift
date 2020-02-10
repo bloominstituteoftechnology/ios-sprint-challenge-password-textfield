@@ -56,7 +56,6 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
         // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -140,10 +139,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         strengthDescriptionLabel.text = "Too weak"
 
-        
         backgroundColor = bgColor
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -151,17 +147,13 @@ class PasswordField: UIControl {
         setup()
     }
     
-
     @objc private func showHideButtonTapped() {
         textField.isSecureTextEntry.toggle()
         switch textField.isSecureTextEntry {
         case true: showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         case false: showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
-        
     }
-    
-    //MARK: - TODO: Implement animating password strength indicators
     
     private func determinePasswordStrength(of password: String) {
         let count = password.count
@@ -220,10 +212,7 @@ class PasswordField: UIControl {
             }
         }
     }
-    
 }
-
-
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -232,6 +221,15 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         determinePasswordStrength(of: newText)
+        return true
+    }
+    
+    // Dismisses keyboard when return key is tapped
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let passwordString = textField.text else { return true }
+        password = passwordString
+        print("Password: \(password)\tPassword strength: \(passwordStrength.rawValue)")
+        textField.resignFirstResponder()
         return true
     }
 }
