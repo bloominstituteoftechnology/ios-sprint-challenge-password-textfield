@@ -13,6 +13,18 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private let strengthInterval = 10 // Default password strength length
+    private var passwordStrength: PasswordValue = .weak { // Default set to .weak
+        didSet {
+            animatePasswordStrength()
+        }
+    }
+    
+    enum PasswordValue: String {
+        case weak
+        case medium
+        case strong
+    }
     
     
     private let standardMargin: CGFloat = 8.0
@@ -146,10 +158,68 @@ class PasswordField: UIControl {
         case true: showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         case false: showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
+        
     }
     
     //MARK: - TODO: Implement animating password strength indicators
     
+    private func determinePasswordStrength(of password: String) {
+        let count = password.count
+        switch count {
+        case strengthInterval...(strengthInterval * 2 - 1): // 10-19
+            if passwordStrength != .medium {
+                passwordStrength = .medium
+            }
+        case (strengthInterval * 2)...: // 20+
+            if passwordStrength != .strong {
+                passwordStrength = .strong
+            }
+        default:
+            if passwordStrength != .weak { //0-9
+                passwordStrength = .weak
+            }
+        }
+    }
+    
+    private func animatePasswordStrength() {
+        switch passwordStrength {
+        case .weak:
+            strengthDescriptionLabel.text = "Too weak"
+            mediumView.layer.backgroundColor = unusedColor.cgColor
+            strongView.layer.backgroundColor = unusedColor.cgColor
+            UIView.animate(withDuration: 0.5, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
+            }) { _ in
+                UIView.animate(withDuration: 0.5) {
+                    self.weakView.transform = .identity
+                }
+            }
+            
+        case .medium:
+            strengthDescriptionLabel.text = "Could be stronger"
+            strongView.layer.backgroundColor = unusedColor.cgColor
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
+                self.mediumView.layer.backgroundColor = self.mediumColor.cgColor
+            }) { _ in
+                UIView.animate(withDuration: 0.5) {
+                    self.mediumView.transform = .identity
+                }
+            }
+            
+        case .strong:
+            strengthDescriptionLabel.text = "Strong password"
+            mediumView.layer.backgroundColor = mediumColor.cgColor
+            UIView.animate(withDuration: 0.5, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
+                self.strongView.layer.backgroundColor = self.strongColor.cgColor
+            }) { _ in
+                UIView.animate(withDuration: 0.5) {
+                    self.strongView.transform = .identity
+                }
+            }
+        }
+    }
     
 }
 
@@ -161,6 +231,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determinePasswordStrength(of: newText)
         return true
     }
 }
