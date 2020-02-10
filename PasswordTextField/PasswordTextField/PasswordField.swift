@@ -47,13 +47,12 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     private func setup() {
-        backgroundColor = bgColor
+//        backgroundColor = bgColor
         // Lay out your subviews here
         
-        // Title label
+        // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -64,16 +63,14 @@ class PasswordField: UIControl {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
         ])
         
-        // Text field
+        // Text Field
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = bgColor
         textField.textContentType = .password
         textField.isSecureTextEntry = true
-        
         textField.layoutMargins = UIEdgeInsets(top: textFieldMargin,
                                                left: textFieldMargin,
                                                bottom: textFieldMargin,
@@ -85,6 +82,25 @@ class PasswordField: UIControl {
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
+        
+        // Show/Hide Button
+        textField.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.backgroundColor = bgColor
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.imageView?.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
+        ])
+        
+        // Weak, Medium, and Strong Views
+        
+        
+        
+        // Strength Description Label
         
     }
     
