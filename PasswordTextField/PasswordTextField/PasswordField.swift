@@ -44,8 +44,7 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-
-        
+        // Title Label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +54,7 @@ class PasswordField: UIControl {
         titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         titleLabel.text = "Enter Password"
         
+        // Text Field Border
         addSubview(textFieldBorder)
         textFieldBorder.translatesAutoresizingMaskIntoConstraints = false
         textFieldBorder.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
@@ -64,6 +64,25 @@ class PasswordField: UIControl {
         textFieldBorder.layer.borderColor = textFieldBorderColor.cgColor
         textFieldBorder.layer.borderWidth = 1
         textFieldBorder.layer.cornerRadius = 5
+        
+        // Show/Hide password button
+        textFieldBorder.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.topAnchor.constraint(equalTo: textFieldBorder.topAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textFieldBorder.trailingAnchor).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textFieldBorder.bottomAnchor).isActive = true
+        showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
+        showHideButton.layer.cornerRadius = 4
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        // TextField for password entry
+        textFieldBorder.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
+        textField.topAnchor.constraint(equalTo: textFieldBorder.topAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldBorder.leadingAnchor, constant: 4).isActive = true
+        textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldBorder.bottomAnchor).isActive = true
         
         backgroundColor = bgColor
         
