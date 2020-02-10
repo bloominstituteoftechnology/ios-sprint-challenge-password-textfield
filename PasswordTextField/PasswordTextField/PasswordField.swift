@@ -47,8 +47,8 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     private func setup() {
+        backgroundColor = bgColor
         // Lay out your subviews here
-//        backgroundColor = .clear
         
         // Title label
         addSubview(titleLabel)
@@ -61,7 +61,29 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-            //titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
+        ])
+        
+        // Text field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+        textField.textContentType = .password
+        textField.isSecureTextEntry = true
+        
+        textField.layoutMargins = UIEdgeInsets(top: textFieldMargin,
+                                               left: textFieldMargin,
+                                               bottom: textFieldMargin,
+                                               right: textFieldMargin)
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
     }
@@ -73,7 +95,7 @@ class PasswordField: UIControl {
 }
 
 extension PasswordField: UITextFieldDelegate {
-    private func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
