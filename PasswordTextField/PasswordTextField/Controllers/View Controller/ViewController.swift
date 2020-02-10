@@ -27,4 +27,11 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    //getting password to print but it repeats 2x
+    
+    @IBAction func printPassAndStrength(_ sender: PasswordFields) {
+        print(sender.password)
+        print("\(sender.passStrength.unsafelyUnwrapped)")
+    }
 }
