@@ -1,14 +1,9 @@
-//
-//  PasswordField.swift
-//  PasswordTextField
-//
-//  Created by Ben Gohlke on 6/26/19.
-//  Copyright © 2019 Lambda School. All rights reserved.
-//
-
 import UIKit
 
 class PasswordField: UIControl {
+    
+    
+    // MARK: - Properties
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -29,7 +24,7 @@ class PasswordField: UIControl {
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
-    
+     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -37,17 +32,139 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var stackView: UIStackView = UIStackView()
+
     
-    func setup() {
-        // Lay out your subviews here
-        
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
+    // MARK: - View Lifecycle
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        updateColorsAndText(for: "")
+        updateEye()
+    }
+    
+    
+    // MARK: - Functions
+    
+    func setup() {
+        // Setting Background Color
+        backgroundColor = self.bgColor
+        
+        
+        // Title Label
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+        addSubview(titleLabel)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        
+        
+        // Textfield
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.rightViewMode = .always
+        
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(buttonWasTapped), for: .touchUpInside)
+        button.contentEdgeInsets.left = 8
+        button.contentEdgeInsets.right = 8
+        button.contentEdgeInsets.top = 8
+        button.contentEdgeInsets.bottom = 8
+        
+        textField.rightView = button
+        
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 1.0
+        textField.layer.cornerRadius = 6.0
+        textField.backgroundColor = UIColor.clear
+        addSubview(textField)
+        
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        
+        // Strength Views
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.text = "test"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        
+        weakView.backgroundColor = unusedColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
+        
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.distribution = .fill
+        
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+        
+        stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
+        stackView.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        self.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
+    }
+    
+    fileprivate func updateColorsAndText(for text: String) {
+        switch text.count {
+        case 0...9:
+            strengthDescriptionLabel.text = "Too weak"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        case 10...19:
+            strengthDescriptionLabel.text = "Could be stronger"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        default:
+            strengthDescriptionLabel.text = "Strong Password"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
+    fileprivate func updateEye() {
+        let image: UIImage? = textField.isSecureTextEntry ? UIImage(named: "eyes-closed") : UIImage(named: "eyes-open")
+        guard let button = textField.rightView as? UIButton else { return }
+        button.setImage(image, for: .normal)
+    }
+    
+    @objc fileprivate func buttonWasTapped() {
+        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        updateEye()
     }
 }
 
@@ -57,6 +174,15 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+        updateColorsAndText(for: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        print(textField.text)
+        print(strengthDescriptionLabel.text)
         return true
     }
 }
