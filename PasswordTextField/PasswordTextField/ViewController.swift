@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("The password has changed to: \"\(sender.password)\"")
+        print("Password strength: \(sender.passwordStrength.rawValue)")
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
