@@ -216,7 +216,7 @@ class PasswordField: UIControl {
         weakView.heightAnchor.constraint(equalToConstant: 4).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         weakView.layer.cornerRadius = 2
-        weakView.layer.backgroundColor = weakColor.cgColorjk
+        weakView.layer.backgroundColor = weakColor.cgColor
         
         // Medium strength indicator
         addSubview(mediumView)
@@ -271,6 +271,18 @@ class PasswordField: UIControl {
         let count = password.count
 
         switch count {
+        case 1...5:
+            strengthDescriptionLabel.text = PasswordStrengthIndicator.weak.rawValue
+                     mediumView.layer.backgroundColor = unusedColor.cgColor
+                     strongView.layer.backgroundColor = unusedColor.cgColor
+                       UIView.animate(withDuration: 0.3, animations: {
+                                      self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
+                                  }) { _ in
+                                      UIView.animate(withDuration: 0.3) {
+                                          self.weakView.transform = .identity
+                                      }
+                                  }
+
         case 6...12:
             strengthDescriptionLabel.text = PasswordStrengthIndicator.medium.rawValue
             strongView.layer.backgroundColor = unusedColor.cgColor
@@ -293,17 +305,11 @@ class PasswordField: UIControl {
                 }
             }
         default:
-          strengthDescriptionLabel.text = PasswordStrengthIndicator.weak.rawValue
-          mediumView.layer.backgroundColor = unusedColor.cgColor
-          strongView.layer.backgroundColor = unusedColor.cgColor
-            UIView.animate(withDuration: 0.3, animations: {
-                           self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
-                       }) { _ in
-                           UIView.animate(withDuration: 0.3) {
-                               self.weakView.transform = .identity
-                           }
-                       }
-
+            strengthDescriptionLabel.text = PasswordStrengthIndicator.weak.rawValue
+            mediumView.layer.backgroundColor = unusedColor.cgColor
+            strongView.layer.backgroundColor = unusedColor.cgColor
+            
+         
         }
     }
     
