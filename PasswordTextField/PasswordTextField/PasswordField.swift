@@ -85,6 +85,15 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 4
         
+        textField.isSecureTextEntry = true
+        textField.isUserInteractionEnabled = true
+        textField.font = labelFont
+        textField.text = "test"
+        textField.becomeFirstResponder()
+        
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
