@@ -15,7 +15,6 @@ import Foundation
 //stregnth of password is lenght
 ///need a strength value enum (priavte)
 
-
 enum PasswordStrengthIndicator: String {
     case weak = "Too weak"
     case medium = "Could be stronger"
@@ -29,11 +28,6 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private var passwordStrength: PasswordStrengthIndicator = .weak
-       
-    
-    
-    //    private var stackView: UIStackView!
-    
     
     private let textFieldContainerView: UIView = UIView()
     private let standardMargin: CGFloat = 8.0
@@ -64,27 +58,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    
-    //    private func configueStackView() {
-    //        self.stackView = UIStackView()
-    //        stackView.translatesAutoresizingMaskIntoConstraints = false
-    //        addSubview(stackView)
-    //
-    //        stackView.axis = .horizontal
-    //        stackView.distribution = .equalSpacing
-    //        stackView.spacing = 2.0
-    //
-    //        NSLayoutConstraint.activate([
-    //            stackView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 12),
-    //            stackView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor),
-    //            stackView.heightAnchor.constraint(equalToConstant: 12),
-    //            stackView.widthAnchor.constraint(equalToConstant: 100)
-    //
-    //
-    //        ])
-    //    }
-    //
-    
+
     func setup() {
         // Lay out your subviews here
         
@@ -120,8 +94,6 @@ class PasswordField: UIControl {
             titleLabelTopConstraint,
             titleLabelTrailingConstraint
         ])
-        
-        
         
         // Container View
         addSubview(textFieldContainerView)
@@ -162,51 +134,6 @@ class PasswordField: UIControl {
         textField.placeholder = "Click button to show password"
         textField.becomeFirstResponder()
         
-        
-        //
-        //         configueStackView()
-        //
-        //        // Weak password strength view()
-        //
-        //    stackView.addArrangedSubview(weakView)
-        //
-        //
-        //
-        //        weakView.translatesAutoresizingMaskIntoConstraints = false
-        //        weakView.layer.cornerRadius = 2
-        //        weakView.layer.backgroundColor = unusedColor.cgColor
-        //
-        //
-        //
-        //        //Medium password strength view()
-        //        stackView.addArrangedSubview(mediumView)
-        //        mediumView.translatesAutoresizingMaskIntoConstraints = false
-        //        mediumView.layer.cornerRadius = 2
-        //        mediumView.layer.backgroundColor = mediumColor.cgColor
-        //
-        ////        strengthDescriptionLabel.text = mediumPasswordStrength.rawValue
-        //
-        //        //Strong password view()
-        //        stackView.addArrangedSubview(strongView)
-        //
-        //        strongView.translatesAutoresizingMaskIntoConstraints = false
-        //        strongView.layer.cornerRadius = 2
-        //    strongView.layer.backgroundColor = unusedColor.cgColor
-        //
-        ////        strengthDescriptionLabel.text = strongPasswordStrength.rawValue
-        //
-        //
-        //        //Response View
-        //        stackView.addArrangedSubview(strengthDescriptionLabel)
-        //
-        //        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        //        strengthDescriptionLabel.textColor = labelTextColor
-        //    strengthDescriptionLabel.layer.backgroundColor = bgColor.cgColor
-        //        strengthDescriptionLabel.font = labelFont
-        ////        strengthDescriptionLabel.text = strongPasswordStrength.rawValue
-        //
-        //
-        //    print("configuredStackedview")
         
         // Weak strength indicator
         addSubview(weakView)
@@ -250,15 +177,6 @@ class PasswordField: UIControl {
         backgroundColor = bgColor
         
     }
-    
-    
-    
-    //    override init(frame: CGRect) {
-    //        super.init(frame: frame)
-    //        backgroundColor = bgColor
-    //
-    //    }
-    
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -312,46 +230,7 @@ class PasswordField: UIControl {
          
         }
     }
-    
-//    private func passwordStrengthResponseAnimation(for password: String) {
-//        switch passwordStrength {
-//        case .weak:
-////            strengthDescriptionLabel.text = PasswordStrengthIndicator.weak.rawValue
-//            mediumView.layer.backgroundColor = unusedColor.cgColor
-//            strongView.layer.backgroundColor = unusedColor.cgColor
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
-//            }) { _ in
-//                UIView.animate(withDuration: 0.3) {
-//                    self.weakView.transform = .identity
-//                }
-//            }
-//        case .medium:
-////            strengthDescriptionLabel.text = PasswordStrengthIndicator.medium.rawValue
-//            strongView.layer.backgroundColor = unusedColor.cgColor
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.mediumView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
-//                self.mediumView.layer.backgroundColor = self.mediumColor.cgColor}) { _ in
-//                    UIView.animate(withDuration: 0.3) {
-//                        self.mediumView.transform = .identity
-//                    }
-//            }
-//
-//        case .strong:
-////            strengthDescriptionLabel.text = PasswordStrengthIndicator.strong.rawValue
-//            mediumView.layer.backgroundColor = mediumColor.cgColor
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
-//                self.strongView.layer.backgroundColor = self.strongColor.cgColor
-//            }) { _ in
-//                UIView.animate(withDuration: 0.3) {
-//                    self.strongView.transform = .identity
-//                }
-//            }
-//
-//        }
-//
-//    }
+
     
     private func textFieldReturn(_ textField: UITextField) -> Bool {
         guard let passwordString = textField.text else { return true }
@@ -370,8 +249,6 @@ class PasswordField: UIControl {
         }
     }
 }
-
-
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
