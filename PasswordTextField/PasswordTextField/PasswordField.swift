@@ -64,30 +64,10 @@ class PasswordField: UIControl {
         
         self.addSubview(titleLabel)
         
-        NSLayoutConstraint(item: titleLabel,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .top,
-                           multiplier: 1,
-                           constant: 4).isActive = true
-        
-        NSLayoutConstraint(item: titleLabel,
-                           attribute: .leading,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .leading,
-                           multiplier: 1,
-                           constant: 2).isActive = true
-        
-        NSLayoutConstraint(item: titleLabel,
-                           attribute: .trailing,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .trailing,
-                           multiplier: 1,
-                           constant: -2).isActive = true
-        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+           ])
         
         
         addSubview(passwordContainerView)
@@ -112,29 +92,11 @@ class PasswordField: UIControl {
         textField.resignFirstResponder()
         textField.delegate = self
         
-        NSLayoutConstraint(item: textField,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: passwordContainerView,
-                           attribute: .bottom,
-                           multiplier: 1,
-                           constant: 4).isActive = true
-        
-        NSLayoutConstraint(item: textField,
-                           attribute: .leading,
-                           relatedBy: .equal,
-                           toItem: passwordContainerView,
-                           attribute: .leading,
-                           multiplier: 1,
-                           constant: 2).isActive = true
-        
-        NSLayoutConstraint(item: textField,
-                           attribute: .trailing,
-                           relatedBy: .equal,
-                           toItem: passwordContainerView,
-                           attribute: .trailing,
-                           multiplier: 1,
-                           constant: -2).isActive = true
+        NSLayoutConstraint.activate([
+        textField.topAnchor.constraint(equalTo: passwordContainerView.topAnchor, constant: textFieldMargin),
+        textField.leadingAnchor.constraint(equalTo: passwordContainerView.leadingAnchor, constant: textFieldMargin),
+        passwordContainerView.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin)
+        ])
         //MARK: Button
         
         
@@ -147,41 +109,7 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
         
-        
-        //MARK:              strengthDescripton label
-        
-        
-//        strengthDescriptionLabel.text = "\(PasswordStrength.self)"
-        strengthDescriptionLabel.textAlignment = .right
-        strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.font = labelFont
-        self.addSubview(strengthDescriptionLabel)
-        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint(item: strengthDescriptionLabel,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .top,
-                           multiplier: 1,
-                           constant: 70).isActive = true
-        
-        NSLayoutConstraint(item: strengthDescriptionLabel,
-                           attribute: .leading,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .leading,
-                           multiplier: 1,
-                           constant: 2).isActive = true
-        
-        NSLayoutConstraint(item: strengthDescriptionLabel,
-                           attribute: .trailing,
-                           relatedBy: .equal,
-                           toItem: self,
-                           attribute: .trailing,
-                           multiplier: 1,
-                           constant: -50).isActive = true
-        
+  
         //        N
         //
         //MARK:        Views
@@ -265,20 +193,34 @@ class PasswordField: UIControl {
         addSubview(viewsStackView)
         viewsStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint(item: viewsStackView,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: passwordContainerView,
-                           attribute: .bottom,
-                           multiplier: 1,
-                           constant: 20).isActive = true
-        
-        viewsStackView.trailingAnchor.constraint(equalTo: viewsStackView.safeAreaLayoutGuide.trailingAnchor, constant: 10).isActive = true
+     
+        viewsStackView.topAnchor.constraint(equalTo: passwordContainerView.bottomAnchor, constant: 16).isActive = true
+        viewsStackView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        viewsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true
         
         viewsStackView.axis = .horizontal
         viewsStackView.alignment = .fill
         viewsStackView.distribution = .fill
         viewsStackView.spacing = 3
+        
+        
+          //MARK:              strengthDescripton label
+          
+          
+          strengthDescriptionLabel.text = "WEAK"
+          strengthDescriptionLabel.textAlignment = .right
+          strengthDescriptionLabel.textColor = labelTextColor
+          strengthDescriptionLabel.font = labelFont
+          addSubview(strengthDescriptionLabel)
+          strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+          
+         NSLayoutConstraint.activate([
+                    strengthDescriptionLabel.topAnchor.constraint(equalTo: viewsStackView.bottomAnchor, constant: standardMargin),
+                    strengthDescriptionLabel.leadingAnchor.constraint(equalTo: viewsStackView.trailingAnchor, constant: standardMargin),
+                    strengthDescriptionLabel.centerYAnchor.constraint(equalTo: viewsStackView.centerYAnchor),
+                    bottomAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor, constant: standardMargin)
+                ])
+    }
         
         //    MARK: ANIMATIONS
         
@@ -292,12 +234,12 @@ class PasswordField: UIControl {
                     self.weakView.backgroundColor = self.weakColor
                     self.mediumView.backgroundColor = self.unusedColor
                     self.strongView.backgroundColor = self.unusedColor
-                    self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 2)
+                    self.weakView.transform = CGAffineTransform(scaleX: 1, y: 2)
                 }) { completed in
                     UIView.animate(withDuration: 0.2, animations: {
                         self.weakView.transform = .identity
                     })
-                    self.strengthDescriptionLabel.text = " Too Weak "
+                    self.strengthDescriptionLabel.text = " Strength Weak "
                 }
             case .medium:
                 UIView.animate(withDuration: 0.4, animations: {
@@ -309,7 +251,7 @@ class PasswordField: UIControl {
                     UIView.animate(withDuration: 0.2, animations: {
                         self.weakView.transform = .identity
                     })
-                    self.strengthDescriptionLabel.text = " Password Strength is Medium."
+                    self.strengthDescriptionLabel.text = "Strength Medium."
                 }
             case .strong:
                 UIView.animate(withDuration: 0.4, animations: {
@@ -339,9 +281,9 @@ class PasswordField: UIControl {
             strength = .strong
         }
         animateViews(strength)
-        strengthDescriptionLabel.text = "\(strength)"
+//
     }
-    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -368,14 +310,16 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-//        passwordStrength(newText)
-                textField.delegate = self
+        passwordStrength(newText)
+    
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return false
+        guard let password = textField.text,
+            !password.isEmpty else { return false }
+        return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
