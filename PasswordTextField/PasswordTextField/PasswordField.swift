@@ -132,7 +132,7 @@ class PasswordField: UIControl {
         
         
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.text = "Could be stronger"
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
