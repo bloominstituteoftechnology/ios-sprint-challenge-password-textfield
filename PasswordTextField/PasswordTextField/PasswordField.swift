@@ -16,7 +16,7 @@ enum PasswordState: String {
 }
 
 
- class PasswordField: UIControl {
+ class PasswordField: UIControl  {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -68,9 +68,25 @@ enum PasswordState: String {
         let eyeButton = UIButton()
         eyeButton.translatesAutoresizingMaskIntoConstraints = false
         eyeButton.setImage(#imageLiteral(resourceName: "eyes-closed") , for: .normal)
-        eyeButton.addTarget(self, action: #selector(updateValue), for: .touchUpInside)
+        
+        eyeButton.isUserInteractionEnabled = true
+        eyeButton.addTarget(self, action: #selector(handleEye), for: .touchUpInside)
         return eyeButton
     }()
+    
+    @objc  func handleEye() {
+        if textField.isSecureTextEntry {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            sendActions(for: .touchUpInside)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            sendActions(for: .touchUpInside)
+        }
+    }
+    
+    
     
     
     private var weakView: UIView = {
@@ -123,12 +139,15 @@ enum PasswordState: String {
       
         // Enter password Label
          addSubview(titleLabel)
-        
+         addSubview(showHideButton)
+       
     // Textfield and eye button
          addSubview(textField)
          textField.addSubview(showHideButton)
          textField.delegate = self
-        
+    
+    
+      
         addSubview(weakView)
         addSubview(strongView)
         addSubview(mediumView)
@@ -171,52 +190,7 @@ enum PasswordState: String {
         endEditing(true)
            return true
        }
-    
-    
-    
-    
-// MARK: - Toggle EYE button
-    
-    @objc private func updateValue(at touch: UITouch) {
-        let touchPoint = touch.location(in: showHideButton)
-        if showHideButton.frame.contains(touchPoint) {
-            showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
-            textField.isSecureTextEntry.toggle()
-            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
-        }
-    }
-    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-             updateValue(at: touch)
-         
-           return true
-       }
-       override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-           let touchPoint = touch.location(in: self)
-        if showHideButton.frame.contains(touchPoint) {
-               updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
-           } else {
-               sendActions(for: [.touchUpOutside])
-           }
-           return true
-       }
-       override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-            defer { super.endTracking(touch, with: event) }
-           guard let touch = touch else { return }
-           
-           let touchPoint = touch.location(in: self)
-        if showHideButton.frame.contains(touchPoint) {
-               updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
-           } else {
-               sendActions(for: .touchUpOutside)
-           }
-       
-           
-       }
-       override func cancelTracking(with event: UIEvent?) {
-           sendActions(for: [.touchCancel])
-       }
+
     
 }
 
@@ -226,13 +200,14 @@ enum PasswordState: String {
 
 
 extension PasswordField: UITextFieldDelegate {
+  
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
         sendActions(for: .valueChanged)
-        
+   
         switch newText.count {
         case 0...9:
             strengthDescriptionLabel.text = PasswordState.weak.rawValue

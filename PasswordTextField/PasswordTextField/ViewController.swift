@@ -19,18 +19,10 @@ class ViewController: UIViewController {
     }
     
    
-    
-    @IBAction func touchButtonEye(_ sender: PasswordField) {
-    }
-    
-    
-    @IBAction func eyeButtonTapped(_ sender: PasswordField) {
-    }
-    
-    
-    
+  
     @IBAction func touchUpInside(_ sender: PasswordField) {
-        sender.becomeFirstResponder()
+    
+        
     }
     
     @IBAction func editingDidChanged(_ sender: PasswordField) {

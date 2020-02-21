@@ -17,12 +17,10 @@
                         <subviews>
                             <view verifyAmbiguity="ignoreSizes" contentMode="scaleToFill" semanticContentAttribute="playback" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v0c-JS-lYF" customClass="PasswordField" customModule="PasswordTextField" customModuleProvider="target">
                                 <rect key="frame" x="20" y="84" width="374" height="109"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="editingDidChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="93T-eS-oI1"/>
-                                    <action selector="eyeButtonTapped:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="KLh-50-vMw"/>
                                     <action selector="textFieldValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="iZ8-mi-3Pg"/>
-                                    <action selector="touchButtonEye:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hxm-j6-m5E"/>
                                     <action selector="touchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UdQ-S9-GhQ"/>
                                 </connections>
                             </view>
