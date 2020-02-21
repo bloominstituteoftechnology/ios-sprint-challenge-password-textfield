@@ -153,7 +153,7 @@ class PasswordField: UIControl {
         // Setup Labels & Board objects
                    
             // Title Label
-            titleLabel.text = "Enter Password (☞ຈل͜ຈ)☞"
+            titleLabel.text = "Enter Password ┴┬┴┤( ͡° ͜ʖ├┬┴┬"
             titleLabel.font = labelFont
             titleLabel.textColor = labelTextColor
                    
