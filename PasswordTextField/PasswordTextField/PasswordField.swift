@@ -166,25 +166,22 @@ enum PasswordState: String {
     
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
            return true
        }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        endEditing(false)
-        return true
-    }
     
     
-// MARK: - Toggle eye button
+    
+// MARK: - Toggle EYE button
     
     private func updateValue(at touch: UITouch) {
-        let touchPoint = touch.location(in: showHideButton)
-        if showHideButton.bounds.contains(touchPoint) {
+        let touchPoint = touch.location(in: self)
+        if showHideButton.frame.contains(touchPoint) {
             showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
             textField.isSecureTextEntry.toggle()
-            sendActions(for: [.touchUpInside])
+            sendActions(for: [.touchUpInside,.valueChanged,.allEvents])
         }
     }
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -193,10 +190,10 @@ enum PasswordState: String {
            return true
        }
        override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-           let touchPoint = touch.location(in: textField)
+           let touchPoint = touch.location(in: self)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside])
+            sendActions(for: [.touchUpInside,.valueChanged])
            } else {
                sendActions(for: [.touchUpOutside])
            }
@@ -206,10 +203,10 @@ enum PasswordState: String {
             defer { super.endTracking(touch, with: event) }
            guard let touch = touch else { return }
            
-           let touchPoint = touch.location(in: textField)
+           let touchPoint = touch.location(in: self)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside])
+            sendActions(for: [.touchUpInside,.valueChanged])
            } else {
                sendActions(for: .touchUpOutside)
            }
@@ -231,6 +228,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
+        sendActions(for: .valueChanged)
         // TODO: send new text to the determine strength method
         switch newText.count {
         case 0...9:
@@ -242,7 +240,6 @@ extension PasswordField: UITextFieldDelegate {
                  weakView.performFlare()
             }
            
-            sendActions(for: .valueChanged)
         case 10...19:
             strengthDescriptionLabel.text = PasswordState.medium.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
@@ -251,8 +248,6 @@ extension PasswordField: UITextFieldDelegate {
             if newText.count == 10 {
                     mediumView.performFlare()
             }
-        
-            sendActions(for: .valueChanged)
         case 20...:
             strengthDescriptionLabel.text = PasswordState.strong.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
@@ -261,8 +256,6 @@ extension PasswordField: UITextFieldDelegate {
             if newText.count == 21 {
                   strongView.performFlare()
             }
-          
-            sendActions(for: .valueChanged)
         default:
             break
         }

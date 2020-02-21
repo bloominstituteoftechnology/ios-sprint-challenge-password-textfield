@@ -20,7 +20,9 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="editingDidChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="93T-eS-oI1"/>
+                                    <action selector="eyeButtonTapped:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="KLh-50-vMw"/>
                                     <action selector="textFieldValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="iZ8-mi-3Pg"/>
+                                    <action selector="touchButtonEye:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hxm-j6-m5E"/>
                                     <action selector="touchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UdQ-S9-GhQ"/>
                                 </connections>
                             </view>
