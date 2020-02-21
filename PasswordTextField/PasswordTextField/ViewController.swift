@@ -15,17 +15,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordField.backgroundColor = .gray
-       
+     
     }
     
    
     @IBAction func touchUpInside(_ sender: PasswordField) {
-        
+        print(sender.password)
     }
     
     @IBAction func editingDidChanged(_ sender: PasswordField) {
-        
+        print(sender.password)
     }
     
     @IBAction func textFieldValueChanged(_ sender: PasswordField) {

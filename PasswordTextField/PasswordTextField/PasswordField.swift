@@ -75,21 +75,21 @@ enum PasswordState: String {
     private var weakView: UIView = {
        let weak = UIView()
         weak.translatesAutoresizingMaskIntoConstraints = false
-        weak.backgroundColor = ColorHelper.weakColor
+        weak.backgroundColor = ColorHelper.unusedColor
          weak.frame.size = CGSize(width: 60.0, height: 5.0)
         return weak
     }()
     private var mediumView: UIView = {
         let medium = UIView()
         medium.translatesAutoresizingMaskIntoConstraints = false
-        medium.backgroundColor = ColorHelper.mediumColor
+        medium.backgroundColor = ColorHelper.unusedColor
         medium.frame.size = CGSize(width: 60.0, height: 5.0)
         return medium
     }()
     private var strongView: UIView = {
        let strong = UIView()
         strong.translatesAutoresizingMaskIntoConstraints = false
-        strong.backgroundColor = ColorHelper.strongColor
+        strong.backgroundColor = ColorHelper.unusedColor
          strong.frame.size = CGSize(width: 60.0, height: 5.0)
         return strong
     }()
@@ -97,13 +97,13 @@ enum PasswordState: String {
     private var strengthDescriptionLabel: UILabel = {
        let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "Strong Password"
+        lb.text = "Weak"
         lb.numberOfLines = 0
         lb.textAlignment = .left
         return lb
     }()
     
-    private var statusStackView : UIStackView = {
+    private var colorStacView : UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
@@ -119,29 +119,31 @@ enum PasswordState: String {
   fileprivate func setup() {
         // Lay out your subviews here
       
+        // Enter password Label
+         addSubview(titleLabel)
         
-        addSubview(titleLabel)
-        
+    // Textfield and eye button
          addSubview(textField)
          textField.addSubview(showHideButton)
-     
+         textField.delegate = self
         
         addSubview(weakView)
         addSubview(strongView)
         addSubview(mediumView)
         
     
-        addSubview(statusStackView)
+        addSubview(colorStacView)
      
-        
-        statusStackView.addArrangedSubview(weakView)
-        statusStackView.addArrangedSubview(mediumView)
-        statusStackView.addArrangedSubview(strongView)
+        // Weak, medium, strong Stackview
+        colorStacView.addArrangedSubview(weakView)
+        colorStacView.addArrangedSubview(mediumView)
+        colorStacView.addArrangedSubview(strongView)
      
-    
+    // Stregth description label
         addSubview(strengthDescriptionLabel)
         showHideButton.center = textField.center
      
+    // Constraint everything
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -151,19 +153,24 @@ enum PasswordState: String {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -16),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
             
-            statusStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            statusStackView.widthAnchor.constraint(equalToConstant: 200),
-            statusStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
-            statusStackView.heightAnchor.constraint(equalToConstant: 3),
+            colorStacView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            colorStacView.widthAnchor.constraint(equalToConstant: 200),
+            colorStacView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
+            colorStacView.heightAnchor.constraint(equalToConstant: 3),
             
-            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: 30),
-            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: statusStackView.bottomAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorStacView.trailingAnchor, constant: 30),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: colorStacView.bottomAnchor),
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10)
         ])
     
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        <#code#>
+        //
+        print(textField.text)
+    }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print(textField.text)
+        return true
     }
     
 
@@ -221,17 +228,26 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         switch newText.count {
         case 0...9:
-            strengthDescriptionLabel.text = "Weak"
+            strengthDescriptionLabel.text = "Too Weak"
+            weakView.backgroundColor = ColorHelper.weakColor
+            mediumView.backgroundColor = ColorHelper.unusedColor
+            strongView.backgroundColor = ColorHelper.unusedColor
             weakView.performFlare()
-             sendActions(for: .valueChanged)
+            sendActions(for: .valueChanged)
         case 10...19:
-            strengthDescriptionLabel.text = "Medium"
+            strengthDescriptionLabel.text = "Could be Stronger"
+            weakView.backgroundColor = ColorHelper.weakColor
+            mediumView.backgroundColor = ColorHelper.mediumColor
+            strongView.backgroundColor = ColorHelper.unusedColor
             mediumView.performFlare()
-             sendActions(for: .valueChanged)
+            sendActions(for: .valueChanged)
         case 20...:
             strengthDescriptionLabel.text = "Strong"
+            weakView.backgroundColor = ColorHelper.weakColor
+            mediumView.backgroundColor = ColorHelper.mediumColor
+            strongView.backgroundColor = ColorHelper.strongColor
             strongView.performFlare()
-             sendActions(for: .valueChanged)
+            sendActions(for: .valueChanged)
         default:
             break
         }
