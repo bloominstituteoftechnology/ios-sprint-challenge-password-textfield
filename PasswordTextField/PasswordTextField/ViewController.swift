@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     
    
     @IBAction func touchUpInside(_ sender: PasswordField) {
-        
+        sender.becomeFirstResponder()
     }
     
     @IBAction func editingDidChanged(_ sender: PasswordField) {
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     @IBAction func textFieldValueChanged(_ sender: PasswordField) {
         
-        print("Password is \(sender.password), strength level is \(sender.strengthDescriptionLabel.text ?? "")")
+        print("Password is \(sender.password), strength level is \(sender.strengthDescriptionLabel.text ?? "").")
         
     }
     

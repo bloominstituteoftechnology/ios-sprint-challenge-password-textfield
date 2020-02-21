@@ -166,14 +166,24 @@ enum PasswordState: String {
     
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+           return true
+       }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        endEditing(false)
+        return true
+    }
+    
     
 // MARK: - Toggle eye button
     
     private func updateValue(at touch: UITouch) {
-        let touchPoint = touch.location(in: textField)
+        let touchPoint = touch.location(in: showHideButton)
         if showHideButton.bounds.contains(touchPoint) {
             showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
-            textField.isSecureTextEntry = false
+            textField.isSecureTextEntry.toggle()
             sendActions(for: [.touchUpInside])
         }
     }
