@@ -27,4 +27,9 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    @IBAction func passwordHasChangedValue(_ passwordField: PasswordField) {
+        let currentPassword = passwordField.password
+            let passwordStrength = passwordField.passwordStrength.rawValue
+            print("Entered Password: \(currentPassword). Password Strength: \(passwordStrength.capitalized)")
+    }
 }
