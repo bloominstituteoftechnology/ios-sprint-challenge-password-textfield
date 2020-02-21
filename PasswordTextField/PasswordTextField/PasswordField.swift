@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "WEAK"
+    case medium = "MEDIUM"
+    case strong = "STRONG"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -108,21 +115,22 @@ class PasswordField: UIControl {
         weakView.backgroundColor = weakColor
         mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
-        addSubview(strengthDescriptionLabel)
-        addSubview(weakView)
-        addSubview(mediumView)
-        addSubview(strongView)
         
         weakView.layer.cornerRadius = 2
         mediumView.layer.cornerRadius = 2
         strongView.layer.cornerRadius = 2
         
-        
+        addSubview(strengthDescriptionLabel)
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
@@ -136,42 +144,87 @@ class PasswordField: UIControl {
         strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
-        
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
-        strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
+        
     }
+    
+    // MARK: - Private Methods
     
     private func indicatePasswordStrength(password: String) {
         switch password.count {
             case ..<10:
-                weakView.backgroundColor = weakColor
-                mediumView.backgroundColor = unusedColor
-                strongView.backgroundColor = unusedColor
-                strengthDescriptionLabel.text = "Too Weak"
+                updateForStatus(status: .weak)
             case 10...19:
-                weakView.backgroundColor = weakColor
-                mediumView.backgroundColor = mediumColor
-                strongView.backgroundColor = unusedColor
-                strengthDescriptionLabel.text = "Could be stronger"
+                updateForStatus(status: .medium)
             default:
-                weakView.backgroundColor = weakColor
-                mediumView.backgroundColor = mediumColor
-                strongView.backgroundColor = strongColor
-                strengthDescriptionLabel.text = "Strong password"
+                updateForStatus(status: .strong)
                 
         }
     }
     
-    private func updateForStatus(status: String) {
+    private func updateForStatus(status: PasswordStrength) {
+        let currentStatus = strength
+        switch status {
+            case .weak:
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Too Weak"
+                if currentStatus != .weak {
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.weakView.layer.backgroundColor = self.weakColor.cgColor
+                        self.weakView.transform = CGAffineTransform(scaleX: 1.6, y: 1.6)
+                        }) { (_) in
+                            self.weakView.transform = .identity
+                            self.strength = .weak
+                    }
+                } else {
+                    self.weakView.layer.backgroundColor = self.weakColor.cgColor
+                    self.strength = .weak
+                }
+            case .medium:
+                weakView.backgroundColor = weakColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Could be stronger"
+                if currentStatus != .medium {
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.mediumView.layer.backgroundColor = self.mediumColor.cgColor
+                        self.mediumView.transform = CGAffineTransform(scaleX: 1.6, y: 1.6)
+                    }) { (_) in
+                        self.mediumView.transform = .identity
+                        self.strength = .medium
+                    }
+                } else {
+                    self.mediumView.layer.backgroundColor = self.mediumColor.cgColor
+                    self.strength = .medium
+                }
+            
+            case .strong:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strengthDescriptionLabel.text = "Strong password"
+                if currentStatus != .strong {
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.strongView.layer.backgroundColor = self.strongColor.cgColor
+                        self.strongView.transform = CGAffineTransform(scaleX: 1.6, y: 1.6)
+                    }) { (_) in
+                        self.strongView.transform = .identity
+                        self.strength = .strong
+                    }
+                } else {
+                   self.strongView.layer.backgroundColor = self.strongColor.cgColor
+                }
+        }
         
     }
+    
+    // MARK: - Actions
     
     @objc private func showPasswordTapped() {
         isSecureEntry.toggle()
@@ -188,6 +241,15 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         indicatePasswordStrength(password: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let text = textField.text, !text.isEmpty {
+            password = text
+            sendActions(for: [.valueChanged])
+        }
         return true
     }
 }
