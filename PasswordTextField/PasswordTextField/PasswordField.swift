@@ -65,7 +65,6 @@ class PasswordField: UIControl {
         textFieldBorder.layer.borderWidth = 1
         textFieldBorder.layer.cornerRadius = 5
         textFieldBorder.backgroundColor = bgColor
-        
         addSubview(textFieldBorder)
         
         // Hide Button
@@ -92,13 +91,13 @@ class PasswordField: UIControl {
         // Medium View
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.layer.cornerRadius = 2
-        mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.layer.backgroundColor = unusedColor.cgColor
         addSubview(mediumView)
         
         //Strong View
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.layer.cornerRadius = 2
-        strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.layer.backgroundColor = unusedColor.cgColor
         addSubview(strongView)
         
         // Strength Description label
@@ -183,17 +182,22 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            weakView.performFlare()
         case .medium:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            mediumView.performFlare()
         case .strong:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            strongView.performFlare()
         }
     }
 }
+
+//MARK: - Extensions
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
@@ -201,5 +205,16 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         passwordStrength(for: newText)
         return true
+    }
+}
+
+extension UIView {
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.0, y: 1.5) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.25,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
