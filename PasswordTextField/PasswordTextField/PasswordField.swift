@@ -167,6 +167,53 @@ class PasswordField: UIControl {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
     }
+    
+    func passwordStrength(_ password: String) {
+           switch password.count {
+           case 0:
+               strengthDescriptionLabel.text = "Enter a password"
+               weakView.backgroundColor = unusedColor
+               mediumView.backgroundColor = unusedColor
+               strongView.backgroundColor = unusedColor
+           case 1...10:
+               strengthDescriptionLabel.text = "Too weak"
+               animations(for: password)
+               weakView.backgroundColor = weakColor
+               mediumView.backgroundColor = unusedColor
+               strongView.backgroundColor = unusedColor
+           case 11...20:
+               strengthDescriptionLabel.text = "Could be stronger"
+               animations(for: password)
+               weakView.backgroundColor = weakColor
+               mediumView.backgroundColor = mediumColor
+               strongView.backgroundColor = unusedColor
+           default:
+               strengthDescriptionLabel.text = "Strong"
+               animations(for: password)
+               weakView.backgroundColor = weakColor
+               mediumView.backgroundColor = mediumColor
+               strongView.backgroundColor = strongColor
+           }
+       }
+       
+       func animations(for password: String) {
+           if password.count == 1 {
+               weakView.transform = CGAffineTransform(scaleX: 1, y: 1.5)
+               UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                   self.weakView.transform = .identity
+               }, completion: nil)
+           } else if password.count == 10 {
+               mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.5)
+               UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                   self.mediumView.transform = .identity
+               }, completion: nil)
+           } else if password.count == 20 {
+               strongView.transform = CGAffineTransform(scaleX: 1, y: 1.5)
+               UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                   self.strongView.transform = .identity
+               }, completion: nil)
+           }
+       }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -175,6 +222,18 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        passwordStrength(newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let password = textField.text,
+            !password.isEmpty else { return false }
+        
+        self.password = password
+        sendActions(for: .valueChanged)
+        
+        textField.resignFirstResponder()
         return true
     }
 }
