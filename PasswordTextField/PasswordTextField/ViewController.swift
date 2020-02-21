@@ -10,6 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var passwordField: PasswordField!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        passwordField.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
