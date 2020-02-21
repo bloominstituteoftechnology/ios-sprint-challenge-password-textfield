@@ -68,6 +68,7 @@ enum PasswordState: String {
         let eyeButton = UIButton()
         eyeButton.translatesAutoresizingMaskIntoConstraints = false
         eyeButton.setImage(#imageLiteral(resourceName: "eyes-closed") , for: .normal)
+        eyeButton.addTarget(self, action: #selector(updateValue), for: .touchUpInside)
         return eyeButton
     }()
     
@@ -104,7 +105,7 @@ enum PasswordState: String {
         return lb
     }()
     
-    private var colorStacView : UIStackView = {
+    private var colorStackView : UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
@@ -133,12 +134,12 @@ enum PasswordState: String {
         addSubview(mediumView)
         
     
-        addSubview(colorStacView)
+        addSubview(colorStackView)
      
         // Weak, medium, strong Stackview
-        colorStacView.addArrangedSubview(weakView)
-        colorStacView.addArrangedSubview(mediumView)
-        colorStacView.addArrangedSubview(strongView)
+        colorStackView.addArrangedSubview(weakView)
+        colorStackView.addArrangedSubview(mediumView)
+        colorStackView.addArrangedSubview(strongView)
      
     // Stregth description label
         addSubview(strengthDescriptionLabel)
@@ -154,13 +155,13 @@ enum PasswordState: String {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -16),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
             
-            colorStacView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            colorStacView.widthAnchor.constraint(equalToConstant: 200),
-            colorStacView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
-            colorStacView.heightAnchor.constraint(equalToConstant: 3),
+            colorStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            colorStackView.widthAnchor.constraint(equalToConstant: 200),
+            colorStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
+            colorStackView.heightAnchor.constraint(equalToConstant: 3),
             
-            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorStacView.trailingAnchor, constant: 30),
-            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: colorStacView.bottomAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorStackView.trailingAnchor, constant: 30),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: colorStackView.bottomAnchor),
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10)
         ])
     
@@ -176,7 +177,7 @@ enum PasswordState: String {
     
 // MARK: - Toggle EYE button
     
-    private func updateValue(at touch: UITouch) {
+    @objc private func updateValue(at touch: UITouch) {
         let touchPoint = touch.location(in: showHideButton)
         if showHideButton.frame.contains(touchPoint) {
             showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
