@@ -25,6 +25,8 @@ class PasswordField: UIControl {
     private let passwordStrengthWeak: Int = 10
     private let passwordStrengthMedium: Int = 20
     
+    
+    // Margins
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -131,8 +133,11 @@ class PasswordField: UIControl {
             
            
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            
              strongView.topAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor),
+             
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
             
             
@@ -148,7 +153,7 @@ class PasswordField: UIControl {
         // Setup Labels & Board objects
                    
             // Title Label
-            titleLabel.text = "Enter Password ┴┬┴┤( ͡° ͜ʖ├┬┴┬"
+            titleLabel.text = "Enter Password (☞ຈل͜ຈ)☞"
             titleLabel.font = labelFont
             titleLabel.textColor = labelTextColor
                    
@@ -188,14 +193,14 @@ class PasswordField: UIControl {
         setup()
     }
     
-    func passwordStrength(for stringSize: Int) {
-        if stringSize < passwordStrengthWeak {
+    func passwordStrength(for stringCount: Int) {
+        if stringCount < passwordStrengthWeak {
             passwordStrength = .weak
             strengthDescriptionLabel.text = passwordStrength.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-        } else if stringSize > passwordStrengthWeak && stringSize < passwordStrengthMedium {
+        } else if stringCount > passwordStrengthWeak && stringCount < passwordStrengthMedium {
             passwordStrength = .medium
             strengthDescriptionLabel.text = passwordStrength.rawValue
             weakView.backgroundColor = weakColor
