@@ -20,13 +20,14 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = "" {
         didSet {
+            recognisePassStr()
             
         }
     }
     
     private (set) var passStrength: StrengthColor? {
               didSet {
-                  
+                  changePassStrBarColor()
               }
           }
     
@@ -67,6 +68,14 @@ class PasswordField: UIControl {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+       
+        [titleLabel, textField, strengthBarHorizontalView].forEach {
+          everythingElseStack.addArrangedSubview($0)
+        }
+        [weakView, mediumView, strongView, strengthDescriptionLabel].forEach {
+            strengthBarHorizontalView.addArrangedSubview($0)
+        }
         
     // MARK: - Label Setup
         titleLabel.text = "ENTER PASSWORD"
@@ -109,23 +118,152 @@ class PasswordField: UIControl {
         showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 38)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
+    
+    // different strengths set ups:
+    
+    // MARK: - WeakView Setup
+          weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+          weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+          weakView.layer.cornerRadius = colorViewSize.height / 2
+
+          // MARK: - MediumView Setup
+          mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+          mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+          mediumView.layer.cornerRadius = colorViewSize.height / 2
+
+          // MARK: - StrongView Setup
+          strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+          strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+          strongView.layer.cornerRadius = colorViewSize.height / 2
+         
+          // MARK: - StackViews Constraints
+        everythingElseStack.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
+        everythingElseStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin).isActive = true
+        everythingElseStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        everythingElseStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        strengthBarHorizontalView.heightAnchor.constraint(equalToConstant: 16).isActive = true
     }
+
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
     
-    @objc func showPassword() {
+    // MARK: - Helper Functions
+    
+    //Changes color when typing in password
+    func changePassStrBarColor() {
+        if let passStrength = passStrength,
+            let password = textField.text,
+            !password.isEmpty {
+            switch passStrength {
+            case .no:
+                weakView.backgroundColor = unusedColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = passStrength.rawValue
+            case .weak:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = passStrength.rawValue
+                weakView.performFlare()
+            case .medium:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = passStrength.rawValue
+                mediumView.performFlare()
+            case .strong:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = strongColor
+                strengthDescriptionLabel.text = passStrength.rawValue
+                strongView.performFlare()
+            }
+        } else {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        }
     }
-}
+
+    func recognisePassStr() {
+        if password.count == 0 {
+            passStrength = .no
+        } else if password.count < 5 {
+            passStrength = .weak
+        } else if (5...10).contains(password.count) {
+            passStrength = .medium
+        } else {
+            passStrength = .strong
+        }
+    }
+    
+    @objc func showPassword() {
+    switch textField.isSecureTextEntry {
+            case true:
+                textField.isSecureTextEntry = false
+                showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            case false:
+                textField.isSecureTextEntry = true
+                showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
+    }
+        func springAnimationWeak() {
+            weakView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+            UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {
+                self.weakView.transform = .identity
+            }, completion: nil)
+        }
+        func springAnimationMedium() {
+            mediumView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+            UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {
+                self.mediumView.transform = .identity
+            }, completion: nil)
+        }
+        func springAnimationStrong() {
+            strongView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+            UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {
+                self.strongView.transform = .identity
+            }, completion: nil)
+     }
+   }
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        password = newText
         return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            if let newPass = textField.text {
+                password = newPass
+                sendActions(for: .valueChanged)
+            }
+            weakView.performFlare()
+            mediumView.performFlare()
+            strongView.performFlare()
+            textField.resignFirstResponder()
+            return true
+        }
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            if let textField = textField.text {
+                password = textField
+                sendActions(for: .valueChanged)
+            }
+        }
+    }
+
+extension UIView {
+    func performFlare() {
+        func flare() { transform = CGAffineTransform(scaleX: 1, y: 1.8) }
+            func unflare() { transform = .identity }
+            
+         UIView.animate(withDuration: 0.5, animations: { flare() },
+            completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
