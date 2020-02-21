@@ -10,21 +10,27 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // For use in the stretch goal
-    //
-    // Uncomment this entire method, then run the app.
-    // A dictionary view should appear, with a "manage" button
-    // in the lower left corner. Tap that button and choose a dictionary
-    // to install (you can use the first one "American English"). Tap
-    // the little cloud download button to install it. Then just stop the app
-    // and comment this method out again. This step only needs to run once.
+    @IBOutlet weak var passwordField: PasswordField!
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        // Uncomment this portion to set up the dictionary
-//        let str = "lambda"
-//        let referenceVC = UIReferenceLibraryViewController(term: str)
-//        present(referenceVC, animated: true, completion: nil)
-//    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        passwordField.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+    }
+    
+    @IBAction func passwordHasChanged(_ passwordField: PasswordField) {
+        let password = passwordField.password
+        var passwordStrenth = ""
+        
+        if password.count <= 10 {
+            passwordStrenth = "Weak"
+        } else if password.count <= 20 {
+            passwordStrenth = "Medium"
+        } else {
+            passwordStrenth = "Strong"
+        }
+        
+        print(password)
+        print(passwordStrenth)
+    }
 }
