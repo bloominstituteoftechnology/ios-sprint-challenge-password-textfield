@@ -9,9 +9,9 @@
 import UIKit
 
 enum PasswordState: String {
-    case weak
-    case medium
-    case strong
+    case weak = "Too Weak"
+    case medium = "Could be Stronger"
+    case strong = "Very Strong"
     
 }
 
@@ -25,7 +25,7 @@ enum PasswordState: String {
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
-  
+    
     
     
     //MARK: - Initialization
@@ -94,7 +94,7 @@ enum PasswordState: String {
         return strong
     }()
     
-    private var strengthDescriptionLabel: UILabel = {
+     public var strengthDescriptionLabel: UILabel = {
        let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.text = "Weak"
@@ -174,7 +174,7 @@ enum PasswordState: String {
         if showHideButton.bounds.contains(touchPoint) {
             showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
-            sendActions(for: [.touchUpInside,.valueChanged])
+            sendActions(for: [.touchUpInside])
         }
     }
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -186,7 +186,7 @@ enum PasswordState: String {
            let touchPoint = touch.location(in: textField)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged])
+            sendActions(for: [.touchUpInside])
            } else {
                sendActions(for: [.touchUpOutside])
            }
@@ -199,7 +199,7 @@ enum PasswordState: String {
            let touchPoint = touch.location(in: textField)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged])
+            sendActions(for: [.touchUpInside])
            } else {
                sendActions(for: .touchUpOutside)
            }
@@ -224,7 +224,7 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         switch newText.count {
         case 0...9:
-            strengthDescriptionLabel.text = "Too Weak"
+            strengthDescriptionLabel.text = PasswordState.weak.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.unusedColor
             strongView.backgroundColor = ColorHelper.unusedColor
@@ -234,7 +234,7 @@ extension PasswordField: UITextFieldDelegate {
            
             sendActions(for: .valueChanged)
         case 10...19:
-            strengthDescriptionLabel.text = "Could be Stronger"
+            strengthDescriptionLabel.text = PasswordState.medium.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor
             strongView.backgroundColor = ColorHelper.unusedColor
@@ -244,7 +244,7 @@ extension PasswordField: UITextFieldDelegate {
         
             sendActions(for: .valueChanged)
         case 20...:
-            strengthDescriptionLabel.text = "Very Strong"
+            strengthDescriptionLabel.text = PasswordState.strong.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor
             strongView.backgroundColor = ColorHelper.strongColor

@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     
    
     @IBAction func touchUpInside(_ sender: PasswordField) {
-        print(sender.password)
+        
     }
     
     @IBAction func editingDidChanged(_ sender: PasswordField) {
@@ -28,7 +28,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func textFieldValueChanged(_ sender: PasswordField) {
-          print(sender.password)
+        
+        print("Password is \(sender.password), strength level is \(sender.strengthDescriptionLabel.text ?? "")")
+        
     }
     
     // For use in the stretch goal
