@@ -8,10 +8,22 @@
 
 import UIKit
 
+enum passwordStrength: String {
+    case weak = "WEAK!"
+    case medium = "MEDIUM!"
+    case strong = "STRONG!"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: passwordStrength = .weak
+    
+    // Strengths
+    
+    private let passwordStrengthWeak: Int = 10
+    private let passwordStrengthMedium: Int = 20
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -38,9 +50,10 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+        
     func setup() {
    
-        
+
         // Lay out your subviews here
         addSubview(titleLabel)
         addSubview(textField)
@@ -60,6 +73,8 @@ class PasswordField: UIControl {
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
+       
+        
         // Constrain Values
         NSLayoutConstraint.activate([
             
@@ -67,21 +82,59 @@ class PasswordField: UIControl {
             
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
             
             // Text Field
             
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
             // Show Hide Button
             
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -textFieldMargin),
             showHideButton.heightAnchor.constraint(equalTo: textField.heightAnchor),
-            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor)
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
             
             // Strength description
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+                
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: standardMargin),
+                
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
+                
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            // Weak View
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                
+            weakView.topAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor),
+               
+                
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            // Medium View
+            
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            
+            mediumView.topAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor),
+            
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            // Strong View
+            
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+            
+            
+                
+                
             
             
             
@@ -100,22 +153,78 @@ class PasswordField: UIControl {
             textField.placeholder = "ENTER PASSWORD"
             titleLabel.font = labelFont
             textField.borderStyle = .bezel
-        textField.layer.borderColor! = UIColor.blue
-        textField.isEnabled = true
+            textField.isSecureTextEntry = true
+            textField.isEnabled = true
+            textField.delegate = self
         
-               
-               // Shi
+            // Strength Description
+            strengthDescriptionLabel.text = passwordStrength.rawValue
+            strengthDescriptionLabel.font = labelFont
+            strengthDescriptionLabel.textColor = labelTextColor
+        
+            // Show/Hide Button
+        
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            showHideButton.addTarget(self, action: #selector(hideShowButtonTapped), for: .touchUpInside)
+            
+            // View Backgrounds
+            
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            
         
     }
     
     
    
-    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
     
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    func passwordStrength(for stringSize: Int) {
+        if stringSize < passwordStrengthWeak {
+            passwordStrength = .weak
+            strengthDescriptionLabel.text = passwordStrength.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if stringSize > passwordStrengthWeak && stringSize < passwordStrengthMedium {
+            passwordStrength = .medium
+            strengthDescriptionLabel.text = passwordStrength.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        } else {
+            passwordStrength = .strong
+            strengthDescriptionLabel.text = passwordStrength.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
+    @objc func hideShowButtonTapped(sender: UIButton) {
+        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        if !textField.isSecureTextEntry {
+            let str = textField.text
+            textField.text = nil
+            textField.text = str
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+            
+        }
+        
     }
 }
 
@@ -125,6 +234,12 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        passwordStrength(for: newText.count)
+        password = newText
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendActions(for: [.valueChanged])
         return true
     }
 }
