@@ -19,9 +19,9 @@
                                 <rect key="frame" x="20" y="84" width="374" height="109"/>
                                 <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <action selector="editingDidChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="93T-eS-oI1"/>
+                                    <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="Mc6-JJ-alt"/>
                                     <action selector="textFieldValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="iZ8-mi-3Pg"/>
-                                    <action selector="touchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UdQ-S9-GhQ"/>
+                                    <action selector="touchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hGi-9a-mZI"/>
                                 </connections>
                             </view>
                         </subviews>

@@ -39,7 +39,7 @@ enum PasswordState: String {
          super.init(coder: aDecoder)
          setup()
      }
-    
+  
  //MARK: - Properties
     
     private var titleLabel: UILabel = {
@@ -59,36 +59,33 @@ enum PasswordState: String {
         textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
         textField.layer.borderColor = ColorHelper.textFieldBorderColor.cgColor
-        
+        textField.rightViewMode = .always
+         
         return textField
     }()
     
   
-    private var showHideButton: UIButton = {
+     private var showHideButton: UIButton = {
         let eyeButton = UIButton()
         eyeButton.translatesAutoresizingMaskIntoConstraints = false
         eyeButton.setImage(#imageLiteral(resourceName: "eyes-closed") , for: .normal)
-        
         eyeButton.isUserInteractionEnabled = true
         eyeButton.addTarget(self, action: #selector(handleEye), for: .touchUpInside)
+       
         return eyeButton
     }()
     
-    @objc  func handleEye() {
-        if textField.isSecureTextEntry {
-            textField.isSecureTextEntry = false
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-            sendActions(for: .touchUpInside)
-        } else {
-            textField.isSecureTextEntry = true
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-            sendActions(for: .touchUpInside)
-        }
+    @objc func handleEye() {
+          textField.isSecureTextEntry.toggle()
+            if textField.isSecureTextEntry {
+                showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            } else {
+                showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            }
     }
     
     
-    
-    
+   
     private var weakView: UIView = {
        let weak = UIView()
         weak.translatesAutoresizingMaskIntoConstraints = false
@@ -96,6 +93,7 @@ enum PasswordState: String {
          weak.frame.size = CGSize(width: 60.0, height: 5.0)
         return weak
     }()
+    
     private var mediumView: UIView = {
         let medium = UIView()
         medium.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +101,7 @@ enum PasswordState: String {
         medium.frame.size = CGSize(width: 60.0, height: 5.0)
         return medium
     }()
+    
     private var strongView: UIView = {
        let strong = UIView()
         strong.translatesAutoresizingMaskIntoConstraints = false
@@ -132,27 +131,37 @@ enum PasswordState: String {
     }()
     
    // MARK: - Setup Subviews Function
+    fileprivate func setUpContainerView() {
+        self.backgroundColor = ColorHelper.bgColor
+        self.layer.cornerRadius = 10.0
+        NSLayoutConstraint.activate([
+            self.widthAnchor.constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor),
+            self.heightAnchor.constraint(equalToConstant: 120.0)
+        ])
+    }
     
-    
-  fileprivate func setup() {
-        // Lay out your subviews here
+    fileprivate func setup() {
+        
+        setUpContainerView()
+        textField.rightView = showHideButton
+        
       
         // Enter password Label
-         addSubview(titleLabel)
-         addSubview(showHideButton)
+        addSubview(titleLabel)
+        addSubview(showHideButton)
+        // Textfield and eye button
+        
+        addSubview(textField)
+        textField.addSubview(showHideButton)
+        textField.delegate = self
+        
+     
        
-    // Textfield and eye button
-         addSubview(textField)
-         textField.addSubview(showHideButton)
-         textField.delegate = self
-    
-    
-      
         addSubview(weakView)
         addSubview(strongView)
         addSubview(mediumView)
         
-    
+  
         addSubview(colorStackView)
      
         // Weak, medium, strong Stackview
@@ -162,7 +171,7 @@ enum PasswordState: String {
      
     // Stregth description label
         addSubview(strengthDescriptionLabel)
-        showHideButton.center = textField.center
+        
      
     // Constraint everything
         NSLayoutConstraint.activate([
@@ -190,13 +199,12 @@ enum PasswordState: String {
         endEditing(true)
            return true
        }
-
+     
     
 }
 
+
 // MARK: - TextField Handling
-
-
 
 
 extension PasswordField: UITextFieldDelegate {
@@ -210,6 +218,7 @@ extension PasswordField: UITextFieldDelegate {
    
         switch newText.count {
         case 0...9:
+        
             strengthDescriptionLabel.text = PasswordState.weak.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.unusedColor
@@ -219,6 +228,7 @@ extension PasswordField: UITextFieldDelegate {
             }
            
         case 10...19:
+        
             strengthDescriptionLabel.text = PasswordState.medium.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor
@@ -227,6 +237,7 @@ extension PasswordField: UITextFieldDelegate {
                     mediumView.performFlare()
             }
         case 20...:
+         
             strengthDescriptionLabel.text = PasswordState.strong.rawValue
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor

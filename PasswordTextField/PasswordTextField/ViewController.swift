@@ -19,15 +19,13 @@ class ViewController: UIViewController {
     }
     
    
-  
+    @IBAction func editChanged(_ sender: PasswordField) {
+    }
+    
     @IBAction func touchUpInside(_ sender: PasswordField) {
-    
-        
+     
     }
     
-    @IBAction func editingDidChanged(_ sender: PasswordField) {
-        print(sender.password)
-    }
     
     @IBAction func textFieldValueChanged(_ sender: PasswordField) {
         
