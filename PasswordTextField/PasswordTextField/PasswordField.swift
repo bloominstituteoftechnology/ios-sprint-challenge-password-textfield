@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
