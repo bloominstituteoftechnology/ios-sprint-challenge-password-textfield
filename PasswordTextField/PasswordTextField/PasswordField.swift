@@ -52,7 +52,6 @@ class PasswordField: UIControl {
     
         
     func setup() {
-   
 
         // Lay out your subviews here
         addSubview(titleLabel)
@@ -63,6 +62,9 @@ class PasswordField: UIControl {
         addSubview(strongView)
         addSubview(strengthDescriptionLabel)
         
+        // Background Color
+        
+        backgroundColor = bgColor
         
         // Turn off maskIntoConstraints
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -97,16 +99,16 @@ class PasswordField: UIControl {
             showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
             
             // Strength description
-            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor),
                 
-            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
                 
             strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
                 
             strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             // Weak View
-            weakView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
                 
             weakView.topAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor),
                
@@ -127,8 +129,9 @@ class PasswordField: UIControl {
             
             // Strong View
             
-            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+           
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+             strongView.topAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor),
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
             
@@ -178,10 +181,6 @@ class PasswordField: UIControl {
     
     
    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -213,20 +212,17 @@ class PasswordField: UIControl {
     
     @objc func hideShowButtonTapped(sender: UIButton) {
         textField.isSecureTextEntry = !textField.isSecureTextEntry
-        if !textField.isSecureTextEntry {
-            let str = textField.text
-            textField.text = nil
-            textField.text = str
         if textField.isSecureTextEntry {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            print("EyeCantSee")
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            print("EyeCanSee")
         }
             
         }
         
     }
-}
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -240,6 +236,7 @@ extension PasswordField: UITextFieldDelegate {
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendActions(for: [.valueChanged])
+        textField.text = ""
         return true
     }
 }
