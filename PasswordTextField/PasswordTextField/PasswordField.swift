@@ -54,10 +54,17 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
-
+    //Set up Text fields + stackViews
+    private var textFieldView: UIView = UIView()
+    private var strengthBarHorizontalView: UIStackView = UIStackView()
+    private var everythingElseStack: UIStackView = UIStackView()
+    
     func setup() {
-        // Lay out your subviews here
-        
+        // Lay out your subviews here - 
+        layer.cornerRadius = 6
+        backgroundColor = bgColor
+        addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
