@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "Too Weak"
+    case medium = "Could be stronger"
+    case strong = "Strong password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -39,17 +46,57 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
         
-        addSubview(titleLabel)
+        // Title Label
+        titleLabel.text = "Enter Password"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        
+        // TextField
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+        textField.borderStyle = .roundedRect
+        textField.textContentType = .password
+        textField.isSecureTextEntry = true
+        textField.placeholder = "Choose a password:"
+        textField.delegate = self
+        addSubview(textField)
+        
+        // Hide Button
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonToggled), for: .touchUpInside)
+        addSubview(showHideButton)
+        
+        // Password Strength Description Label
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        addSubview(strengthDescriptionLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    
+    @objc func showHideButtonToggled() {
+        textField.isSecureTextEntry.toggle()
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
 }
+
+
+
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
