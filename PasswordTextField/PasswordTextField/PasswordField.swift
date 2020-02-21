@@ -84,12 +84,39 @@ class PasswordField: UIControl {
         textField.clearButtonMode = .whileEditing
         textField.isSecureTextEntry = true
         textField.delegate = self
+        
+        // MARK: - Sizing + Spacing
+        textFieldView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        everythingElseStack.alignment = .fill
+        everythingElseStack.distribution = .fill
+        everythingElseStack.axis = .vertical
+        strengthBarHorizontalView.alignment = .center
+        strengthBarHorizontalView.distribution = .fill
+        strengthBarHorizontalView.spacing = standardMargin
 
+        // Stack Views
+        everythingElseStack.spacing = standardMargin
+        [everythingElseStack].forEach {
+            addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        strengthDescriptionLabel.text = "Strength Indicator"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame = CGRect(x: 0, y: 0, width: 50, height: 38)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        showHideButton.addTarget(self, action: #selector(showPassword), for: .touchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc func showPassword() {
     }
 }
 
