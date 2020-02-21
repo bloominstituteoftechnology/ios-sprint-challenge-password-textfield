@@ -8,7 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class PasswordViewController: UIViewController {
+    
+    
+    
+    @IBAction func passwordField(_ sender: PasswordField){
+        
+        
+    }
     
     // For use in the stretch goal
     //
