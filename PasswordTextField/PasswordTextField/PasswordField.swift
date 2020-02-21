@@ -177,11 +177,11 @@ enum PasswordState: String {
 // MARK: - Toggle EYE button
     
     private func updateValue(at touch: UITouch) {
-        let touchPoint = touch.location(in: self)
+        let touchPoint = touch.location(in: showHideButton)
         if showHideButton.frame.contains(touchPoint) {
             showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
             textField.isSecureTextEntry.toggle()
-            sendActions(for: [.touchUpInside,.valueChanged,.allEvents])
+            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
         }
     }
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -193,7 +193,7 @@ enum PasswordState: String {
            let touchPoint = touch.location(in: self)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged])
+            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
            } else {
                sendActions(for: [.touchUpOutside])
            }
@@ -206,7 +206,7 @@ enum PasswordState: String {
            let touchPoint = touch.location(in: self)
         if showHideButton.frame.contains(touchPoint) {
                updateValue(at: touch)
-            sendActions(for: [.touchUpInside,.valueChanged])
+            sendActions(for: [.touchUpInside,.valueChanged,.allEvents,.editingChanged,.touchDown,.touchDragEnter])
            } else {
                sendActions(for: .touchUpOutside)
            }
@@ -219,6 +219,8 @@ enum PasswordState: String {
     
 }
 
+// MARK: - TextField Handling
+
 
 
 
@@ -229,7 +231,7 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = newText
         sendActions(for: .valueChanged)
-        // TODO: send new text to the determine strength method
+        
         switch newText.count {
         case 0...9:
             strengthDescriptionLabel.text = PasswordState.weak.rawValue
