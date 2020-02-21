@@ -46,28 +46,25 @@ class PasswordField: UIControl {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setupViews()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setup()
+        setupViews()
+        setupConstraints()
     }
     
     // MARK: Subview Setup
     
-    func setup() {
+    func setupViews() {
         frame = CGRect(x: 0, y: 0, width: bounds.width, height: 200)
         
         // titleLabel
         titleLabel.text = "Enter Password"
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
-                                        constant: standardMargin).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                            constant: standardMargin).isActive = true
-        
+        // textField
         textField = UITextField(frame: CGRect(x: 0,
                                               y: 30,
                                               width: 250,
@@ -76,76 +73,87 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 1
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.placeholder = "Enter Password"
-        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
-        textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                           constant: standardMargin).isActive = true
-        
-        
         // showHideButton
         showHideButton = UIButton(type: .system)
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
+        showHideButton.setImage(UIImage(named: "eyes-closed"),
+                                for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"),
+                                for: .selected)
+        showHideButton.isEnabled = true
+        // weakView
+        weakView = UIView(frame: CGRect(x: 0, y: 0,
+                                        width: colorViewSize.width,
+                                        height: colorViewSize.height))
+        weakView.backgroundColor = unusedColor
+        addSubview(weakView)
+        // mediumView
+        mediumView = UIView(frame: CGRect(x: 0, y: 0,
+                                          width: colorViewSize.width,
+                                          height: colorViewSize.height))
+        mediumView.backgroundColor = unusedColor
+        addSubview(mediumView)
+        // strongView
+        strongView = UIView(frame: CGRect(x: 0, y: 0,
+                                          width: colorViewSize.width,
+                                          height: colorViewSize.height))
+        strongView.backgroundColor = unusedColor
+        addSubview(strongView)
+        // strengthDescriptionLabel
+        strengthDescriptionLabel = UILabel(frame: CGRect(x: 0, y: 0,
+                                                         width: 40,
+                                                         height: 20))
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.text = "placeholder"
+    }
+    
+    private func setupConstraints(){
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
+                                        constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+                                            constant: standardMargin).isActive = true
+        
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor,
                                                 constant: standardMargin).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
                                                constant: 70).isActive = true
         showHideButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         showHideButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        showHideButton.setImage(UIImage(named: "eyes-closed"),
-                                for: .normal)
-        showHideButton.setImage(UIImage(named: "eyes-open"),
-                                for: .selected)
-        showHideButton.isEnabled = true
         
-        // weakView
-        weakView = UIView(frame: CGRect(x: 0, y: 0,
-                                        width: colorViewSize.width,
-                                        height: colorViewSize.height))
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+                                           constant: standardMargin).isActive = true
+        
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(weakView)
-        weakView.backgroundColor = unusedColor
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                       constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
                                           constant: standardMargin).isActive  = true
         
-        // mediumView
-        mediumView = UIView(frame: CGRect(x: 0, y: 0,
-                                          width: colorViewSize.width,
-                                          height: colorViewSize.height))
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(mediumView)
-        mediumView.backgroundColor = unusedColor
         mediumView.topAnchor.constraint(equalTo: weakView.topAnchor).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor,
                                             constant: standardMargin).isActive = true
         
-        // strongView
-        strongView = UIView(frame: CGRect(x: 0, y: 0,
-                                          width: colorViewSize.width,
-                                          height: colorViewSize.height))
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(strongView)
-        strongView.backgroundColor = unusedColor
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor,
-                                      constant: standardMargin).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                        constant: standardMargin).isActive = true
         strongView.leadingAnchor.constraint(equalToSystemSpacingAfter: mediumView.trailingAnchor,
                                             multiplier: standardMargin).isActive = true
         
-        // strengthDescriptionLabel
-        strengthDescriptionLabel = UILabel(frame: CGRect(x: 0, y: 0,
-                                                         width: 40,
-                                                         height: 20))
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(strengthDescriptionLabel)
-        strengthDescriptionLabel.text = "placeholder"
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor,
                                                           constant: standardMargin).isActive = true
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                                       constant: standardMargin).isActive = true
-        
-        
     }
+    
+    
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
