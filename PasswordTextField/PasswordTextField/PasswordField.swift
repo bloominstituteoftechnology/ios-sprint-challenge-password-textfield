@@ -60,15 +60,33 @@ class PasswordField: UIControl {
     private var everythingElseStack: UIStackView = UIStackView()
     
     func setup() {
-        // Lay out your subviews here - 
+        // Lay out your subviews here -
         layer.cornerRadius = 6
         backgroundColor = bgColor
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
+        
+    // MARK: - Label Setup
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+    // MARK: - TextField Setup
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 8
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+        textField.rightView = showHideButton
+        textField.clearButtonMode = .whileEditing
+        textField.isSecureTextEntry = true
+        textField.delegate = self
 
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
