@@ -11,17 +11,26 @@ import UIKit
 class ViewController: UIViewController {
     
     let passwordField = PasswordField()
-    
-       @IBOutlet weak var password: PasswordField!
+    @IBOutlet weak var password: PasswordField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        password.backgroundColor = .green
+        passwordField.backgroundColor = .gray
        
     }
     
- 
+   
+    @IBAction func touchUpInside(_ sender: PasswordField) {
+        
+    }
     
+    @IBAction func editingDidChanged(_ sender: PasswordField) {
+        
+    }
+    
+    @IBAction func textFieldValueChanged(_ sender: PasswordField) {
+          print(sender.password)
+    }
     
     // For use in the stretch goal
     //

@@ -8,9 +8,15 @@
 
 import UIKit
 
+enum PasswordState: String {
+    case weak
+    case medium
+    case strong
+    
+}
 
 
-class PasswordField: UIControl {
+ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -19,9 +25,10 @@ class PasswordField: UIControl {
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
-    
   
-    private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+    
+    
+    //MARK: - Initialization
     
    override init(frame: CGRect) {
          super.init(frame: frame)
@@ -33,12 +40,13 @@ class PasswordField: UIControl {
          setup()
      }
     
- 
+ //MARK: - Properties
+    
     private var titleLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.text = "ENTER PASSWORD"
-        lb.font = .italicSystemFont(ofSize: 16)
+        lb.font = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
         return lb
     }()
    
@@ -59,7 +67,7 @@ class PasswordField: UIControl {
     private var showHideButton: UIButton = {
         let eyeButton = UIButton()
         eyeButton.translatesAutoresizingMaskIntoConstraints = false
-        eyeButton.setImage(#imageLiteral(resourceName: "eyes-open") , for: .normal)
+        eyeButton.setImage(#imageLiteral(resourceName: "eyes-closed") , for: .normal)
         return eyeButton
     }()
     
@@ -105,9 +113,10 @@ class PasswordField: UIControl {
         return stackView
     }()
     
-   
+   // MARK: - Setup Subviews Function
     
-    func setup() {
+    
+  fileprivate func setup() {
         // Lay out your subviews here
       
         
@@ -153,17 +162,53 @@ class PasswordField: UIControl {
         ])
     
     }
-  
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        <#code#>
+    }
+    
+
+    private func updateValue(at touch: UITouch) {
+        let touchPoint = touch.location(in: textField)
+        if showHideButton.bounds.contains(touchPoint) {
+            showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+            sendActions(for: [.touchUpInside,.valueChanged])
+        }
+    }
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+             updateValue(at: touch)
+         
+           return true
+       }
+       override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+           let touchPoint = touch.location(in: textField)
+        if showHideButton.frame.contains(touchPoint) {
+               updateValue(at: touch)
+            sendActions(for: [.touchUpInside,.valueChanged])
+           } else {
+               sendActions(for: [.touchUpOutside])
+           }
+           return true
+       }
+       override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+            defer { super.endTracking(touch, with: event) }
+           guard let touch = touch else { return }
+           
+           let touchPoint = touch.location(in: textField)
+        if showHideButton.frame.contains(touchPoint) {
+               updateValue(at: touch)
+            sendActions(for: [.touchUpInside,.valueChanged])
+           } else {
+               sendActions(for: .touchUpOutside)
+           }
+       
+           
+       }
+       override func cancelTracking(with event: UIEvent?) {
+           sendActions(for: [.touchCancel])
+       }
+    
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -172,8 +217,37 @@ extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
-//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        switch newText.count {
+        case 0...9:
+            strengthDescriptionLabel.text = "Weak"
+            weakView.performFlare()
+             sendActions(for: .valueChanged)
+        case 10...19:
+            strengthDescriptionLabel.text = "Medium"
+            mediumView.performFlare()
+             sendActions(for: .valueChanged)
+        case 20...:
+            strengthDescriptionLabel.text = "Strong"
+            strongView.performFlare()
+             sendActions(for: .valueChanged)
+        default:
+            break
+        }
+      
         return true
     }
+}
+
+extension UIView {
+  
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
 }
