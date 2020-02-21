@@ -99,14 +99,6 @@ class PasswordField: UIControl {
             strongView.widthAnchor.constraint(equalToConstant: widthBy6),
             strongView.topAnchor.constraint(equalTo: weakView.topAnchor),
             strongView.bottomAnchor.constraint(equalTo: weakView.bottomAnchor),
-
-            // These constraints were causing the problems. Removed them from this section and replaced with top and bottom anchor constraints.
-            //            weakView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
-            //            weakView.heightAnchor.constraint(equalToConstant: 4.0),
-            //            mediumView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
-            //            mediumView.heightAnchor.constraint(equalTo: weakView.heightAnchor),
-            //            strongView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
-            //            strongView.heightAnchor.constraint(equalTo: weakView.heightAnchor),
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
             strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
@@ -135,13 +127,13 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
                 
     }
-
+    //adds custom labels etc, and makes this page the textfield delegate of the view.
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         textField.delegate = self
         setup()
     }
-    
+    //function to run the eye icon and present the text as secure or not.
     @objc private func showHideTapped() {
         if passwordHidden == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
@@ -152,7 +144,7 @@ class PasswordField: UIControl {
         }
         passwordHidden.toggle()
     }
-    
+    //checks the strength of the password dependant on the amount of letters.
     func strengthOf(_ password: String) -> PasswordStrength {
         var strength: PasswordStrength
         
@@ -182,7 +174,7 @@ class PasswordField: UIControl {
         
         return strength
     }
-    
+    //flare animation
     func flare(_ level: PasswordStrength) {
         var view: UIView
         
@@ -208,22 +200,16 @@ class PasswordField: UIControl {
     }
 
 }
-
+//replaces, changes, and resets pasword strings and user text.
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         passwordStrength = strengthOf(newText)
         return true
     }
-    
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        print("begin editing")
-//        return true
-//    }
-    
+ //this is putting the user input as the password instance, and resigning the textfiled when return is hit.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         password = textField.text ?? ""
         sendActions(for: [.valueChanged])
