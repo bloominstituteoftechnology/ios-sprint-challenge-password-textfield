@@ -11,12 +11,16 @@ import UIKit
 class ViewController: UIViewController {
     
     let passwordField = PasswordField()
+    
+       @IBOutlet weak var password: PasswordField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         password.backgroundColor = .green
+       
     }
     
-    @IBOutlet weak var password: PasswordField!
+ 
     
     
     // For use in the stretch goal

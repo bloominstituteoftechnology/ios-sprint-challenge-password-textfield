@@ -9,7 +9,7 @@
 import UIKit
 
 
-@IBDesignable
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -55,14 +55,7 @@ class PasswordField: UIControl {
         return textField
     }()
     
-   private func createView(viewColor : UIColor) -> UIView {
-      let view = UIView()
-    view.backgroundColor = viewColor
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-    }
-    
-    
+  
     private var showHideButton: UIButton = {
         let eyeButton = UIButton()
         eyeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -70,59 +63,95 @@ class PasswordField: UIControl {
         return eyeButton
     }()
     
-    private var weakView: UIView = UIView()
-    private var mediumView: UIView = UIView()
-    private var strongView: UIView = UIView()
+    
+    private var weakView: UIView = {
+       let weak = UIView()
+        weak.translatesAutoresizingMaskIntoConstraints = false
+        weak.backgroundColor = ColorHelper.weakColor
+         weak.frame.size = CGSize(width: 60.0, height: 5.0)
+        return weak
+    }()
+    private var mediumView: UIView = {
+        let medium = UIView()
+        medium.translatesAutoresizingMaskIntoConstraints = false
+        medium.backgroundColor = ColorHelper.mediumColor
+        medium.frame.size = CGSize(width: 60.0, height: 5.0)
+        return medium
+    }()
+    private var strongView: UIView = {
+       let strong = UIView()
+        strong.translatesAutoresizingMaskIntoConstraints = false
+        strong.backgroundColor = ColorHelper.strongColor
+         strong.frame.size = CGSize(width: 60.0, height: 5.0)
+        return strong
+    }()
     
     private var strengthDescriptionLabel: UILabel = {
        let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "Password is too weak"
+        lb.text = "Strong Password"
+        lb.numberOfLines = 0
+        lb.textAlignment = .left
         return lb
     }()
     
-    var stateStackView : UIStackView = {
+    private var statusStackView : UIStackView = {
        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.alignment = .fill
+          stackView.alignment = .fill
+        stackView.spacing = 4
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
     }()
     
+   
+    
     func setup() {
         // Lay out your subviews here
-       let weak = createView(viewColor: ColorHelper.weakColor)
-       let medium =  createView(viewColor: ColorHelper.mediumColor)
-        let strong = createView(viewColor: ColorHelper.strongColor)
-        
-     
-        backgroundColor = .gray
+      
         
         addSubview(titleLabel)
+        
          addSubview(textField)
          textField.addSubview(showHideButton)
-         addSubview(stateStackView)
+     
         
-        stateStackView.addArrangedSubview(weak)
-        stateStackView.addArrangedSubview(medium)
-        stateStackView.addArrangedSubview(strong)
+        addSubview(weakView)
+        addSubview(strongView)
+        addSubview(mediumView)
         
+    
+        addSubview(statusStackView)
+     
+        
+        statusStackView.addArrangedSubview(weakView)
+        statusStackView.addArrangedSubview(mediumView)
+        statusStackView.addArrangedSubview(strongView)
+     
+    
+        addSubview(strengthDescriptionLabel)
         showHideButton.center = textField.center
-        
+     
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-         
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -16),
-           
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
             
-            stateStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stateStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -16),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            
+            statusStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            statusStackView.widthAnchor.constraint(equalToConstant: 200),
+            statusStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
+            statusStackView.heightAnchor.constraint(equalToConstant: 3),
+            
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: statusStackView.trailingAnchor, constant: 30),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: statusStackView.bottomAnchor),
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10)
         ])
-           
+    
     }
   
 }
