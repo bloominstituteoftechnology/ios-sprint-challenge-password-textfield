@@ -39,11 +39,79 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
+   
         
+        // Lay out your subviews here
         addSubview(titleLabel)
+        addSubview(textField)
+        addSubview(showHideButton)
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        addSubview(strengthDescriptionLabel)
+        
+        
+        // Turn off maskIntoConstraints
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constrain Values
+        NSLayoutConstraint.activate([
+            
+            // Title Label
+            
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
+            
+            // Text Field
+            
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            
+            // Show Hide Button
+            
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
+            showHideButton.heightAnchor.constraint(equalTo: textField.heightAnchor),
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor)
+            
+            // Strength description
+            
+            
+            
+            
+            
+        ])
+        
+        // Setup Labels & Board objects
+                   
+            // Title Label
+            titleLabel.text = "Enter Password ┴┬┴┤( ͡° ͜ʖ├┬┴┬"
+            titleLabel.font = labelFont
+            titleLabel.textColor = labelTextColor
+                   
+            // Text Field
+            textField.placeholder = "ENTER PASSWORD"
+            titleLabel.font = labelFont
+            textField.borderStyle = .bezel
+        textField.layer.borderColor! = UIColor.blue
+        textField.isEnabled = true
+        
+               
+               // Shi
+        
     }
+    
+    
+   
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
