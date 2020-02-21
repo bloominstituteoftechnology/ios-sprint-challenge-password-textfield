@@ -55,7 +55,7 @@ enum PasswordState: String {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .bezel
         textField.layer.borderWidth = 5.0
-        textField.placeholder = "Enter password"
+        textField.placeholder = "Enter password here..."
         textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
         textField.layer.borderColor = ColorHelper.textFieldBorderColor.cgColor
@@ -99,6 +99,7 @@ enum PasswordState: String {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.text = "Weak"
         lb.numberOfLines = 0
+        lb.font = UIFont.boldSystemFont(ofSize: 15)
         lb.textAlignment = .left
         return lb
     }()
@@ -164,16 +165,10 @@ enum PasswordState: String {
         ])
     
     }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        //
-        print(textField.text)
-    }
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print(textField.text)
-        return true
-    }
-    
 
+    
+// MARK: - Toggle eye button
+    
     private func updateValue(at touch: UITouch) {
         let touchPoint = touch.location(in: textField)
         if showHideButton.bounds.contains(touchPoint) {
@@ -225,6 +220,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        password = newText
         // TODO: send new text to the determine strength method
         switch newText.count {
         case 0...9:
@@ -232,21 +228,30 @@ extension PasswordField: UITextFieldDelegate {
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.unusedColor
             strongView.backgroundColor = ColorHelper.unusedColor
-            weakView.performFlare()
+            if newText.count == 1 {
+                 weakView.performFlare()
+            }
+           
             sendActions(for: .valueChanged)
         case 10...19:
             strengthDescriptionLabel.text = "Could be Stronger"
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor
             strongView.backgroundColor = ColorHelper.unusedColor
-            mediumView.performFlare()
+            if newText.count == 10 {
+                    mediumView.performFlare()
+            }
+        
             sendActions(for: .valueChanged)
         case 20...:
-            strengthDescriptionLabel.text = "Strong"
+            strengthDescriptionLabel.text = "Very Strong"
             weakView.backgroundColor = ColorHelper.weakColor
             mediumView.backgroundColor = ColorHelper.mediumColor
             strongView.backgroundColor = ColorHelper.strongColor
-            strongView.performFlare()
+            if newText.count == 21 {
+                  strongView.performFlare()
+            }
+          
             sendActions(for: .valueChanged)
         default:
             break
