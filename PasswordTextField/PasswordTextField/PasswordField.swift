@@ -38,6 +38,12 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    var isSecureEntry: Bool = true {
+        didSet {
+            textField.isSecureTextEntry = isSecureEntry
+        }
+    }
+    
     
     func setup() {
         // Lay out your subviews here
@@ -84,7 +90,7 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         textField.backgroundColor = .clear
-        
+        textField.delegate = self
         
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         textField.rightViewMode = .always
@@ -134,7 +140,31 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
         strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
-
+    }
+    
+    private func indicatePasswordStrength(password: String) {
+        switch password.count {
+            case ..<10:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Too Weak"
+            case 10...19:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = unusedColor
+                strengthDescriptionLabel.text = "Could be stronger"
+            default:
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = strongColor
+                strengthDescriptionLabel.text = "Stronger passwords"
+                
+        }
+    }
+    
+    private func updateForStatus(status: String) {
+        
     }
     
 }
@@ -147,6 +177,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        indicatePasswordStrength(password: newText)
         return true
     }
 }
