@@ -41,13 +41,17 @@ class PasswordField: UIControl {
     var isSecureEntry: Bool = true {
         didSet {
             textField.isSecureTextEntry = isSecureEntry
+            if isSecureEntry {
+                showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            } else {
+               showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            }
         }
     }
     
     
     func setup() {
         // Lay out your subviews here
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = bgColor
         configureTitleLabel()
         configureTextField()
@@ -90,9 +94,11 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         textField.backgroundColor = .clear
+        textField.isSecureTextEntry = true
         textField.delegate = self
         
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showPasswordTapped), for: .touchUpInside)
         textField.rightViewMode = .always
         textField.rightView = showHideButton
         
@@ -158,13 +164,17 @@ class PasswordField: UIControl {
                 weakView.backgroundColor = weakColor
                 mediumView.backgroundColor = mediumColor
                 strongView.backgroundColor = strongColor
-                strengthDescriptionLabel.text = "Stronger passwords"
+                strengthDescriptionLabel.text = "Strong password"
                 
         }
     }
     
     private func updateForStatus(status: String) {
         
+    }
+    
+    @objc private func showPasswordTapped() {
+        isSecureEntry.toggle()
     }
     
 }
