@@ -156,6 +156,7 @@ class PasswordField: UIControl {
         }
     }
     
+    //MARK: - Password Strength Functions
     func passwordStrength(for password: String) {
         var strength: PasswordStrength
         
@@ -195,6 +196,17 @@ class PasswordField: UIControl {
             strongView.performFlare()
         }
     }
+    
+    func updatePassword() {
+        guard let password = textField.text else {
+            self.password = ""
+            return
+        }
+        
+        self.password = password
+        textField.resignFirstResponder()
+        sendActions(for: [.valueChanged])
+    }
 }
 
 //MARK: - Extensions
@@ -204,6 +216,11 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         passwordStrength(for: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        updatePassword()
         return true
     }
 }
