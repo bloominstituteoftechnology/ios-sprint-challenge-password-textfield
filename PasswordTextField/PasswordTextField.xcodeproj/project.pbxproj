@@ -7,19 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		72E8C92A24003C4E001144C9 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8C92924003C4E001144C9 /* PasswordField.swift */; };
-		72E8C92C24003C8F001144C9 /* PasswordStrengthIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E8C92B24003C8F001144C9 /* PasswordStrengthIndicator.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
 		CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D022C2C576008F9894 /* Assets.xcassets */; };
 		CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */; };
-		CE0883DC22C3DAAB008F9894 /* PasswordFieldgiven.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordFieldgiven.swift */; };
+		CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		72E8C92924003C4E001144C9 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
-		72E8C92B24003C8F001144C9 /* PasswordStrengthIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIndicator.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -27,7 +23,7 @@
 		CE0883D022C2C576008F9894 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0883D322C2C576008F9894 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0883D522C2C576008F9894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE0883DB22C3DAAB008F9894 /* PasswordFieldgiven.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordFieldgiven.swift; sourceTree = "<group>"; };
+		CE0883DB22C3DAAB008F9894 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,30 +37,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		72E8C92424003B33001144C9 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				72E8C92B24003C8F001144C9 /* PasswordStrengthIndicator.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		72E8C92524003B3E001144C9 /* Custom Control */ = {
-			isa = PBXGroup;
-			children = (
-				72E8C92924003C4E001144C9 /* PasswordField.swift */,
-			);
-			name = "Custom Control";
-			sourceTree = "<group>";
-		};
-		72E8C92D24003FDC001144C9 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
 		CE0883BD22C2C575008F9894 = {
 			isa = PBXGroup;
 			children = (
@@ -84,11 +56,9 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				72E8C92D24003FDC001144C9 /* ViewController */,
-				72E8C92524003B3E001144C9 /* Custom Control */,
-				72E8C92424003B33001144C9 /* Views */,
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordFieldgiven.swift */,
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
 				CE0883CD22C2C575008F9894 /* Main.storyboard */,
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
@@ -169,9 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
-				CE0883DC22C3DAAB008F9894 /* PasswordFieldgiven.swift in Sources */,
-				72E8C92A24003C4E001144C9 /* PasswordField.swift in Sources */,
-				72E8C92C24003C8F001144C9 /* PasswordStrengthIndicator.swift in Sources */,
+				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
