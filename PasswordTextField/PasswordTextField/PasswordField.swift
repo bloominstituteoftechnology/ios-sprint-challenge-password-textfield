@@ -55,10 +55,11 @@ class PasswordField: UIControl {
         }
     }
     
-    @objc func passwordEntered(_ sender: UITextField){
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        print("\(password)")
+        print(textField.text)
         print(strengthDescriptionLabel.text)
+        return true
     }
     
     // MARK: - View Lifecycle
@@ -82,9 +83,8 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.rightView = showHideButton
         textField.rightViewMode = .always
-        textField.becomeFirstResponder()
         textField.addTarget(self,
-                            action: #selector(passwordEntered(_:)),
+                            action: #selector(textFieldShouldReturn(_:)),
                             for: .editingDidEnd)
         addSubview(textField.rightView!)
         addSubview(textField)
