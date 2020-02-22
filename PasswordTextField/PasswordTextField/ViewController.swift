@@ -10,6 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        
+    }
+    
+    @IBAction func customControl(_ sender: PasswordField){
+        print(sender.password)
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
