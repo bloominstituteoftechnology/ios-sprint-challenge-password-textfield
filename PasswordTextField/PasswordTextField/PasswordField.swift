@@ -102,7 +102,7 @@ class PasswordField: UIControl {
         textField.rightViewMode = .always
         
         // MARK: - Strength indicators stack view
-        var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
+        let indicatorsArray: [UIView] = [weakView, mediumView, strongView]
         let stackView = UIStackView()
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
@@ -220,7 +220,7 @@ class PasswordField: UIControl {
     }
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        let touchPoint = touch.location(in: textField)
+        let _ = touch.location(in: textField)
         sendActions(for: [.touchDown])
         return true
 
