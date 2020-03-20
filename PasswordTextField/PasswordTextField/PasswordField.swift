@@ -62,6 +62,10 @@ class PasswordField: UIControl {
     private lazy var strengthStack = UIStackView(arrangedSubviews: [weakView, mediumView, strongView, strengthDescriptionLabel])
     private lazy var vStack = UIStackView(arrangedSubviews: [titleLabel, textField, strengthStack])
     
+    
+    // MARK: - Setup
+    
+    
     func setup() {
         setupVStack()
         setupTitleLabel()
@@ -104,6 +108,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = .clear
         textField.isSecureTextEntry = true
+        textField.delegate = self
         
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
     }
@@ -151,6 +156,19 @@ class PasswordField: UIControl {
     }
     
     
+    // MARK: - Helper Functions
+    
+    private func determineStrength(of password: String) {
+        switch password.count {
+        case 0...5:
+            print("Too weak")
+        case 6...8:
+            print("Could be stronger")
+        default:
+            print("Strong password")
+        }
+    }
+    
     // MARK: - Actions
     
     @objc func showHideButtonTapped() {
@@ -167,7 +185,8 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        
+        determineStrength(of: newText)
         return true
     }
 }
