@@ -23,6 +23,7 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private (set) var passwordStrength: PasswordStrength = .unknown
+    private       var privarePasswordStrength: PasswordStrength = .unknown
 
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -203,7 +204,6 @@ class PasswordField: UIControl {
 
     private func updateStrengthMeter(password: String?, finalize: Bool = false) {
         let password = password ?? ""
-        var strength = PasswordStrength.unknown
 
         switch password.count {
         case 20...Int.max: // Strong
@@ -211,13 +211,19 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong Password"
-            strength = .strong
+            if privarePasswordStrength != .strong {
+                strongView.performPulse()
+                privarePasswordStrength = .strong
+            }
         case 10...19: // Medium
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could Be Stronger"
-            strength = .medium
+            if privarePasswordStrength != .medium {
+                mediumView.performPulse()
+                privarePasswordStrength = .medium
+            }
         case 0...9: // Weak
             fallthrough
         default:
@@ -225,12 +231,16 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too Weak"
-            strength = .weak
+            if privarePasswordStrength != .weak,
+               privarePasswordStrength != .unknown { // Don't want initial pulse
+                weakView.performPulse()
+                privarePasswordStrength = .weak
+            }
         }
         
         if finalize {
             self.password = password
-            self.passwordStrength = strength
+            self.passwordStrength = privarePasswordStrength
         }
     }
 
@@ -252,5 +262,17 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         return true
+    }
+}
+
+extension UIView {
+    // "indicator should briefly increase in vertical size, and then return to its original size" animation sequence
+    func performPulse() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.0, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
