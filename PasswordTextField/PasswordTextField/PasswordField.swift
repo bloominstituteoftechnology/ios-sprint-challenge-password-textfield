@@ -150,7 +150,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
     }
@@ -168,11 +168,18 @@ class PasswordField: UIControl {
             strength = .strong
         }
         
-        self.password = password
+        updateStrengthViews()
     }
     
     private func updateStrengthViews() {
-        
+        switch strength {
+        case .weak:
+            strengthDescriptionLabel.text = "Too weak"
+        case .medium:
+            strengthDescriptionLabel.text = "Could be stronger"
+        case .strong:
+            strengthDescriptionLabel.text = "Strong password"
+        }
     }
     
     // MARK: - Actions
@@ -193,6 +200,13 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         
         determineStrength(of: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let passwordText = textField.text else { return false }
+        password = passwordText
+        textField.resignFirstResponder()
         return true
     }
 }
