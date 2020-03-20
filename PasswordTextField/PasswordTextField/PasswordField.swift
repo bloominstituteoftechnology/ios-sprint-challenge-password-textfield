@@ -97,45 +97,46 @@ class PasswordField: UIControl {
         
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-    
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+//        Text Field
         textFieldBorderLine.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         textFieldBorderLine.heightAnchor.constraint(equalToConstant: 40).isActive = true
         textFieldBorderLine.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 2).isActive = true
         textFieldBorderLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textFieldBorderLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        
+//        TextField typing constraints
         textField.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
         textField.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor, constant: 5).isActive = true
         textField.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor, constant: -5).isActive = true
         textField.heightAnchor.constraint(equalTo: textFieldBorderLine.heightAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 11).isActive = true
+//        ShowHideButton constraints
         showHideButton.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor).isActive = true
         showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor).isActive = true
+        
+// Three indicator constraints
         weakView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
         weakView.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: 45).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 5).isActive = true
+        
         mediumView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         mediumView.widthAnchor.constraint(equalToConstant: 45).isActive = true
         mediumView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        
         strongView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 5).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        
+//        Strength discription constraints
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 5).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 10).isActive = true
-       
         
-        
-        
-        
-        
-        
-        
-        
-
         
         
     }
@@ -145,15 +146,64 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+  
     }
     
     @objc func changeHideButton() {
+        if showHideButton.isSelected {
         if textField.isSecureTextEntry == true {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
+        }
     }
+
+    
+    func threeIndicators(three cases: StrengthPasswordCondtion) {
+        let threeCases = cases
+        strengthDescriptionLabel.text = threeCases.rawValue
+          guard let textFiedCount = textField.text?.count else { return }
+       
+        switch threeCases {
+        case .tooWeak:
+            
+            weakView.layer.backgroundColor = weakColor.cgColor
+                           mediumView.layer.backgroundColor = unusedColor.cgColor
+                           strongView.layer.backgroundColor = unusedColor.cgColor
+            
+        case .medium:
+            weakView.layer.backgroundColor = weakColor.cgColor
+                          mediumView.layer.backgroundColor = mediumColor.cgColor
+                          strongView.layer.backgroundColor = unusedColor.cgColor
+            
+        case .strong:
+            weakView.layer.backgroundColor = weakColor.cgColor
+            mediumView.layer.backgroundColor = mediumColor.cgColor
+            strongView.layer.backgroundColor = strongColor.cgColor
+        }
+        
+    }
+    
+    
+    func strengthCases() {
+        var strength: StrengthPasswordCondtion
+        guard let textFiedCount = textField.text?.count else { return }
+        switch textFiedCount{
+        case 0...9:
+            strength = StrengthPasswordCondtion.tooWeak
+        case 10...19:
+            strength = StrengthPasswordCondtion.medium
+        default:
+            strength = StrengthPasswordCondtion.strong
+        }
+        if condition != strength {
+            threeIndicators(three: strength)
+        }
+        
+    }
+    
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
