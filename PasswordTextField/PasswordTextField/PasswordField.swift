@@ -62,41 +62,30 @@ class PasswordField: UIControl {
         ])
         
         // MARK: - Textfield
-        textContainer.translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(textContainer)
 //
         textField.borderStyle = .roundedRect
         textField.backgroundColor = bgColor
-//        textContainer.layer.borderColor = textFieldBorderColor.cgColor
-//        textContainer.layer.borderWidth = 2
-//        textContainer.layer.cornerRadius = 5
-//
-//        textField.font = UIFont.systemFont(ofSize: 15)
-//        textField.minimumFontSize = 15
-//        textField.autocorrectionType = UITextAutocorrectionType.no
-//        textField.clearButtonMode = .never
-//        textField.keyboardType = UIKeyboardType.default
-//        textField.returnKeyType = UIReturnKeyType.default
-//        textField.contentVerticalAlignment = .center
-////        textField.textAlignment = .center
-//        textField.textColor = .black
-//        textField.placeholder = "Is this working"
-//        textField.textContentType = .password
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 5
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.minimumFontSize = 15
+        textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.clearButtonMode = .never
+        textField.keyboardType = UIKeyboardType.default
+        textField.returnKeyType = UIReturnKeyType.default
+        textField.contentVerticalAlignment = .center
+        textField.textColor = .black
+        textField.placeholder = "Is this working"
+        textField.textContentType = .password
         textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.isUserInteractionEnabled = true
+        textField.isUserInteractionEnabled = true
         textField.isEnabled = true
         textField.delegate = self
-//        textField.allowsEditingTextAttributes = true
-//        textField.text = "testing"
-        
-//        addSubview(textContainer)
+        textField.allowsEditingTextAttributes = true
+        textField.text = "testing"
         addSubview(textField)
-//        textContainer.addSubview(textField)
         NSLayoutConstraint.activate([
-//            textContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-//            textContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-//            textContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
-//            textContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
@@ -147,7 +136,7 @@ class PasswordField: UIControl {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
             stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
-            stackView.heightAnchor.constraint(equalTo: strengthDescriptionLabel.heightAnchor)
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin)
         ])
     }
     
@@ -168,7 +157,43 @@ class PasswordField: UIControl {
 //    }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 0, height: 82)
+        return CGSize(width: 0, height: 100.0)
+    }
+    
+    private enum Strength {
+        case weak
+        case medium
+        case strong
+    }
+    
+    func determineStrength(_ password: String) {
+        var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
+        var strength: Strength = .weak
+        print(password.count)
+        if password.count <= 9 {
+            strength = .weak
+        } else if password.count > 9 && password.count <= 19 {
+            strength = .medium
+        } else if password.count > 19 {
+            strength = .strong
+        }
+        
+        switch strength {
+        case .weak:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        case .medium:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        case .strong:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            
+        }
+        
     }
     
 }
@@ -190,6 +215,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determineStrength(newText)
         return true
     }
 }
