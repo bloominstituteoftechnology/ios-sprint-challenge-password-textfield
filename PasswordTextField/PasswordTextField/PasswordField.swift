@@ -88,9 +88,10 @@ class PasswordField: UIControl {
         
         
         
-//        strengthDescriptionLabel.text = condition.rawValue
-//        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.text = condition.rawValue
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.font = .systemFont(ofSize: 12)
+        addSubview(strengthDescriptionLabel)
         
 //        Constraint Time!
         
@@ -123,6 +124,8 @@ class PasswordField: UIControl {
         strongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 5).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 5).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 10).isActive = true
        
         
         
