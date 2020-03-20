@@ -41,7 +41,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        backgroundColor = .clear
+        
         
         // title
         addSubview(titleLabel)
@@ -68,6 +68,7 @@ class PasswordField: UIControl {
 //        textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.isSecureTextEntry = true
+        textField.backgroundColor = bgColor
         
         // show/hide button
         addSubview(showHideButton)
@@ -82,10 +83,21 @@ class PasswordField: UIControl {
 //        showHideButton.setImage(noShowImage, for: .disabled)
         
         // weak view
-        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+//        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+        let offset = CGFloat(8.0)
+        let weakViewOrigin = CGPoint(x: offset, y: 100.0)
+        weakView.frame = CGRect(origin: weakViewOrigin, size: colorViewSize)
+        weakView.backgroundColor = weakColor
         
         // medium view
-        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = true
+//        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6.0).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        mediumView.backgroundColor = mediumColor
         
         // strong view
         
@@ -93,11 +105,46 @@ class PasswordField: UIControl {
         //strength label
         
         
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    func updateShowHideButton(at touch: UITouch) {
+        let touchPoint = touch.location(in: showHideButton)
+        
+        
+    }
+// tracking functions or toggle option for button??
+    // Start tracking touch in control
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+    
+      return true
+    }
+    
+    // End tracking touch in control
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+      guard let touch = touch else {
+        NSLog("Unable to track touch")
+        return
+      }
+      
+      let touchPoint = touch.location(in: showHideButton)
+      if bounds.contains(touchPoint) {
+        
+        sendActions(for: .touchUpInside)
+      } else {
+        sendActions(for: .touchUpOutside)
+      }
+    }
+    
+    // Cancel tracking
+    override func cancelTracking(with event: UIEvent?) {
+      sendActions(for: .touchCancel)
     }
 }
 
