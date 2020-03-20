@@ -44,7 +44,7 @@ class PasswordField: UIControl {
 
     private let stackView = UIStackView()
     private let strengthFudge: CGFloat = 4
-    private let passwordVisible = false
+    private var passwordVisible = false
 
     func setup() {
         // Lay out your subviews here
@@ -70,15 +70,12 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.isSecureTextEntry = true
-//        textField.addTarget(self, action: #selector(keyPress), for: .valueChanged)
         textField.addTarget(self, action: #selector(keyPress(_:)), for: .editingChanged)
 
         // TODO: ? textFieldContainerHeight seems ignored here vs. textField.heightAnchor later
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
         textField.leftView = paddingView
         textField.leftViewMode = .always
-        
-        textField.text = "See me?" // FIXME: Remove before flight
 
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                        constant: standardMargin).isActive = true
@@ -89,10 +86,10 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
 
         // ---- showHideButton ---------------------------------------
-        // FIXME: Implement
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        
+        showHideButton.addTarget(self, action: #selector(revealButton(_:)), for: .touchUpInside)
+
         if let image = UIImage(named: "eyes-closed") {
             showHideButton.setImage(image, for: .normal)
             
@@ -174,6 +171,16 @@ class PasswordField: UIControl {
     @objc func keyPress(_ sender: UITextField) {
         if let text = sender.text {
             updateStrengthMeter(letterCount: text.count)
+        }
+    }
+    
+    @objc func buttonPress(_ sender: UIButton) {
+        passwordVisible.toggle()
+        
+        if passwordVisible {
+            
+        } else { // Hide
+            
         }
     }
     
