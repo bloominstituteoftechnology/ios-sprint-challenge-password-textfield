@@ -74,6 +74,7 @@ class PasswordField: UIControl {
         textField.textContentType = .password
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
+        textField.isEnabled = true
         textField.delegate = self
         addSubview(textField)
         NSLayoutConstraint.activate([
@@ -87,11 +88,11 @@ class PasswordField: UIControl {
         // MARK: - Hide button
         textField.rightView = showHideButton
         textField.rightViewMode = .always
-        showHideButton.isEnabled = false
+        showHideButton.isEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .disabled)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
-        
     }
     
     
