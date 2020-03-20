@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum Strength: String {
+    case weak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -76,28 +82,41 @@ class PasswordField: UIControl {
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         addSubview(mediumView)
         mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         addSubview(strongView)
         strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
+        strengthDescriptionLabel.frame = CGRect(x: 0.0, y: 0.0, width: 80.0, height: 20.0)
+        strengthDescriptionLabel.text = Strength.weak.rawValue
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 8.0, weight: .semibold)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strengthDescriptionLabel)
+        
         let stackView = UIStackView()
-        stackView.axis = NSLayoutConstraint.Axis.horizontal
-        stackView.distribution = UIStackView.Distribution.equalSpacing
-        stackView.alignment = UIStackView.Alignment.center
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
         stackView.spacing = 1.0
 
         stackView.addArrangedSubview(weakView)
         stackView.addArrangedSubview(mediumView)
         stackView.addArrangedSubview(strongView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
+        addSubview(stackView)
+ /*
+        let doubleStack = UIStackView()
+        doubleStack.axis = .horizontal
+        doubleStack.distribution = .equalSpacing
+        doubleStack.alignment = .center
+        doubleStack.spacing = 10.0
+        addSubview(doubleStack)
+  */
         
         NSLayoutConstraint.activate([
             bgView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -105,18 +124,35 @@ class PasswordField: UIControl {
             bgView.topAnchor.constraint(equalTo: self.topAnchor),
             bgView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             bgView.heightAnchor.constraint(equalToConstant: 109),
+            
         titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
         titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
         titleLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+        
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
         textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
         textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
         
-        stackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
-        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin)
+   //     textField.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldContainerHeight + textFieldMargin),
         
+  //      doubleStack.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+  //      doubleStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5),
+  //      doubleStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin)
+            
+            
+        
+        stackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15),
+ //       stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 10),
+//        strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 30),
+  //      strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin),
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+            
         ])
     }
     
