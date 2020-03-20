@@ -13,7 +13,7 @@ class PasswordField: UIControl {
    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
+    private let stackView = UIStackView()
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -65,7 +65,6 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 8.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.becomeFirstResponder()
-//        textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.isSecureTextEntry = true
         textField.backgroundColor = bgColor
@@ -85,26 +84,41 @@ class PasswordField: UIControl {
         // weak view
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-//        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
-        let offset = CGFloat(8.0)
-        let weakViewOrigin = CGPoint(x: offset, y: 100.0)
-        weakView.frame = CGRect(origin: weakViewOrigin, size: colorViewSize)
+        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
         weakView.backgroundColor = weakColor
         
         // medium view
         addSubview(mediumView)
-        mediumView.translatesAutoresizingMaskIntoConstraints = true
-//        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6.0).isActive = true
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
         mediumView.backgroundColor = mediumColor
         
-        // strong view
         
+        // strong view
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
+        strongView.backgroundColor = strongColor
+
         
         //strength label
-        
-        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15).isActive = true
+        strengthDescriptionLabel.text = "Could be stronger"
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
+        strengthDescriptionLabel.textAlignment = .left
         
         
     }
