@@ -15,9 +15,23 @@ enum PasswordStrength {
 
 class PasswordField: UIControl {
     
+    
+    // MARK: - Propertiese
+    
     // Public API - these properties are used to fetch the final password and strength values
     private(set) var password: String = ""
     private(set) var strength: PasswordStrength = .weak
+    
+    
+    // MARK: - Initializers
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    
+    // MARK: - Private
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -49,6 +63,14 @@ class PasswordField: UIControl {
     private lazy var vStack = UIStackView(arrangedSubviews: [titleLabel, textField, strengthStack])
     
     func setup() {
+        setupVStack()
+        setupTitleLabel()
+        setupTextField()
+        setupShowHideButton()
+        setupStrengthStack()
+    }
+    
+    private func setupVStack() {
         addSubview(vStack)
         vStack.translatesAutoresizingMaskIntoConstraints = false
         
@@ -59,21 +81,23 @@ class PasswordField: UIControl {
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.directionalLayoutMargins = .init(top: standardMargin, leading: standardMargin, bottom: standardMargin, trailing: standardMargin)
         
-        
-        
         NSLayoutConstraint.activate([
             vStack.topAnchor.constraint(equalTo: topAnchor),
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
             vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
-        
+    }
+    
+    private func setupTitleLabel() {
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
-        
-        
+    }
+    
+    private func setupTextField() {
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
         textField.borderStyle = .roundedRect
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 5.0
@@ -82,9 +106,12 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        
+    }
+    
+    private func setupShowHideButton() {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.setImage(UIImage(named: "eyes-open"), for: [.selected])
@@ -95,9 +122,11 @@ class PasswordField: UIControl {
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
             showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
         ])
-        
-        
+    }
+    
+    private func setupStrengthStack() {
         strengthStack.translatesAutoresizingMaskIntoConstraints = false
+        
         strengthStack.distribution = .fill
         strengthStack.alignment = .center
         strengthStack.spacing = 2
@@ -109,29 +138,29 @@ class PasswordField: UIControl {
             $0.layer.cornerRadius = colorViewSize.height / 2
         }
         
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = mediumColor
+        strongView.backgroundColor = strongColor
+        
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         strengthDescriptionLabel.text = "Too Weak"
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
-        
-        weakView.backgroundColor = weakColor
-        mediumView.backgroundColor = mediumColor
-        strongView.backgroundColor = strongColor
-        
     }
+    
+    
+    // MARK: - Actions
     
     @objc func showHideButtonTapped() {
         showHideButton.isSelected.toggle()
         textField.isSecureTextEntry = !showHideButton.isSelected
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
 }
+
+
+// MARK: - Text Field Delegate
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -142,6 +171,9 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
+
+// MARK: - SwiftUI Preview
 
 struct ViewWrapper: UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<ViewWrapper>) -> UIView {
