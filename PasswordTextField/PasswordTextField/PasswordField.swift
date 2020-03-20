@@ -45,6 +45,8 @@ class PasswordField: UIControl {
     private let stackView = UIStackView()
     private let strengthFudge: CGFloat = 4
     private var passwordVisible = false
+    private var passwordVisibleImage: UIImage!
+    private var passwordHiddenImage: UIImage!
 
     func setup() {
         // Lay out your subviews here
@@ -86,19 +88,20 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
 
         // ---- showHideButton ---------------------------------------
+        passwordVisibleImage = UIImage(named: "eyes-open")!
+        passwordHiddenImage  = UIImage(named: "eyes-closed")!
+            
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.addTarget(self, action: #selector(revealButton(_:)), for: .touchUpInside)
 
-        if let image = UIImage(named: "eyes-closed") {
-            showHideButton.setImage(image, for: .normal)
-            
-            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor,
-                                                    constant: -standardMargin).isActive = true
-            showHideButton.widthAnchor.constraint(equalToConstant: image.size.width).isActive = true
-            showHideButton.heightAnchor.constraint(equalToConstant: image.size.height).isActive = true
-        }
+        showHideButton.setImage(passwordHiddenImage, for: .normal)
+        
+        showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor,
+                                                constant: -standardMargin).isActive = true
+        showHideButton.widthAnchor.constraint(equalToConstant: passwordHiddenImage.size.width).isActive = true
+        showHideButton.heightAnchor.constraint(equalToConstant: passwordHiddenImage.size.height).isActive = true
 
         // ---- weakView ---------------------------------------------
         addSubview(weakView)
@@ -151,6 +154,8 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor,
                                             constant: standardMargin).isActive = true
 
+        // Initialize UI state
+        handlePasswordVisible()
         updateStrengthMeter(letterCount: 0)
     }
     
@@ -174,17 +179,14 @@ class PasswordField: UIControl {
         }
     }
     
-    @objc func buttonPress(_ sender: UIButton) {
+    @objc func revealButton(_ sender: UIButton) {
         passwordVisible.toggle()
-        
-        if passwordVisible {
-            
-        } else { // Hide
-            
-        }
+
+        handlePasswordVisible()
     }
     
     // MARK: - Methods
+
     private func updateStrengthMeter(letterCount count: Int) {
         
         switch count {
@@ -205,6 +207,16 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too Weak"
+        }
+    }
+
+    private func handlePasswordVisible() {
+        if passwordVisible { // Show
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(passwordVisibleImage, for: .normal)
+        } else { // Hide
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(passwordHiddenImage, for: .normal)
         }
     }
 }
