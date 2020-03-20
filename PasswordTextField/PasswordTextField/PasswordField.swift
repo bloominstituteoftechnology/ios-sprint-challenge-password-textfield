@@ -62,12 +62,15 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 5
-        textField.font = UIFont.systemFont(ofSize: 10)
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.clearButtonMode = .never
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.default
         textField.contentVerticalAlignment = .center
         textField.textAlignment = .center
         textField.textColor = .black
+        textField.placeholder = "Is this working"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
         textField.delegate = self
@@ -83,6 +86,10 @@ class PasswordField: UIControl {
     
     // MARK: - Initializer
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -97,11 +104,15 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        let oldText = textField.text!
-//        let stringRange = Range(range, in: oldText)!
-//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-//        // TODO: send new text to the determine strength method
-//        return true
-//    }
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let oldText = textField.text!
+        let stringRange = Range(range, in: oldText)!
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        // TODO: send new text to the determine strength method
+        return true
+    }
 }
