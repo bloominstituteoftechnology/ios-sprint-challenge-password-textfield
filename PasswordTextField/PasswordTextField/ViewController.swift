@@ -10,7 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func returnPressed(_ sender: Any) {
+    @IBAction func returnPressed(_ sender: PasswordField) {
+        print("Password changed : \(sender.password)")
     }
     // For use in the stretch goal
     //

@@ -277,6 +277,16 @@ extension PasswordField: UITextFieldDelegate {
         determineStrength(newText)
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return false }
+        
+        textField.resignFirstResponder()
+        password = text
+        sendActions(for: .valueChanged)
+        
+        return true
+    }
 }
 
 extension UIView {
