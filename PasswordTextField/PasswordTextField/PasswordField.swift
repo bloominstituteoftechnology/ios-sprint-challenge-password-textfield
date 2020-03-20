@@ -78,6 +78,7 @@ class PasswordField: UIControl {
         textField.textColor = .black
         textField.placeholder = "Is this working"
         textField.textContentType = .password
+        textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
         textField.isEnabled = true
