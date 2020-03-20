@@ -8,10 +8,10 @@
 
 import UIKit
 
-enum PasswordStrength {
-    case weak
-    case medium
-    case strong
+enum PasswordStrength: String {
+    case weak = "Weak"
+    case medium = "Medium"
+    case strong = "Strong"
 }
 
 //@IBDesignable
@@ -19,6 +19,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -87,6 +88,7 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
         textField.backgroundColor = bgColor
+        textField.delegate = self
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
@@ -168,6 +170,27 @@ class PasswordField: UIControl {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
+    
+    private func determineStrength(ofPassword password: String) {
+        if password.count < 9,
+            passwordStrength != .weak {
+            animateView(view: weakView)
+            passwordStrength = .weak
+            strengthDescriptionLabel.text = "Too weak"
+        } else if password.count >= 9,
+            password.count < 20,
+            passwordStrength != .medium {
+            animateView(view: mediumView)
+            passwordStrength = .medium
+            strengthDescriptionLabel.text = "Could be stronger"
+        } else if password.count >= 20,
+            passwordStrength != .strong {
+            animateView(view: strongView)
+            passwordStrength = .strong
+            strengthDescriptionLabel.text = "Strong password"
+        }
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -176,15 +199,16 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determineStrength(ofPassword: newText)
         return true
     }
 }
 
 extension UIView {
     // Animate the change
-    func animateView() {
-        func increaseHeight() { transform = CGAffineTransform(scaleX: 1.0, y: 1.3)}
-        func restorHeight() { transform = .identity}
+    func animateView(view: UIView) {
+        func increaseHeight() { view.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)}
+        func restorHeight() { view.transform = .identity}
         
         UIView.animate(withDuration: 0.3,
                        animations: { increaseHeight() },
