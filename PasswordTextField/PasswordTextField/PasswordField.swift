@@ -97,9 +97,10 @@ class PasswordField: UIControl {
         // MARK: - Hide button
         textField.rightView = showHideButton
         textField.rightViewMode = .always
-        showHideButton.isEnabled = true
+        showHideButton.isEnabled = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .disabled)
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        showHideButton.addTarget(textField.rightView, action: #selector(secureText), for: .allTouchEvents)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         
@@ -156,6 +157,12 @@ class PasswordField: UIControl {
 //    override var intrinsicContentSize: CGSize {
 //        return CGSize(width: 500, height: 200)
 //    }
+    
+    @objc func secureText() {
+        print("Clicked")
+        showHideButton.isEnabled.toggle()
+        textField.isSecureTextEntry.toggle()
+    }
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 0, height: 100.0)
