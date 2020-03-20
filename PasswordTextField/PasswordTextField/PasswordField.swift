@@ -97,16 +97,20 @@ class PasswordField: UIControl {
         ])
         
         
-        strengthStack.distribution = .fillProportionally
+        strengthStack.translatesAutoresizingMaskIntoConstraints = false
+        strengthStack.distribution = .fill
         strengthStack.alignment = .center
         strengthStack.spacing = 2
         
         colorViews.forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
-            $0.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+            $0.widthAnchor.constraint(lessThanOrEqualToConstant: colorViewSize.width).isActive = true
             $0.layer.cornerRadius = colorViewSize.height / 2
         }
+        
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         strengthDescriptionLabel.text = "Too Weak"
         strengthDescriptionLabel.font = labelFont
