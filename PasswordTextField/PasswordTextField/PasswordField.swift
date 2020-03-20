@@ -79,7 +79,23 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 5.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = .clear
+        textField.isSecureTextEntry = true
+        
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: [.selected])
+        
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
+            showHideButton.rightAnchor.constraint(equalTo: textField.rightAnchor),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
+        ])
+        
         
         strengthStack.distribution = .fillProportionally
         strengthStack.alignment = .center
@@ -100,6 +116,11 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = mediumColor
         strongView.backgroundColor = strongColor
         
+    }
+    
+    @objc func showHideButtonTapped() {
+        showHideButton.isSelected.toggle()
+        textField.isSecureTextEntry = !showHideButton.isSelected
     }
     
     required init?(coder aDecoder: NSCoder) {
