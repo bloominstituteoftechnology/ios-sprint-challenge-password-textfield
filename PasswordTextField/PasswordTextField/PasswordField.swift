@@ -44,18 +44,22 @@ class PasswordField: UIControl {
     private let strongView = UIView()
     private let strengthDescriptionLabel = UILabel()
     
+    private lazy var colorViews = [weakView, mediumView, strongView]
     private lazy var strengthStack = UIStackView(arrangedSubviews: [weakView, mediumView, strongView, strengthDescriptionLabel])
     private lazy var vStack = UIStackView(arrangedSubviews: [titleLabel, textField, strengthStack])
     
     func setup() {
         addSubview(vStack)
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        
         vStack.axis = .vertical
         vStack.distribution = .fillProportionally
-        vStack.translatesAutoresizingMaskIntoConstraints = false
+        vStack.spacing = standardMargin
+        
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.directionalLayoutMargins = .init(top: standardMargin, leading: standardMargin, bottom: standardMargin, trailing: standardMargin)
         
-        strengthStack.distribution = .fillEqually
+        
         
         NSLayoutConstraint.activate([
             vStack.topAnchor.constraint(equalTo: topAnchor),
@@ -69,11 +73,32 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         
         
+        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 5.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = .clear
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
+        strengthStack.distribution = .fillProportionally
+        strengthStack.alignment = .center
+        strengthStack.spacing = 2
+        
+        colorViews.forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+            $0.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+            $0.layer.cornerRadius = colorViewSize.height / 2
+        }
+        
+        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = mediumColor
+        strongView.backgroundColor = strongColor
         
     }
     
