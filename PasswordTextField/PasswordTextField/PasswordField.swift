@@ -44,7 +44,7 @@ class PasswordField: UIControl {
     
     // MARK: - Methods
     
-    func setup() {
+    private func setup() {
         // Lay out your subviews here
         
         self.backgroundColor = bgColor
@@ -178,34 +178,39 @@ class PasswordField: UIControl {
         case strong
     }
     
-    func determineStrength(_ password: String) {
+    private func determineStrength(_ password: String) {
         var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
         var strength: Strength = .weak
+        var newStrength: Strength = .weak
         print(password.count)
         if password.count <= 9 {
-            strength = .weak
+            newStrength = .weak
         } else if password.count > 9 && password.count <= 19 {
-            strength = .medium
+            newStrength = .medium
         } else if password.count > 19 {
-            strength = .strong
+            newStrength = .strong
         }
         
+        if strength != newStrength { strength = newStrength }
         switch strength {
         case .weak:
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
+            weakView.performFlare()
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case .medium:
             strengthDescriptionLabel.text = "Could be stronger"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
+            mediumView.performFlare()
             strongView.backgroundColor = unusedColor
         case .strong:
             strengthDescriptionLabel.text = "Strong password"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            strongView.performFlare()
             
         }
         
@@ -232,5 +237,16 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         determineStrength(newText)
         return true
+    }
+}
+
+extension UIView {
+    func performFlare() {
+        func flare() { transform = CGAffineTransform(scaleX: 1.0, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
