@@ -43,7 +43,7 @@ class PasswordField: UIControl {
     private let strengthDescriptionLabelFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
 
     private let stackView = UIStackView()
-    private let strengthFudge: CGFloat = 4
+    private let strengthFudge: CGFloat = 5
     private var passwordVisible = false
     private var passwordVisibleImage: UIImage!
     private var passwordHiddenImage: UIImage!
