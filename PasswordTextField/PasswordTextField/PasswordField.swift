@@ -9,7 +9,7 @@
 import UIKit
 
 enum StrengthPasswordCondtion: String {
-    case tooWeak = "Too weak"
+    case tooWeak = "Too Weak"
     case medium = "Could be stronger"
     case strong = "Strong Password"
 }
@@ -149,23 +149,24 @@ class PasswordField: UIControl {
   
     }
     
-    @objc func changeHideButton() {
-        if showHideButton.isSelected {
+    @objc func changeHideButton() -> () {
+    let newShowHiddenButton = textField.isSecureTextEntry.toggle()
         if textField.isSecureTextEntry == true {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
-        }
+        return newShowHiddenButton
+        
     }
 
     
     func threeIndicators(three cases: StrengthPasswordCondtion) {
-        let threeCases = cases
-        strengthDescriptionLabel.text = threeCases.rawValue
-          guard let textFiedCount = textField.text?.count else { return }
+        condition = cases
+        strengthDescriptionLabel.text = condition.rawValue
+          
        
-        switch threeCases {
+        switch cases {
         case .tooWeak:
             
             weakView.layer.backgroundColor = weakColor.cgColor
@@ -186,10 +187,11 @@ class PasswordField: UIControl {
     }
     
     
-    func strengthCases() {
+    func strengthCases(to passwordField: String) {
         var strength: StrengthPasswordCondtion
-        guard let textFiedCount = textField.text?.count else { return }
-        switch textFiedCount{
+        
+        
+        switch passwordField.count {
         case 0...9:
             strength = StrengthPasswordCondtion.tooWeak
         case 10...19:
@@ -202,6 +204,7 @@ class PasswordField: UIControl {
         }
         
     }
+  
     
     
 }
@@ -211,7 +214,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
-        return true
+       strengthCases(to: newText)
+               return true
     }
 }
