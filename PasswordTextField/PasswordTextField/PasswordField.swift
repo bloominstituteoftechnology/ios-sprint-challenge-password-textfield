@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable
+
 class PasswordField: UIControl {
    
     // Public API - these properties are used to fetch the final password and strength values
@@ -64,18 +64,22 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 8.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.becomeFirstResponder()
+//        textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.isSecureTextEntry = true
         
         // show/hide button
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldContainerHeight / 4).isActive = true
         showHideButton.adjustsImageWhenDisabled = true
-        let showImage = UIImage(named: "eyes-open")
-        let noShowImage = UIImage(named: "eyes-closed")
-        showHideButton.setImage(showImage, for: .selected)
-        showHideButton.setImage(noShowImage, for: .disabled)
+         let noShowImage = UIImage(named: "eyes-closed")
+        showHideButton.setImage(noShowImage, for: .normal)
+//        let showImage = UIImage(named: "eyes-open")
+//        showHideButton.setImage(showImage, for: .selected)
+//        showHideButton.setImage(noShowImage, for: .disabled)
         
         // weak view
         
