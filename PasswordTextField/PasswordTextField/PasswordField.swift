@@ -144,8 +144,8 @@ class PasswordField: UIControl {
         }
         
         weakView.backgroundColor = weakColor
-        mediumView.backgroundColor = mediumColor
-        strongView.backgroundColor = strongColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
         
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -175,10 +175,16 @@ class PasswordField: UIControl {
         switch strength {
         case .weak:
             strengthDescriptionLabel.text = "Too weak"
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         case .medium:
             strengthDescriptionLabel.text = "Could be stronger"
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         case .strong:
             strengthDescriptionLabel.text = "Strong password"
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
         }
     }
     
