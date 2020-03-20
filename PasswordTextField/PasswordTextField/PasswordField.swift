@@ -20,7 +20,13 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private(set) var password: String = "" { didSet { sendActions(for: .valueChanged) }}
-    private(set) var strength: PasswordStrength = .weak
+    private(set) var strength: PasswordStrength = .weak {
+        didSet {
+            if oldValue != strength {
+                updateStrengthViews()
+            }
+        }
+    }
     
     
     // MARK: - Initializers
@@ -175,24 +181,33 @@ class PasswordField: UIControl {
         default:
             strength = passwordIsWord ? .medium : .strong
         }
-        
-        updateStrengthViews()
     }
     
     private func updateStrengthViews() {
         switch strength {
         case .weak:
+            performFlare(with: weakView)
             strengthDescriptionLabel.text = "Too weak"
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case .medium:
+            performFlare(with: mediumView)
             strengthDescriptionLabel.text = "Could be stronger"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
         case .strong:
+            performFlare(with: strongView)
             strengthDescriptionLabel.text = "Strong password"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+        }
+    }
+    
+    private func performFlare(with view: UIView) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.autoreverse], animations: {
+            view.transform = .init(scaleX: 1, y: 1.4)
+        }) { _ in
+            view.transform = .identity
         }
     }
     
