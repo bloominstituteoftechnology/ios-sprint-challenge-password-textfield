@@ -37,6 +37,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9295B374242513DB00E22471 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
+				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		9295B375242513F200E22471 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
+				CE0883D022C2C576008F9894 /* Assets.xcassets */,
+				CE0883D522C2C576008F9894 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		CE0883BD22C2C575008F9894 = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +75,10 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
-				CE0883CD22C2C575008F9894 /* Main.storyboard */,
-				CE0883D022C2C576008F9894 /* Assets.xcassets */,
-				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
-				CE0883D522C2C576008F9894 /* Info.plist */,
+				9295B375242513F200E22471 /* Resources */,
+				9295B374242513DB00E22471 /* Storyboards */,
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -287,7 +303,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				INFOPLIST_FILE = PasswordTextField/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +320,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				INFOPLIST_FILE = PasswordTextField/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
