@@ -64,12 +64,14 @@ class PasswordField: UIControl {
         textField.placeholder = "Write a Password"
         textField.delegate = self
         textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
         
         
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(changeHideButton), for: .touchUpInside)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
         
         strongView.layer.backgroundColor = strongColor.cgColor
         strongView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,13 +91,24 @@ class PasswordField: UIControl {
         
 //        Constraint Time!
         
-        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6).isActive = true
-        textFieldBorderLine.topAnchor.constraint(equalTo: bottomAnchor, constant: 15).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        textFieldBorderLine.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         textFieldBorderLine.heightAnchor.constraint(equalToConstant: 40).isActive = true
         textFieldBorderLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textFieldBorderLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        textField.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor, constant: 5).isActive = true
+        textField.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor, constant: -5).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor).isActive = true
+        showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor).isActive = true
         
+        
+        
+
         
         
     }
