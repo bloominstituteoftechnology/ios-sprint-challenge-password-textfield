@@ -73,6 +73,7 @@ class PasswordField: UIControl {
         textField.textAlignment = .left
         textField.isSecureTextEntry.toggle()
         textField.backgroundColor = bgColor
+        textField.addTarget(self, action: #selector(determineStrength), for: .valueChanged)
         
         // show/hide button
         addSubview(showHideButton)
@@ -95,6 +96,7 @@ class PasswordField: UIControl {
         weakView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
         weakView.backgroundColor = unusedColor
+        
         
         // medium view
         addSubview(mediumView)
@@ -178,21 +180,28 @@ class PasswordField: UIControl {
         sendActions(for: .touchCancel)
     }
     
-    private func determineStrength() {
+    @objc private func determineStrength() {
+        
         textField.text = password
         switch password.count {
         case 0...9:
             strengthDescriptionLabel.text = StrengthValue.weak.rawValue;
             weakView.backgroundColor = weakColor;
-            weakView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
+                self.weakView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            }, completion: nil)
         case 10...19:
             strengthDescriptionLabel.text = StrengthValue.medium.rawValue;
             mediumView.backgroundColor = mediumColor;
-            mediumView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
+                self.mediumView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            }, completion: nil)
         default:
             strengthDescriptionLabel.text = StrengthValue.strong.rawValue;
             strongView.backgroundColor = strongColor;
-            strongView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
+                self.strongView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            }, completion: nil)
             
         }
     }
