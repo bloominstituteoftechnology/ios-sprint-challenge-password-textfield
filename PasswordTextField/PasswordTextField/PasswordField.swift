@@ -57,7 +57,13 @@ class PasswordField: UIControl {
         textField.textContentType = .password
         textField.placeholder = "Write a Password"
         textField.delegate = self
+        textField.isSecureTextEntry = true
         addSubview(textField)
+        
+        
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(changeHideButton), for: .touchUpInside)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
         
         
@@ -65,9 +71,19 @@ class PasswordField: UIControl {
         
     }
     
+    
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc func changeHideButton() {
+        if textField.isSecureTextEntry == true {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
     }
 }
 
