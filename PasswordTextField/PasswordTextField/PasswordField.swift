@@ -85,6 +85,7 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
 
         // ---- showHideButton ---------------------------------------
+        // FIXME: Implement
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
