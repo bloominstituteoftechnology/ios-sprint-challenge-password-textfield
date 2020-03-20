@@ -185,6 +185,8 @@ class PasswordField: UIControl {
             resignFirstResponder() // Hide the keyboard
 
             updateStrengthMeter(letterCount: text.count)
+            password = textField.text ?? ""
+            sendActions(for: [.valueChanged])
         }
     }
     
