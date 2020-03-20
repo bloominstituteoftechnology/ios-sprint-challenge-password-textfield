@@ -64,7 +64,7 @@ class PasswordField: UIControl {
     private lazy var colorViews = [weakView, mediumView, strongView]
     private lazy var strengthStack = UIStackView(arrangedSubviews: [weakView, mediumView, strongView, strengthDescriptionLabel])
     private lazy var vStack = UIStackView(arrangedSubviews: [titleLabel, textField, strengthStack])
-    
+
     
     // MARK: - Setup
     
@@ -163,13 +163,15 @@ class PasswordField: UIControl {
     // MARK: - Updating
     
     private func determineStrength(of password: String) {
+        let passwordIsWord = false // UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password)
+        
         switch password.count {
         case 0...5:
             strength = .weak
         case 6...8:
-            strength = .medium
+            strength = passwordIsWord ? .weak : .medium
         default:
-            strength = .strong
+            strength = passwordIsWord ? .medium : .strong
         }
         
         updateStrengthViews()
@@ -224,18 +226,18 @@ extension PasswordField: UITextFieldDelegate {
 
 // MARK: - SwiftUI Preview
 
-struct ViewWrapper: UIViewRepresentable {
-    func makeUIView(context: UIViewRepresentableContext<ViewWrapper>) -> UIView {
-        return UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "VC").view
-    }
-    
-    func updateUIView(_ uiView: ViewWrapper.UIViewType, context: UIViewRepresentableContext<ViewWrapper>) {
-    }
-}
-
-struct ViewWrapper_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewWrapper()
-    }
-}
+//struct ViewWrapper: UIViewRepresentable {
+//    func makeUIView(context: UIViewRepresentableContext<ViewWrapper>) -> UIView {
+//        return UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "VC").view
+//    }
+//
+//    func updateUIView(_ uiView: ViewWrapper.UIViewType, context: UIViewRepresentableContext<ViewWrapper>) {
+//    }
+//}
+//
+//struct ViewWrapper_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ViewWrapper()
+//    }
+//}
 
