@@ -116,7 +116,7 @@ class PasswordField: UIControl {
         ])
         
         // medium view
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         NSLayoutConstraint.activate([
             mediumView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
@@ -125,7 +125,7 @@ class PasswordField: UIControl {
         ])
         
         // strong view
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         NSLayoutConstraint.activate([
             strongView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
@@ -179,17 +179,23 @@ class PasswordField: UIControl {
             animateView(view: weakView)
             passwordStrength = .weak
             strengthDescriptionLabel.text = "Too weak"
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         } else if password.count >= 9,
             password.count < 20,
             passwordStrength != .medium {
             animateView(view: mediumView)
             passwordStrength = .medium
             strengthDescriptionLabel.text = "Could be stronger"
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         } else if password.count >= 20,
             passwordStrength != .strong {
             animateView(view: strongView)
             passwordStrength = .strong
             strengthDescriptionLabel.text = "Strong password"
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
         }
     }
 }
