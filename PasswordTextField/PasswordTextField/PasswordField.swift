@@ -84,7 +84,6 @@ class PasswordField: UIControl {
         textField.isEnabled = true
         textField.delegate = self
         textField.allowsEditingTextAttributes = true
-        textField.text = "testing"
         addSubview(textField)
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -134,6 +133,8 @@ class PasswordField: UIControl {
         }
         
         strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(strengthDescriptionLabel)
         addSubview(stackView)
@@ -178,11 +179,34 @@ class PasswordField: UIControl {
         case strong
     }
     
+    private var strength: Strength = .weak {
+        didSet {
+            switch strength {
+            case .weak:
+                strengthDescriptionLabel.text = "Too weak"
+                weakView.backgroundColor = weakColor
+                weakView.performFlare()
+                mediumView.backgroundColor = unusedColor
+                strongView.backgroundColor = unusedColor
+            case .medium:
+                strengthDescriptionLabel.text = "Could be stronger"
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                mediumView.performFlare()
+                strongView.backgroundColor = unusedColor
+            case .strong:
+                strengthDescriptionLabel.text = "Strong password"
+                weakView.backgroundColor = weakColor
+                mediumView.backgroundColor = mediumColor
+                strongView.backgroundColor = strongColor
+                strongView.performFlare()
+                
+            }
+        }
+    }
+    
     private func determineStrength(_ password: String) {
-        var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
-        var strength: Strength = .weak
         var newStrength: Strength = .weak
-        print(password.count)
         if password.count <= 9 {
             newStrength = .weak
         } else if password.count > 9 && password.count <= 19 {
@@ -192,27 +216,6 @@ class PasswordField: UIControl {
         }
         
         if strength != newStrength { strength = newStrength }
-        switch strength {
-        case .weak:
-            strengthDescriptionLabel.text = "Too weak"
-            weakView.backgroundColor = weakColor
-            weakView.performFlare()
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-        case .medium:
-            strengthDescriptionLabel.text = "Could be stronger"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-            mediumView.performFlare()
-            strongView.backgroundColor = unusedColor
-        case .strong:
-            strengthDescriptionLabel.text = "Strong password"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = strongColor
-            strongView.performFlare()
-            
-        }
         
     }
     
