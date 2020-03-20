@@ -8,9 +8,15 @@
 
 import UIKit
 
+enum StrengthPasswordCondtion: String {
+    case tooWeak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong Password"
+}
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
+    var condition: StrengthPasswordCondtion = .medium
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
@@ -76,6 +82,12 @@ class PasswordField: UIControl {
         weakView.layer.backgroundColor = weakColor.cgColor
         weakView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(weakView)
+        
+        strengthDescriptionLabel.text = condition.rawValue
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strengthDescriptionLabel)
+        
+//        Constraint Time!
         
         
         
