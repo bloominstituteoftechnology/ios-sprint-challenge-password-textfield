@@ -19,7 +19,7 @@ class PasswordField: UIControl {
     // MARK: - Propertiese
     
     // Public API - these properties are used to fetch the final password and strength values
-    private(set) var password: String = ""
+    private(set) var password: String = "" { didSet { sendActions(for: .valueChanged) }}
     private(set) var strength: PasswordStrength = .weak
     
     
@@ -156,17 +156,23 @@ class PasswordField: UIControl {
     }
     
     
-    // MARK: - Helper Functions
+    // MARK: - Updating
     
     private func determineStrength(of password: String) {
         switch password.count {
         case 0...5:
-            print("Too weak")
+            strength = .weak
         case 6...8:
-            print("Could be stronger")
+            strength = .medium
         default:
-            print("Strong password")
+            strength = .strong
         }
+        
+        self.password = password
+    }
+    
+    private func updateStrengthViews() {
+        
     }
     
     // MARK: - Actions
