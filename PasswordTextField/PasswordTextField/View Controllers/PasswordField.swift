@@ -81,6 +81,7 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
         
+        
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
@@ -91,9 +92,9 @@ class PasswordField: UIControl {
         // showHideButton
         textField.rightView = showHideButton
         textField.rightViewMode = .always
-        textField.rightViewRect(forBounds: CGRect(x: 0, y: 5, width: 25, height: 25))
-        showHideButton.setImage(UIImage(named: "eyes_closed.png"), for: .normal)
-        //showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 40), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        showHideButton.addTarget(self, action: #selector(toggleShowHideButton), for: .touchUpInside)
         
         // weak view
         weakView.backgroundColor = weakColor
@@ -139,8 +140,14 @@ class PasswordField: UIControl {
     // MARK: - Actions
     
     //toggle showHideButton
-    private func toggleShowHideButton() {
-        
+    @objc private func toggleShowHideButton() {
+        if textField.isSecureTextEntry == true {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
 }
 
