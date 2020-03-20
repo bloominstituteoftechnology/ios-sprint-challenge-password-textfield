@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum PasswordStrength {
+    case unknown
+    case weak
+    case medium
+    case strong
+}
+
 @IBDesignable
 class PasswordField: UIControl {
     
@@ -15,7 +22,8 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
+    private (set) var passwordStrength: PasswordStrength = .unknown
+
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -157,7 +165,7 @@ class PasswordField: UIControl {
 
         // Initialize UI state
         handlePasswordVisible()
-        updateStrengthMeter(letterCount: 0)
+        updateStrengthMeter(password: textField.text)
     }
     
     // MARK: - Initializers
@@ -175,19 +183,14 @@ class PasswordField: UIControl {
     
     // MARK: - Actions
     @objc func keyPress(_ sender: UITextField) {
-        if let text = sender.text {
-            updateStrengthMeter(letterCount: text.count)
-        }
+        updateStrengthMeter(password: sender.text)
     }
 
     @objc func returnPressed(_ sender: UITextField) {
-        if let text = sender.text {
-            resignFirstResponder() // Hide the keyboard
+        resignFirstResponder() // Hide the keyboard
 
-            updateStrengthMeter(letterCount: text.count)
-            password = textField.text ?? ""
-            sendActions(for: [.valueChanged])
-        }
+        updateStrengthMeter(password: sender.text, finalize: true)
+        sendActions(for: [.valueChanged])
     }
     
     @objc func revealButton(_ sender: UIButton) {
@@ -198,19 +201,23 @@ class PasswordField: UIControl {
     
     // MARK: - Methods
 
-    private func updateStrengthMeter(letterCount count: Int) {
-        
-        switch count {
+    private func updateStrengthMeter(password: String?, finalize: Bool = false) {
+        let password = password ?? ""
+        var strength = PasswordStrength.unknown
+
+        switch password.count {
         case 20...Int.max: // Strong
             weakView.backgroundColor = strongColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong Password"
+            strength = .strong
         case 10...19: // Medium
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could Be Stronger"
+            strength = .medium
         case 0...9: // Weak
             fallthrough
         default:
@@ -218,6 +225,12 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too Weak"
+            strength = .weak
+        }
+        
+        if finalize {
+            self.password = password
+            self.passwordStrength = strength
         }
     }
 
