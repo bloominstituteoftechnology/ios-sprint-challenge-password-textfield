@@ -27,4 +27,9 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    @IBAction func printPassword(_ passwordField: PasswordField) {
+        print("Password: \(passwordField.password)")
+        print("Password Strength: \(passwordField.passwordStrength.rawValue)")
+    }
 }
