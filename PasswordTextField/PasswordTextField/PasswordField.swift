@@ -46,6 +46,8 @@ class PasswordField: UIControl {
     
     private var isSecureTextEntry: Bool = true
     private (set) var passwordStrength: PasswordStrength = .weak
+    private var stretchGoal: Bool = false
+    let stretchButton = UIButton(type: .system)
     
     func setup() {
         // CONTROL VIEW
@@ -146,6 +148,29 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
         ])
+        
+        // Stretch Button
+        addSubview(stretchButton)
+        stretchButton.setTitle("Enable Stretch", for: .normal)
+        stretchButton.addTarget(self, action: #selector(toggleStretch), for: .touchUpInside)
+        
+        stretchButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            stretchButton.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            stretchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            stretchButton.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+    
+    @objc private func toggleStretch() {
+        if stretchGoal {
+            stretchButton.setTitle("Enable Stretch", for: .normal)
+            stretchGoal = false
+        } else {
+            stretchButton.setTitle("Disable Stretch", for: .normal)
+            stretchGoal = true
+        }
     }
     
     @objc private func showHideButtonTapped() {
@@ -164,18 +189,39 @@ class PasswordField: UIControl {
         if password.count <= 9 {
             strengthDescriptionLabel.text = "Too weak"
             passwordStrength = .weak
-            if oldPassword.count > 9 {
-                animateColorChange(with: passwordStrength)
-            }
         } else if password.count >= 10 && password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
             passwordStrength = .medium
+        } else if password.count >= 20  {
+            strengthDescriptionLabel.text = "Strong password"
+            passwordStrength = .strong
+        }
+        
+        if stretchGoal {
+            if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+                print("IS A WORD")
+                if passwordStrength == .strong {
+                    strengthDescriptionLabel.text = "Could be stronger"
+                    passwordStrength = .medium
+                } else if passwordStrength == .medium {
+                    strengthDescriptionLabel.text = "Too weak"
+                    passwordStrength = .weak
+                }
+            } else {
+                print("NOT A WORD")
+            }
+        }
+        
+        switch passwordStrength {
+        case .weak:
+            if oldPassword.count > 9 {
+                animateColorChange(with: passwordStrength)
+            }
+        case .medium:
             if oldPassword.count > 19 || oldPassword.count < 10 {
                 animateColorChange(with: passwordStrength)
             }
-        } else if password.count >= 20 {
-            strengthDescriptionLabel.text = "Strong password"
-            passwordStrength = .strong
+        case .strong:
             if oldPassword.count < 20 {
                 animateColorChange(with: passwordStrength)
             }
@@ -193,17 +239,17 @@ class PasswordField: UIControl {
             self.mediumView.backgroundColor = self.unusedColor
             self.strongView.backgroundColor = self.unusedColor
         case .medium:
+            self.mediumView.backgroundColor = self.mediumColor
             UIView.animate(withDuration: 0.4, animations: {
                 self.mediumView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
-                self.mediumView.backgroundColor = self.mediumColor
-                self.strongView.backgroundColor = self.unusedColor
             }) { (_) in
                 self.mediumView.transform = .identity
             }
+            self.strongView.backgroundColor = self.unusedColor
         case .strong:
+            self.strongView.backgroundColor = self.strongColor
             UIView.animate(withDuration: 0.4, animations: {
                 self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
-                self.strongView.backgroundColor = self.strongColor
             }) { (_) in
                 self.strongView.transform = .identity
             }
@@ -222,7 +268,6 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         determinePasswordStrength(with: newText, oldPassword: oldText)
         return true
     }
