@@ -58,6 +58,7 @@ class PasswordField: UIControl {
         ])
         
         // MARK: - Textfield
+        
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
@@ -93,6 +94,39 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
+        
+        // MARK: - Strength indicators stack view
+        var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
+        let stackView = UIStackView()
+        stackView.alignment = .fill
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+//        weakView.translatesAutoresizingMaskIntoConstraints = false
+//        mediumView.translatesAutoresizingMaskIntoConstraints = false
+//        strongView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        for indicator in indicatorsArray {
+
+            indicator.backgroundColor = unusedColor
+            indicator.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(indicator)
+            indicator.widthAnchor.constraint(equalToConstant: 70).isActive = true
+            indicator.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        }
+        
+        strengthDescriptionLabel.text = " Hello world "
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+        addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
+            stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        ])
     }
     
     
