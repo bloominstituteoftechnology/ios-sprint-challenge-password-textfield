@@ -8,6 +8,8 @@
 
 import UIKit
 
+var count = 1 // FIXME: Remove before flight
+
 @IBDesignable
 class PasswordField: UIControl {
     
@@ -68,6 +70,8 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.isSecureTextEntry = true
+//        textField.addTarget(self, action: #selector(keyPress), for: .valueChanged)
+        textField.addTarget(self, action: #selector(keyPress(_:)), for: .editingChanged)
 
         // TODO: ? textFieldContainerHeight seems ignored here vs. textField.heightAnchor later
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
@@ -153,6 +157,12 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    // MARK: - Actions
+    @objc func keyPress(_ sender: UITextField) {
+        print("keyPress \(count)")
+        count += 1
     }
 }
 
