@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // MARK: - Properties
@@ -23,7 +24,7 @@ class PasswordField: UIControl {
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
-    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1) // FIXME: Use Me
+    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1) // FIXME: Use Me
     
     // States of the password strength indicators
@@ -32,18 +33,18 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1) // FIXME: Use Me
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1) // FIXME: Use Me
     
-    private var titleLabel: UILabel = UILabel() // FIXME: Use Me
-    private var textField: UITextField = UITextField() // FIXME: Use Me
-    private var showHideButton: UIButton = UIButton() // FIXME: Use Me
-    private var weakView: UIView = UIView() // FIXME: Use Me
-    private var mediumView: UIView = UIView() // FIXME: Use Me
-    private var strongView: UIView = UIView() // FIXME: Use Me
-    private var strengthDescriptionLabel: UILabel = UILabel() // FIXME: Use Me
+    private var titleLabel: UILabel = UILabel()
+    private var textField: UITextField = UITextField()
+    private var showHideButton: UIButton = UIButton()
+    private var weakView: UIView = UIView()
+    private var mediumView: UIView = UIView()
+    private var strongView: UIView = UIView()
+    private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
         // Lay out your subviews here
         
-        // ---- titleLabel -----------------------------
+        // ---- titleLabel -------------------------------------------
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = labelTextColor
@@ -56,8 +57,45 @@ class PasswordField: UIControl {
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
                                             constant: standardMargin).isActive = true
         
-        // FIXME: titleLabel.heightAnchor
+        // ---- textField --------------------------------------------
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+
+        textField.topAnchor.constraint(equalTo: topAnchor,
+                                       constant: standardMargin).isActive = true
         
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                           constant: standardMargin).isActive = true
+
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                            constant: standardMargin).isActive = true
+
+        // ---- showHideButton ---------------------------------------
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // ---- weakView ---------------------------------------------
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.frame.size = colorViewSize
+        weakView.backgroundColor = unusedColor
+        
+        // ---- mediumView -------------------------------------------
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.frame.size = colorViewSize
+        mediumView.backgroundColor = unusedColor
+
+        // ---- strongView -------------------------------------------
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.frame.size = colorViewSize
+        strongView.backgroundColor = unusedColor
+
+        // ---- strengthDescriptionLabel -----------------------------
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     // MARK: - Initializers
