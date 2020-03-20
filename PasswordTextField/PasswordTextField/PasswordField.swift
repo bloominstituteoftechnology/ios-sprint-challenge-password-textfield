@@ -45,6 +45,7 @@ class PasswordField: UIControl {
     private let strengthDescriptionLabelFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
 
     private let stackView = UIStackView()
+    private let strengthFudge: CGFloat = 4
 
     func setup() {
         // Lay out your subviews here
@@ -100,7 +101,7 @@ class PasswordField: UIControl {
         weakView.backgroundColor = weakColor
 
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor,
-                                      constant: standardMargin).isActive = true
+                                      constant: standardMargin + strengthFudge).isActive = true
         weakView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                           constant: standardMargin).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
@@ -113,7 +114,7 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = unusedColor
 
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor,
-                                        constant: standardMargin).isActive = true
+                                        constant: standardMargin + strengthFudge).isActive = true
         // TODO: ? Why isn't standardMargin negative
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor,
                                           constant: standardMargin).isActive = true
@@ -127,7 +128,7 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
 
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor,
-                                        constant: standardMargin).isActive = true
+                                        constant: standardMargin + strengthFudge).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor,
                                             constant: standardMargin).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
@@ -138,12 +139,13 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = strengthDescriptionLabelFont
-        strengthDescriptionLabel.text = "Could Be Stronger" // FIXME: Remove before flight
 
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                                       constant: standardMargin).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor,
                                             constant: standardMargin).isActive = true
+
+        updateStrengthMeter(letterCount: 0)
     }
     
     // MARK: - Initializers
@@ -163,6 +165,34 @@ class PasswordField: UIControl {
     @objc func keyPress(_ sender: UITextField) {
         print("keyPress \(count)")
         count += 1
+        
+        if let text = sender.text {
+            updateStrengthMeter(letterCount: text.count)
+        }
+    }
+    
+    // MARK: - Methods
+    private func updateStrengthMeter(letterCount count: Int) {
+        
+        switch count {
+        case 20...Int.max: // Strong
+            weakView.backgroundColor = strongColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong Password"
+        case 10...19: // Medium
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could Be Stronger"
+        case 0...9: // Weak
+            fallthrough
+        default:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too Weak"
+        }
     }
 }
 
