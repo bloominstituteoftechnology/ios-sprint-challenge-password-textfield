@@ -35,7 +35,7 @@ class PasswordField: UIControl {
     private var titleLabel: UILabel = UILabel()
     private var textContainer: UIView = UIView()
     private var textField: UITextField = UITextField(frame: CGRect(x: 0, y: 0, width: 10, height: 50.0))
-    private var showHideButton: UIButton = UIButton()
+    private var showHideButton: UIButton = UIButton(type: .custom)
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -47,7 +47,7 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        
+        self.backgroundColor = bgColor
         
         
         // MARK: - titleLabel
@@ -95,20 +95,21 @@ class PasswordField: UIControl {
         
         
         // MARK: - Hide button
+        showHideButton.addTarget(showHideButton, action: #selector(self.secureText), for: .touchUpInside)
         textField.rightView = showHideButton
         textField.rightViewMode = .always
         showHideButton.isEnabled = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .disabled)
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-        showHideButton.addTarget(textField.rightView, action: #selector(secureText), for: .allTouchEvents)
+        
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         
         // MARK: - Strength indicators stack view
         var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
         let stackView = UIStackView()
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
         stackView.axis = .horizontal
         stackView.spacing = 5
         stackView.addArrangedSubview(weakView)
@@ -127,10 +128,12 @@ class PasswordField: UIControl {
             indicator.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(indicator)
             indicator.frame.size = colorViewSize
-            indicator.layer.cornerRadius = 10
+            indicator.layer.cornerRadius = 5
+            indicator.heightAnchor.constraint(equalToConstant: indicator.frame.size.height).isActive = true
+            indicator.widthAnchor.constraint(equalToConstant: indicator.frame.size.width).isActive = true
         }
         
-        strengthDescriptionLabel.text = " Hello "
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(strengthDescriptionLabel)
         addSubview(stackView)
@@ -138,7 +141,8 @@ class PasswordField: UIControl {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
             stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin)
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin),
+            self.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: standardMargin)
         ])
     }
     
