@@ -44,6 +44,8 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var isSecureTextEntry: Bool = true
+    
     func setup() {
         // VIEW
         backgroundColor = bgColor
@@ -134,12 +136,25 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
         ])
+    }
+    
+    @objc private func showHideButtonTapped() {
+        if isSecureTextEntry {
+            isSecureTextEntry = false
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            isSecureTextEntry = true
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
     
     private func determinePasswordStrength(with password: String) {
