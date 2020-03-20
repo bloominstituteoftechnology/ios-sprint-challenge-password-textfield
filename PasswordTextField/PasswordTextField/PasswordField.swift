@@ -19,7 +19,7 @@ class PasswordField: UIControl {
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0  // FIXME: Use Me
     private let textFieldMargin: CGFloat = 6.0 // FIXME: Use Me
-    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0) // FIXME: Use Me
+    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
@@ -28,10 +28,10 @@ class PasswordField: UIControl {
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1) // FIXME: Use Me
     
     // States of the password strength indicators
-    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1) // FIXME: Use Me
-    private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1) // FIXME: Use Me
-    private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1) // FIXME: Use Me
-    private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1) // FIXME: Use Me
+    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
+    private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
+    private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
+    private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
@@ -41,6 +41,8 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private let stackView = UIStackView()
+
     func setup() {
         // Lay out your subviews here
         
@@ -61,8 +63,9 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.text = "See me?" // FIXME: Remove before flight
 
-        textField.topAnchor.constraint(equalTo: topAnchor,
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                        constant: standardMargin).isActive = true
         
         textField.leadingAnchor.constraint(equalTo: leadingAnchor,
@@ -80,22 +83,48 @@ class PasswordField: UIControl {
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.frame.size = colorViewSize
         weakView.backgroundColor = unusedColor
-        
+        weakView.backgroundColor = weakColor // FIXME: Remove before flight
+
         // ---- mediumView -------------------------------------------
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.frame.size = colorViewSize
         mediumView.backgroundColor = unusedColor
+        mediumView.backgroundColor = mediumColor // FIXME: Remove before flight
 
         // ---- strongView -------------------------------------------
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.frame.size = colorViewSize
         strongView.backgroundColor = unusedColor
+        strongView.backgroundColor = strongColor // FIXME: Remove before flight
 
         // ---- strengthDescriptionLabel -----------------------------
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = "Could Be Stronger" // FIXME: Remove before flight
+
+        // ---- stackView --------------------------------------------
+        stackView.axis = NSLayoutConstraint.Axis.horizontal
+        stackView.distribution = UIStackView.Distribution.equalSpacing
+        stackView.alignment = UIStackView.Alignment.center
+        stackView.spacing = 1.0
+
+        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                       constant: standardMargin).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                           constant: standardMargin).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                            constant: standardMargin).isActive = true
+
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        // FIXME: Do I need a spacer?
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(stackView)
     }
     
     // MARK: - Initializers
