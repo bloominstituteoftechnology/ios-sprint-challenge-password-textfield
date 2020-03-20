@@ -19,13 +19,17 @@
                             <view verifyAmbiguity="ignoreSizes" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v0c-JS-lYF" customClass="PasswordField" customModule="PasswordTextField" customModuleProvider="target">
                                 <rect key="frame" x="20" y="84" width="374" height="109"/>
                                 <color key="backgroundColor" red="0.90448943660000003" green="0.71855699809999996" blue="0.36490631690000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="109" id="V1L-HJ-KWl"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v0c-JS-lYF" secondAttribute="trailing" constant="20" id="Mbj-HC-p2R"/>
-                            <constraint firstItem="v0c-JS-lYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bYC-zh-lzp"/>
-                            <constraint firstItem="v0c-JS-lYF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="c6r-VF-BzW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="v0c-JS-lYF" secondAttribute="bottom" constant="669" id="NRE-Z2-Und"/>
+                            <constraint firstItem="v0c-JS-lYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="cmK-YL-MjR"/>
+                            <constraint firstItem="v0c-JS-lYF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="irX-ic-iUa"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

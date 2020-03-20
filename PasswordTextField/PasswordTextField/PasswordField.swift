@@ -18,7 +18,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private let stackView = UIStackView()
+//    private let stackView = UIStackView()
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -46,14 +46,17 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+//        self.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+//        self.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20.0).isActive = true
+//        self.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20.0).isActive = true
+        self.backgroundColor = bgColor
         // title
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 15.0).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -137,9 +140,9 @@ class PasswordField: UIControl {
         
         let noShowImage = UIImage(named: "eyes-closed")
         let showImage = UIImage(named: "eyes-open")
-        let touchPoint = touch.location(in: showHideButton)
+        let touchPoint = touch.location(in: self)
         
-        if showHideButton.bounds.contains(touchPoint){
+        if showHideButton.frame.contains(touchPoint){
             textField.isSecureTextEntry = false
             showHideButton.setImage(showImage, for: .normal)
             
@@ -163,7 +166,7 @@ class PasswordField: UIControl {
             return
         }
         
-        let touchPoint = touch.location(in: showHideButton)
+        let touchPoint = touch.location(in: self)
         if showHideButton.bounds.contains(touchPoint) {
             updateShowHideButton(at: touch)
             sendActions(for: .touchUpInside)
