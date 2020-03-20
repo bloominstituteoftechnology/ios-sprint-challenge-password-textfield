@@ -77,9 +77,7 @@ class PasswordField: UIControl {
         showHideButton.adjustsImageWhenDisabled = true
          let noShowImage = UIImage(named: "eyes-closed")
         showHideButton.setImage(noShowImage, for: .normal)
-//        let showImage = UIImage(named: "eyes-open")
-//        showHideButton.setImage(showImage, for: .selected)
-//        showHideButton.setImage(noShowImage, for: .disabled)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -127,6 +125,23 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    private func updateValue(at touch: UITouch) {
+        
+        
+    }
+    @objc private func showHideButtonTapped(_ touch: UITouch, with event: UIEvent){
+        let touchPoint = touch.location(in: showHideButton)
+        let showImage = UIImage(named: "eyes-open")
+        
+        if showHideButton.frame.contains(touchPoint) {
+            showHideButton.setImage(showImage, for: .selected)
+        } else {
+            showHideButton.setImage(showImage, for: .selected)
+        }
+       
+    }
+
     
     func updateShowHideButton(at touch: UITouch) {
         let touchPoint = touch.location(in: showHideButton)
