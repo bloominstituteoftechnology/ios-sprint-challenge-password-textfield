@@ -17,8 +17,8 @@ class PasswordField: UIControl {
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
-    private let textFieldContainerHeight: CGFloat = 50.0  // FIXME: Use Me
-    private let textFieldMargin: CGFloat = 6.0 // FIXME: Use Me
+    private let textFieldContainerHeight: CGFloat = 50.0
+    private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
@@ -64,18 +64,25 @@ class PasswordField: UIControl {
         // ---- textField --------------------------------------------
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.cornerRadius = 4.0
+        textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.isSecureTextEntry = true
+
+        // TODO: ? textFieldContainerHeight seems ignored here vs. textField.heightAnchor later
+        let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        
         textField.text = "See me?" // FIXME: Remove before flight
 
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                        constant: standardMargin).isActive = true
-        
         textField.leadingAnchor.constraint(equalTo: leadingAnchor,
                                            constant: standardMargin).isActive = true
-
         textField.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                            constant: standardMargin).isActive = true
+                                            constant: -standardMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
 
         // ---- showHideButton ---------------------------------------
         addSubview(showHideButton)
@@ -102,6 +109,7 @@ class PasswordField: UIControl {
 
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                         constant: standardMargin).isActive = true
+        // TODO: ? Why isn't standardMargin negative
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor,
                                           constant: standardMargin).isActive = true
         mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
