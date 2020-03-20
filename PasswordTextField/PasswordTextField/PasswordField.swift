@@ -74,6 +74,7 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         
         strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.layer.cornerRadius = 2
         strongView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strongView)
         
@@ -85,26 +86,49 @@ class PasswordField: UIControl {
         weakView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(weakView)
         
-        strengthDescriptionLabel.text = condition.rawValue
-        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(strengthDescriptionLabel)
+        
+        
+//        strengthDescriptionLabel.text = condition.rawValue
+//        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+//        addSubview(strengthDescriptionLabel)
         
 //        Constraint Time!
         
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+    
         textFieldBorderLine.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         textFieldBorderLine.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        textFieldBorderLine.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 2).isActive = true
         textFieldBorderLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textFieldBorderLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
         textField.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
         textField.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor, constant: 5).isActive = true
         textField.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor, constant: -5).isActive = true
-        textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        textField.heightAnchor.constraint(equalTo: textFieldBorderLine.heightAnchor).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 11).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor).isActive = true
         showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor).isActive = true
+        weakView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 5).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        strongView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 5).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 45).isActive = true
+       
+        
+        
+        
+        
+        
         
         
         
