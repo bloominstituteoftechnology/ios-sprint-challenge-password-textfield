@@ -85,12 +85,22 @@ class PasswordField: UIControl {
         weakView.backgroundColor = unusedColor
         weakView.backgroundColor = weakColor // FIXME: Remove before flight
 
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                      constant: standardMargin).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                          constant: standardMargin).isActive = true
+
         // ---- mediumView -------------------------------------------
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.frame.size = colorViewSize
         mediumView.backgroundColor = unusedColor
         mediumView.backgroundColor = mediumColor // FIXME: Remove before flight
+
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                        constant: standardMargin).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor,
+                                          constant: standardMargin).isActive = true
 
         // ---- strongView -------------------------------------------
         addSubview(strongView)
@@ -99,32 +109,22 @@ class PasswordField: UIControl {
         strongView.backgroundColor = unusedColor
         strongView.backgroundColor = strongColor // FIXME: Remove before flight
 
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                        constant: standardMargin).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor,
+                                            constant: standardMargin).isActive = true
+
         // ---- strengthDescriptionLabel -----------------------------
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.text = "Could Be Stronger" // FIXME: Remove before flight
 
-        // ---- stackView --------------------------------------------
-        stackView.axis = NSLayoutConstraint.Axis.horizontal
-        stackView.distribution = UIStackView.Distribution.equalSpacing
-        stackView.alignment = UIStackView.Alignment.center
-        stackView.spacing = 1.0
-
-        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor,
-                                       constant: standardMargin).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                           constant: standardMargin).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor,
+                                                      constant: standardMargin).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor,
                                             constant: standardMargin).isActive = true
-
-        stackView.addArrangedSubview(weakView)
-        stackView.addArrangedSubview(mediumView)
-        stackView.addArrangedSubview(strongView)
-        // FIXME: Do I need a spacer?
-        stackView.addArrangedSubview(strengthDescriptionLabel)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(stackView)
     }
     
     // MARK: - Initializers
