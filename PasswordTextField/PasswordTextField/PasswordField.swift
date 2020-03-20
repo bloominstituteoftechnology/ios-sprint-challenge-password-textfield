@@ -78,23 +78,26 @@ class PasswordField: UIControl {
         addSubview(textField)
         
         weakView.backgroundColor = weakColor
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(weakView)
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
         mediumView.backgroundColor = unusedColor
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mediumView)
         mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
         strongView.backgroundColor = unusedColor
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strongView)
         strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
-        
-        strengthDescriptionLabel.frame = CGRect(x: 0.0, y: 0.0, width: 80.0, height: 20.0)
+    
         strengthDescriptionLabel.text = Strength.weak.rawValue
-        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 8.0, weight: .semibold)
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 12.0)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strengthDescriptionLabel)
         
@@ -107,16 +110,9 @@ class PasswordField: UIControl {
         stackView.addArrangedSubview(weakView)
         stackView.addArrangedSubview(mediumView)
         stackView.addArrangedSubview(strongView)
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
- /*
-        let doubleStack = UIStackView()
-        doubleStack.axis = .horizontal
-        doubleStack.distribution = .equalSpacing
-        doubleStack.alignment = .center
-        doubleStack.spacing = 10.0
-        addSubview(doubleStack)
-  */
         
         NSLayoutConstraint.activate([
             bgView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -135,23 +131,15 @@ class PasswordField: UIControl {
         textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
         textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
         
-   //     textField.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldContainerHeight + textFieldMargin),
-        
-  //      doubleStack.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
-  //      doubleStack.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5),
-  //      doubleStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin)
-            
-            
-        
         stackView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
         stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15),
- //       stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        stackView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        stackView.widthAnchor.constraint(equalToConstant: 182),
         
-        strengthDescriptionLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 10),
-//        strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 30),
-  //      strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: standardMargin),
-        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+        strengthDescriptionLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 6)
             
         ])
     }
