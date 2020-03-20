@@ -26,7 +26,7 @@ class PasswordField: UIControl {
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
+    #warning("label font")
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
@@ -81,16 +81,19 @@ class PasswordField: UIControl {
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 3
         
         // MEDIUM VIEW
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = unusedColor
+        mediumView.layer.cornerRadius = 3
         
         // STRONG VIEW
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = unusedColor
+        strongView.layer.cornerRadius = 3
         
         NSLayoutConstraint.activate([
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
@@ -142,20 +145,42 @@ class PasswordField: UIControl {
     private func determinePasswordStrength(with password: String) {
         if password.count <= 9 {
             strengthDescriptionLabel.text = "Too weak"
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
+            animateColorChange(with: .weak)
         } else if password.count >= 10 && password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
+            animateColorChange(with: .medium)
         } else if password.count >= 20 {
             strengthDescriptionLabel.text = "Strong password"
-            strongView.backgroundColor = strongColor
+            animateColorChange(with: .strong)
         }
     }
     
     private func animateColorChange(with strength: StrengthValue) {
-        
+        switch strength {
+        case .weak:
+            UIView.animate(withDuration: 0.4, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+            }) { (_) in
+                self.weakView.transform = .identity
+            }
+            self.mediumView.backgroundColor = self.unusedColor
+            self.strongView.backgroundColor = self.unusedColor
+        case .medium:
+            UIView.animate(withDuration: 0.4, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+                self.mediumView.backgroundColor = self.mediumColor
+                self.strongView.backgroundColor = self.unusedColor
+            }) { (_) in
+                self.mediumView.transform = .identity
+            }
+        case .strong:
+            UIView.animate(withDuration: 0.4, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+                self.strongView.backgroundColor = self.strongColor
+            }) { (_) in
+                self.strongView.transform = .identity
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
