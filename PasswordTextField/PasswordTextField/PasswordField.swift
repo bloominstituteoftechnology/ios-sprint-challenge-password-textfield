@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum StrengthValue: String {
+    case weak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong password"
+}
 
 class PasswordField: UIControl {
     
@@ -180,6 +185,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
         return true
     }
 }
