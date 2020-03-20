@@ -73,6 +73,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.isSecureTextEntry = true
         textField.addTarget(self, action: #selector(keyPress(_:)), for: .editingChanged)
+        textField.addTarget(self, action: #selector(returnPressed(_:)), for: .editingDidEndOnExit)
 
         // TODO: ? textFieldContainerHeight seems ignored here vs. textField.heightAnchor later
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: textFieldMargin, height: textFieldContainerHeight))
@@ -175,6 +176,14 @@ class PasswordField: UIControl {
     // MARK: - Actions
     @objc func keyPress(_ sender: UITextField) {
         if let text = sender.text {
+            updateStrengthMeter(letterCount: text.count)
+        }
+    }
+
+    @objc func returnPressed(_ sender: UITextField) {
+        if let text = sender.text {
+            resignFirstResponder() // Hide the keyboard
+
             updateStrengthMeter(letterCount: text.count)
         }
     }
