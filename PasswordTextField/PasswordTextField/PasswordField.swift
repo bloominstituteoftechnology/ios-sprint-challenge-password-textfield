@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum StrengthValue {
+    case weak
+    case medium
+    case strong
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -41,7 +47,6 @@ class PasswordField: UIControl {
     func setup() {
         // VIEW
         backgroundColor = bgColor
-        #warning("Height was added in storyboard")
         
         // TITLE LABEL
         addSubview(titleLabel)
@@ -68,7 +73,8 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
         // WEAK VIEW
@@ -106,7 +112,8 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 2),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -standardMargin * 2)
         ])
         
         // DESCRIPTION LABEL
@@ -130,9 +137,24 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
         ])
-        
-        
-        
+    }
+    
+    private func determinePasswordStrength(with password: String) {
+        if password.count <= 9 {
+            strengthDescriptionLabel.text = "Too weak"
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if password.count >= 10 && password.count <= 19 {
+            strengthDescriptionLabel.text = "Could be stronger"
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        } else if password.count >= 20 {
+            strengthDescriptionLabel.text = "Strong password"
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
+    private func animateColorChange(with strength: StrengthValue) {
         
     }
     
@@ -149,6 +171,11 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determinePasswordStrength(with: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
 }
