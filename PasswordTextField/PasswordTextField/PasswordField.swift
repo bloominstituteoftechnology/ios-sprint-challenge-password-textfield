@@ -56,10 +56,10 @@ class PasswordField: UIControl {
         // text field
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        let textFieldWdith = CGFloat(colorViewSize.width) - standardMargin - textFieldMargin
-        let textFieldSize = CGSize(width: textFieldWdith, height: textFieldContainerHeight)
-        let textFieldOrigin = CGPoint(x: standardMargin, y: 0)
-        textField.frame = CGRect(origin: textFieldOrigin, size: textFieldSize)
+        textField.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: standardMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 8.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
@@ -69,8 +69,7 @@ class PasswordField: UIControl {
         // show/hide button
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        let showButtonSize = CGSize(width: 35.0, height: 35.0)
-        let showButtonOrigin = CGPoint(x: <#T##CGFloat#>, y: <#T##CGFloat#>)
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin).isActive = true
         showHideButton.adjustsImageWhenDisabled = true
         let showImage = UIImage(named: "eyes-open")
         let noShowImage = UIImage(named: "eyes-closed")
