@@ -68,9 +68,10 @@ class PasswordField: UIControl {
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.default
         textField.contentVerticalAlignment = .center
-        textField.textAlignment = .center
+//        textField.textAlignment = .center
         textField.textColor = .black
         textField.placeholder = "Is this working"
+        textField.textContentType = .password
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
         textField.delegate = self
@@ -81,6 +82,16 @@ class PasswordField: UIControl {
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
+        
+        
+        // MARK: - Hide button
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.isEnabled = false
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .disabled)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
+        
     }
     
     
