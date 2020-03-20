@@ -10,7 +10,7 @@ import UIKit
 
 
 class PasswordField: UIControl {
-   
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private let stackView = UIStackView()
@@ -66,7 +66,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.becomeFirstResponder()
         textField.textAlignment = .left
-        textField.isSecureTextEntry = true
+        textField.isSecureTextEntry.toggle()
         textField.backgroundColor = bgColor
         
         // show/hide button
@@ -75,9 +75,12 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldContainerHeight / 4).isActive = true
         showHideButton.adjustsImageWhenDisabled = true
-         let noShowImage = UIImage(named: "eyes-closed")
+        let noShowImage = UIImage(named: "eyes-closed")
         showHideButton.setImage(noShowImage, for: .normal)
-        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        let showImage = UIImage(named: "eyes-open")
+        showHideButton.setImage(showImage, for: .disabled)
+        //        (noShowImage, for: .normal)
+        //        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -106,7 +109,7 @@ class PasswordField: UIControl {
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
         strongView.backgroundColor = strongColor
-
+        
         
         //strength label
         addSubview(strengthDescriptionLabel)
@@ -126,54 +129,48 @@ class PasswordField: UIControl {
         setup()
     }
     
-    private func updateValue(at touch: UITouch) {
-        
-        
-    }
-    @objc private func showHideButtonTapped(_ touch: UITouch, with event: UIEvent){
-        let touchPoint = touch.location(in: showHideButton)
-        let showImage = UIImage(named: "eyes-open")
-        
-        if showHideButton.frame.contains(touchPoint) {
-            showHideButton.setImage(showImage, for: .selected)
-        } else {
-            showHideButton.setImage(showImage, for: .selected)
-        }
-       
-    }
-
     
     func updateShowHideButton(at touch: UITouch) {
         let touchPoint = touch.location(in: showHideButton)
-        
+        if showHideButton.isEnabled {
+            textField.isSecureTextEntry = true
+            let noShowImage = UIImage(named: "eyes-closed")
+            showHideButton.setImage(noShowImage, for: .normal)
+            
+        } else {
+            textField.isSecureTextEntry = false
+            let showImage = UIImage(named: "eyes-open")
+            showHideButton.setImage(showImage, for: .disabled)
+        }
+        sendActions(for: .valueChanged)
         
     }
-// tracking functions or toggle option for button??
+    
     // Start tracking touch in control
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-    
-      return true
+        updateShowHideButton(at: touch)
+        return true
     }
     
     // End tracking touch in control
     override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-      guard let touch = touch else {
-        NSLog("Unable to track touch")
-        return
-      }
-      
-      let touchPoint = touch.location(in: showHideButton)
-      if bounds.contains(touchPoint) {
+        guard let touch = touch else {
+            NSLog("Unable to track touch")
+            return
+        }
         
-        sendActions(for: .touchUpInside)
-      } else {
-        sendActions(for: .touchUpOutside)
-      }
+        let touchPoint = touch.location(in: showHideButton)
+        if showHideButton.bounds.contains(touchPoint) {
+            updateShowHideButton(at: touch)
+            sendActions(for: .touchUpInside)
+        } else {
+            sendActions(for: .touchUpOutside)
+        }
     }
     
     // Cancel tracking
     override func cancelTracking(with event: UIEvent?) {
-      sendActions(for: .touchCancel)
+        sendActions(for: .touchCancel)
     }
 }
 
