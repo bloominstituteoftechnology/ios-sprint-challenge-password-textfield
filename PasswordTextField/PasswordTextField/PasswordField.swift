@@ -13,7 +13,7 @@ enum StrengthValue: String {
     case medium = "Could be stronger"
     case strong = "Strong password"
 }
-
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -46,7 +46,6 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
         
         // title
         addSubview(titleLabel)
@@ -85,8 +84,7 @@ class PasswordField: UIControl {
         showHideButton.setImage(noShowImage, for: .normal)
         let showImage = UIImage(named: "eyes-open")
         showHideButton.setImage(showImage, for: .disabled)
-        //        (noShowImage, for: .normal)
-        //        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(updateShowHideButton), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -117,7 +115,6 @@ class PasswordField: UIControl {
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
         strongView.backgroundColor = unusedColor
         
-        
         //strength label
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -133,9 +130,10 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        
     }
     
-    func updateShowHideButton(at touch: UITouch) {
+    @objc private func updateShowHideButton(at touch: UITouch) {
         
         let noShowImage = UIImage(named: "eyes-closed")
         let showImage = UIImage(named: "eyes-open")
@@ -143,14 +141,13 @@ class PasswordField: UIControl {
         
         if showHideButton.bounds.contains(touchPoint){
             textField.isSecureTextEntry = false
-            showHideButton.setImage(showImage, for: .disabled)
+            showHideButton.setImage(showImage, for: .normal)
             
         } else {
             textField.isSecureTextEntry = true
             
             showHideButton.setImage(noShowImage, for: .normal)
         }
-        
     }
     
     // Start tracking touch in control
@@ -213,7 +210,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-        
+        determineStrength()
         return true
     }
 }
