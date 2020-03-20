@@ -34,22 +34,25 @@ class PasswordField: UIControl {
     // MARK: - Private
     
     private let standardMargin: CGFloat = 8.0
-    private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
-    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+    
+    private let textFieldContainerHeight: CGFloat = 50.0
+    private let textFieldCornerRadius: CGFloat = 6.0
+    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
+    private let textFieldBorderWidth: CGFloat = 2.0
     
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
-    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
-    
+    private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    // Initialize Views
     private let titleLabel = UILabel()
     private let textField = UITextField()
     private let showHideButton = UIButton()
@@ -67,6 +70,7 @@ class PasswordField: UIControl {
     
     
     func setup() {
+        backgroundColor = bgColor
         setupVStack()
         setupTitleLabel()
         setupTextField()
@@ -81,6 +85,7 @@ class PasswordField: UIControl {
         vStack.axis = .vertical
         vStack.distribution = .fillProportionally
         vStack.spacing = standardMargin
+        vStack.setCustomSpacing(textFieldMargin, after: titleLabel)
         
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.directionalLayoutMargins = .init(top: standardMargin, leading: standardMargin, bottom: standardMargin, trailing: standardMargin)
@@ -103,8 +108,8 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         textField.borderStyle = .roundedRect
-        textField.layer.borderWidth = 2.0
-        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = textFieldBorderWidth
+        textField.layer.cornerRadius = textFieldCornerRadius
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.backgroundColor = .clear
         textField.isSecureTextEntry = true
@@ -147,8 +152,7 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
         
-        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        strengthStack.setCustomSpacing(textFieldMargin, after: strongView)
         
         strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.font = labelFont
