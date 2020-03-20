@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import SwiftUI
+
+enum PasswordStrength {
+    case weak, medium, strong
+}
 
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
+    private(set) var password: String = ""
+    private(set) var strength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -30,19 +36,45 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
-    private var titleLabel: UILabel = UILabel()
-    private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
-    private var weakView: UIView = UIView()
-    private var mediumView: UIView = UIView()
-    private var strongView: UIView = UIView()
-    private var strengthDescriptionLabel: UILabel = UILabel()
+    private let titleLabel = UILabel()
+    private let textField = UITextField()
+    private let showHideButton = UIButton()
+    private let weakView = UIView()
+    private let mediumView = UIView()
+    private let strongView = UIView()
+    private let strengthDescriptionLabel = UILabel()
+    
+    private lazy var strengthStack = UIStackView(arrangedSubviews: [weakView, mediumView, strongView, strengthDescriptionLabel])
+    private lazy var vStack = UIStackView(arrangedSubviews: [titleLabel, textField, strengthStack])
     
     func setup() {
-        // Lay out your subviews here
+        addSubview(vStack)
+        vStack.axis = .vertical
+        vStack.distribution = .fillProportionally
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        vStack.isLayoutMarginsRelativeArrangement = true
+        vStack.directionalLayoutMargins = .init(top: standardMargin, leading: standardMargin, bottom: standardMargin, trailing: standardMargin)
         
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthStack.distribution = .fillEqually
+        
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+        
+        textField.borderStyle = .roundedRect
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,3 +92,19 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
+struct ViewWrapper: UIViewRepresentable {
+    func makeUIView(context: UIViewRepresentableContext<ViewWrapper>) -> UIView {
+        return UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "VC").view
+    }
+    
+    func updateUIView(_ uiView: ViewWrapper.UIViewType, context: UIViewRepresentableContext<ViewWrapper>) {
+    }
+}
+
+struct ViewWrapper_Previews: PreviewProvider {
+    static var previews: some View {
+        ViewWrapper()
+    }
+}
+
