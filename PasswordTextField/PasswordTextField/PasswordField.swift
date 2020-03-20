@@ -79,12 +79,12 @@ class PasswordField: UIControl {
         // MEDIUM VIEW
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         
         // STRONG VIEW
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         
         NSLayoutConstraint.activate([
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
@@ -95,14 +95,44 @@ class PasswordField: UIControl {
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
         
+        // STACK VIEW
+        let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.axis = .horizontal
+        stackView.spacing = standardMargin
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 2),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+        ])
+        
         // DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.textColor = labelTextColor
         
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
+        ])
         
         // BUTTON
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
+        ])
+        
+        
+        
         
     }
     
