@@ -8,8 +8,6 @@
 
 import UIKit
 
-var count = 1 // FIXME: Remove before flight
-
 @IBDesignable
 class PasswordField: UIControl {
     
@@ -27,7 +25,7 @@ class PasswordField: UIControl {
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1) // FIXME: Use Me
+    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
     // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
@@ -46,10 +44,11 @@ class PasswordField: UIControl {
 
     private let stackView = UIStackView()
     private let strengthFudge: CGFloat = 4
+    private let passwordVisible = false
 
     func setup() {
         // Lay out your subviews here
-        backgroundColor = .clear
+        backgroundColor = bgColor
 
         // ---- titleLabel -------------------------------------------
         addSubview(titleLabel)
@@ -94,6 +93,16 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
+        if let image = UIImage(named: "eyes-closed") {
+            showHideButton.setImage(image, for: .normal)
+            
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor,
+                                                    constant: -standardMargin).isActive = true
+            showHideButton.widthAnchor.constraint(equalToConstant: image.size.width).isActive = true
+            showHideButton.heightAnchor.constraint(equalToConstant: image.size.height).isActive = true
+        }
+
         // ---- weakView ---------------------------------------------
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,9 +172,6 @@ class PasswordField: UIControl {
     
     // MARK: - Actions
     @objc func keyPress(_ sender: UITextField) {
-        print("keyPress \(count)")
-        count += 1
-        
         if let text = sender.text {
             updateStrengthMeter(letterCount: text.count)
         }
