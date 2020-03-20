@@ -78,6 +78,8 @@ class PasswordField: UIControl {
         // textField
         textField.borderStyle = .line
         textField.isEnabled = true
+        textField.isSecureTextEntry = true
+        textField.becomeFirstResponder()
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
@@ -88,9 +90,10 @@ class PasswordField: UIControl {
         
         // showHideButton
         textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        textField.rightViewRect(forBounds: CGRect(x: 0, y: 5, width: 25, height: 25))
         showHideButton.setImage(UIImage(named: "eyes_closed.png"), for: .normal)
-        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
-        showHideButton.frame = CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        //showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
         
         // weak view
         weakView.backgroundColor = weakColor
@@ -132,6 +135,13 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    // MARK: - Actions
+    
+    //toggle showHideButton
+    private func toggleShowHideButton() {
+        
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -141,5 +151,17 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         return true
+    }
+}
+
+extension UIView {
+    // Animate the change
+    func animateView() {
+        func increaseHeight() { transform = CGAffineTransform(scaleX: 1.0, y: 1.3)}
+        func restorHeight() { transform = .identity}
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { increaseHeight() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { restorHeight() }})
     }
 }
