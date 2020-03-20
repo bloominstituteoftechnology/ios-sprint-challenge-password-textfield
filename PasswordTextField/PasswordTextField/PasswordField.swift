@@ -33,6 +33,7 @@ class PasswordField: UIControl {
     
     // MARK: - Private
     
+    // Constants
     private let standardMargin: CGFloat = 8.0
     private let textFieldMargin: CGFloat = 6.0
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
@@ -46,13 +47,15 @@ class PasswordField: UIControl {
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
+    private let colorViewSpacing: CGFloat = 2.0
+    
     // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
-    // Initialize Views
+    // Views
     private let titleLabel = UILabel()
     private let textField = UITextField()
     private let showHideButton = UIButton()
@@ -68,8 +71,7 @@ class PasswordField: UIControl {
     
     // MARK: - Setup
     
-    
-    func setup() {
+    private func setup() {
         backgroundColor = bgColor
         setupVStack()
         setupTitleLabel()
@@ -139,7 +141,7 @@ class PasswordField: UIControl {
         
         strengthStack.distribution = .fill
         strengthStack.alignment = .center
-        strengthStack.spacing = 2
+        strengthStack.spacing = colorViewSpacing
         
         colorViews.forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -196,7 +198,7 @@ class PasswordField: UIControl {
     
     // MARK: - Actions
     
-    @objc func showHideButtonTapped() {
+    @objc private func showHideButtonTapped() {
         showHideButton.isSelected.toggle()
         textField.isSecureTextEntry = !showHideButton.isSelected
     }
