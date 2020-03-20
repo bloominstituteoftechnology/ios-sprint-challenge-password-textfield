@@ -65,7 +65,17 @@ class PasswordField: UIControl {
         showHideButton.addTarget(self, action: #selector(changeHideButton), for: .touchUpInside)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
+        strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strongView)
         
+        mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mediumView)
+        
+        weakView.layer.backgroundColor = weakColor.cgColor
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(weakView)
         
         
         
