@@ -83,11 +83,12 @@ class PasswordField: UIControl {
         ])
         
         // textField
-        textField.borderStyle = .roundedRect
         textField.isEnabled = true
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
         textField.backgroundColor = bgColor
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 1
         textField.delegate = self
         
         NSLayoutConstraint.activate([
