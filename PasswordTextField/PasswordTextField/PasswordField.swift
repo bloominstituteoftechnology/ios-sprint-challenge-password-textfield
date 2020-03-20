@@ -89,6 +89,13 @@ class PasswordField: UIControl {
         
 //        Constraint Time!
         
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6).isActive = true
+        textFieldBorderLine.topAnchor.constraint(equalTo: bottomAnchor, constant: 15).isActive = true
+        textFieldBorderLine.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        textFieldBorderLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        textFieldBorderLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        
         
         
     }
