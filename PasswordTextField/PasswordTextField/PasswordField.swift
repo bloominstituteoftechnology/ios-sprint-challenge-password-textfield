@@ -42,13 +42,18 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        // title
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 15.0).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
         
+        // text field
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         let textFieldWdith = CGFloat(colorViewSize.width) - standardMargin - textFieldMargin
@@ -61,6 +66,7 @@ class PasswordField: UIControl {
         textField.textAlignment = .left
         textField.isSecureTextEntry = true
         
+        // show/hide button
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         let showButtonSize = CGSize(width: 35.0, height: 35.0)
@@ -71,7 +77,16 @@ class PasswordField: UIControl {
         showHideButton.setImage(showImage, for: .selected)
         showHideButton.setImage(noShowImage, for: .disabled)
         
+        // weak view
         
+        
+        // medium view
+        
+        
+        // strong view
+        
+        
+        //strength label
         
         
     }
