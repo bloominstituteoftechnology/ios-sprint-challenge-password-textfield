@@ -10,6 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBAction func checkTheValue(_ passwordField: PasswordField) {
+        
+        let pass = passwordField.password
+        let strength = passwordField.level.rawValue
+        
+        print("Password is \(pass), strength is \(strength)")
+        
+        
+        }
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
