@@ -40,12 +40,14 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
-    
+    private let strengthDescriptionLabelFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+
     private let stackView = UIStackView()
 
     func setup() {
         // Lay out your subviews here
-        
+        backgroundColor = .clear
+
         // ---- titleLabel -------------------------------------------
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +65,7 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = true
         textField.text = "See me?" // FIXME: Remove before flight
 
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
@@ -82,43 +85,46 @@ class PasswordField: UIControl {
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.frame.size = colorViewSize
-        weakView.backgroundColor = unusedColor
-        weakView.backgroundColor = weakColor // FIXME: Remove before flight
+        weakView.backgroundColor = weakColor
 
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                       constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                           constant: standardMargin).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 
         // ---- mediumView -------------------------------------------
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.frame.size = colorViewSize
         mediumView.backgroundColor = unusedColor
-        mediumView.backgroundColor = mediumColor // FIXME: Remove before flight
 
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                         constant: standardMargin).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor,
                                           constant: standardMargin).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 
         // ---- strongView -------------------------------------------
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.frame.size = colorViewSize
         strongView.backgroundColor = unusedColor
-        strongView.backgroundColor = strongColor // FIXME: Remove before flight
 
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor,
                                         constant: standardMargin).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor,
                                             constant: standardMargin).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
 
         // ---- strengthDescriptionLabel -----------------------------
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.font = strengthDescriptionLabelFont
         strengthDescriptionLabel.text = "Could Be Stronger" // FIXME: Remove before flight
 
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor,
