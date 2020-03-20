@@ -94,7 +94,7 @@ class PasswordField: UIControl {
         weakView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         
         // medium view
         addSubview(mediumView)
@@ -103,7 +103,7 @@ class PasswordField: UIControl {
         mediumView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6).isActive = true
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         
         
         // strong view
@@ -113,7 +113,7 @@ class PasswordField: UIControl {
         strongView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         
         
         //strength label
@@ -121,7 +121,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 15).isActive = true
-        strengthDescriptionLabel.text = "Could be stronger"
+        strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
@@ -176,6 +176,25 @@ class PasswordField: UIControl {
     // Cancel tracking
     override func cancelTracking(with event: UIEvent?) {
         sendActions(for: .touchCancel)
+    }
+    
+    private func determineStrength() {
+        textField.text = password
+        switch password.count {
+        case 0...9:
+            strengthDescriptionLabel.text = StrengthValue.weak.rawValue;
+            weakView.backgroundColor = weakColor;
+            weakView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+        case 10...19:
+            strengthDescriptionLabel.text = StrengthValue.medium.rawValue;
+            mediumView.backgroundColor = mediumColor;
+            mediumView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+        default:
+            strengthDescriptionLabel.text = StrengthValue.strong.rawValue;
+            strongView.backgroundColor = strongColor;
+            strongView.heightAnchor.constraint(equalToConstant: 8.0).isActive = true
+            
+        }
     }
 }
 
