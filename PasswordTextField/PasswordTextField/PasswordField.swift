@@ -127,19 +127,15 @@ class PasswordField: UIControl {
     }
     
     private func setupShowHideButton() {
-        addSubview(showHideButton)
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.setImage(UIImage(named: "eyes-open"), for: [.selected])
         
-        NSLayoutConstraint.activate([
-            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
-            showHideButton.rightAnchor.constraint(equalTo: textField.rightAnchor),
-            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
-            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
-        ])
+        showHideButton.widthAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
     }
     
     private func setupStrengthStack() {
