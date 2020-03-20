@@ -10,9 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func tuchdown(_ sender: PasswordField) {
-    }
-    @IBAction func click(_ sender: PasswordField) {
+    @IBAction func returnPressed(_ sender: Any) {
     }
     // For use in the stretch goal
     //

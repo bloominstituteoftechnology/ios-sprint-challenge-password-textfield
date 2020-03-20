@@ -20,8 +20,7 @@
                                 <rect key="frame" x="20" y="84" width="374" height="109"/>
                                 <color key="backgroundColor" red="0.90448943660000003" green="0.71855699809999996" blue="0.36490631690000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <connections>
-                                    <action selector="click:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="nKJ-pj-hRZ"/>
-                                    <action selector="tuchdown:" destination="BYZ-38-t0r" eventType="touchDown" id="lEd-9T-qUb"/>
+                                    <action selector="returnPressed:" destination="BYZ-38-t0r" eventType="valueChanged" id="2WJ-hL-zhi"/>
                                 </connections>
                             </view>
                         </subviews>

@@ -49,7 +49,6 @@ class PasswordField: UIControl {
         
         self.backgroundColor = bgColor
         
-        
         // MARK: - titleLabel
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
@@ -94,15 +93,13 @@ class PasswordField: UIControl {
         
         
         // MARK: - Hide button
-        showHideButton.addTarget(showHideButton, action: #selector(self.secureText), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(secureText(_:)), for: .touchUpInside)
+        showHideButton.isEnabled = true
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame = CGRect(x: textField.frame.maxX - textFieldMargin, y: 0, width: 20, height: 100)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         textField.rightView = showHideButton
         textField.rightViewMode = .always
-        showHideButton.isEnabled = false
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .disabled)
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-        
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(showHideButton)
         
         // MARK: - Strength indicators stack view
         var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
@@ -159,26 +156,29 @@ class PasswordField: UIControl {
         setup()
     }
     
-//    override var intrinsicContentSize: CGSize {
-//        return CGSize(width: 500, height: 200)
-//    }
-    
-    @objc func secureText() {
-        print("Clicked")
-        showHideButton.isEnabled.toggle()
+    @objc func secureText(_ sender: Any) {
+        
         textField.isSecureTextEntry.toggle()
+        
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+        
+        
     }
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 0, height: 100.0)
     }
-    
+
     private enum Strength {
         case weak
         case medium
         case strong
     }
-    
+
     private var strength: Strength = .weak {
         didSet {
             switch strength {
@@ -200,11 +200,11 @@ class PasswordField: UIControl {
                 mediumView.backgroundColor = mediumColor
                 strongView.backgroundColor = strongColor
                 strongView.performFlare()
-                
+
             }
         }
     }
-    
+
     private func determineStrength(_ password: String) {
         var newStrength: Strength = .weak
         if password.count <= 9 {
@@ -214,10 +214,46 @@ class PasswordField: UIControl {
         } else if password.count > 19 {
             newStrength = .strong
         }
-        
+
         if strength != newStrength { strength = newStrength }
-        
+
     }
+
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let touchPoint = touch.location(in: textField)
+        sendActions(for: [.touchDown])
+        return true
+
+    }
+
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let touchPoint = touch.location(in: self)
+
+        if textField.bounds.contains(touchPoint) {
+
+            sendActions(for: [.touchDragInside, .valueChanged])
+        } else {
+            sendActions(for: [.touchDragOutside])
+        }
+        return true
+    }
+
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        guard let touch = touch else { return }
+
+        let touchPoint = touch.location(in: textField)
+        if showHideButton.bounds.contains(touchPoint) {
+            print("touch inside.")
+            sendActions(for: [.touchUpInside, .valueChanged])
+        } else {
+            sendActions(for: [.touchUpOutside])
+        }
+    }
+
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: [.touchCancel])
+    }
+
     
 }
 
