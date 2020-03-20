@@ -121,7 +121,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
         
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -129,20 +128,21 @@ class PasswordField: UIControl {
         setup()
     }
     
-    
     func updateShowHideButton(at touch: UITouch) {
+        
+        let noShowImage = UIImage(named: "eyes-closed")
+        let showImage = UIImage(named: "eyes-open")
         let touchPoint = touch.location(in: showHideButton)
-        if showHideButton.isEnabled {
-            textField.isSecureTextEntry = true
-            let noShowImage = UIImage(named: "eyes-closed")
-            showHideButton.setImage(noShowImage, for: .normal)
+        
+        if showHideButton.bounds.contains(touchPoint){
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(showImage, for: .disabled)
             
         } else {
-            textField.isSecureTextEntry = false
-            let showImage = UIImage(named: "eyes-open")
-            showHideButton.setImage(showImage, for: .disabled)
+            textField.isSecureTextEntry = true
+            
+            showHideButton.setImage(noShowImage, for: .normal)
         }
-        sendActions(for: .valueChanged)
         
     }
     
