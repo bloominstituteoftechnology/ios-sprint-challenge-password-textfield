@@ -14,7 +14,7 @@ enum PasswordStrength: String {
     case strong = "Strong"
 }
 
-//@IBDesignable
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -86,6 +86,7 @@ class PasswordField: UIControl {
         textField.isEnabled = true
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
+        textField.borderStyle = .roundedRect
         textField.backgroundColor = bgColor
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1
@@ -94,7 +95,7 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
             textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
-            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: standardMargin),
+            textField.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.95),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
