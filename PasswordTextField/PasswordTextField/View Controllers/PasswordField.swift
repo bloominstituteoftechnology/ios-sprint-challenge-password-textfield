@@ -190,7 +190,6 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.text = "Strong password"
         }
     }
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -200,6 +199,13 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         determineStrength(ofPassword: newText)
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return false }
+        password = text
+        sendActions(for: [.touchUpInside, .touchUpOutside, .valueChanged])
         return true
     }
 }
