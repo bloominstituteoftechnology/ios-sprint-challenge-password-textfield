@@ -95,7 +95,7 @@ class PasswordField: UIControl {
         // weak view
         weakView.backgroundColor = weakColor
         NSLayoutConstraint.activate([
-            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            weakView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             weakView.heightAnchor.constraint(equalToConstant: 10),
             weakView.widthAnchor.constraint(equalToConstant: 60)
@@ -104,7 +104,7 @@ class PasswordField: UIControl {
         // medium view
         mediumView.backgroundColor = mediumColor
         NSLayoutConstraint.activate([
-            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            mediumView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 8),
             mediumView.heightAnchor.constraint(equalToConstant: 10),
             mediumView.widthAnchor.constraint(equalToConstant: 60)
@@ -113,10 +113,18 @@ class PasswordField: UIControl {
         // strong view
         strongView.backgroundColor = strongColor
         NSLayoutConstraint.activate([
-            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            strongView.centerYAnchor.constraint(equalTo: strengthDescriptionLabel.centerYAnchor),
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8),
             strongView.heightAnchor.constraint(equalToConstant: 10),
             strongView.widthAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        // strength description label
+        strengthDescriptionLabel.text = "Too Weak"
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 8)
         ])
     }
     
