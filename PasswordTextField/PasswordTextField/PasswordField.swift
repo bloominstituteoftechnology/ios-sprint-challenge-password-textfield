@@ -48,7 +48,7 @@ class PasswordField: UIControl {
     private (set) var passwordStrength: PasswordStrength = .weak
     
     func setup() {
-        // VIEW
+        // CONTROL VIEW
         backgroundColor = bgColor
         
         // TITLE LABEL
@@ -160,19 +160,25 @@ class PasswordField: UIControl {
         }
     }
     
-    private func determinePasswordStrength(with password: String) {
+    private func determinePasswordStrength(with password: String, oldPassword: String) {
         if password.count <= 9 {
             strengthDescriptionLabel.text = "Too weak"
             passwordStrength = .weak
-            animateColorChange(with: passwordStrength)
+            if oldPassword.count > 9 {
+                animateColorChange(with: passwordStrength)
+            }
         } else if password.count >= 10 && password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
             passwordStrength = .medium
-            animateColorChange(with: passwordStrength)
+            if oldPassword.count > 19 || oldPassword.count < 10 {
+                animateColorChange(with: passwordStrength)
+            }
         } else if password.count >= 20 {
             strengthDescriptionLabel.text = "Strong password"
             passwordStrength = .strong
-            animateColorChange(with: passwordStrength)
+            if oldPassword.count < 20 {
+                animateColorChange(with: passwordStrength)
+            }
         }
     }
     
@@ -217,13 +223,14 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-        determinePasswordStrength(with: newText)
-        password = newText
+        determinePasswordStrength(with: newText, oldPassword: oldText)
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        guard let text = textField.text else { return false }
+        password = text
         sendActions(for: [.valueChanged])
         return true
     }
