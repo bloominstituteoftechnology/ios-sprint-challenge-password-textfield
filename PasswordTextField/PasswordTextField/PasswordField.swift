@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -43,7 +44,36 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        let textFieldWdith = CGFloat(colorViewSize.width) - standardMargin - textFieldMargin
+        let textFieldSize = CGSize(width: textFieldWdith, height: textFieldContainerHeight)
+        let textFieldOrigin = CGPoint(x: standardMargin, y: 0)
+        textField.frame = CGRect(origin: textFieldOrigin, size: textFieldSize)
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = 8.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.textAlignment = .left
+        textField.isSecureTextEntry = true
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        let showButtonSize = CGSize(width: 35.0, height: 35.0)
+        let showButtonOrigin = CGPoint(x: <#T##CGFloat#>, y: <#T##CGFloat#>)
+        showHideButton.adjustsImageWhenDisabled = true
+        let showImage = UIImage(named: "eyes-open")
+        let noShowImage = UIImage(named: "eyes-closed")
+        showHideButton.setImage(showImage, for: .selected)
+        showHideButton.setImage(noShowImage, for: .disabled)
+        
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
