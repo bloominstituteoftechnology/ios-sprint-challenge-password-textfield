@@ -99,8 +99,8 @@ class PasswordField: UIControl {
         var indicatorsArray: [UIView] = [weakView, mediumView, strongView]
         let stackView = UIStackView()
         stackView.alignment = .fill
+        stackView.distribution = .fillEqually
         stackView.axis = .horizontal
-        stackView.spacing = 5
         stackView.addArrangedSubview(weakView)
         stackView.addArrangedSubview(mediumView)
         stackView.addArrangedSubview(strongView)
@@ -110,15 +110,19 @@ class PasswordField: UIControl {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         for indicator in indicatorsArray {
-
-            indicator.backgroundColor = unusedColor
+            if indicator == indicatorsArray.first {
+                indicator.backgroundColor = weakColor
+            } else {
+                indicator.backgroundColor = unusedColor
+            }
+            
             indicator.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(indicator)
-            indicator.widthAnchor.constraint(equalToConstant: 70).isActive = true
-            indicator.heightAnchor.constraint(equalToConstant: 10).isActive = true
+            indicator.frame.size = colorViewSize
+            indicator.layer.cornerRadius = 10
         }
         
-        strengthDescriptionLabel.text = " Hello world "
+        strengthDescriptionLabel.text = " Hello "
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(strengthDescriptionLabel)
         addSubview(stackView)
