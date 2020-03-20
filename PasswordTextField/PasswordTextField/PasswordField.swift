@@ -34,7 +34,7 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textContainer: UIView = UIView()
-    private var textField: UITextField = UITextField()
+    private var textField: UITextField = UITextField(frame: CGRect(x: 0, y: 0, width: 10, height: 50.0))
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
@@ -47,6 +47,9 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        
+        
+        
         // MARK: - titleLabel
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
@@ -54,44 +57,50 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
         ])
         
         // MARK: - Textfield
         textContainer.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(textContainer)
-        
+//        addSubview(textContainer)
+//
         textField.borderStyle = .roundedRect
-//        textField.layer.borderColor = textFieldBorderColor.cgColor
-//        textField.layer.borderWidth = 2
-//        textField.layer.cornerRadius = 5
-        
-        textField.font = UIFont.systemFont(ofSize: 15)
-        textField.minimumFontSize = 15
-        textField.autocorrectionType = UITextAutocorrectionType.no
-        textField.clearButtonMode = .never
-        textField.keyboardType = UIKeyboardType.default
-        textField.returnKeyType = UIReturnKeyType.default
-        textField.contentVerticalAlignment = .center
-//        textField.textAlignment = .center
-        textField.textColor = .black
-        textField.placeholder = "Is this working"
-        textField.textContentType = .password
+        textField.backgroundColor = bgColor
+//        textContainer.layer.borderColor = textFieldBorderColor.cgColor
+//        textContainer.layer.borderWidth = 2
+//        textContainer.layer.cornerRadius = 5
+//
+//        textField.font = UIFont.systemFont(ofSize: 15)
+//        textField.minimumFontSize = 15
+//        textField.autocorrectionType = UITextAutocorrectionType.no
+//        textField.clearButtonMode = .never
+//        textField.keyboardType = UIKeyboardType.default
+//        textField.returnKeyType = UIReturnKeyType.default
+//        textField.contentVerticalAlignment = .center
+////        textField.textAlignment = .center
+//        textField.textColor = .black
+//        textField.placeholder = "Is this working"
+//        textField.textContentType = .password
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.isUserInteractionEnabled = true
+//        textField.isUserInteractionEnabled = true
         textField.isEnabled = true
         textField.delegate = self
-        textField.text = "testing"
-        textContainer.addSubview(textField)
+//        textField.allowsEditingTextAttributes = true
+//        textField.text = "testing"
+        
+//        addSubview(textContainer)
+        addSubview(textField)
+//        textContainer.addSubview(textField)
         NSLayoutConstraint.activate([
-            textContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-            textContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
-            textContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin)
+//            textContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+//            textContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+//            textContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
+//            textContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin)
         ])
         
         
@@ -153,6 +162,15 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+//    override var intrinsicContentSize: CGSize {
+//        return CGSize(width: 500, height: 200)
+//    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 0, height: 82)
+    }
+    
 }
 
 
