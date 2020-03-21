@@ -8,7 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
+    
+    var passwordField: PasswordField!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
+   @objc @IBAction func passwordEntered(_ sender: Any) {
+        
+    }
+    
+    @objc @IBAction func showHideButtonTapped(_ sender: Any) {
+        
+    }
     
     // For use in the stretch goal
     //
