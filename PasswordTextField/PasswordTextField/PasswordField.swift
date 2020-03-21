@@ -47,10 +47,7 @@ class PasswordField: UIControl {
     }
     
     func setup() {
-        // Lay out your subviews here
-//        self.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
-//        self.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20.0).isActive = true
-//        self.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20.0).isActive = true
+
         self.backgroundColor = bgColor
         // title
         addSubview(titleLabel)
@@ -84,12 +81,13 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldContainerHeight / 4).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight / 4).isActive = true
+        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true        
+        showHideButton.addTarget(self, action: #selector(updateShowHideButton(sender:at:)), for: .touchUpInside)
         showHideButton.adjustsImageWhenDisabled = true
         let noShowImage = UIImage(named: "eyes-closed")
         showHideButton.setImage(noShowImage, for: .normal)
         let showImage = UIImage(named: "eyes-open")
         showHideButton.setImage(showImage, for: .disabled)
-        showHideButton.addTarget(self, action: #selector(updateShowHideButton(sender:at:)), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -138,7 +136,7 @@ class PasswordField: UIControl {
         textField.delegate = self
         
     }
-    
+
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     self.textField.resignFirstResponder()
     addTarget(self, action: #selector(ViewController.passwordEntered(_:)), for: .valueChanged)
