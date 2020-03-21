@@ -201,27 +201,43 @@ class PasswordField: UIControl {
         let length = password.count
         
         switch length {
-        case 0...9:
+        case 0:
             self.weakView.backgroundColor = weakColor;
-            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
-                self.weakView.transform = CGAffineTransform(scaleX: 1.2, y: 0)
+            strengthDescriptionLabel.text = StrengthValue.weak.rawValue;
+            self.weakView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                self.weakView.transform = .identity
             }, completion: nil);
-            strengthDescriptionLabel.text = StrengthValue.weak.rawValue
             
-           
-        case 10...19:
-            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
-                self.mediumView.transform = CGAffineTransform(scaleX: 1.2, y: 0)
+        case 1...9:
+            self.weakView.backgroundColor = weakColor;
+            strengthDescriptionLabel.text = StrengthValue.weak.rawValue
+            self.weakView.transform = .identity
+            
+        case 10:
+            self.mediumView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                self.mediumView.transform = .identity
             }, completion: nil);
             strengthDescriptionLabel.text = StrengthValue.medium.rawValue;
             self.mediumView.backgroundColor = mediumColor
            
+        case 11...19:
+            strengthDescriptionLabel.text = StrengthValue.medium.rawValue;
+            self.mediumView.backgroundColor = mediumColor
+            self.mediumView.transform = .identity
+           
+        case 20:
+            self.strongView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                           self.strongView.transform = .identity
+                       }, completion: nil)
         default:
             strengthDescriptionLabel.text = StrengthValue.strong.rawValue;
             strongView.backgroundColor = strongColor;
-            UIView.animateKeyframes(withDuration: 0.50, delay: 0, options: [], animations: {
-                self.strongView.transform = CGAffineTransform(scaleX: 1.2, y: 0)
-            }, completion: nil)
+            self.strongView.transform = .identity
+           
+
            
             
         }
