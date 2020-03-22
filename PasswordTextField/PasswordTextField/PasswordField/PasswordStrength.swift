@@ -6,7 +6,7 @@
 //  Copyright © 2020 Lambda School. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum PasswordStrength {
     case weak, medium, strong
@@ -23,7 +23,9 @@ enum PasswordStrength {
     }
     
     static func strength(for password: String) -> PasswordStrength {
-        let passwordIsWord = false // UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password)
+        let range = NSRange(password.startIndex..., in: password)
+        let misspelledRange = UITextChecker().rangeOfMisspelledWord(in: password, range: range, startingAt: 0, wrap: false, language: "en")
+        let passwordIsWord = misspelledRange.location == NSNotFound
         
         switch password.count {
         case 0...5:
