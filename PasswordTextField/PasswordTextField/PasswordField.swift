@@ -159,6 +159,7 @@ class PasswordField: UIControl {
         return newShowHiddenButton
         
     }
+    
 
     
     func threeIndicators(three cases: StrengthPasswordCondtion) {
@@ -172,18 +173,19 @@ class PasswordField: UIControl {
             weakView.layer.backgroundColor = weakColor.cgColor
                            mediumView.layer.backgroundColor = unusedColor.cgColor
                            strongView.layer.backgroundColor = unusedColor.cgColor
-            
+           weakViewAnimnate()
         case .medium:
             weakView.layer.backgroundColor = weakColor.cgColor
                           mediumView.layer.backgroundColor = mediumColor.cgColor
                           strongView.layer.backgroundColor = unusedColor.cgColor
-            
+            mediumViewAnimnate()
         case .strong:
             weakView.layer.backgroundColor = weakColor.cgColor
             mediumView.layer.backgroundColor = mediumColor.cgColor
             strongView.layer.backgroundColor = strongColor.cgColor
+            strongViewAnimnate()
         }
-        
+      
     }
     
     
@@ -192,9 +194,10 @@ class PasswordField: UIControl {
         
         
         switch passwordField.count {
-        case 0...9:
+        case 0...5:
             strength = StrengthPasswordCondtion.tooWeak
-        case 10...19:
+            
+        case 6...10:
             strength = StrengthPasswordCondtion.medium
         default:
             strength = StrengthPasswordCondtion.strong
@@ -202,13 +205,58 @@ class PasswordField: UIControl {
         if condition != strength {
             threeIndicators(three: strength)
         }
-        
+       
     }
   
     
+    func weakViewAnimnate() {
+       
+        let animationOn = {
+            self.weakView.transform = CGAffineTransform(scaleX: 1.6, y: 1.5)
+        }
+        let animationOff = {
+            self.weakView.transform = .identity
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            animationOn()
+        }) { (_) in
+            animationOff()
+        }
+}
     
+        func mediumViewAnimnate() {
+           
+            let animationOn = {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
+            }
+            let animationOff = {
+                self.mediumView.transform = .identity
+            }
+            UIView.animate(withDuration: 0.30, animations: {
+                animationOn()
+            }) { (_) in
+                animationOff()
+            }
+    }
+    
+    func strongViewAnimnate() {
+              
+               let animationOn = {
+                self.strongView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
+               }
+               let animationOff = {
+                   self.strongView.transform = .identity
+               }
+               UIView.animate(withDuration: 0.30, animations: {
+                   animationOn()
+               }) { (_) in
+                   animationOff()
+               }
+       }
+
 }
 
+    
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
