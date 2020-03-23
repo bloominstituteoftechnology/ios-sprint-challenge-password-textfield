@@ -21,9 +21,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    @objc @IBAction func showHideButtonTapped(_ sender: Any) {
-        
-    }
+//    @objc @IBAction func showHideButtonTapped(_ sender: UIButton) {
+//
+//        passwordField.updateShowHideButton()
+//
+//    }
     
     // For use in the stretch goal
     //

@@ -23,8 +23,8 @@
                                     <constraint firstAttribute="height" constant="109" id="V1L-HJ-KWl"/>
                                 </constraints>
                                 <connections>
-                                    <action selector="passwordEntered:" destination="BYZ-38-t0r" eventType="valueChanged" id="eXH-WQ-yk1"/>
-                                    <action selector="showHideButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uhs-PC-VY4"/>
+                                    <action selector="passwordEntered:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BxY-xy-Tdp"/>
+                                    <action selector="passwordEntered:" destination="BYZ-38-t0r" eventType="valueChanged" id="GXf-mj-R6w"/>
                                 </connections>
                             </view>
                         </subviews>

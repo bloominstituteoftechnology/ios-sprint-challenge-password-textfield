@@ -12,6 +12,8 @@ import UIKit
 @IBDesignable
 class PasswordField: UIControl {
     
+    
+    var viewController: ViewController!
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
 //    private let stackView = UIStackView()
@@ -72,7 +74,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.becomeFirstResponder()
         textField.textAlignment = .left
-        textField.isSecureTextEntry.toggle()
+        textField.isSecureTextEntry = true
         textField.backgroundColor = bgColor
         
         // show/hide button
@@ -82,12 +84,10 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: textFieldContainerHeight / 4).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight / 4).isActive = true
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true        
-        showHideButton.addTarget(self, action: #selector(updateShowHideButton(sender:at:)), for: .touchUpInside)
-        showHideButton.adjustsImageWhenDisabled = true
-        let noShowImage = UIImage(named: "eyes-closed")
-        showHideButton.setImage(noShowImage, for: .normal)
-        let showImage = UIImage(named: "eyes-open")
-        showHideButton.setImage(showImage, for: .disabled)
+        showHideButton.addTarget(self, action: #selector(updateShowHideButton), for: .touchUpInside)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .disabled)
+        
         
         // weak view
         addSubview(weakView)
@@ -148,28 +148,22 @@ class PasswordField: UIControl {
     
  
     
-    @objc private func updateShowHideButton(sender: UIButton, at touch: UITouch) {
+   @objc func updateShowHideButton() {
         
-        addTarget(self, action: #selector(ViewController.showHideButtonTapped(_:)), for: .touchUpInside)
-                
-        let touchPoint = touch.location(in: self)
-        let noShowImage = UIImage(named: "eyes-closed")
-        let showImage = UIImage(named: "eyes-open")
+        textField.isSecureTextEntry.toggle()
+        showHideButton.setImage(textField.isSecureTextEntry ? UIImage(named: "eyes-closed") : UIImage(named: "eyes-open"), for: .normal)
         
-        if showHideButton.bounds.contains(touchPoint){
-            textField.isSecureTextEntry = false
-            showHideButton.setImage(showImage, for: .selected)
-            
-        } else {
-            textField.isSecureTextEntry = true
-            
-            showHideButton.setImage(noShowImage, for: .normal)
-        }
     }
+    
+//    @objc func showHideButtonTapped() {
+//
+//        passwordField.updateShowHideButton()
+//
+//    }
     
     // Start tracking touch in control
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        updateShowHideButton(sender: showHideButton, at: touch)
+        updateShowHideButton()
         return true
     }
     
@@ -182,7 +176,7 @@ class PasswordField: UIControl {
         
         let touchPoint = touch.location(in: self)
         if showHideButton.bounds.contains(touchPoint) {
-            updateShowHideButton(sender: showHideButton, at: touch)
+            updateShowHideButton()
             sendActions(for: .touchUpInside)
         } else {
             sendActions(for: .touchUpOutside)
