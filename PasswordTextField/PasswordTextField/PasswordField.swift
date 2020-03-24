@@ -189,7 +189,7 @@ class PasswordField: UIControl {
     }
     
     
-    func strengthCases(to passwordField: String) {
+    func determinePasswordStrength(to passwordField: String) {
         var strength: StrengthPasswordCondtion
         
         
@@ -262,7 +262,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-       strengthCases(to: newText)
+       determinePasswordStrength(to: newText)
                return true
     }
 }
