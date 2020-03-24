@@ -16,7 +16,7 @@ enum StrengthPasswordCondtion: String {
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    var condition: StrengthPasswordCondtion = .medium
+    var condition: StrengthPasswordCondtion = .tooWeak
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
@@ -73,12 +73,12 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         
-        strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.layer.backgroundColor = unusedColor.cgColor
         strongView.layer.cornerRadius = 2
         strongView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(strongView)
         
-        mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.layer.backgroundColor = unusedColor.cgColor
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mediumView)
         
@@ -149,20 +149,20 @@ class PasswordField: UIControl {
   
     }
     
-    @objc func changeHideButton() -> () {
-    let newShowHiddenButton = textField.isSecureTextEntry.toggle()
+    @objc func changeHideButton() {
+   textField.isSecureTextEntry.toggle()
         if textField.isSecureTextEntry == true {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         }
-        return newShowHiddenButton
+       
         
     }
     
 
     
-    func threeIndicators(three cases: StrengthPasswordCondtion) {
+    func passwordStrength(for cases: StrengthPasswordCondtion) {
         condition = cases
         strengthDescriptionLabel.text = condition.rawValue
           
@@ -173,17 +173,17 @@ class PasswordField: UIControl {
             weakView.layer.backgroundColor = weakColor.cgColor
                            mediumView.layer.backgroundColor = unusedColor.cgColor
                            strongView.layer.backgroundColor = unusedColor.cgColor
-           weakViewAnimnate()
+           weakViewAnimate()
         case .medium:
             weakView.layer.backgroundColor = weakColor.cgColor
                           mediumView.layer.backgroundColor = mediumColor.cgColor
                           strongView.layer.backgroundColor = unusedColor.cgColor
-            mediumViewAnimnate()
+            mediumViewAnimate()
         case .strong:
             weakView.layer.backgroundColor = weakColor.cgColor
             mediumView.layer.backgroundColor = mediumColor.cgColor
             strongView.layer.backgroundColor = strongColor.cgColor
-            strongViewAnimnate()
+            strongViewAnimate()
         }
       
     }
@@ -203,13 +203,13 @@ class PasswordField: UIControl {
             strength = StrengthPasswordCondtion.strong
         }
         if condition != strength {
-            threeIndicators(three: strength)
+            passwordStrength(for: strength)
         }
        
     }
   
     
-    func weakViewAnimnate() {
+   private func weakViewAnimate() {
        
         let animationOn = {
             self.weakView.transform = CGAffineTransform(scaleX: 1.6, y: 1.5)
@@ -224,7 +224,7 @@ class PasswordField: UIControl {
         }
 }
     
-        func mediumViewAnimnate() {
+      private func mediumViewAnimate() {
            
             let animationOn = {
                 self.mediumView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
@@ -239,7 +239,7 @@ class PasswordField: UIControl {
             }
     }
     
-    func strongViewAnimnate() {
+    private func strongViewAnimate() {
               
                let animationOn = {
                 self.strongView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
