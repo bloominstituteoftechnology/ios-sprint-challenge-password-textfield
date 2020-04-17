@@ -64,15 +64,17 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
         
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -8),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8)
-            
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: <#T##CGFloat#>),
+            textField.leadingAnchor.constraint(equalTo: <#T##NSLayoutAnchor<NSLayoutXAxisAnchor>#>, constant: <#T##CGFloat#>),
+            textField.trailingAnchor.constraint(equalTo: <#T##NSLayoutAnchor<NSLayoutXAxisAnchor>#>, constant: <#T##CGFloat#>)
         
         
         ])
         
         // Views
+        weakView.backgroundColor = unusedColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +86,7 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
         
-        
+            
         
         ])
         
@@ -118,6 +120,8 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
+        backgroundColor = bgColor
     }
     
     enum PasswordStrength: String {
