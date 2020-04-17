@@ -106,10 +106,18 @@ class PasswordField: UIControl {
         
     }
     
+    func textCount() {
+        if textField.text!.count < 6 {
+            print("weak")
+        }
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
         return true
     }
+    
+  
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
         textField.resignFirstResponder()
@@ -124,6 +132,9 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+       
+            
         return true
     }
 }
