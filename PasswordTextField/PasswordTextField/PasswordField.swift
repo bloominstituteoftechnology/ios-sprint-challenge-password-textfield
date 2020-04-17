@@ -30,15 +30,16 @@ class PasswordField: UIControl {
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
         // text field
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1) // TODO: unabreviate this constant to something else
-        // States of the password strength indicators
+    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
+        // strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     // IMAGES
-    // TODO: add "eyeball" button images
+    private let eyesClosedImage = #imageLiteral(resourceName: "eyes-closed")
+    private let eyesOpenImage = #imageLiteral(resourceName: "eyes-open")
     
     // SUBVIEWS
     private var titleLabel: UILabel = UILabel() // TODO: update var with more specific name
