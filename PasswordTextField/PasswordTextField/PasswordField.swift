@@ -58,12 +58,33 @@ class PasswordField: UIControl {
         textFieldBorderLine.layer.borderWidth = 2
         textFieldBorderLine.layer.cornerRadius = 6
         addSubview(textFieldBorderLine)
+        
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(changeHideButton), for: .touchUpInside)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
+        
+        strongView.layer.backgroundColor = unusedColor.cgColor
+        strongView.layer.cornerRadius = 2
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strongView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    @objc func changeHideButton() {
+    textField.isSecureTextEntry.toggle()
+         if textField.isSecureTextEntry == true {
+             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+         } else {
+             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+         }
+        
+         
+     }
 }
 
 extension PasswordField: UITextFieldDelegate {
