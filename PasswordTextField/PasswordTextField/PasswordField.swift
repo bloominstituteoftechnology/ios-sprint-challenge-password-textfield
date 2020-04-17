@@ -181,9 +181,12 @@ class PasswordField: UIControl {
     }
     
     func returnPassword() {
-        guard let textField = textField.text else { return }
+        guard let textField = textField.text,
+            let strengthDescriptionLabel = strengthDescriptionLabel.text
+            else { return }
         password = textField
         print("Password: \(password)")
+        print("Strength: \(strengthDescriptionLabel)")
         
     }
     
@@ -220,7 +223,7 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
-        textField.resignFirstResponder()        
+        textField.resignFirstResponder()
         returnPassword()
         return true
     }
