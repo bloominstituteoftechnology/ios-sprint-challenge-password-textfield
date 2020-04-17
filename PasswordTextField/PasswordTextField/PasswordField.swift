@@ -19,8 +19,8 @@ class PasswordField: UIControl {
         case good = "Strong password"
     }
     
-    var strength: PasswordStrength = .bad
-    var password: String = ""
+    public private (set) var strength: PasswordStrength = .bad
+    public private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -132,8 +132,6 @@ class PasswordField: UIControl {
             isTextHidden = true
         }
     }
-    
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -151,7 +149,6 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
-
 
 extension PasswordField {
     func setupTitleLabel() {
