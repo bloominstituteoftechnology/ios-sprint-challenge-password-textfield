@@ -49,6 +49,14 @@ class PasswordField: UIControl {
         titleLabel.font = labelFont
         addSubview(titleLabel)
         
+        NSLayoutConstraint.activate([
+        
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -30),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10)
+        
+        ])
+        
         // Text Field
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -64,7 +72,8 @@ class PasswordField: UIControl {
         
         // showHideButton
         
-        showHideButton.setImage(<#T##image: UIImage?##UIImage?#>, for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
              
     }
     
