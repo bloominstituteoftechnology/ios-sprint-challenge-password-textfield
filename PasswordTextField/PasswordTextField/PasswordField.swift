@@ -86,6 +86,7 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 1.0
         textField.isSecureTextEntry = true
         // FIXME: - text editing not working
+        textField.isUserInteractionEnabled = true
         textField.addTarget(self, action: #selector(passwordWasEdited(_:)), for: .editingChanged)
         textField.addTarget(self, action: #selector(returnKeyWasPressed(_:)), for: .editingDidEndOnExit)
         
@@ -100,6 +101,8 @@ class PasswordField: UIControl {
         // "EYEBALL" "HIDE/SHOW TEXT" BUTTON
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        showHideButton.addTarget(self, action: #selector(showHideButtonWasPressed(_:)), for: .touchUpInside)
         
         // appearance
         showHideButton.setImage(eyesClosedImage, for: .normal)
@@ -162,7 +165,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // appearance
-        strengthDescriptionLabel.text = "Nothing Typed"
+        strengthDescriptionLabel.text = " 🤔 Empty"
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
         
@@ -204,11 +207,34 @@ class PasswordField: UIControl {
     
     // SHOW PASSWORD STRENGTH
     private func updateForPasswordStrength() {
-        // TODO: update the subviews based on password length
+        guard let passwordCharacterCount = textField.text?.count else { return }
+
+        // update the subviews based on password length
+        switch passwordCharacterCount {
+        case 0...5:
+            // weak
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = " 😕 Weak"
+        case 6...8:
+            // medium
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = " 😐 Medium"
+        default:
+            // strong
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = " 😎 Strong"
+        }
     }
     
     // SHOW -OR- HIDE PASSWORD
     private func showOrHidePassword(currentImage: UIImage) {
+        print("eyeball tapped")
         switch currentImage {
         case eyesClosedImage:
             textField.isSecureTextEntry = false
@@ -237,3 +263,5 @@ extension PasswordField: UITextFieldDelegate {
 // TODO: pulse animations for increasing strength
 // TODO: debounce for only sending final password?
 // TODO: check password with dictionary
+
+// FIXME: - showHideButton not "clickable"
