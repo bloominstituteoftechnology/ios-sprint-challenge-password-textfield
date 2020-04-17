@@ -15,6 +15,7 @@ class PasswordField: UIControl {
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
+    private let textFieldContainerView: UIView = UIView()
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
@@ -38,17 +39,48 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    required init?(coder aDecoder: NSCoder) {
+          super.init(coder: aDecoder)
+          setup()
+      }
+    
     func setup() {
-        // Lay out your subviews here
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-    }
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 150).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        titleLabel.text = "Enter password"
+        titleLabel.textColor = .black
+        
+   
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+    // Ccontainer view
+    addSubview(textFieldContainerView)
+    textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
+    
+    textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: 0).isActive = true
+    textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
+    textFieldContainerView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+    textFieldContainerView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    textFieldContainerView.layer.borderWidth = 0.5
+    textFieldContainerView.layer.borderColor = UIColor.black.cgColor
+    textFieldContainerView.layer.cornerRadius = 8.0
+    
+    // Password Text Field
+    textFieldContainerView.addSubview(textField)
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 8).isActive = true
+    textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 8).isActive = true
+    textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
+    textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -8).isActive = true
+    textField.placeholder = "Password"
+    
+  
+}
 }
 
 extension PasswordField: UITextFieldDelegate {
