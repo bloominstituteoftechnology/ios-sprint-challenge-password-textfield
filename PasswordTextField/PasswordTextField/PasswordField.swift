@@ -41,14 +41,25 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+        // Title Label
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        addSubview(titleLabel)
+        
+        // Text Field
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
+
 }
 
 extension PasswordField: UITextFieldDelegate {
