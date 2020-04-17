@@ -66,21 +66,21 @@ class PasswordField: UIControl {
         textFieldContainerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         textFieldContainerView.layer.borderWidth = 0.5
-               textFieldContainerView.layer.borderColor = UIColor.blue.cgColor
-               textFieldContainerView.layer.cornerRadius = 8.0
-     
+        textFieldContainerView.layer.borderColor = UIColor.blue.cgColor
+        textFieldContainerView.layer.cornerRadius = 8.0
+        
         
         // title label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 20).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 0).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -20).isActive = true
         titleLabel.text = "Enter password"
         titleLabel.textColor = labelTextColor
-
+        
         
         
         // Password Text Field
@@ -92,7 +92,7 @@ class PasswordField: UIControl {
         textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -textFieldMargin).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -6).isActive = true
         textField.placeholder = "   Password"
-       
+        
         
         // login button
         textFieldContainerView.addSubview(showHideButton)
@@ -102,6 +102,19 @@ class PasswordField: UIControl {
         showHideButton.setImage(closedEyeImage, for: .normal)
         showHideButton.setTitleColor(.black, for: .normal)
         
+        
+        
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("Text field should begin editing")
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
+        textField.resignFirstResponder()
+        print("textField should return")
+        return true
     }
 }
 
@@ -110,8 +123,10 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-//        textField.resignFirstResponder()
         // TODO: send new text to the determine strength method
         return true
     }
 }
+
+
+
