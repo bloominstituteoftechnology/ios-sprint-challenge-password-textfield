@@ -41,7 +41,7 @@ class PasswordField: UIControl {
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
-    private var strengthDescriptionLabel: UILabel = UILabel()
+    private (set) var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
         
@@ -53,8 +53,6 @@ class PasswordField: UIControl {
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
-        // Do we need a height constraint or does it go off of font size?
-        //        titleLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
@@ -72,7 +70,7 @@ class PasswordField: UIControl {
         textField.textAlignment = .natural
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
-        textField.addTarget(self, action: #selector(passwordFieldEnter), for: .valueChanged)
+        textField.addTarget(self, action: #selector(ViewController.passwordEntered(_:)), for: .valueChanged)
         
         //show/hide button
         addSubview(showHideButton)
@@ -80,9 +78,8 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight * 0.33).isActive = true
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
-        // Do I set the image here or in a func for eyes-closed == true, eyes-opened == false or in addTarget func?
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
+//        showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
         showHideButton.addTarget(self, action: #selector(updateShowHideButton), for: .touchUpInside)
         
         // weak view
@@ -132,6 +129,7 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
         textField.delegate = self
+       
     }
     
     func textFieldValueChanged(_ textField: UITextField) -> Bool {
@@ -145,21 +143,20 @@ class PasswordField: UIControl {
     
     @objc private func passwordFieldEnter() {
         textField.resignFirstResponder()
-        print(password)
-        print(self.strengthDescriptionLabel)
+        NSLog(password)
+        NSLog(self.strengthDescriptionLabel.text ?? "")
     }
     ////// THIS NEEDS ATTENTION
-    @objc func updateShowHideButton(sender: UIButton) {
+    @objc private func updateShowHideButton() {
         
-        if sender.currentImage == UIImage(named: "eyes-closed") {
-            sender.setImage(UIImage(named: "eyes-open"), for: .normal)
+        if showHideButton.currentImage == UIImage(named: "eyes-closed") {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
         } else {
-            sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             textField.isSecureTextEntry = true
         }
     }
-    
     
     private func determineStrength(password: String) {
         
@@ -219,7 +216,7 @@ class PasswordField: UIControl {
     
     // Start tracking touch in control
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        updateShowHideButton(sender: showHideButton)
+//        updateShowHideButton()
         return true
     }
     
@@ -232,7 +229,7 @@ class PasswordField: UIControl {
         
         let touchPoint = touch.location(in: self)
         if showHideButton.bounds.contains(touchPoint) {
-            updateShowHideButton(sender: showHideButton)
+            updateShowHideButton()
             sendActions(for: .touchUpInside)
         } else {
             sendActions(for: .touchUpOutside)
@@ -250,7 +247,6 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         determineStrength(password: newText)
         return true
     }
