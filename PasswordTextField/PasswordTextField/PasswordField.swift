@@ -65,6 +65,7 @@ class PasswordField: UIControl {
         textField.textContentType = .newPassword
         textField.isSecureTextEntry = true
         textField.placeholder = "password"
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -76,48 +77,56 @@ class PasswordField: UIControl {
         passwordStackView.addArrangedSubview(textField)
         passwordStackView.addArrangedSubview(showHideButton)
         passwordStackView.alignment = .fill
-        passwordStackView.distribution = .fill
+        passwordStackView.distribution = .fillProportionally
         passwordStackView.axis = .horizontal
         addSubview(passwordStackView)
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.backgroundColor = weakColor
-//        weakView.frame = CGRect(x: 0, y: 0, width: 18, height: 3)
         
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.backgroundColor = unusedColor
-//        mediumView.frame = CGRect(x: 0, y: 0, width: 18, height: 3)
         
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.backgroundColor = unusedColor
-//        mediumView.frame = CGRect(x: 0, y: 0, width: 18, height: 3)
         
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.text = self.strength.rawValue
+        addSubview(strengthDescriptionLabel)
         
         let strengthStackView = UIStackView()
         strengthStackView.translatesAutoresizingMaskIntoConstraints = false
         strengthStackView.addArrangedSubview(weakView)
         strengthStackView.addArrangedSubview(mediumView)
         strengthStackView.addArrangedSubview(strongView)
-        strengthStackView.addArrangedSubview(strengthDescriptionLabel)
         strengthStackView.alignment = .fill
         strengthStackView.distribution = .fill
         strengthStackView.axis = .horizontal
+        strengthStackView.spacing = 4
         addSubview(strengthStackView)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
             
-            passwordStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            passwordStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            passwordStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
+            passwordStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            passwordStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            passwordStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
             
-            strengthStackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 4),
-            strengthStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            strengthStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4)
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
+            strengthStackView.topAnchor.constraint(equalTo: passwordStackView.bottomAnchor, constant: standardMargin),
+            strengthStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: passwordStackView.bottomAnchor),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strengthStackView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: standardMargin),
         ])
     }
     
@@ -188,18 +197,27 @@ class PasswordField: UIControl {
         case .strong:
             strongView.backgroundColor = strongColor
         }
+        setNeedsDisplay()
     }
 }
 
 extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        determineStrength(for: newText)
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let password = textField.text else { return }
+        determineStrength(for: password)
         updateViews()
-        return true
     }
+    
+    // I honestly cannot figure out what this is doing so I'm doing my own implementation
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        let oldText = textField.text!
+//        let stringRange = Range(range, in: oldText)!
+//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+//        determineStrength(for: newText)
+//        updateViews()
+//        return true
+//    }
     
     private func determineStrength(for password: String) {
         switch password.count {
