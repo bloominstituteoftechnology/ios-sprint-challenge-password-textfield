@@ -14,6 +14,7 @@ enum PasswordStrength: String {
     case strong = "Strong password"
 }
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -159,6 +160,11 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8.0)
         ])
         
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
