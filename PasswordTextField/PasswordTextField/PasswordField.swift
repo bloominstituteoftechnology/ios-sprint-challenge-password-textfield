@@ -49,7 +49,7 @@ class PasswordField: UIControl {
         titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: standardMargin).isActive = true
         titleLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: self.trailingAnchor, multiplier: standardMargin).isActive = true
         // Do we need a height constraint or does it go off of font size?
-//        titleLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        //        titleLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
@@ -73,12 +73,52 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight / -20.0).isActive = true
-               showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
+        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
         // Do I set the image here or in a func for eyes-closed == true, eyes-opened == false or in addTarget func?
-//        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        //        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         // TODO: - addTarget
         
-    
+        // weak view
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 12.0).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        
+        weakView.backgroundColor = unusedColor
+        
+        
+        // medium view
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 12.0).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6).isActive = true
+        
+        mediumView.backgroundColor = unusedColor
+        
+        
+        // strong view
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 12.0).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
+        
+        strongView.backgroundColor = unusedColor
+        
+        //strength label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 6.0).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.text = ""
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
+        strengthDescriptionLabel.textAlignment = .left
     }
     
     required init?(coder aDecoder: NSCoder) {
