@@ -82,14 +82,29 @@ class PasswordField: UIControl {
         switch text.count {
         case 0...9:
             strength = .bad
+            strongView.backgroundColor = .gray
+            mediumView.backgroundColor = .gray
+            weakView.backgroundColor = .red
         case 10...19:
             strength = .ok
+            strongView.backgroundColor = .gray
+            mediumView.backgroundColor = .orange
+            weakView.backgroundColor = .red
+            
         case 20...:
             strength = .good
+            strongView.backgroundColor = .green
+            mediumView.backgroundColor = .orange
+            weakView.backgroundColor = .red
         default:
             strength = .good
+            strongView.backgroundColor = .green
+            mediumView.backgroundColor = .orange
+            weakView.backgroundColor = .red
         }
-        print(strength.rawValue)
+        
+        strengthDescriptionLabel.text = strength.rawValue
+        
     }
     
     //MARK: - Actions
@@ -144,7 +159,7 @@ extension PasswordField {
     }
     
     func setupTextField() {
-        textField.font = .systemFont(ofSize: 32, weight: .medium)
+        textField.font = .systemFont(ofSize: 24, weight: .medium)
         textField.textColor = .black
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isUserInteractionEnabled = true
@@ -181,8 +196,8 @@ extension PasswordField {
     
     func setupViews() {
         weakView.backgroundColor = .red
-        mediumView.backgroundColor = .orange
-        strongView.backgroundColor = .green
+        mediumView.backgroundColor = .gray
+        strongView.backgroundColor = .gray
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.translatesAutoresizingMaskIntoConstraints = false
