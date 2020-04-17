@@ -40,7 +40,7 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+        self.backgroundColor = bgColor
         // Title Label
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -116,10 +116,10 @@ class PasswordField: UIControl {
         setup()
     }
     
-    enum PasswordStrength {
-        case weak
-        case medium
-        case strong 
+    enum PasswordStrength: String {
+        case weak = "Too weak"
+        case medium = "Could be stronger"
+        case strong = "Strong password"
     }
     
 }
