@@ -26,19 +26,6 @@ class PasswordField: UIControl {
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
-    //private let viewSize = CGRect(x: 0, y: 0, width: 50, height: 50)
-    
-    private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
-    private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
-    private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
-    
-    // States of the password strength indicators
-    private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
-    private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
-    private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
-    private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
@@ -56,7 +43,6 @@ class PasswordField: UIControl {
         setupShowHideButton()
         setupViews()
         setupStrengthLabel()
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,21 +50,7 @@ class PasswordField: UIControl {
         setup()
     }
     
-    /*
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        <#code#>
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        <#code#>
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        <#code#>
-    }*/
-    
-    
-    
+    //Setting strength and the views color
     func determineStrength(text: String) {
         switch text.count {
         case 0...9:
@@ -115,10 +87,6 @@ class PasswordField: UIControl {
         password = text
     }
     
-    @objc func textFieldEndEditing() {
-        print(textField.text)
-    }
-    
     @objc func buttonPressed() {
         if isTextHidden == true {
             guard let image = UIImage(named: "eyes-open") else { return }
@@ -134,22 +102,16 @@ class PasswordField: UIControl {
     }
 }
 
+//MARK: - Added Text Field Delegate
 extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
-        
-        return true
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendActions(for: [.valueChanged])
         return true
     }
 }
 
+
+//MARK: - Setting Up Objects
 extension PasswordField {
     func setupTitleLabel() {
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
@@ -247,10 +209,5 @@ extension PasswordField {
             NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .top, relatedBy: .equal, toItem: strongView, attribute: .top, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .leading, relatedBy: .equal, toItem: strongView, attribute: .trailing, multiplier: 1.0, constant: 5.0)
         ])
-        
-        
     }
-    
-    
-    
 }
