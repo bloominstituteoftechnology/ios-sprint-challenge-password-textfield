@@ -122,7 +122,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
         //        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor).isActive = true
         
-        strengthDescriptionLabel.text = passWordStrength.weak.rawValue
+        strengthDescriptionLabel.text = ""
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
         
@@ -174,18 +174,25 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = .white
             strongView.backgroundColor = .white
+            strengthDescriptionLabel.text = passWordStrength.weak.rawValue
         case 10...19:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = .white
+            strengthDescriptionLabel.text = passWordStrength.medium.rawValue
+
         case 20...1000:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = passWordStrength.strong.rawValue
+
         default:
             weakView.backgroundColor = .white
             mediumView.backgroundColor = .white
             strongView.backgroundColor = .white
+            strengthDescriptionLabel.text = ""
+
             
         }
     }
