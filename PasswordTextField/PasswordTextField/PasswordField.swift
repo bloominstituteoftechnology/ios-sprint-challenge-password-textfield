@@ -44,13 +44,16 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    var characterCount: Int?
+    enum passWordStrength: String {
+        case weak = "too weak"
+        case medium = "could be stronger"
+        case strong = "strong password"
+        
+    }
     
-    
+    private var characterCount: Int?
     
     // MARK: - Required Initializers
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -95,8 +98,6 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 8.0
         textField.isSecureTextEntry = true
         
-        
-        
         // login button
         textFieldContainerView.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -107,8 +108,6 @@ class PasswordField: UIControl {
         showHideButton.setTitleColor(.black, for: .normal)
         
         showHideButton.addTarget(self, action: #selector(myButtonTapped), for:  UIControl.Event.touchUpInside)
-              
-        
         
         // strength description label
         addSubview(strengthDescriptionLabel)
@@ -153,15 +152,6 @@ class PasswordField: UIControl {
         
     }
     
-    
-    
-    enum passWordStrength: String {
-        case weak = "too weak"
-        case medium = "could be stronger"
-        case strong = "strong password"
-        
-    }
-    
     func updateStrengthIndicator() {
         guard let characterCount = characterCount else { return }
         switch characterCount {
@@ -187,12 +177,15 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = .white
             strongView.backgroundColor = .white
             strengthDescriptionLabel.text = ""
-            
-            
         }
     }
     
-    
+    func returnPassword() {
+        guard let textField = textField.text else { return }
+        password = textField
+        print("Password: \(password)")
+        
+    }
     
 }
 
@@ -208,30 +201,29 @@ extension PasswordField: UITextFieldDelegate {
         
         return newText.count <= 30
     }
-
+    
     @objc func myButtonTapped(){
         if showHideButton.isSelected {
-                   showHideButton.setImage(openEyeImage, for: .selected)
-                   textField.isSecureTextEntry = false
-                print("True")
-               } else {
-                   showHideButton.setImage(closedEyeImage, for: .normal)
-                   textField.isSecureTextEntry = true
-                print("false")
-               }
-           }
-
+            showHideButton.setImage(openEyeImage, for: .selected)
+            textField.isSecureTextEntry = false
+            print("True")
+        } else {
+            showHideButton.setImage(closedEyeImage, for: .normal)
+            textField.isSecureTextEntry = true
+            print("false")
+        }
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
-        textField.resignFirstResponder()
-        print("textField should return")
+        textField.resignFirstResponder()        
+        returnPassword()
         return true
     }
-    
     
 }
 
