@@ -11,7 +11,7 @@ import UIKit
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    var isTextHidden = true
+    private var isTextHidden = true
     
     enum PasswordStrength: String {
         case bad = "Too weak"
@@ -20,7 +20,7 @@ class PasswordField: UIControl {
     }
     
     var strength: PasswordStrength = .bad
-    private (set) var password: String = ""
+    var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -49,6 +49,7 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        textField.delegate = self
         // Lay out your subviews here
         setupTitleLabel()
         setupTextField()
@@ -111,6 +112,7 @@ class PasswordField: UIControl {
     @objc func textFieldEdited() {
         guard let text = textField.text else { return }
         determineStrength(text: text)
+        password = text
     }
     
     @objc func textFieldEndEditing() {
@@ -143,6 +145,11 @@ extension PasswordField: UITextFieldDelegate {
         
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendActions(for: [.valueChanged])
+        return true
+    }
 }
 
 
@@ -167,7 +174,6 @@ extension PasswordField {
         textField.layer.borderColor = UIColor.blue.cgColor
         textField.isSecureTextEntry = true
         textField.addTarget(self, action: #selector(textFieldEdited), for: .editingChanged)
-        textField.addTarget(self, action: #selector(textFieldEndEditing), for: .touchDown)
         addSubview(textField)
         
         NSLayoutConstraint.activate([

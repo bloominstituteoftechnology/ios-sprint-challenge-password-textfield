@@ -11,6 +11,11 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBAction func passwordField(_ sender: UIControl) {
+        view.endEditing(true)
+        guard let control = sender as? PasswordField else { return }
+        print("Password Changed: " + String(control.password))
+        print("Strength: " + String(control.strength.rawValue))
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
