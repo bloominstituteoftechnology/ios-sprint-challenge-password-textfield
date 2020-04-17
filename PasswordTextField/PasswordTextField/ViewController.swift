@@ -10,15 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
-    @IBOutlet weak var passwordField: PasswordField!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        passwordField.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 0.97, alpha: 1)
+    @IBAction func passwordWasChanged(_ sender: PasswordField) {
+        print("Your new password is: \"\(sender.password)\"")
+        print("Password strength: \(sender.passwordStrength.rawValue)")
     }
-    
     
     // For use in the stretch goal
     //
