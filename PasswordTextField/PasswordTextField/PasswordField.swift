@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -41,8 +42,14 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        self.backgroundColor = .lightGray
+        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textAlignment = .left
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {
