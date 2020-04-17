@@ -94,7 +94,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = UIColor.blue.cgColor
         textField.layer.cornerRadius = 8.0
         textField.isSecureTextEntry = true
-
+        
         
         
         // login button
@@ -106,16 +106,8 @@ class PasswordField: UIControl {
         showHideButton.setImage(openEyeImage, for: .highlighted)
         showHideButton.setTitleColor(.black, for: .normal)
         
-        func myButtonTapped(){
-            if showHideButton.isSelected == true {
-                showHideButton.isSelected = false
-            }else {
-                showHideButton.isSelected = true
-            }
-        }
-        
-        //        showHideButton.addTarget(self, action: #selector(myButtonTapped), for: UIControl.Event.touchUpInside)
-        
+        showHideButton.addTarget(self, action: #selector(myButtonTapped), for:  UIControl.Event.touchUpInside)
+              
         
         
         // strength description label
@@ -201,6 +193,7 @@ class PasswordField: UIControl {
     }
     
     
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -211,11 +204,23 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         characterCount = textField.text?.count
         updateStrengthIndicator()
+        myButtonTapped()
         
         return newText.count <= 30
     }
-    
-    
+
+    @objc func myButtonTapped(){
+        if showHideButton.isSelected {
+                   showHideButton.setImage(openEyeImage, for: .selected)
+                   textField.isSecureTextEntry = false
+                print("True")
+               } else {
+                   showHideButton.setImage(closedEyeImage, for: .normal)
+                   textField.isSecureTextEntry = true
+                print("false")
+               }
+           }
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
         return true
