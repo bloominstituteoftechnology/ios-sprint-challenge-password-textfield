@@ -60,6 +60,8 @@ class PasswordField: UIControl {
         // Text Field
         textField.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(textField)
+        
         
         // Views
         
@@ -72,9 +74,18 @@ class PasswordField: UIControl {
         
         // showHideButton
         
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        addSubview(showHideButton)
              
+    }
+    
+    
+    @objc func showHideButtonTapped() {
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
