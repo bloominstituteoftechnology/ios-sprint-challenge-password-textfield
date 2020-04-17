@@ -79,8 +79,8 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 20).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 0).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 10).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 4).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -20).isActive = true
         titleLabel.text = "Enter password"
         titleLabel.textColor = labelTextColor
@@ -92,11 +92,15 @@ class PasswordField: UIControl {
         textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 6).isActive = true
         textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -textFieldMargin).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -6).isActive = true
-        textField.placeholder = "   Password"
+        textField.placeholder = "password"
         textField.layer.borderWidth = 0.5
         textField.layer.borderColor = UIColor.blue.cgColor
         textField.layer.cornerRadius = 8.0
         textField.isSecureTextEntry = true
+        
+        let spacerView = UIView(frame:CGRect(x:0, y:0, width:10, height:10))
+        textField.leftViewMode = UITextField.ViewMode.always
+        textField.leftView = spacerView
         
         // login button
         textFieldContainerView.addSubview(showHideButton)
@@ -151,30 +155,46 @@ class PasswordField: UIControl {
         
     }
     
+    func indicatorAnimation(view: UIView) {
+        UIView.animate(withDuration: 0.5, animations: {
+            view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.5) {
+                view.transform = .identity
+            }
+        }
+    }
+    
     func updateStrengthIndicator() {
         guard let characterCount = characterCount else { return }
         switch characterCount {
         case 1...9:
             weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = .white
-            strongView.backgroundColor = .white
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            indicatorAnimation(view: self.weakView)
             strengthDescriptionLabel.text = passWordStrength.weak.rawValue
         case 10...19:
             weakView.backgroundColor = weakColor
+            indicatorAnimation(view: self.weakView)
             mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = .white
+            indicatorAnimation(view: self.mediumView)
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = passWordStrength.medium.rawValue
             
         case 20...1000:
             weakView.backgroundColor = weakColor
+            indicatorAnimation(view: self.weakView)
             mediumView.backgroundColor = mediumColor
+            indicatorAnimation(view: self.mediumView)
             strongView.backgroundColor = strongColor
+            indicatorAnimation(view: self.strongView)
             strengthDescriptionLabel.text = passWordStrength.strong.rawValue
             
         default:
-            weakView.backgroundColor = .white
-            mediumView.backgroundColor = .white
-            strongView.backgroundColor = .white
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = ""
         }
     }
@@ -190,7 +210,7 @@ class PasswordField: UIControl {
     }
 }
 
-    // MARK: - Extensions
+// MARK: - Extensions
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -200,7 +220,7 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         characterCount = textField.text?.count
         updateStrengthIndicator()
-//        myButtonTapped()
+        //        myButtonTapped()
         
         return newText.count <= 26
     }
@@ -219,13 +239,15 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print("Text field should begin editing")
+        titleLabel.text = "Enter password"
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
         textField.resignFirstResponder()
         returnPassword()
+        textField.text = ""
+        textField.placeholder = "password accepted"
         return true
     }
     
