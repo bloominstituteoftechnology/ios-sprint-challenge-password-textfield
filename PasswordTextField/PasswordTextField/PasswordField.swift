@@ -82,6 +82,7 @@ class PasswordField: UIControl {
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
         // Do I set the image here or in a func for eyes-closed == true, eyes-opened == false or in addTarget func?
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .selected)
         showHideButton.addTarget(self, action: #selector(updateShowHideButton), for: .touchUpInside)
         
         // weak view
@@ -125,8 +126,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -150,10 +149,15 @@ class PasswordField: UIControl {
         print(self.strengthDescriptionLabel)
     }
     ////// THIS NEEDS ATTENTION
-    @objc private func updateShowHideButton(sender: UIButton) {
+    @objc func updateShowHideButton(sender: UIButton) {
         
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-        textField.isSecureTextEntry = false
+        if sender.currentImage == UIImage(named: "eyes-closed") {
+            sender.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+        } else {
+            sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+        }
     }
     
     
@@ -229,7 +233,7 @@ class PasswordField: UIControl {
         let touchPoint = touch.location(in: self)
         if showHideButton.bounds.contains(touchPoint) {
             updateShowHideButton(sender: showHideButton)
-            sendActions(for: [.touchUpInside, .valueChanged])
+            sendActions(for: .touchUpInside)
         } else {
             sendActions(for: .touchUpOutside)
         }
