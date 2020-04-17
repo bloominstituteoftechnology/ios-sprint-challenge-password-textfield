@@ -21,12 +21,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        updateViews()
+        
 
 //        // Uncomment this portion to set up the dictionary
 //        let str = "lambda"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
     }
+    
+    func updateViews() {
+        
+        
+           
+           
+       }
     
   
 }

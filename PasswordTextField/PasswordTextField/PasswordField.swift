@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class PasswordField: UIControl {
     
     //MARK: - Properties
@@ -43,8 +44,13 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    var characterCount: Int?
+    
+    
     
     // MARK: - Required Initializers
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -65,9 +71,6 @@ class PasswordField: UIControl {
         textFieldContainerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textFieldContainerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-      
-        
-        
         
         // title label
         addSubview(titleLabel)
@@ -97,16 +100,28 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.topAnchor, multiplier: 1.5).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -12).isActive = true
         showHideButton.setImage(closedEyeImage, for: .normal)
+        showHideButton.setImage(openEyeImage, for: .highlighted)
         showHideButton.setTitleColor(.black, for: .normal)
         
-
+        func myButtonTapped(){
+            if showHideButton.isSelected == true {
+                showHideButton.isSelected = false
+            }else {
+                showHideButton.isSelected = true
+            }
+        }
+        
+        //        showHideButton.addTarget(self, action: #selector(myButtonTapped), for: UIControl.Event.touchUpInside)
+        
+        
+        
         // strength description label
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -6).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
-//        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor).isActive = true
-
+        //        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor).isActive = true
+        
         strengthDescriptionLabel.text = passWordStrength.weak.rawValue
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
@@ -118,7 +133,7 @@ class PasswordField: UIControl {
         weakView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: 6).isActive = true
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = .white
         weakView.layer.cornerRadius = 12.0
         
         // medium view
@@ -128,7 +143,7 @@ class PasswordField: UIControl {
         mediumView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: 6).isActive = true
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = .white
         mediumView.layer.cornerRadius = 8.0
         
         // strong view
@@ -138,16 +153,12 @@ class PasswordField: UIControl {
         strongView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: 6).isActive = true
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = .white
         strongView.layer.cornerRadius = 8.0
         
-        //
-        //
-        
-
-
-
     }
+    
+    
     
     enum passWordStrength: String {
         case weak = "too weak"
@@ -155,6 +166,45 @@ class PasswordField: UIControl {
         case strong = "strong password"
         
     }
+    
+    func updateStrengthIndicator() {
+        guard let characterCount = characterCount else { return }
+        switch characterCount {
+        case 1...9:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = .white
+            strongView.backgroundColor = .white
+        case 10...19:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = .white
+        case 20...1000:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        default:
+            weakView.backgroundColor = .white
+            mediumView.backgroundColor = .white
+            strongView.backgroundColor = .white
+            
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let oldText = textField.text!
+        let stringRange = Range(range, in: oldText)!
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        // TODO: send new text to the determine strength method
+        characterCount = textField.text?.count
+        updateStrengthIndicator()
+        
+        return true
+    }
+    
+    
+}
+
+extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
@@ -166,17 +216,8 @@ class PasswordField: UIControl {
         print("textField should return")
         return true
     }
-}
-
-extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
-        
-        return true
-    }
+    
+    
 }
 
 
