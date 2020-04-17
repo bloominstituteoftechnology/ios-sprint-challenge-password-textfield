@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class PasswordField: UIControl {
     
     //MARK: - Properties
@@ -191,6 +190,8 @@ class PasswordField: UIControl {
     }
 }
 
+    // MARK: - Extensions
+
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
@@ -199,7 +200,7 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         characterCount = textField.text?.count
         updateStrengthIndicator()
-        myButtonTapped()
+//        myButtonTapped()
         
         return newText.count <= 26
     }
