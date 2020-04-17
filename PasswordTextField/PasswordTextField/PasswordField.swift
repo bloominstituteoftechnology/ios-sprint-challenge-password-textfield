@@ -42,6 +42,7 @@ class PasswordField: UIControl {
         
         backgroundColor = bgColor
         
+        // title label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: standardMargin).isActive = true
@@ -52,6 +53,32 @@ class PasswordField: UIControl {
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
+        
+        // text field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.layer.cornerRadius = 6.0
+        textField.layer.borderWidth = 2.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.textAlignment = .natural
+        textField.isSecureTextEntry = true
+        textField.becomeFirstResponder()
+        
+        //show/hide button
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight / -20.0).isActive = true
+               showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
+        // Do I set the image here or in a func for eyes-closed == true, eyes-opened == false or in addTarget func?
+//        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        // TODO: - addTarget
+        
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
