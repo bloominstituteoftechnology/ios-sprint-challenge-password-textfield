@@ -12,18 +12,16 @@ class ViewController: UIViewController {
     
     var passwordField: PasswordField!
 
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
     @objc @IBAction func passwordEntered(_ sender: Any) {
         resignFirstResponder()
         NSLog(passwordField.password)
         NSLog(passwordField.strengthDescriptionLabel.text ?? "")
      }
-
     
-//    @IBAction func showHideButtonTapped(_ sender: UIButton) {
-//      
-//            
-//    }
     
     // For use in the stretch goal
     //
