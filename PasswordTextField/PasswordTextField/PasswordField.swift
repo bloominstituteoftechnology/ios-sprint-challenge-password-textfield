@@ -39,6 +39,8 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        self.backgroundColor = bgColor
+        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -49,12 +51,28 @@ class PasswordField: UIControl {
         titleLabel.text = "Enter your password:"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
+        
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: textField, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 0)
-            
+            NSLayoutConstraint(item: textField, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: textField, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: standardMargin),
+            NSLayoutConstraint(item: textField, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -standardMargin)
         ])
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 3
+        
+        addSubview(showHideButton)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+//        NSLayoutConstraint.activate([
+//            NSLayoutConstraint(item: showHideButton, attribute: .trailing, relatedBy: .equal, toItem: textField, attribute: .trailing, multiplier: 1, constant: 0),
+//            NSLayoutConstraint(item: showHideButton, attribute: .leading, relatedBy: .equal, toItem: textField, attribute: .width, multiplier: 0.15, constant: 0),
+//            NSLayoutConstraint(item: showHideButton, attribute: .height, relatedBy: .equal, toItem: textField, attribute: .height, multiplier: 1, constant: 0)
+//        ])
+       
+        
         
         
         
