@@ -37,6 +37,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B6E22372449FE7F00136D6B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
+				CE0883D022C2C576008F9894 /* Assets.xcassets */,
+				CE0883D522C2C576008F9894 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2B6E22382449FE9500136D6B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		2B6E22392449FEA000136D6B /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2B6E223A2449FEB000136D6B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		CE0883BD22C2C575008F9894 = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +91,10 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
-				CE0883CD22C2C575008F9894 /* Main.storyboard */,
-				CE0883D022C2C576008F9894 /* Assets.xcassets */,
-				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
-				CE0883D522C2C576008F9894 /* Info.plist */,
+				2B6E223A2449FEB000136D6B /* Views */,
+				2B6E22392449FEA000136D6B /* View Controllers */,
+				2B6E22382449FE9500136D6B /* Storyboards */,
+				2B6E22372449FE7F00136D6B /* Resources */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
