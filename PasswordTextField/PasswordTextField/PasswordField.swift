@@ -132,6 +132,16 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
+    }
+    
+    func textFieldValueChanged(_ textField: UITextField) -> Bool {
+        self.textField.resignFirstResponder()
+        addTarget(self, action: #selector(ViewController.passwordEntered(_:)), for: .valueChanged)
+        print(password)
+        print(strengthDescriptionLabel.text ?? "")
+
+        return true
     }
     
     @objc private func passwordFieldEnter() {
@@ -237,6 +247,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determineStrength(password: newText)
         return true
     }
 }
