@@ -43,6 +43,7 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var buttonWasTapped: Bool = false
     
     enum passWordStrength: String {
         case weak = "too weak"
@@ -104,7 +105,6 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.topAnchor, multiplier: 1.5).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -12).isActive = true
         showHideButton.setImage(closedEyeImage, for: .normal)
-        showHideButton.setImage(openEyeImage, for: .highlighted)
         showHideButton.setTitleColor(.black, for: .normal)
         
         showHideButton.addTarget(self, action: #selector(myButtonTapped), for:  UIControl.Event.touchUpInside)
@@ -189,7 +189,6 @@ class PasswordField: UIControl {
         print("Strength: \(strengthDescriptionLabel)")
         
     }
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -202,18 +201,19 @@ extension PasswordField: UITextFieldDelegate {
         updateStrengthIndicator()
         myButtonTapped()
         
-        return newText.count <= 30
+        return newText.count <= 26
     }
     
-    @objc func myButtonTapped(){
-        if showHideButton.isSelected {
-            showHideButton.setImage(openEyeImage, for: .selected)
+    @objc func myButtonTapped() {
+        buttonWasTapped.toggle()
+        print(buttonWasTapped)
+        
+        if buttonWasTapped == true {
+            showHideButton.setImage(openEyeImage, for: .normal)
             textField.isSecureTextEntry = false
-            print("True")
         } else {
             showHideButton.setImage(closedEyeImage, for: .normal)
             textField.isSecureTextEntry = true
-            print("false")
         }
     }
     
