@@ -93,6 +93,9 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 0.5
         textField.layer.borderColor = UIColor.blue.cgColor
         textField.layer.cornerRadius = 8.0
+        textField.isSecureTextEntry = true
+
+        
         
         // login button
         textFieldContainerView.addSubview(showHideButton)
@@ -130,7 +133,7 @@ class PasswordField: UIControl {
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 8).isActive = true
-        weakView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: 6).isActive = true
         weakView.backgroundColor = .white
@@ -139,8 +142,8 @@ class PasswordField: UIControl {
         // medium view
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 1).isActive = true
-        mediumView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 0.5).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: 6).isActive = true
         mediumView.backgroundColor = .white
@@ -149,8 +152,8 @@ class PasswordField: UIControl {
         // strong view
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8).isActive = true
-        strongView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 4).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: 6).isActive = true
         strongView.backgroundColor = .white
@@ -180,23 +183,27 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = .white
             strengthDescriptionLabel.text = passWordStrength.medium.rawValue
-
+            
         case 20...1000:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = passWordStrength.strong.rawValue
-
+            
         default:
             weakView.backgroundColor = .white
             mediumView.backgroundColor = .white
             strongView.backgroundColor = .white
             strengthDescriptionLabel.text = ""
-
+            
             
         }
     }
     
+    
+}
+
+extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
@@ -205,13 +212,9 @@ class PasswordField: UIControl {
         characterCount = textField.text?.count
         updateStrengthIndicator()
         
-        return true
+        return newText.count <= 30
     }
     
-    
-}
-
-extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
