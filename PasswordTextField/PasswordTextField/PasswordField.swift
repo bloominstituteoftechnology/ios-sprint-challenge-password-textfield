@@ -94,55 +94,59 @@ class PasswordField: UIControl {
         // login button
         textFieldContainerView.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.topAnchor, multiplier: 1.0).isActive = true
+        showHideButton.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.topAnchor, multiplier: 1.5).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -12).isActive = true
         showHideButton.setImage(closedEyeImage, for: .normal)
         showHideButton.setTitleColor(.black, for: .normal)
         
-//
-//        // strength description label
-//        addSubview(strengthDescriptionLabel)
-//        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-//        strengthDescriptionLabel.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.bottomAnchor, multiplier: 1).isActive = true
-//        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
+
+        // strength description label
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -6).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
 //        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor).isActive = true
-//
-//        strengthDescriptionLabel.text = passWordStrength.weak.rawValue
-//        strengthDescriptionLabel.textColor = labelTextColor
-//        strengthDescriptionLabel.font = labelFont
-//
-//        // strong view
-//        addSubview(strongView)
-//        strongView.translatesAutoresizingMaskIntoConstraints = false
-//        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 20).isActive = true
-//        strongView.trailingAnchor.constraint(equalTo: strengthDescriptionLabel.leadingAnchor, constant: -20).isActive = true
-//        strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
-//        strongView.heightAnchor.constraint(equalToConstant: 10).isActive = true
-//        strongView.backgroundColor = .green
-//
-//
-        // medium view
-        addSubview(mediumView)
-        mediumView.translatesAutoresizingMaskIntoConstraints = false
-//        mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 1).isActive = true
-        mediumView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
-        mediumView.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        mediumView.backgroundColor = .yellow
-        mediumView.layer.cornerRadius = 5.0
+
+        strengthDescriptionLabel.text = passWordStrength.weak.rawValue
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
         
-
-
         // weak view
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 8).isActive = true
-        weakView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
-        weakView.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        weakView.backgroundColor = .red
-        weakView.layer.cornerRadius = 5.0
+        weakView.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 12.0
         
+        // medium view
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 1).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        mediumView.backgroundColor = mediumColor
+        mediumView.layer.cornerRadius = 8.0
+        
+        // strong view
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        strongView.backgroundColor = strongColor
+        strongView.layer.cornerRadius = 8.0
+        
+        //
+        //
+        
+
+
+
     }
     
     enum passWordStrength: String {
