@@ -67,6 +67,7 @@ class PasswordField: UIControl {
         textField.textAlignment = .natural
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
+        textField.addTarget(self, action: #selector(passwordFieldEnter), for: .valueChanged)
         
         //show/hide button
         addSubview(showHideButton)
@@ -119,11 +120,54 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc private func passwordFieldEnter() {
+          textField.resignFirstResponder()
+          print(password)
+          print(self.strengthDescriptionLabel)
+      }
+    ////// THIS NEEDS ATTENTION
+    @objc private func updateShowHideButton(sender: UIButton) {
+        
+       showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        textField.isSecureTextEntry = false
+    }
+    
+    // MARK: - Touch Tracking
+    
+    // Start tracking touch in control
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        updateShowHideButton(sender: showHideButton)
+        return true
+    }
+    
+    // End tracking touch in control
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        guard let touch = touch else {
+            NSLog("Unable to track touch")
+            return
+        }
+        
+        let touchPoint = touch.location(in: self)
+        if showHideButton.bounds.contains(touchPoint) {
+            updateShowHideButton(sender: showHideButton)
+            sendActions(for: [.touchUpInside, .valueChanged])
+        } else {
+            sendActions(for: .touchUpOutside)
+        }
+    }
+    
+    // Cancel tracking
+    override func cancelTracking(with event: UIEvent?) {
+        sendActions(for: .touchCancel)
     }
 }
 
