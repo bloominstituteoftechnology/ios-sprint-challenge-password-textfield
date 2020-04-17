@@ -30,6 +30,7 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    private var textFieldBorderLine: UIView = UIView()
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -50,6 +51,13 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
+        
+        textFieldBorderLine.translatesAutoresizingMaskIntoConstraints = false
+        textFieldBorderLine.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldBorderLine.backgroundColor = bgColor
+        textFieldBorderLine.layer.borderWidth = 2
+        textFieldBorderLine.layer.cornerRadius = 6
+        addSubview(textFieldBorderLine)
     }
     
     required init?(coder aDecoder: NSCoder) {
