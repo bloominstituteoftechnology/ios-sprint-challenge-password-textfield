@@ -194,19 +194,32 @@ class PasswordField: UIControl {
     }
     
     // "EYEBALL" "SHOW -OR- HIDE" BUTTON WAS PRESSED
-    @objc func showHideButtonWasPressed(_ sender: UITextField) {
-        // TODO: call show -or- hide method
+    @objc func showHideButtonWasPressed(_ sender: UIButton) {
+        showOrHidePassword(currentImage: sender.currentBackgroundImage!)
+    }
+    
+    
+    
+    // MARK: - Methods
+    
+    // SHOW PASSWORD STRENGTH
+    private func updateForPasswordStrength() {
+        // TODO: update the subviews based on password length
+    }
+    
+    // SHOW -OR- HIDE PASSWORD
+    private func showOrHidePassword(currentImage: UIImage) {
+        switch currentImage {
+        case eyesClosedImage:
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(eyesOpenImage, for: .normal)
+        default:
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(eyesClosedImage, for: .normal)
+        }
     }
     
 }
-
-// MARK: - Methods
-
-// SHOW PASSWORD STRENGTH
-// TODO: update the subviews based on password length
-
-// SHOW -OR- HIDE PASSWORD
-// TODO: hide or show text based on button pressed
 
 // MARK: - Extensions
 
