@@ -67,10 +67,13 @@ class PasswordField: UIControl {
         textField.placeholder = "password"
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.layer.borderWidth = 2
+        textField.layer.borderColor = textFieldBorderColor.cgColor
         
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
+        showHideButton.layer.borderWidth = 2
         
         let passwordStackView = UIStackView()
         passwordStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +105,7 @@ class PasswordField: UIControl {
         strengthStackView.alignment = .fill
         strengthStackView.distribution = .fill
         strengthStackView.axis = .horizontal
-        strengthStackView.spacing = 4
+        strengthStackView.spacing = standardMargin
         addSubview(strengthStackView)
         
         NSLayoutConstraint.activate([
@@ -134,42 +137,6 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
-    
-//    // MARK: - Controls
-//
-//    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-//        let touchPoint = touch.location(in: self)
-//        if textField.frame.contains(touchPoint) {
-//            textField.becomeFirstResponder()
-//        }
-//        sendActions(for: [.touchDown])
-//        return true
-//    }
-//
-//    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-//        let touchPoint = touch.location(in: self)
-//        if bounds.contains(touchPoint) {
-//            sendActions(for: [.touchDragInside])
-//        } else {
-//            sendActions(for: [.touchDragOutside])
-//        }
-//        return true
-//    }
-//
-//    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-//        guard let touch = touch else { return }
-//
-//        let touchPoint = touch.location(in: self)
-//        if bounds.contains(touchPoint) {
-//            sendActions(for: [.touchUpInside])
-//        } else {
-//            sendActions(for: [.touchUpOutside])
-//        }
-//    }
-//
-//    override func cancelTracking(with event: UIEvent?) {
-//        sendActions(for: [.touchCancel])
-//    }
     
     @objc private func showHidePassword() {
         isPasswordHidden = !isPasswordHidden
