@@ -52,6 +52,20 @@ class PasswordField: UIControl {
         // Text Field
         textField.translatesAutoresizingMaskIntoConstraints = false
         
+        
+        // Views
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        // showHideButton
+        
+        showHideButton.setImage(<#T##image: UIImage?##UIImage?#>, for: .normal)
+             
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,6 +73,11 @@ class PasswordField: UIControl {
         setup()
     }
     
+    enum PasswordStrenght {
+        case weak
+        case medium
+        case strong 
+    }
 
 }
 
