@@ -50,18 +50,17 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
-        
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -30),
+            
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 50),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -20),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10)
-        
+            
         ])
         
         // Text Field
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
+        textField.isSecureTextEntry = true
         addSubview(textField)
-        
         
         // Views
         
@@ -78,27 +77,32 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         addSubview(showHideButton)
-             
+        
     }
     
     
     @objc func showHideButtonTapped() {
+        textField.isSecureTextEntry.toggle()
         
-        
-        
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
     
-    enum PasswordStrenght {
+    enum PasswordStrength {
         case weak
         case medium
         case strong 
     }
-
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
