@@ -56,7 +56,6 @@ class PasswordField: UIControl {
         // Lay out your subviews here
         
         // Background
-        // FIXME: - background color not working
         self.backgroundColor = bgColor
         
         // "ENTER PASSWORD" TITLE LABEL
@@ -79,9 +78,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         
             // action
-        // FIXME: - text editing not working
         textField.isUserInteractionEnabled = true
-        textField.addTarget(self, action: #selector(passwordWasEdited(_:)), for: .editingChanged)
         textField.addTarget(self, action: #selector(returnKeyWasPressed(_:)), for: .editingDidEndOnExit)
         
             // appearance
@@ -190,11 +187,6 @@ class PasswordField: UIControl {
     
     // MARK: - Actions
     
-    // "PASSWORD" TEXT FIELD WAS EDITED
-    @objc func passwordWasEdited(_ sender: UITextField) {
-        updateForPasswordStrength()
-    }
-    
     // "RETURN" ON KEYBOARD WAS PRESSED
     @objc func returnKeyWasPressed(_ sender: UITextField) {
         resignFirstResponder()
@@ -262,16 +254,9 @@ extension PasswordField: UITextFieldDelegate {
         updateForPasswordStrength() // FIXME: - Do I need this here instead?
         return true
     }
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool { // FIXME: - Do I need this instead?
-        return true
-    }
 }
 
 // MARK: - Stretch Goals
 // TODO: pulse animations for increasing strength
 // TODO: debounce for only sending final password?
 // TODO: check password with dictionary
-
-// FIXME: - showHideButton not "clickable"
