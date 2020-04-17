@@ -9,6 +9,11 @@
 import UIKit
 
 class PasswordField: UIControl {
+    enum StrengthValue: String {
+        case weak = "Too weak"
+        case medium = "Could be stronger"
+        case strong = "Strong password"
+    }
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -40,14 +45,14 @@ class PasswordField: UIControl {
     
     func setup() {
         
-        backgroundColor = bgColor
+        self.backgroundColor = bgColor
         
         // title label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: standardMargin).isActive = true
-        titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: standardMargin).isActive = true
-        titleLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: self.trailingAnchor, multiplier: standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
         // Do we need a height constraint or does it go off of font size?
         //        titleLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         titleLabel.font = labelFont
@@ -73,11 +78,11 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
-        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight / -20.0).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight * 0.33).isActive = true
         showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
         // Do I set the image here or in a func for eyes-closed == true, eyes-opened == false or in addTarget func?
-        //        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        // TODO: - addTarget
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(updateShowHideButton), for: .touchUpInside)
         
         // weak view
         addSubview(weakView)
@@ -130,15 +135,70 @@ class PasswordField: UIControl {
     }
     
     @objc private func passwordFieldEnter() {
-          textField.resignFirstResponder()
-          print(password)
-          print(self.strengthDescriptionLabel)
-      }
+        textField.resignFirstResponder()
+        print(password)
+        print(self.strengthDescriptionLabel)
+    }
     ////// THIS NEEDS ATTENTION
     @objc private func updateShowHideButton(sender: UIButton) {
         
-       showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         textField.isSecureTextEntry = false
+    }
+    
+    
+    private func determineStrength(password: String) {
+        
+        let length = password.count
+        
+        switch length {
+        case 0:
+            self.weakView.backgroundColor = unusedColor
+            self.mediumView.backgroundColor = unusedColor
+            self.strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = StrengthValue.weak.rawValue
+            self.weakView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                self.weakView.transform = .identity
+            }, completion: nil)
+            
+        case 1...9:
+            self.weakView.backgroundColor = weakColor
+            self.mediumView.backgroundColor = unusedColor
+            self.strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = StrengthValue.weak.rawValue
+            self.weakView.transform = .identity
+            
+        case 10:
+            self.mediumView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                self.mediumView.transform = .identity
+            }, completion: nil)
+            strengthDescriptionLabel.text = StrengthValue.medium.rawValue
+            self.weakView.backgroundColor = weakColor
+            self.mediumView.backgroundColor = mediumColor
+            self.strongView.backgroundColor = unusedColor
+            
+            
+        case 11...19:
+            strengthDescriptionLabel.text = StrengthValue.medium.rawValue
+            self.weakView.backgroundColor = weakColor
+            self.mediumView.backgroundColor = mediumColor
+            self.strongView.backgroundColor = unusedColor
+            self.mediumView.transform = .identity
+            
+        case 20:
+            self.strongView.transform = CGAffineTransform(scaleX: .zero, y: .zero)
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [], animations: {
+                self.strongView.transform = .identity
+            }, completion: nil)
+        default:
+            strengthDescriptionLabel.text = StrengthValue.strong.rawValue
+            self.weakView.backgroundColor = weakColor
+            self.mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            self.strongView.transform = .identity
+        }
     }
     
     // MARK: - Touch Tracking
