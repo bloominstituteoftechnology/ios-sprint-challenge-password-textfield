@@ -55,6 +55,9 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        // Background
+        backgroundColor = bgColor
+        
         // "ENTER PASSWORD" TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +79,8 @@ class PasswordField: UIControl {
         
             // appearance
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.backgroundColor = bgColor
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = 1.0
         textField.isSecureTextEntry = true
         
             // size & position
