@@ -127,7 +127,7 @@ class PasswordField: UIControl {
         strongView.widthAnchor.constraint(equalToConstant: 45).isActive = true
         
         //        Strength discription constraints
-        strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 5).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 10).isActive = true
         
         
