@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -31,6 +32,7 @@ class PasswordField: UIControl {
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
     private var titleLabel: UILabel = UILabel()
+    private var backgroundView: UIView = UIView()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
@@ -38,11 +40,48 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    func setup() {
+    private func setup() {
         // Lay out your subviews here
+        // Title Label
         
-        addSubview(titleLabel)
+        titleLabel.text = "Enter Your Password"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+        ])
+        
+        // Text Field
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.addSubview(textField)
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: textFieldMargin),
+            backgroundView.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin)
+        ])
+        
+        // Background View
+        backgroundView.layer.borderWidth = 1.5
+        backgroundView.layer.cornerRadius = 5
+        backgroundView.layer.borderColor = textFieldBorderColor.cgColor
+        backgroundView.backgroundColor = bgColor
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1),
+            backgroundView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: standardMargin),
+            backgroundView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
