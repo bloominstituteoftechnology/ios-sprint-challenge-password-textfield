@@ -44,7 +44,12 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         // Lay out your subviews here
-       
+        textField.textContentType = .password
+        textField.placeholder = "Write a Password"
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textField)
     }
     
     required init?(coder aDecoder: NSCoder) {
