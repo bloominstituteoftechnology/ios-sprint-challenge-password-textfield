@@ -59,11 +59,21 @@ class PasswordField: UIControl {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
+            // appearance
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        
+        // TODO: edit constraints
+        
         // "PASSWORD" TEXT FIELD
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
+            // appearance
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.backgroundColor = bgColor
+        textField.isSecureTextEntry = true
         
         // TODO: edit constraints
         
@@ -71,7 +81,8 @@ class PasswordField: UIControl {
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
+            // appearance
+        showHideButton.setImage(eyesClosedImage, for: .normal)
         
         // TODO: edit constraints
         
@@ -79,7 +90,8 @@ class PasswordField: UIControl {
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
+            // appearance
+        weakView.backgroundColor = unusedColor
         
         // TODO: edit constraints
         
@@ -87,7 +99,8 @@ class PasswordField: UIControl {
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
+            // appearance
+        mediumView.backgroundColor = unusedColor
         
         // TODO: edit constraints
         
@@ -95,16 +108,19 @@ class PasswordField: UIControl {
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
-        
+            // appearance
+        strongView.backgroundColor = unusedColor
+
         // TODO: edit constraints
         
         // STRENGTH DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // TODO: edit appearance
-        
+            // appearance
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+
         // TODO: edit constraints
     }
     
