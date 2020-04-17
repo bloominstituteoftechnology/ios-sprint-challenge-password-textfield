@@ -124,12 +124,31 @@ class PasswordField: UIControl {
         backgroundColor = bgColor
     }
     
-    enum PasswordStrength: String {
-        case weak = "Too weak"
-        case medium = "Could be stronger"
-        case strong = "Strong password"
-    }
     
+    func passwordCharacterStrengthViews() {
+        
+        guard let characterStrength = textField.text?.count else { return }
+        
+        switch characterStrength {
+        case 0...6:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too weak"
+            
+        case 7...12:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
+            
+        default:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong password"
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
