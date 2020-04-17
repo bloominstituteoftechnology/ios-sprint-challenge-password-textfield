@@ -11,6 +11,8 @@ import UIKit
 
 class PasswordField: UIControl {
     
+
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -40,6 +42,10 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        
+        
+        backgroundColor = bgColor
+        
         // Lay out your subviews here
         
         // ENTER PASSWORD LABEL
@@ -52,9 +58,9 @@ class PasswordField: UIControl {
         
             // constraints
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: standardMargin)
         ])
         
         // TEXTFIELD
@@ -65,12 +71,13 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = 3.0
+
         
             // constraints
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor ),
-            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
@@ -87,9 +94,63 @@ class PasswordField: UIControl {
             // constraints
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin * 2),
-            showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10)
+            showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
+        // Weak View
+        
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.frame = CGRect(x: 0, y: 10, width: 60, height: 5)
+        weakView.backgroundColor = .systemPink
+        
+        
+        // Medium View
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.frame = CGRect(x: 0, y: 20, width: 60, height: 5)
+        mediumView.backgroundColor = .systemYellow
+        
+        
+        // Strong View
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.frame = CGRect(x: 0, y: 40, width: 60, height: 5)
+        strongView.backgroundColor = .systemGreen
+        
+        // strengthLabel
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = "Default"
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textAlignment = .left
+        
+        
+        
+        // StackView & Constraints
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        addSubview(stackView)
+        
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
+            stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -standardMargin),
+            stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin)
+        ])
         
     }
     
