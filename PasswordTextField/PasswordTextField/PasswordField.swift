@@ -19,6 +19,7 @@ class PasswordField: UIControl {
         case good = "Strong password"
     }
     
+    private var previousStrength: PasswordStrength = .bad
     public private (set) var strength: PasswordStrength = .bad
     public private (set) var password: String = ""
     
@@ -74,10 +75,10 @@ class PasswordField: UIControl {
             strongView.backgroundColor = .green
             mediumView.backgroundColor = .orange
             weakView.backgroundColor = .red
+
         }
         
         strengthDescriptionLabel.text = strength.rawValue
-        
     }
     
     //MARK: - Actions
@@ -85,6 +86,11 @@ class PasswordField: UIControl {
         guard let text = textField.text else { return }
         determineStrength(text: text)
         password = text
+        
+        if previousStrength != strength {
+            animate()
+            previousStrength = strength
+        }
     }
     
     @objc func buttonPressed() {
@@ -99,6 +105,52 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = true
             isTextHidden = true
         }
+    }
+    
+    func animate() {
+        var n = 0
+        switch strength {
+        case .bad:
+            n = 0
+        case .ok:
+            n = 1
+        case .good:
+            n = 2
+        }
+        
+        UIView.animateKeyframes(withDuration: 0.5, delay: 0.0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.2) {
+                switch n {
+                case 0:
+                    self.weakView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 15.0)
+                case 1:
+                    self.mediumView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 15.0)
+                    break
+                case 2:
+                    self.strongView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 15.0)
+                    break
+                default:
+                    break
+                }
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 1.0) {
+                switch n {
+                case 0:
+                    self.weakView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 7.0)
+                case 1:
+                    self.mediumView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 7.0)
+                    break
+                case 2:
+                    self.strongView.frame.size = CGSize(width: self.colorViewSize.width + 15.0, height: 7.0)
+                    break
+                default:
+                    break
+                }
+            }
+            
+            
+        }, completion: nil)
     }
 }
 
