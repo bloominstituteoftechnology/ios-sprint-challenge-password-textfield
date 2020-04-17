@@ -64,7 +64,11 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin)
+        ])
         
         // "PASSWORD" TEXT FIELD
         addSubview(textField)
@@ -75,7 +79,13 @@ class PasswordField: UIControl {
         textField.backgroundColor = bgColor
         textField.isSecureTextEntry = true
         
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
         
         // "EYEBALL" "HIDE/SHOW TEXT" BUTTON
         addSubview(showHideButton)
@@ -84,7 +94,13 @@ class PasswordField: UIControl {
             // appearance
         showHideButton.setImage(eyesClosedImage, for: .normal)
         
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin),
+            showHideButton.widthAnchor.constraint(equalToConstant: eyesClosedImage.size.width),
+            showHideButton.heightAnchor.constraint(equalToConstant: eyesClosedImage.size.height)
+        ])
         
         // WEAK VIEW
         addSubview(weakView)
@@ -93,7 +109,13 @@ class PasswordField: UIControl {
             // appearance
         weakView.backgroundColor = unusedColor
         
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 5),
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
         
         // MEDIUM VIEW
         addSubview(mediumView)
@@ -102,7 +124,13 @@ class PasswordField: UIControl {
             // appearance
         mediumView.backgroundColor = unusedColor
         
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 5),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
         
         // STRONG VIEW
         addSubview(strongView)
@@ -111,17 +139,28 @@ class PasswordField: UIControl {
             // appearance
         strongView.backgroundColor = unusedColor
 
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 5),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
         
         // STRENGTH DESCRIPTION LABEL
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
             // appearance
+        strengthDescriptionLabel.text = "Nothing Typed"
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
 
-        // TODO: edit constraints
+            // size & position
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
+        ])
     }
     
     // MARK: - Initializers
