@@ -62,6 +62,12 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = true
         addSubview(textField)
         
+        NSLayoutConstraint.activate([
+        
+        
+        
+        ])
+        
         // Views
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,6 +76,11 @@ class PasswordField: UIControl {
         
         strongView.translatesAutoresizingMaskIntoConstraints = false
         
+        NSLayoutConstraint.activate([
+        
+        
+        
+        ])
         
         // showHideButton
         
@@ -77,6 +88,12 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         addSubview(showHideButton)
+        
+        NSLayoutConstraint.activate([
+        
+        
+        
+        ])
         
     }
     
