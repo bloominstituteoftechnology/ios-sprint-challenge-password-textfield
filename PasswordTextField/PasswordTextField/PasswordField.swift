@@ -56,24 +56,22 @@ class PasswordField: UIControl {
     
     func setup() {
         
+        backgroundColor = bgColor
         
         // container view
         addSubview(textFieldContainerView)
         textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
-        
         textFieldContainerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         textFieldContainerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textFieldContainerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        textFieldContainerView.layer.borderWidth = 0.5
-        textFieldContainerView.layer.borderColor = UIColor.blue.cgColor
-        textFieldContainerView.layer.cornerRadius = 8.0
+      
+        
         
         
         // title label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 20).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 0).isActive = true
@@ -81,18 +79,17 @@ class PasswordField: UIControl {
         titleLabel.text = "Enter password"
         titleLabel.textColor = labelTextColor
         
-        
-        
         // Password Text Field
         textFieldContainerView.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
         textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: textFieldMargin).isActive = true
         textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: 6).isActive = true
         textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -textFieldMargin).isActive = true
         textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -6).isActive = true
         textField.placeholder = "   Password"
-        
+        textField.layer.borderWidth = 0.5
+        textField.layer.borderColor = UIColor.blue.cgColor
+        textField.layer.cornerRadius = 8.0
         
         // login button
         textFieldContainerView.addSubview(showHideButton)
@@ -102,22 +99,63 @@ class PasswordField: UIControl {
         showHideButton.setImage(closedEyeImage, for: .normal)
         showHideButton.setTitleColor(.black, for: .normal)
         
+//
+//        // strength description label
+//        addSubview(strengthDescriptionLabel)
+//        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+//        strengthDescriptionLabel.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainerView.bottomAnchor, multiplier: 1).isActive = true
+//        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -8).isActive = true
+//        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor).isActive = true
+//
+//        strengthDescriptionLabel.text = passWordStrength.weak.rawValue
+//        strengthDescriptionLabel.textColor = labelTextColor
+//        strengthDescriptionLabel.font = labelFont
+//
+//        // strong view
+//        addSubview(strongView)
+//        strongView.translatesAutoresizingMaskIntoConstraints = false
+//        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 20).isActive = true
+//        strongView.trailingAnchor.constraint(equalTo: strengthDescriptionLabel.leadingAnchor, constant: -20).isActive = true
+//        strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
+//        strongView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+//        strongView.backgroundColor = .green
+//
+//
+        // medium view
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+//        mediumView.leadingAnchor.constraint(equalToSystemSpacingAfter: weakView.trailingAnchor, multiplier: 1).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        mediumView.backgroundColor = .yellow
+        mediumView.layer.cornerRadius = 5.0
         
+
+
+        // weak view
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: 8).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: 0).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        weakView.backgroundColor = .red
+        weakView.layer.cornerRadius = 5.0
         
     }
     
-    func textCount() {
-        if textField.text!.count < 6 {
-            print("weak")
-        }
+    enum passWordStrength: String {
+        case weak = "too weak"
+        case medium = "could be stronger"
+        case strong = "strong password"
+        
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Text field should begin editing")
         return true
     }
-    
-  
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool  {
         textField.resignFirstResponder()
@@ -133,8 +171,6 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         
-       
-            
         return true
     }
 }
