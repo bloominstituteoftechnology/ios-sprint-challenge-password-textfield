@@ -44,6 +44,14 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: self.trailingAnchor, multiplier: standardMargin).isActive = true
+        // Do we need a height constraint or does it go off of font size?
+//        titleLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        titleLabel.font = labelFont
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textColor = labelTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {
