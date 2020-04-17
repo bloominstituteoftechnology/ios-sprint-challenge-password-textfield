@@ -42,8 +42,8 @@ class PasswordField: UIControl {
     private let eyesOpenImage = #imageLiteral(resourceName: "eyes-open")
     
     // SUBVIEWS
-    private var titleLabel: UILabel = UILabel() // TODO: update var with more specific name
-    private var textField: UITextField = UITextField() // TODO: update var with more specific name
+    private var titleLabel: UILabel = UILabel()
+    private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
@@ -60,48 +60,48 @@ class PasswordField: UIControl {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // "PASSWORD" TEXT FIELD
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
         // TODO: edit constraints
         
         // "EYEBALL" "HIDE/SHOW TEXT" BUTTON
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
         // TODO: edit constraints
         
         // WEAK VIEW
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
         // TODO: edit constraints
         
         // MEDIUM VIEW
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
         // TODO: edit constraints
         
         // STRONG VIEW
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
         // TODO: edit constraints
         
         // STRENGTH DESCRIPTION LABEL
-        
-        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // TODO: edit appearance
         
