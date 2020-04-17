@@ -19,6 +19,7 @@ class PasswordField: UIControl {
         case good = "Strong password"
     }
     
+    var strength: PasswordStrength = .bad
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
@@ -53,6 +54,7 @@ class PasswordField: UIControl {
         setupTextField()
         setupShowHideButton()
         setupViews()
+        setupStrengthLabel()
 
     }
     
@@ -74,16 +76,31 @@ class PasswordField: UIControl {
         <#code#>
     }*/
     
+    
+    
+    func determineStrength(text: String) {
+        switch text.count {
+        case 0...9:
+            strength = .bad
+        case 10...19:
+            strength = .ok
+        case 20...:
+            strength = .good
+        default:
+            strength = .good
+        }
+        print(strength.rawValue)
+    }
+    
     //MARK: - Actions
     @objc func textFieldEdited() {
-        //Edited
+        guard let text = textField.text else { return }
+        determineStrength(text: text)
     }
     
     @objc func textFieldEndEditing() {
         print(textField.text)
     }
-    
-    
     
     @objc func buttonPressed() {
         if isTextHidden == true {
@@ -108,6 +125,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
         return true
     }
 }
@@ -165,23 +183,55 @@ extension PasswordField {
         weakView.backgroundColor = .red
         mediumView.backgroundColor = .orange
         strongView.backgroundColor = .green
-    
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
         weakView.frame.size = colorViewSize
         mediumView.frame.size = colorViewSize
         strongView.frame.size = colorViewSize
         
         addSubview(weakView)
-        //addSubview(mediumView)
-        //addSubview(strongView)
+        addSubview(mediumView)
+        addSubview(strongView)
         
         NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: weakView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: weakView, attribute: ., relatedBy: <#T##NSLayoutConstraint.Relation#>, toItem: <#T##Any?#>, attribute: <#T##NSLayoutConstraint.Attribute#>, multiplier: <#T##CGFloat#>, constant: <#T##CGFloat#>)
-            
+            NSLayoutConstraint(item: weakView, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1.0, constant: 5.0),
+            NSLayoutConstraint(item: weakView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: weakView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.20, constant: 0.0),
+            NSLayoutConstraint(item: weakView, attribute: .height, relatedBy: .equal, toItem: textField, attribute: .height, multiplier: 0.25, constant: 0.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: mediumView, attribute: .top, relatedBy: .equal, toItem: weakView, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: mediumView, attribute: .leading, relatedBy: .equal, toItem: weakView, attribute: .trailing, multiplier: 1.0, constant: 5.0),
+            NSLayoutConstraint(item: mediumView, attribute: .width, relatedBy: .equal, toItem: weakView, attribute: .width, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: mediumView, attribute: .height, relatedBy: .equal, toItem: weakView, attribute: .height, multiplier: 1.0, constant: 0.0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: strongView, attribute: .top, relatedBy: .equal, toItem: mediumView, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: strongView, attribute: .leading, relatedBy: .equal, toItem: mediumView, attribute: .trailing, multiplier: 1.0, constant: 5.0),
+            NSLayoutConstraint(item: strongView, attribute: .width, relatedBy: .equal, toItem: mediumView, attribute: .width, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: strongView, attribute: .height, relatedBy: .equal, toItem: mediumView, attribute: .height, multiplier: 1.0, constant: 0.0)
         ])
     }
     
-    
+    func setupStrengthLabel() {
+        strengthDescriptionLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        strengthDescriptionLabel.text = strength.rawValue
+        strengthDescriptionLabel.textColor = .black
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(strengthDescriptionLabel)
+        
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .top, relatedBy: .equal, toItem: strongView, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .leading, relatedBy: .equal, toItem: strongView, attribute: .trailing, multiplier: 1.0, constant: 5.0)
+        ])
+        
+        
+    }
     
     
     
