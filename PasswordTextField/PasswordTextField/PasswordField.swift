@@ -44,7 +44,7 @@ class PasswordField: UIControl {
         // Lay out your subviews here
         // Title Label
         
-        titleLabel.text = "Enter Your Password"
+        titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -81,12 +81,91 @@ class PasswordField: UIControl {
             backgroundView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
+        //Show Hide Button
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHidePassword), for: .touchUpInside)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.addSubview(showHideButton)
         
+        NSLayoutConstraint.activate([
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
+            backgroundView.trailingAnchor.constraint(equalTo: showHideButton.trailingAnchor, constant: textFieldMargin)
+        ])
+        
+        // Weak View
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.backgroundColor = unusedColor
+        
+        
+        NSLayoutConstraint.activate([
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        // Medium View
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.backgroundColor = unusedColor
+        
+        
+        NSLayoutConstraint.activate([
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        // Strong View
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.backgroundColor = unusedColor
+       
+        
+        NSLayoutConstraint.activate([
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        // Stack View
+        let stackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 3
+        addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+        ])
+        
+        // Strength Description Label
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.text = "Enter a password"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        addSubview(strengthDescriptionLabel)
+        
+        NSLayoutConstraint.activate([
+                   strengthDescriptionLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: standardMargin),
+                   strengthDescriptionLabel.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: standardMargin),
+                   strengthDescriptionLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+                   bottomAnchor.constraint(equalTo: strengthDescriptionLabel.bottomAnchor, constant: standardMargin)
+               ])
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc func showHidePassword() {
+        textField.isSecureTextEntry.toggle()
+        
+        if textField.isSecureTextEntry {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
     }
 }
 
