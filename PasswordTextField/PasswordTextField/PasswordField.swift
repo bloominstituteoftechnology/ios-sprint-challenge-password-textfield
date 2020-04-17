@@ -15,7 +15,7 @@ enum StrengthPasswordCondtion: String {
 }
 class PasswordField: UIControl {
     
-     var condition: StrengthPasswordCondtion = .tooWeak
+    var condition: StrengthPasswordCondtion = .tooWeak
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -90,7 +90,7 @@ class PasswordField: UIControl {
         
         //Constraint time!
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         //        Text Field
         textFieldBorderLine.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
@@ -98,17 +98,17 @@ class PasswordField: UIControl {
         textFieldBorderLine.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
         textFieldBorderLine.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        
         //        TextField typing constraints
         textField.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
-        textField.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor, constant: 4).isActive = true
-        textField.trailingAnchor.constraint(equalTo: showHideButton.leadingAnchor).isActive = true
-        textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldBorderLine.leadingAnchor, constant: 5).isActive = true
+        textField.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor, constant: -5).isActive = true
+        textField.heightAnchor.constraint(equalTo: textFieldBorderLine.heightAnchor).isActive = true
+        textField.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 11).isActive = true
         //        ShowHideButton constraints
         showHideButton.topAnchor.constraint(equalTo: textFieldBorderLine.topAnchor).isActive = true
-        showHideButton.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor).isActive = true
         showHideButton.bottomAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor).isActive = true
         showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: textFieldBorderLine.trailingAnchor).isActive = true
         
         // Three indicator constraints
         weakView.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 10).isActive = true
@@ -130,7 +130,8 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldBorderLine.bottomAnchor, constant: 5).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 10).isActive = true
         
-                
+        
+        
         
         
     }
@@ -141,41 +142,41 @@ class PasswordField: UIControl {
     }
     
     @objc func changeHideButton() {
-    textField.isSecureTextEntry.toggle()
-         if textField.isSecureTextEntry == true {
-             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-         } else {
-             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-         }
+        textField.isSecureTextEntry.toggle()
+        if textField.isSecureTextEntry == true {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
         
-         
-     }
+        
+    }
     
     func passwordStrength(for cases: StrengthPasswordCondtion) {
-           condition = cases
-           strengthDescriptionLabel.text = condition.rawValue
-             
-          
-           switch cases {
-           case .tooWeak:
-               
-               weakView.layer.backgroundColor = weakColor.cgColor
-                              mediumView.layer.backgroundColor = unusedColor.cgColor
-                              strongView.layer.backgroundColor = unusedColor.cgColor
-              weakViewAnimate()
-           case .medium:
-               weakView.layer.backgroundColor = weakColor.cgColor
-                             mediumView.layer.backgroundColor = mediumColor.cgColor
-                             strongView.layer.backgroundColor = unusedColor.cgColor
-               mediumViewAnimate()
-           case .strong:
-               weakView.layer.backgroundColor = weakColor.cgColor
-               mediumView.layer.backgroundColor = mediumColor.cgColor
-               strongView.layer.backgroundColor = strongColor.cgColor
-               strongViewAnimate()
-           }
-         
-       }
+        condition = cases
+        strengthDescriptionLabel.text = condition.rawValue
+        
+        
+        switch cases {
+        case .tooWeak:
+            
+            weakView.layer.backgroundColor = weakColor.cgColor
+            mediumView.layer.backgroundColor = unusedColor.cgColor
+            strongView.layer.backgroundColor = unusedColor.cgColor
+            weakViewAnimate()
+        case .medium:
+            weakView.layer.backgroundColor = weakColor.cgColor
+            mediumView.layer.backgroundColor = mediumColor.cgColor
+            strongView.layer.backgroundColor = unusedColor.cgColor
+            mediumViewAnimate()
+        case .strong:
+            weakView.layer.backgroundColor = weakColor.cgColor
+            mediumView.layer.backgroundColor = mediumColor.cgColor
+            strongView.layer.backgroundColor = strongColor.cgColor
+            strongViewAnimate()
+        }
+        
+    }
     
     func determinePasswordStrength(to passwordField: String) {
         var strength: StrengthPasswordCondtion
@@ -193,54 +194,54 @@ class PasswordField: UIControl {
         if condition != strength {
             passwordStrength(for: strength)
         }
-       
-    }
-
-      
-       private func weakViewAnimate() {
-           
-            let animationOn = {
-                self.weakView.transform = CGAffineTransform(scaleX: 1.6, y: 1.5)
-            }
-            let animationOff = {
-                self.weakView.transform = .identity
-            }
-            UIView.animate(withDuration: 0.30, animations: {
-                animationOn()
-            }) { (_) in
-                animationOff()
-            }
-    }
         
-          private func mediumViewAnimate() {
-               
-                let animationOn = {
-                    self.mediumView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
-                }
-                let animationOff = {
-                    self.mediumView.transform = .identity
-                }
-                UIView.animate(withDuration: 0.30, animations: {
-                    animationOn()
-                }) { (_) in
-                    animationOff()
-                }
+    }
+    
+    
+    private func weakViewAnimate() {
+        
+        let animationOn = {
+            self.weakView.transform = CGAffineTransform(scaleX: 1.6, y: 1.5)
         }
+        let animationOff = {
+            self.weakView.transform = .identity
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            animationOn()
+        }) { (_) in
+            animationOff()
+        }
+    }
+    
+    private func mediumViewAnimate() {
         
-        private func strongViewAnimate() {
-                  
-                   let animationOn = {
-                    self.strongView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
-                   }
-                   let animationOff = {
-                       self.strongView.transform = .identity
-                   }
-                   UIView.animate(withDuration: 0.30, animations: {
-                       animationOn()
-                   }) { (_) in
-                       animationOff()
-                   }
-           }
+        let animationOn = {
+            self.mediumView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
+        }
+        let animationOff = {
+            self.mediumView.transform = .identity
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            animationOn()
+        }) { (_) in
+            animationOff()
+        }
+    }
+    
+    private func strongViewAnimate() {
+        
+        let animationOn = {
+            self.strongView.transform = CGAffineTransform(scaleX: 1.2, y: 1.5)
+        }
+        let animationOff = {
+            self.strongView.transform = .identity
+        }
+        UIView.animate(withDuration: 0.30, animations: {
+            animationOn()
+        }) { (_) in
+            animationOff()
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -248,7 +249,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-       determinePasswordStrength(to: newText)
+        determinePasswordStrength(to: newText)
         return true
     }
 }
