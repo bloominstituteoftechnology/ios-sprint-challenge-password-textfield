@@ -42,14 +42,55 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        self.backgroundColor = .lightGray
-        
+        // ENTER PASSWORD LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textAlignment = .left
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
+        
+            // constraints
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
+        ])
+        
+        // TEXTFIELD
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .clear
+        textField.borderStyle = .roundedRect
+        textField.layer.borderWidth = 2.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.cornerRadius = 3.0
+        
+            // constraints
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor ),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        // Show Button
+        
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.frame = CGRect(x: 10, y: -100, width: 40, height: 40)
+        if let image = UIImage(named: "eyes-closed") {
+            showHideButton.setBackgroundImage(image, for: .normal)
+        }
+//        button.addTarget(self, action #selector(showHideButtonTapped), for: UIControl.Event.touchUpInside)
+        
+            // constraints
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin * 2),
+            showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        ])
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
