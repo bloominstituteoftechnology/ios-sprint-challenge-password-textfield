@@ -71,10 +71,12 @@ class PasswordField: UIControl {
         // Views
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        
         strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
         
         NSLayoutConstraint.activate([
         
