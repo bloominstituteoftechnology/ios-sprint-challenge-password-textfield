@@ -8,48 +8,133 @@
 
 import UIKit
 
+// TODO: passwordStrength enum
+
+@IBDesignable
 class PasswordField: UIControl {
+    
+    // MARK: - Properties
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
+    // SIZES
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
     
+    // COLORS
+        // label
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
+        // text field
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
-    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
-    
-    // States of the password strength indicators
+    private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1) // TODO: unabreviate this constant to something else
+        // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
-    private var titleLabel: UILabel = UILabel()
-    private var textField: UITextField = UITextField()
+    // IMAGES
+    // TODO: add "eyeball" button images
+    
+    // SUBVIEWS
+    private var titleLabel: UILabel = UILabel() // TODO: update var with more specific name
+    private var textField: UITextField = UITextField() // TODO: update var with more specific name
     private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    // MARK: - Subview Setup
+    
     func setup() {
         // Lay out your subviews here
         
+        // "ENTER PASSWORD" TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // "PASSWORD" TEXT FIELD
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
+        
+        // "EYEBALL" "HIDE/SHOW TEXT" BUTTON
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
+        
+        // WEAK VIEW
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
+        
+        // MEDIUM VIEW
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
+        
+        // STRONG VIEW
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
+        
+        // STRENGTH DESCRIPTION LABEL
+        
+        // TODO: ADD SUBVIEW / DISABLE AUTORESIZING MASK
+        
+        // TODO: edit appearance
+        
+        // TODO: edit constraints
     }
+    
+    // MARK: - Initializers
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
 }
+
+    // MARK: - Actions
+
+    // "PASSWORD" TEXT FIELD WAS EDITED
+    // TODO: call password strength method
+
+    // "RETURN" ON KEYBOARD WAS PRESSED
+    // TODO: hide keyboard
+
+    // "EYEBALL" "SHOW -OR- HIDE" BUTTON WAS PRESSED
+    // TODO: call show -or- hide method
+
+    // MARK: - Methods
+
+    // SHOW PASSWORD STRENGTH
+    // TODO: update the subviews based on password length
+
+    // SHOW -OR- HIDE PASSWORD
+    // TODO: hide or show text based on button pressed
+
+    // MARK: - Extensions
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -60,3 +145,8 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - Stretch Goals
+// TODO: pulse animations for increasing strength
+// TODO: debounce for only sending final password?
+// TODO: check password with dictionary
