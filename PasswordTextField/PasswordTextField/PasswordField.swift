@@ -69,8 +69,10 @@ class PasswordField: UIControl {
         textField.backgroundColor = .clear
         textField.borderStyle = .roundedRect
         textField.layer.borderWidth = 2.0
-        textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = 3.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = true
+        
 
         
             // constraints
@@ -81,7 +83,7 @@ class PasswordField: UIControl {
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
-        // Show Button
+        // SHOW BUTTON
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +91,7 @@ class PasswordField: UIControl {
         if let image = UIImage(named: "eyes-closed") {
             showHideButton.setBackgroundImage(image, for: .normal)
         }
-//        button.addTarget(self, action #selector(showHideButtonTapped), for: UIControl.Event.touchUpInside)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped(_:)), for: .touchUpInside)
         
             // constraints
         NSLayoutConstraint.activate([
@@ -97,33 +99,36 @@ class PasswordField: UIControl {
             showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
-        // Weak View
+        // WEAK VIEW
         
         
-        addSubview(weakView)
+//        addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.frame = CGRect(x: 0, y: 10, width: 60, height: 5)
-        weakView.backgroundColor = .systemPink
+        weakView.frame = CGRect(x: 0, y: 0, width: colorViewSize.width, height: colorViewSize.height)
+        weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = 5
         
         
-        // Medium View
+        // MEDIUM VIEW
         
-        addSubview(mediumView)
+//        addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.frame = CGRect(x: 0, y: 20, width: 60, height: 5)
-        mediumView.backgroundColor = .systemYellow
+        mediumView.frame = CGRect(x: 0, y: 0, width: colorViewSize.width, height: colorViewSize.height)
+        mediumView.backgroundColor = mediumColor
+        mediumView.layer.cornerRadius = 5
         
         
-        // Strong View
+        // STRONG VIEW
         
-        addSubview(strongView)
+//        addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.frame = CGRect(x: 0, y: 40, width: 60, height: 5)
-        strongView.backgroundColor = .systemGreen
+        strongView.frame = CGRect(x: 0, y: 0, width: colorViewSize.width, height: colorViewSize.height)
+        strongView.backgroundColor = strongColor
+        strongView.layer.cornerRadius = 5
         
-        // strengthLabel
+        // STRENGTH LABEL
         
-        addSubview(strengthDescriptionLabel)
+//        addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.text = "Default"
         strengthDescriptionLabel.textColor = labelTextColor
@@ -132,18 +137,20 @@ class PasswordField: UIControl {
         
         
         
-        // StackView & Constraints
+        // STACKVIEW AND CONSTRAINTS
         
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
-        addSubview(stackView)
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5
         
         stackView.addArrangedSubview(weakView)
         stackView.addArrangedSubview(mediumView)
         stackView.addArrangedSubview(strongView)
         stackView.addArrangedSubview(strengthDescriptionLabel)
+        
+        addSubview(stackView)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
@@ -157,6 +164,15 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @ objc func showHideButtonTapped(_: UIButton) {
+        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        if textField.isSecureTextEntry == true {
+            showHideButton.setBackgroundImage(UIImage(named: "eyes-closed"), for: .normal)
+        } else {
+            showHideButton.setBackgroundImage(UIImage(named: "eyes-open"), for: .normal)
+        }
     }
 }
 
