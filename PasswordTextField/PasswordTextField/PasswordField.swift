@@ -8,8 +8,6 @@
 
 import UIKit
 
-// TODO: passwordStrength enum
-
 @IBDesignable
 class PasswordField: UIControl {
     
@@ -230,7 +228,6 @@ class PasswordField: UIControl {
     
     // SHOW -OR- HIDE PASSWORD
     private func showOrHidePassword(currentImage: UIImage) {
-        print("eyeball tapped")
         switch currentImage {
         case eyesClosedImage:
             textField.isSecureTextEntry = false
@@ -247,11 +244,7 @@ class PasswordField: UIControl {
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        let oldText = textField.text!
-//        let stringRange = Range(range, in: oldText)!
-//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
-        updateForPasswordStrength() // FIXME: - Do I need this here instead?
+        updateForPasswordStrength()
         return true
     }
 }
