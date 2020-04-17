@@ -202,7 +202,7 @@ class PasswordField: UIControl {
     
     // "EYEBALL" "SHOW -OR- HIDE" BUTTON WAS PRESSED
     @objc func showHideButtonWasPressed(_ sender: UIButton) {
-        showOrHidePassword(currentImage: sender.currentBackgroundImage!)
+        showOrHidePassword(currentImage: sender.image(for: .normal)!)
     }
     
     
