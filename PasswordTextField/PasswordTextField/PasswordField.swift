@@ -45,6 +45,16 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    var showPassword: Bool = true {
+        didSet {
+            textField.isSecureTextEntry = showPassword
+            if showPassword {
+                showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+            } else {
+                showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+            }
+        }
+    }
     override var intrinsicContentSize: CGSize {
        return CGSize(width: 160, height: 160)
      }
@@ -80,6 +90,7 @@ class PasswordField: UIControl {
         textField.rightView = showHideButton
         textField.rightViewMode = .always
         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showPasswordTapped), for: .touchUpInside)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
       
         // Strength Views
@@ -133,6 +144,9 @@ class PasswordField: UIControl {
     }
     
     // MARK: - Functions
+    @objc func showPasswordTapped() {
+        showPassword.toggle()
+    }
     private func passwordStrength(password: String) {
         switch password.count {
         case ..<10:
