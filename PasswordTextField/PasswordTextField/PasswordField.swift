@@ -14,6 +14,7 @@ class PasswordField: UIControl {
     private (set) var password: String = ""
     
     private let standardMargin: CGFloat = 8.0
+    private let colorMargin: CGFloat = 12.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
@@ -78,7 +79,7 @@ class PasswordField: UIControl {
         
         weakView.backgroundColor = weakColor
         weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: colorMargin).isActive = true
         weakView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
         
@@ -87,7 +88,7 @@ class PasswordField: UIControl {
         
         mediumView.backgroundColor = mediumColor
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
-        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: colorMargin).isActive = true
         mediumView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
         
@@ -97,9 +98,19 @@ class PasswordField: UIControl {
         
         strongView.backgroundColor = strongColor
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin).isActive = true
-        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: colorMargin).isActive = true
         strongView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.text = "Strong Password"
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
