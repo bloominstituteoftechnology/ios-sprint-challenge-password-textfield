@@ -10,9 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var passwordField: PasswordField?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+//        passwordField?.setup()
         
     }
     
