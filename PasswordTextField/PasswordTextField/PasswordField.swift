@@ -38,6 +38,14 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    
+    
     func setup() {
         self.backgroundColor = bgColor
         
@@ -63,6 +71,7 @@ class PasswordField: UIControl {
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 3
+        
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -119,10 +128,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.text = "Preview text"
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
 }
 
 extension PasswordField: UITextFieldDelegate {
