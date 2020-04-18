@@ -12,7 +12,7 @@ class PasswordField: UIControl {
     
     // MARK: - Password Strength Enum
     enum PasswordStrength: String {
-        case empty = ""
+        case empty = "Enter a password"
         case weak = "Too weak"
         case medium = "Could be stronger"
         case strong = "Strong password"
@@ -22,7 +22,6 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private (set) var strength: PasswordStrength = .empty
-
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -77,12 +76,15 @@ class PasswordField: UIControl {
         
         textField.rightView = showHideButton
         textField.rightViewMode = .always
+        textField.delegate = self
 
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 5.0
+        
         textField.isSecureTextEntry = true
-        textField.isUserInteractionEnabled = true
+        textField.placeholder = "Password"
+//        textField.isUserInteractionEnabled = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
         
@@ -192,11 +194,6 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
         }
-        
-//        textField.isSecureTextEntry.toggle()
-//        showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
-//        showHideButton.setImage(UIImage.init(named:"eyes-open"), for: .highlighted)
-            
     }
     
     // MARK: - Initializers
@@ -215,21 +212,8 @@ class PasswordField: UIControl {
 
 // MARK: - Text Field Extension
 extension PasswordField: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        valueChanged(newValue: text)
-        sendActions(for: .valueChanged)
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
         valueChanged(newValue: text)
         sendActions(for: .valueChanged)
