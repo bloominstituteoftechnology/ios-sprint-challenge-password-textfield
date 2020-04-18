@@ -83,6 +83,7 @@ class PasswordField: UIControl {
             NSLayoutConstraint(item: weakView, attribute: .bottom, relatedBy: .equal, toItem: weakView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
             NSLayoutConstraint(item: weakView, attribute: .trailing, relatedBy: .equal, toItem: weakView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
         ])
+        weakView.layer.cornerRadius = 3
         
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
@@ -93,6 +94,7 @@ class PasswordField: UIControl {
             NSLayoutConstraint(item: mediumView, attribute: .bottom, relatedBy: .equal, toItem: mediumView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
             NSLayoutConstraint(item: mediumView, attribute: .trailing, relatedBy: .equal, toItem: mediumView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
         ])
+        mediumView.layer.cornerRadius = 3
         
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
@@ -103,14 +105,18 @@ class PasswordField: UIControl {
             NSLayoutConstraint(item: strongView, attribute: .bottom, relatedBy: .equal, toItem: strongView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
             NSLayoutConstraint(item: strongView, attribute: .trailing, relatedBy: .equal, toItem: strongView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
         ])
+        strongView.layer.cornerRadius = 3
         
-        
-        
-       
-        
-        
-        
-        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .leading, relatedBy: .equal, toItem: strongView, attribute: .trailing, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: textField, attribute: .trailing, multiplier: 1, constant: 0)
+        ])
+        strengthDescriptionLabel.text = "Preview text"
     }
     
     required init?(coder aDecoder: NSCoder) {
