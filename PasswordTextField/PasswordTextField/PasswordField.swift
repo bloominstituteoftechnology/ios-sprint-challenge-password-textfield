@@ -40,6 +40,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    
     func setup() {
         // Lay out your subviews here
         self.backgroundColor = bgColor
@@ -57,17 +58,18 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
+        textField.delegate = self
+        textField.becomeFirstResponder()
         textField.isEnabled = true
         textField.isSecureTextEntry = true
-        textField.becomeFirstResponder()
         textField.borderStyle = .roundedRect
         textField.backgroundColor = bgColor
         textField.rightViewMode = .unlessEditing
-        textField.delegate = self
         textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.95).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +129,10 @@ class PasswordField: UIControl {
         setup()
     }
     
+    override var intrinsicContentSize: CGSize {
+      return CGSize(width: 160, height: 160)
+    }
+    
     @objc func toggleHideButton() {
         if textField.isSecureTextEntry == true {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
@@ -153,6 +159,12 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.text = "Strong password"
             strongView.backgroundColor = strongColor
         }
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        self.textField.resignFirstResponder()
+        self.textField.selectedTextRange = nil
+        return false
     }
 }
 
