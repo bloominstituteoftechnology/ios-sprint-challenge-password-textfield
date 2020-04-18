@@ -40,10 +40,11 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        backgroundColor = bgColor
+        self.backgroundColor = bgColor
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         titleLabel.text = "ENTER PASSWORD: "
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
@@ -66,12 +67,39 @@ class PasswordField: UIControl {
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
         textField.rightView = showHideButton
         textField.rightViewMode = .always
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width), y: CGFloat(textField.frame.size.height / 2), width: CGFloat(25), height: CGFloat(25))
         
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         
+        weakView.backgroundColor = weakColor
+        weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mediumView.backgroundColor = mediumColor
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
+        
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strongView.backgroundColor = strongColor
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin).isActive = true
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.16).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: CGFloat(textFieldContainerHeight / 8)).isActive = true
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
