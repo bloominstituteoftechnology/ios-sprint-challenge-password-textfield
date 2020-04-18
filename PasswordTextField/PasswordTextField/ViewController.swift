@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     
     @IBAction func passwordChanged(_ sender: PasswordField) {
         print("\(sender.password)")
-        print("\(sender.pwStrength.rawValue)")
     }
     
     
