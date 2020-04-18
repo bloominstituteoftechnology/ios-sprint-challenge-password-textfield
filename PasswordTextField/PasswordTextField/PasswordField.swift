@@ -37,8 +37,8 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
-    private var showHideButtonTapped: Bool = false
+    private var showHideButton: UIButton = UIButton(type: .custom)
+    //    private var showHideButtonTapped: Bool = false
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -64,7 +64,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
-        textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+        textField.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: -20.0).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         textField.layer.cornerRadius = 6.0
         textField.layer.borderWidth = 2.0
@@ -75,14 +75,29 @@ class PasswordField: UIControl {
         textField.addTarget(self, action: #selector(ViewController.passwordEntered(_:)), for: .valueChanged)
         
         //show/hide button
-        self.addSubview(showHideButton)
+        
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
-        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight * 0.33).isActive = true
-        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
-        showHideButton.isUserInteractionEnabled = true
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(updateShowHideButton(sender: )), for: .touchUpInside)
+        self.addSubview(showHideButton)
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -10.0).isActive = true
+        showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: -textFieldContainerHeight * 0.10).isActive = true
+        showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -50.0).isActive = true
+        showHideButton.addTarget(self, action: #selector(updateShowHideButton(sender:)), for: .touchUpInside)
+        self.addSubview(showHideButton)
+        
+        // password text field stack view
+        let pwStackView = UIStackView()
+        pwStackView.translatesAutoresizingMaskIntoConstraints = false
+        pwStackView.axis = .horizontal
+        addSubview(pwStackView)
+        
+        pwStackView.addArrangedSubview(textField)
+        pwStackView.addArrangedSubview(showHideButton)
+        pwStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 45).isActive = true
+        pwStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
+        pwStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -45).isActive = true
+        
+        
         
         // weak view
         addSubview(weakView)
@@ -125,13 +140,15 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
         textField.delegate = self
-        isUserInteractionEnabled = false
+        isUserInteractionEnabled = true
     }
     
     func textFieldValueChanged(_ textField: UITextField) -> Bool {
@@ -149,33 +166,21 @@ class PasswordField: UIControl {
         NSLog(self.strengthDescriptionLabel.text ?? "")
     }
     
-    
-    ////// THIS NEEDS ATTENTION
-    @objc func updateShowHideButton(sender: UIButton) {
+    @objc private func updateShowHideButton(sender: UIButton) {
         
-//        buttonImage(image: sender.currentImage!)
-       
-            if showHideButtonTapped {
-                sender.setImage(UIImage(named: "eyes-open"), for: .normal)
-                textField.isSecureTextEntry = false
-                   
-               } else {
-                   sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
-                   textField.isSecureTextEntry = true
-               }
-        showHideButtonTapped.toggle()
-
+        if sender.currentImage == UIImage(named: "eyes-closed") {
+            
+            sender.setImage(UIImage(named: "eyes-open"), for: .normal)
+            textField.isSecureTextEntry = false
+            
+        } else {
+            
+            sender.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
+            
+        }
+        showHideButton.isSelected.toggle()
     }
-    
-//    private func buttonImage(image: UIImage) {
-//        if image == UIImage(named: "eyes-closed") {
-//            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-//            textField.isSecureTextEntry = false
-//        } else {
-//            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-//            textField.isSecureTextEntry = true
-//        }
-//    }
     
     private func determineStrength(password: String) {
         
@@ -231,34 +236,6 @@ class PasswordField: UIControl {
         }
     }
     
-    // MARK: - Touch Tracking
-    
-//    // Start tracking touch in control
-//    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-//        //        updateShowHideButton()
-//        return true
-//    }
-//
-//    // End tracking touch in control
-//    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-//        guard let touch = touch else {
-//            NSLog("Unable to track touch")
-//            return
-//        }
-//
-//        let touchPoint = touch.location(in: self)
-//        if showHideButton.bounds.contains(touchPoint) {
-//            //            updateShowHideButton(sender: showHideButton)
-//            sendActions(for: .touchUpInside)
-//        } else {
-//            sendActions(for: .touchUpOutside)
-//        }
-//    }
-//
-//    // Cancel tracking
-//    override func cancelTracking(with event: UIEvent?) {
-//        sendActions(for: .touchCancel)
-//    }
 }
 
 extension PasswordField: UITextFieldDelegate {
