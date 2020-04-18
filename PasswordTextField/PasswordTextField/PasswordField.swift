@@ -81,8 +81,6 @@ class PasswordField: UIControl {
         
         
         
-
-        
             // constraints
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
@@ -198,15 +196,18 @@ class PasswordField: UIControl {
         print("working")
 
         barView.transform = CGAffineTransform(scaleX: 1.0, y: 1.2)
-        UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
-            barView.transform = .identity
-        }, completion: nil)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0, usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                                barView.transform = .identity
+        },              completion: nil)
     }
     
 
     func passwordCheck() {
         
-        print("password check: \(password)")
         var pwStrength: Strength
         
         switch password.count {
