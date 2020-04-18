@@ -41,20 +41,18 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 150, height: 150)
+        return CGSize(width: 150, height: 100)
     }
     
     func setup() {
-        backgroundColor = .blue
         
         let container = UIView()
         container.backgroundColor = bgColor
         addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            container.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            container.heightAnchor.constraint(equalToConstant: 200), // remove at end
+            container.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
         
         titleLabel.text = "ENTER PASSWORD"
@@ -67,7 +65,6 @@ class PasswordField: UIControl {
             titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
             titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
-            //titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
         ])
         
         let textFieldContainer = UIView()
