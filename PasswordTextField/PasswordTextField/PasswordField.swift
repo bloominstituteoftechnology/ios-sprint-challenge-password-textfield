@@ -13,6 +13,8 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
+    private var showingPassword = false
+    
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -91,6 +93,7 @@ class PasswordField: UIControl {
         ])
         
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
         textFieldContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -105,6 +108,15 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc private func showHideButtonTapped() {
+        showingPassword.toggle()
+        if showingPassword {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
 }
 
