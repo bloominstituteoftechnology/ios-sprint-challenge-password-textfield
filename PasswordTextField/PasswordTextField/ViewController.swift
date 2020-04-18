@@ -10,10 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func dismissKeyboard(_sender: PasswordField) {
- 
+    
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("\(sender.password)")
+        print("\(sender.pwStrength.rawValue)")
     }
-
+    
     
     // For use in the stretch goal
     //

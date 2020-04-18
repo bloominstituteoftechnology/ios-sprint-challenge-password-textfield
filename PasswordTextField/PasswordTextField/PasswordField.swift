@@ -41,7 +41,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    enum Strength: Int {
+    enum Strength: String {
         case weak
         case medium
         case strong
@@ -177,6 +177,7 @@ class PasswordField: UIControl {
 
         ])
         
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -193,14 +194,30 @@ class PasswordField: UIControl {
         }
     }
     
-    @ objc func viewSpring() {
+    func viewSpring(_ barView: UIView) {
+        print("working")
+//        self.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+//        UIView.animate(withDuration: 2.0,
+//                       delay: 0,
+//                       usingSpringWithDamping: 0.5,
+//                       initialSpringVelocity: 0,
+//                       options: [],
+//                       animations: {
+//                        self.transform = .identity
+//        }, completion: nil)
         
+        barView.transform = CGAffineTransform(scaleX: 1.0, y: 1.2)
+        UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+            barView.transform = .identity
+        }, completion: nil)
     }
     
 
     func passwordCheck() {
+        
         print("password check: \(password)")
-
+        var pwStrength: Strength
+        
         switch password.count {
         
         case 0...3:
@@ -208,20 +225,30 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
+            viewSpring(weakView)
+            pwStrength = .weak
+            
         case 4...6:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
+            viewSpring(mediumView)
+            pwStrength = .medium
+            
         case 6...100:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
+            viewSpring(strongView)
+            pwStrength = .strong
+            
         default:
             break
         
     }
+
 }
     
     func keyBoardDismiss(_ textField: UITextField) -> Bool {
@@ -239,8 +266,15 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
 
         password = newText
-       passwordCheck()
+        passwordCheck()
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        sendActions(for: .valueChanged)
+        return true
+    }
+
 }
 
