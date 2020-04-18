@@ -10,8 +10,21 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func valueChanged(_ sender: Any) {
+    @IBAction func passwordChanged(_ sender: PasswordField) {
         
+        let password = sender.password
+        var strength = ""
+        
+        if password.count <= 9{
+            strength = "weak"
+        } else if password.count >= 10,
+            password.count <= 19 {
+            strength = "medium"
+        } else {
+            strength = "strong"
+        }
+        
+        print("Password: \(password) is \(strength).")
         
     }
     

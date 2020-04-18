@@ -20,17 +20,15 @@ class PasswordField: UIControl {
     // MARK: - Properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
-    private let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    private (set) var strength: PasswordStrength = .weak
+
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
     private let colorViewSize: CGSize = CGSize(width: 60.0, height: 5.0)
-    
     private let labelTextColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     private let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
-    
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
@@ -54,9 +52,10 @@ class PasswordField: UIControl {
     
     // MARK: - Functions
     
-    func setup() {
+    private func setup() {
         // Lay out your subviews here
         self.backgroundColor = bgColor
+        self.layer.cornerRadius = 10.0
         
         // Label
         titleLabel.text = "ENTER PASSWORD:"
@@ -71,6 +70,7 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         showHideButton.addTarget(self, action: #selector(showHideButtonTapped), for: .touchUpInside)
+        showHideButton.imageView?.contentMode = .left
 
         // Text field
         
@@ -80,19 +80,19 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 5.0
-        textField.bounds.inset(by: padding )
         textField.isSecureTextEntry = true
         textField.isUserInteractionEnabled = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
         
         // Color views and strength label
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         mediumView.backgroundColor = unusedColor
-        mediumView.sizeThatFits(colorViewSize)
         strongView.backgroundColor = unusedColor
-        strongView.sizeThatFits(colorViewSize)
+        
         strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.translatesAutoresizingMaskIntoConstraints = false
@@ -150,12 +150,13 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-        } else if password.count <= 19 {
+        } else if password.count >= 10,
+            password.count <= 19 {
             strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
-        } else {
+        } else if password.count >= 20 {
             strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
@@ -191,18 +192,19 @@ class PasswordField: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        textField.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
 }
 
 // MARK: - Text Field Extension
 extension PasswordField: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.backgroundColor = .lightGray
         return true
     }
     
@@ -213,7 +215,6 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.backgroundColor = .white
         return true
     }
     
@@ -232,8 +233,12 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text, !text.isEmpty else { return false }
+        password = text
+        
         textField.resignFirstResponder()
         returnKeyTapped()
+        
         sendActions(for: .valueChanged)
         return true
     }
