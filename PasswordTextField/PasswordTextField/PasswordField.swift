@@ -44,7 +44,16 @@ class PasswordField: UIControl {
         setup()
     }
     
-    
+    @objc @IBAction func showHide() {
+        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        
+        switch textField.isSecureTextEntry {
+        case true:
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        default:
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
     
     func setup() {
         self.backgroundColor = bgColor
@@ -83,6 +92,7 @@ class PasswordField: UIControl {
             NSLayoutConstraint(item: showHideButton, attribute: .width, relatedBy: .equal, toItem: textField, attribute: .width, multiplier: 0.15, constant: 0),
             NSLayoutConstraint(item: showHideButton, attribute: .height, relatedBy: .equal, toItem: textField, attribute: .height, multiplier: 1, constant: 0)
         ])
+        showHideButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
         
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
