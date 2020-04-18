@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // MARK: - Password Strength Enum
     enum PasswordStrength: String {
+        case empty = ""
         case weak = "Too weak"
         case medium = "Could be stronger"
         case strong = "Strong password"
@@ -20,7 +21,7 @@ class PasswordField: UIControl {
     // MARK: - Properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private (set) var strength: PasswordStrength = .weak
+    private (set) var strength: PasswordStrength = .empty
 
     
     private let standardMargin: CGFloat = 8.0
@@ -90,7 +91,7 @@ class PasswordField: UIControl {
         mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
         
-        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.text = PasswordStrength.empty.rawValue
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         
@@ -145,18 +146,28 @@ class PasswordField: UIControl {
         
         guard password == textField.text else { return }
         
-        if password.count <= 9 {
+        if textField.text == "" {
+            strengthDescriptionLabel.text = PasswordStrength.empty.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if textField.text?.count == 0 {
+            strengthDescriptionLabel.text = PasswordStrength.empty.rawValue
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if textField.text!.count >= 1, textField.text!.count <= 9 {
             strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-        } else if password.count >= 10,
-            password.count <= 19 {
+        } else if textField.text!.count >= 10,
+            textField.text!.count <= 19 {
             strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
-        } else if password.count >= 20 {
+        } else if textField.text!.count >= 20 {
             strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
@@ -180,7 +191,12 @@ class PasswordField: UIControl {
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
-        }     
+        }
+        
+//        textField.isSecureTextEntry.toggle()
+//        showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
+//        showHideButton.setImage(UIImage.init(named:"eyes-open"), for: .highlighted)
+            
     }
     
     // MARK: - Initializers

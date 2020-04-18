@@ -15,7 +15,11 @@ class ViewController: UIViewController {
         let password = sender.password
         var strength = ""
         
-        if password.count <= 9{
+        if password.isEmpty {
+            strength = "empty"
+        } else if password.count == 0 {
+            strength = "empty"
+        } else if password.count <= 9{
             strength = "weak"
         } else if password.count >= 10,
             password.count <= 19 {
