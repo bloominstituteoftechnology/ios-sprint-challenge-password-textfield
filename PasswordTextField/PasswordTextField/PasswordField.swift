@@ -45,6 +45,10 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    override var intrinsicContentSize: CGSize {
+       return CGSize(width: 160, height: 160)
+     }
+    
     func setup() {
         // Label
         titleLabel.text = "ENTER PASSWORD"
@@ -104,6 +108,7 @@ class PasswordField: UIControl {
         
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
         
