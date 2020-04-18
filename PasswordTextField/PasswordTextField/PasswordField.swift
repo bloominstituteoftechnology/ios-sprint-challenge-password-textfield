@@ -32,17 +32,70 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
+    private var showHideButton: UIButton = UIButton(type: .custom)
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
+        backgroundColor = .blue
         
-        addSubview(titleLabel)
+        let container = UIView()
+        container.backgroundColor = bgColor
+        addSubview(container)
+        container.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            container.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            container.heightAnchor.constraint(equalToConstant: 200), // remove at end
+        ])
+        
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
+        titleLabel.backgroundColor = .clear
+        container.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
+            //titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
+        ])
+        
+        let textFieldContainer = UIView()
+        textFieldContainer.layer.borderWidth = 2
+        textFieldContainer.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldContainer.layer.cornerRadius = 7
+        container.addSubview(textFieldContainer)
+        textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textFieldContainer.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
+            textFieldContainer.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
+            textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+        ])
+        
+        textField.placeholder = "password"
+        textFieldContainer.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: textFieldMargin),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
+        ])
+        
+        showHideButton.imageView?.image = UIImage(named: "eyes-closed")
+        textFieldContainer.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: textFieldMargin),
+            showHideButton.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -textFieldMargin),
+            showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
+            showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
