@@ -73,6 +73,7 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 3
         
         
+        
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
