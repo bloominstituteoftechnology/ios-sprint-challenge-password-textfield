@@ -10,12 +10,14 @@ import UIKit
 
 class PasswordField: UIControl {
     
+    // MARK: - Password Strength Enum
     enum PasswordStrength: String {
         case weak = "Too weak"
-        case decent = "Could be stronger"
+        case medium = "Could be stronger"
         case strong = "Strong password"
     }
     
+    // MARK: - Properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -32,6 +34,10 @@ class PasswordField: UIControl {
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 160, height: 160)
+    }
+    
     // States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
@@ -45,6 +51,8 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    
+    // MARK: - Functions
     
     func setup() {
         // Lay out your subviews here
@@ -70,7 +78,7 @@ class PasswordField: UIControl {
         textField.rightViewMode = .always
 
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.layer.borderWidth = 2.0
+        textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 5.0
         textField.bounds.inset(by: padding )
         textField.isSecureTextEntry = true
@@ -133,14 +141,53 @@ class PasswordField: UIControl {
         
     }
     
-    @IBAction func valueChanged() {
+    private func valueChanged(newValue: String) {
+        
+        guard password == textField.text else { return }
+        
+        if password.count <= 9 {
+            strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if password.count <= 19 {
+            strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        } else {
+            strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+        
+    }
+    
+    private func returnKeyTapped() {
+        print(textField.text ?? "There is no password in the text field.")
+        
+        guard let text = textField.text else { return }
+        valueChanged(newValue: text)
         
     }
     
     @objc private func showHideButtonTapped() {
+        if textField.isSecureTextEntry == true {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage.init(named:"eyes-open"), for: .normal)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
+        }
         
+//        textField.isSecureTextEntry.toggle()
+//        showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
+//        showHideButton.setImage(UIImage.init(named:"eyes-open"), for: .highlighted)
+            
     }
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -152,29 +199,42 @@ class PasswordField: UIControl {
     }
 }
 
-
+// MARK: - Text Field Extension
 extension PasswordField: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.backgroundColor = .lightGray
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        valueChanged(newValue: text)
+        sendActions(for: .valueChanged)
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.backgroundColor = .white
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        valueChanged(newValue: text)
+        sendActions(for: .valueChanged)
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        valueChanged(newValue: newText)
         return true
     }
-}
-
-extension PasswordField {
     
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        <#code#>
-//    }
-//
-//
-//
-//    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-//        <#code#>
-//    }
-    
-    
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        returnKeyTapped()
+        sendActions(for: .valueChanged)
+        return true
+    }
 }
