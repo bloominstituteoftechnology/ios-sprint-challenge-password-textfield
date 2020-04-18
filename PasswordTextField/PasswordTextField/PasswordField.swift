@@ -54,10 +54,19 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
+        textField.isEnabled = true
+        textField.isSecureTextEntry = true
+        textField.borderStyle = .roundedRect
+        textField.backgroundColor = bgColor
+        textField.delegate = self
         textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
-        textField.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        textField.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        textField.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.95).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        
                                     
 
     }
