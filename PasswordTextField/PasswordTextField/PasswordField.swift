@@ -64,11 +64,14 @@ class PasswordField: UIControl {
         textField.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.95).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         textField.rightView = showHideButton
         textField.rightViewMode = .always
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width), y: CGFloat(textField.frame.size.height / 2), width: CGFloat(25), height: CGFloat(25))
         
-                                    
-
+        
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
