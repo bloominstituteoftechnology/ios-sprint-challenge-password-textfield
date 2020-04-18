@@ -180,12 +180,7 @@ class PasswordField: UIControl {
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
-        }
-        
-//        textField.isSecureTextEntry.toggle()
-//        showHideButton.setImage(UIImage.init(named: "eyes-closed"), for: .normal)
-//        showHideButton.setImage(UIImage.init(named:"eyes-open"), for: .highlighted)
-            
+        }     
     }
     
     // MARK: - Initializers
