@@ -38,6 +38,10 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 150, height: 150)
+    }
+    
     func setup() {
         backgroundColor = .blue
         
