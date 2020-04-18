@@ -42,15 +42,15 @@ This repository contains a basic project that includes artwork, colors, and basi
 
 Your finished project must include all of the following requirements:
 
-* A label that provides directions to the user for the purpose of the control ("enter password").
-* A textfield that accepts text with the contents hidden or shown depending on the state of the show/hide button. The textfield should have a blue border that wraps around the textfield itself and the show/hide button.
+* A label that provides directions to the user for the purpose of the control ("enter password"). **DONE**
+* A textfield that accepts text with the contents hidden or shown depending on the state of the show/hide button. The textfield should have a blue border that wraps around the textfield itself and the show/hide button. **DONE**
 * A show/hide button that uses the included eye image assets to represent the secure state of the textfield.
-* 3 strength indicators (views) that present either red, orange, or green colors to indicate the strength of the text entered into the password textfield.
-    * When these indicators need to change state, animate the change. Change the color and transform the vertical size of the highest attained level briefly. For example, going from "weak" to "medium", the orange indicator should briefly increase in vertical size, and then return to its original size. See the demo GIF.
-* A label that displays "too weak", "could be stronger", or "strong password" as a written indication of password strength.
-* As each new character is entered by the user into the textfield, the control should analyze the text and determine the strength of it as a password. The only requirements are length (see stretch goal for additional rules). The example GIF shows weak=0-9, medium=10-19, strong=20+, but feel free to create a different scale if you wish.
-* The control should keep all of its inner workings private except for two items: a string to hold the final password value (provided in the starter), and a strength value (could be implemented as a custom enum). Both should be readonly.
-* Use the constants provided in the starter project for colors, margins, sizes, etc. Auto Layout should be used to show subviews within the control, but using programmatic layout only (the storyboard is already set up for you in the starter). You may use `NSLayoutConstraint` or `NSLayoutAnchor` to lay out your views in code.
+* 3 strength indicators (views) that present either red, orange, or green colors to indicate the strength of the text entered into the password textfield. **DONE**
+    * When these indicators need to change state, animate the change. Change the color and transform the vertical size of the highest attained level briefly. For example, going from "weak" to "medium", the orange indicator should briefly increase in vertical size, and then return to its original size. See the demo GIF. **DONE**
+* A label that displays "too weak", "could be stronger", or "strong password" as a written indication of password strength.**DONE**
+* As each new character is entered by the user into the textfield, the control should analyze the text and determine the strength of it as a password. The only requirements are length (see stretch goal for additional rules). The example GIF shows weak=0-9, medium=10-19, strong=20+, but feel free to create a different scale if you wish. **DONE**
+* The control should keep all of its inner workings private except for two items: a string to hold the final password value (provided in the starter), and a strength value (could be implemented as a custom enum). Both should be readonly. **DONE**
+* Use the constants provided in the starter project for colors, margins, sizes, etc. Auto Layout should be used to show subviews within the control, but using programmatic layout only (the storyboard is already set up for you in the starter). You may use `NSLayoutConstraint` or `NSLayoutAnchor` to lay out your views in code. **DONE**
 * When the user taps the "return" key on the keyboard, the control should hide the keyboard and then signal to the containing view controller that the value of the password has changed using the target-action pattern (use the event type `valueChanged`). You'll need an `IBAction` that is wired to this event on the control in the view controller. When that event fires, simply print the password value and its strength to the console from the view controller.
 
 ## Stretch Problems (Optional)
