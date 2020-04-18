@@ -69,13 +69,13 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 6.0
         textField.layer.borderWidth = 2.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.textAlignment = .natural
+        textField.textAlignment = .left
+        textField.textColor = .darkGray
         textField.isSecureTextEntry = true
         textField.becomeFirstResponder()
         textField.addTarget(self, action: #selector(ViewController.passwordEntered(_:)), for: .valueChanged)
         
         //show/hide button
-        
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         self.addSubview(showHideButton)
@@ -106,7 +106,6 @@ class PasswordField: UIControl {
         weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor).isActive = true
         weakView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
-        
         weakView.backgroundColor = unusedColor
         
         
@@ -117,7 +116,6 @@ class PasswordField: UIControl {
         mediumView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
         mediumView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 6).isActive = true
-        
         mediumView.backgroundColor = unusedColor
         
         
@@ -128,7 +126,6 @@ class PasswordField: UIControl {
         strongView.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
         strongView.heightAnchor.constraint(equalToConstant: 5.0).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 6).isActive = true
-        
         strongView.backgroundColor = unusedColor
         
         //strength label
@@ -140,7 +137,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         strengthDescriptionLabel.textAlignment = .left
-        
         
     }
     
@@ -158,12 +154,6 @@ class PasswordField: UIControl {
         print(strengthDescriptionLabel.text ?? "")
         
         return true
-    }
-    
-    @objc private func passwordFieldEnter() {
-        textField.resignFirstResponder()
-        NSLog(password)
-        NSLog(self.strengthDescriptionLabel.text ?? "")
     }
     
     @objc private func updateShowHideButton(sender: UIButton) {
