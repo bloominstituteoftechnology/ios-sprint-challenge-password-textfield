@@ -41,8 +41,40 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+        let view = UIView()
+        let stackView = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        view.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: titleLabel.topAnchor).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        textField.widthAnchor.constraint(equalToConstant: 400).isActive = true
+        
+        view.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackView.addSubview(weakView)
+        stackView.addSubview(mediumView)
+        stackView.addSubview(strongView)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        
+       
+        
+        
+       
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,6 +89,15 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        switch newText.count {
+        case 0...9:
+            strengthDescriptionLabel.text = "Too Weak"
+            
+        case 10...19:
+            strengthDescriptionLabel.text = "Could be stronger"
+        default:
+            strengthDescriptionLabel.text = "Strong"
+        }
         return true
     }
 }
