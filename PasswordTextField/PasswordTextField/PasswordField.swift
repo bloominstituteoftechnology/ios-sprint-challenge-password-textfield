@@ -80,6 +80,7 @@ class PasswordField: UIControl {
             textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
+        textField.delegate = self
         textField.isSecureTextEntry = true
         textFieldContainer.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +110,7 @@ class PasswordField: UIControl {
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
         ])
         
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.layer.cornerRadius = colorViewSize.height / 2
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -117,7 +118,7 @@ class PasswordField: UIControl {
             mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
         ])
         
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.layer.cornerRadius = colorViewSize.height / 2
         strongView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -133,7 +134,7 @@ class PasswordField: UIControl {
         colorViewStackView.addArrangedSubview(strongView)
         colorViewStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +173,41 @@ class PasswordField: UIControl {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
+    
+    private func checkPasswordStrength(_ possiblePassword: String) {
+        switch possiblePassword.count {
+        case ...9:
+            setStrengthIndicator(to: 0)
+        case 10...19:
+            setStrengthIndicator(to: 1)
+        case 20...:
+            setStrengthIndicator(to: 2)
+        default:
+            setStrengthIndicator(to: 0)
+        }
+    }
+    
+    private func setStrengthIndicator(to value: Int) {
+        switch value {
+        case 0:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too weak"
+        case 1:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
+        case 2:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong password"
+        default:
+            fatalError()
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -179,7 +215,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        checkPasswordStrength(newText)
         return true
     }
 }
