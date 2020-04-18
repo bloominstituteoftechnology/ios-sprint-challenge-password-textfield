@@ -80,7 +80,7 @@ class PasswordField: UIControl {
             textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
-        textField.placeholder = "password"
+        textField.isSecureTextEntry = true
         textFieldContainer.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -165,8 +165,10 @@ class PasswordField: UIControl {
     @objc private func showHideButtonTapped() {
         showingPassword.toggle()
         if showingPassword {
+            textField.isSecureTextEntry = false
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
         } else {
+            textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
