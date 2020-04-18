@@ -151,13 +151,17 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            animateViews(view: weakView)
         } else if password.count <= 19 {
             strengthDescriptionLabel.text = "Could be stronger"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            animateViews(view: mediumView)
+
         } else {
             strengthDescriptionLabel.text = "Strong password"
             strongView.backgroundColor = strongColor
+            animateViews(view: strongView)
         }
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -176,5 +180,15 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         findPasswordStrength(testPassword: newText)
         return true
+    }
+    
+}
+extension UIView {
+    func animateViews(view: UIView) {
+        UIView.animate(withDuration: 0.5, animations: {
+            view.transform = CGAffineTransform(scaleX: 1.0, y: 2.0)
+            view.transform = .identity
+        }, completion: nil)
+
     }
 }
