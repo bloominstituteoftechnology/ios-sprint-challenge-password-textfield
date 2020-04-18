@@ -196,16 +196,7 @@ class PasswordField: UIControl {
     
     func viewSpring(_ barView: UIView) {
         print("working")
-//        self.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-//        UIView.animate(withDuration: 2.0,
-//                       delay: 0,
-//                       usingSpringWithDamping: 0.5,
-//                       initialSpringVelocity: 0,
-//                       options: [],
-//                       animations: {
-//                        self.transform = .identity
-//        }, completion: nil)
-        
+
         barView.transform = CGAffineTransform(scaleX: 1.0, y: 1.2)
         UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
             barView.transform = .identity
