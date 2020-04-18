@@ -32,7 +32,7 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton(type: .custom)
+    private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -86,7 +86,7 @@ class PasswordField: UIControl {
             textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
         ])
         
-        showHideButton.imageView?.image = UIImage(named: "eyes-closed")
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         textFieldContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
