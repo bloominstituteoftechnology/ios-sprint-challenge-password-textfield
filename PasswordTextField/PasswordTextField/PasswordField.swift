@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength = "weak" // should be an enum
     
     private var showingPassword = false
     
@@ -44,10 +45,13 @@ class PasswordField: UIControl {
         return CGSize(width: 150, height: 100)
     }
     
-    func setup() {
+    private func setup() {
+        
+        backgroundColor = .clear
         
         let container = UIView()
         container.backgroundColor = bgColor
+        container.layer.cornerRadius = 6
         addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -135,7 +139,7 @@ class PasswordField: UIControl {
         container.addSubview(colorViewStackView)
         colorViewStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            colorViewStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: 15), // cheat. I can't get centerY = label.centerY
+            colorViewStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: 14), // cheat. I can't get centerY = label.centerY
             colorViewStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
         ])
         
@@ -150,20 +154,6 @@ class PasswordField: UIControl {
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorViewStackView.trailingAnchor, constant: standardMargin),
             strengthDescriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
         ])
-        
-//        let strengthStackView = UIStackView()
-//        strengthStackView.axis = .horizontal
-//        strengthStackView.spacing = standardMargin
-//        //strengthStackView.addArrangedSubview(colorViewStackView)
-//        //strengthStackView.addArrangedSubview(strengthDescriptionLabel)
-//        container.addSubview(strengthStackView)
-//        strengthStackView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            strengthStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
-//            strengthStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
-//            strengthStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
-//            strengthStackView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
-//        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -198,16 +188,19 @@ class PasswordField: UIControl {
     private func setStrengthIndicator(to value: Int) {
         switch value {
         case 0:
+            passwordStrength = "weak"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
         case 1:
+            passwordStrength = "medium"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
         case 2:
+            passwordStrength = "strong"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
@@ -225,5 +218,12 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         checkPasswordStrength(newText)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        password = textField.text!
+        sendActions(for: .valueChanged)
+        return false
     }
 }
