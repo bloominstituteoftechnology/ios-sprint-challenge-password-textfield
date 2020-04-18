@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -38,12 +39,50 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+  
     func setup() {
         // Lay out your subviews here
         
+        //Title Label
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        
+        
+        //Text field
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1).isActive = true
+        textField.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        textField.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textField.borderStyle = .bezel
+        textField.isUserInteractionEnabled = true
+        textField.textAlignment = .left
+        textField.enablesReturnKeyAutomatically = true
+        textField.returnKeyType = .done
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        self.textField.delegate = self
+        textField.placeholder = "Enter password here"
+        
+        //password strength label
+        strengthDescriptionLabel.text = "Weak"
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2).isActive = true
+        strengthDescriptionLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -50).isActive = true
     }
+    
+    override init(frame: CGRect) {
+                super.init(frame: frame)
+                setup()
+            }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
