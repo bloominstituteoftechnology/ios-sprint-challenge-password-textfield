@@ -100,6 +100,61 @@ class PasswordField: UIControl {
             showHideButton.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
             showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
         ])
+        
+        weakView.backgroundColor = weakColor
+        weakView.layer.cornerRadius = colorViewSize.height / 2
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        
+        mediumView.backgroundColor = mediumColor
+        mediumView.layer.cornerRadius = colorViewSize.height / 2
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        
+        strongView.backgroundColor = strongColor
+        strongView.layer.cornerRadius = colorViewSize.height / 2
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        
+        let colorViewStackView = UIStackView()
+        colorViewStackView.axis = .horizontal
+        colorViewStackView.spacing = 4
+        colorViewStackView.addArrangedSubview(weakView)
+        colorViewStackView.addArrangedSubview(mediumView)
+        colorViewStackView.addArrangedSubview(strongView)
+        colorViewStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        strengthDescriptionLabel.text = "Too Weak"
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        NSLayoutConstraint.activate([
+            //strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 50),
+        ])
+        
+        let strengthStackView = UIStackView()
+        strengthStackView.axis = .horizontal
+        strengthStackView.spacing = standardMargin
+        strengthStackView.addArrangedSubview(colorViewStackView)
+        strengthStackView.addArrangedSubview(strengthDescriptionLabel)
+        container.addSubview(strengthStackView)
+        strengthStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
+            strengthStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
+            strengthStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
+            strengthStackView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
