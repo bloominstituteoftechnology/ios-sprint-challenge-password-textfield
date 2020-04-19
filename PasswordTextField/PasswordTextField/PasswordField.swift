@@ -80,8 +80,8 @@ class PasswordField: UIControl {
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 3
-        
-        
+        textField.layer.cornerRadius = 3
+        textField.delegate = self
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
