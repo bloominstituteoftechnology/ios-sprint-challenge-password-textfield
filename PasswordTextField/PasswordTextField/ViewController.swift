@@ -10,8 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
-   
-    @IBOutlet weak var passwordField: PasswordField!
-    
+    @IBAction func passwordFieldControl(_ sender: PasswordField) {
+       print("Password is: \(sender.password)")
+        print("Password strength is: \(sender.passwordStrength.rawValue)")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
 }
