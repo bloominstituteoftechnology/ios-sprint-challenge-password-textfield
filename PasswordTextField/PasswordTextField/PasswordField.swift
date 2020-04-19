@@ -93,12 +93,12 @@ class PasswordField: UIControl {
         ])
         
         textField.delegate = self
-        textField.isSecureTextEntry = true
+        textField.isSecureTextEntry = !showingPassword
         textFieldContainer.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: textFieldMargin),
-            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: textFieldMargin * 2),
             textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -textFieldMargin),
         ])
         
