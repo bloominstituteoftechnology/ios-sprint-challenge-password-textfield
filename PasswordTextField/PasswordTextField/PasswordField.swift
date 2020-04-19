@@ -41,7 +41,13 @@ class PasswordField: UIControl {
     private var passwordView: UIView = UIView()
     private var passwordIsSeen: Bool = false
     
+    override var intrinsicContentSize: CGSize {
+      return CGSize(width: 160, height: 160)
+    }
+    
     func setup() {
+        
+        backgroundColor = bgColor
         // Lay out your subviews here
         configureEnterPasswordLabel()
         configurePasswordView()
@@ -49,7 +55,6 @@ class PasswordField: UIControl {
         configureHideButton()
         configureStrengthViews()
         configureStackView()
-        
         
     }
     
@@ -155,6 +160,13 @@ class PasswordField: UIControl {
     @objc func hideButtonTapped() {
         passwordIsSeen.toggle()
         passwordTextField.isSecureTextEntry = !passwordIsSeen
+        
+        switch passwordIsSeen {
+        case true:
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        case false:
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
     
     // END OF TEST TIME could not finish. Will Resubmit.
