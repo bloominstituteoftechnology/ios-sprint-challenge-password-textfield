@@ -9,6 +9,7 @@
 import UIKit
 
 enum PasswordStrength {
+    case empty
     case weak
     case medium
     case strong
@@ -122,7 +123,7 @@ class PasswordField: UIControl {
             showHideButton.widthAnchor.constraint(equalTo: showHideButton.heightAnchor),
         ])
         
-        weakView.backgroundColor = weakColor
+        weakView.backgroundColor = unusedColor
         weakView.layer.cornerRadius = colorViewSize.height / 2
         weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -159,7 +160,7 @@ class PasswordField: UIControl {
             colorViewStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
         ])
         
-        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.text = " "
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
         container.addSubview(strengthDescriptionLabel)
@@ -203,6 +204,11 @@ class PasswordField: UIControl {
     
     private func setStrengthIndicator(to value: PasswordStrength) {
         switch value {
+        case .empty:
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = " "
         case .weak:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
