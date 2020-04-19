@@ -50,6 +50,7 @@ class PasswordField: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         textField.delegate = self
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -129,12 +130,38 @@ class PasswordField: UIControl {
         weakView.backgroundColor = weakColor
         weakView.layer.cornerRadius = 3
         
+        // MARK: - Medium View
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 2),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        
+        mediumView.backgroundColor = unusedColor
+        mediumView.layer.cornerRadius = 3
+        
+        // MARK: - Strong View
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strongView.leadingAnchor.constraint(equalToSystemSpacingAfter: mediumView.trailingAnchor, multiplier: 2),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+        ])
+        
+        strongView.backgroundColor = unusedColor
+        strongView.layer.cornerRadius = 3
+        
         // MARK: Strength Description Label
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor),
-            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 4),
             strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
         ])
         
@@ -179,7 +206,6 @@ extension PasswordField: UITextFieldDelegate {
                     }
                 }
             }
-            
             passwordStrength = .weak
             
         case 8...14:
@@ -200,7 +226,7 @@ extension PasswordField: UITextFieldDelegate {
             
         case 15...:
             mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
+            strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "strong password"
             
             if passwordStrength != .strong {
@@ -221,7 +247,7 @@ extension PasswordField: UITextFieldDelegate {
             strengthDescriptionLabel.text = "Invalid Entry"
         }
             return true
-        }
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
