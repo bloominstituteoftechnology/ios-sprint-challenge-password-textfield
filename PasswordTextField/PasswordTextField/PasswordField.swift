@@ -55,7 +55,7 @@ class PasswordField: UIControl {
         }
     }
     
-    func setup() {
+    private func setup() {
         self.backgroundColor = bgColor
         
         addSubview(titleLabel)
@@ -81,6 +81,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 3
         textField.layer.cornerRadius = 3
+        textField.autocapitalizationType = .none
         textField.delegate = self
         
         addSubview(showHideButton)
@@ -145,10 +146,12 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         
         if newText.count == 0 {
-            return true
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
         } else if newText.count > 0 && newText.count < 7 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
@@ -165,8 +168,7 @@ extension PasswordField: UITextFieldDelegate {
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
         }
-        
-        
+
         return true
     }
 }
