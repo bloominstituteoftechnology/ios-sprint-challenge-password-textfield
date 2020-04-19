@@ -83,7 +83,7 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 3
         textField.autocapitalizationType = .none
         textField.delegate = self
-        
+                
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
@@ -152,21 +152,45 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = ""
+            
         } else if newText.count > 0 && newText.count < 7 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            
             strengthDescriptionLabel.text = "Weak"
+            
+            UIView.animate(withDuration: 0.9, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.weakView.transform = .identity
+            }
+            
         } else if newText.count > 6 && newText.count < 12 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            
             strengthDescriptionLabel.text = "Could be stronger"
+            
+            UIView.animate(withDuration: 0.9, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.mediumView.transform = .identity
+            }
+            
+            
         } else if newText.count > 11 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
+            
+            UIView.animate(withDuration: 0.9, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.strongView.transform = .identity
+            }
         }
 
         return true
