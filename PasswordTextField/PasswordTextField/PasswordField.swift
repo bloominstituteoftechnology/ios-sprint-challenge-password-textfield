@@ -49,12 +49,12 @@ class PasswordField: UIControl {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        textField.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+        textField.delegate = self
         setup()
     }
     
@@ -160,7 +160,73 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
         // TODO: send new text to the determine strength method
+        
+        password = newText
+        switch password.count {
+        case 0...7:
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "too weak"
+            
+            if passwordStrength != .weak {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            
+            passwordStrength = .weak
+            
+        case 8...14:
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "could be stronger"
+            
+            if passwordStrength != .medium {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            passwordStrength = .medium
+            
+        case 15...:
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "strong password"
+            
+            if passwordStrength != .strong {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.weakView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+                }) { (_) in
+                    UIView.animate(withDuration: 0.1) {
+                        self.weakView.transform = .identity
+                    }
+                }
+            }
+            passwordStrength = .strong
+            
+        default:
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Invalid Entry"
+        }
+            return true
+        }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        sendActions(for: .valueChanged)
         return true
     }
 }
