@@ -147,6 +147,24 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+        if newText.count == 0 {
+            return true
+        } else if newText.count > 0 && newText.count < 7 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if newText.count > 6 && newText.count < 12 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        } else if newText.count > 11 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+        
+        
         return true
     }
 }
