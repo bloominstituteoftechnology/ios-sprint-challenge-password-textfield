@@ -17,8 +17,16 @@ enum PasswordStrength {
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
-    private (set) var passwordStrength: PasswordStrength = .weak
+    private (set) var password: String = "" {
+        didSet {
+            passwordStrength = checkPasswordStrength(password)
+        }
+    }
+    private (set) var passwordStrength: PasswordStrength = .empty {
+        didSet {
+            setStrengthIndicator(to: passwordStrength)
+        }
+    }
     
     // internal state
     private var showingPassword = false
@@ -180,14 +188,16 @@ class PasswordField: UIControl {
         }
     }
     
-    private func checkPasswordStrength(_ possiblePassword: String) {
-        switch possiblePassword.count {
-        case ...9:
-            setStrengthIndicator(to: .weak)
+    private func checkPasswordStrength(_ potentialPassword: String) -> PasswordStrength {
+        switch potentialPassword.count {
+        case ...0:
+            return .empty
+        case 1...9:
+            return .weak
         case 10...19:
-            setStrengthIndicator(to: .medium)
+            return .medium
         default:
-            setStrengthIndicator(to: .strong)
+            return .strong
         }
     }
     
@@ -217,7 +227,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        checkPasswordStrength(newText)
+        password = newText
         return true
     }
     
