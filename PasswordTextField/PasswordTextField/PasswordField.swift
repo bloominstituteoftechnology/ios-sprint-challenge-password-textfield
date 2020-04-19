@@ -136,7 +136,6 @@ class PasswordField: UIControl {
             NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .leading, relatedBy: .equal, toItem: strongView, attribute: .trailing, multiplier: 1, constant: textFieldMargin),
             NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: textField, attribute: .trailing, multiplier: 1, constant: 0)
         ])
-        strengthDescriptionLabel.text = "Preview text"
     }
     
 }
@@ -154,14 +153,17 @@ extension PasswordField: UITextFieldDelegate {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Weak"
         } else if newText.count > 6 && newText.count < 12 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
         } else if newText.count > 11 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong password"
         }
         
         
