@@ -8,11 +8,17 @@
 
 import UIKit
 
+enum PasswordStrength {
+    case weak
+    case medium
+    case strong
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private (set) var passwordStrength = "weak" // should be an enum
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private var showingPassword = false
     
@@ -175,38 +181,31 @@ class PasswordField: UIControl {
     private func checkPasswordStrength(_ possiblePassword: String) {
         switch possiblePassword.count {
         case ...9:
-            setStrengthIndicator(to: 0)
+            setStrengthIndicator(to: .weak)
         case 10...19:
-            setStrengthIndicator(to: 1)
-        case 20...:
-            setStrengthIndicator(to: 2)
+            setStrengthIndicator(to: .medium)
         default:
-            setStrengthIndicator(to: 0)
+            setStrengthIndicator(to: .strong)
         }
     }
     
-    private func setStrengthIndicator(to value: Int) {
+    private func setStrengthIndicator(to value: PasswordStrength) {
         switch value {
-        case 0:
-            passwordStrength = "weak"
+        case .weak:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Too weak"
-        case 1:
-            passwordStrength = "medium"
+        case .medium:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Could be stronger"
-        case 2:
-            passwordStrength = "strong"
+        case .strong:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
-        default:
-            fatalError()
         }
     }
 }
