@@ -9,6 +9,9 @@
 import UIKit
 
 class PasswordField: UIControl {
+    enum PasswordStrength: String {
+        case weak, medium, strong
+    }
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -38,6 +41,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var passwordStrength: PasswordStrength = .weak
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -152,47 +156,50 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = ""
+            passwordStrength = .weak
             
         } else if newText.count > 0 && newText.count < 7 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            
             strengthDescriptionLabel.text = "Weak"
-            
             UIView.animate(withDuration: 0.9, animations: {
                 self.weakView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
             }) { ( _ ) in
                 self.weakView.transform = .identity
             }
+            passwordStrength = .weak
             
         } else if newText.count > 6 && newText.count < 12 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
-            
             strengthDescriptionLabel.text = "Could be stronger"
-            
             UIView.animate(withDuration: 0.9, animations: {
                 self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
             }) { ( _ ) in
                 self.mediumView.transform = .identity
             }
-            
+            passwordStrength = .medium
             
         } else if newText.count > 11 {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
-            
             UIView.animate(withDuration: 0.9, animations: {
                 self.strongView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
             }) { ( _ ) in
                 self.strongView.transform = .identity
             }
+            passwordStrength = .strong
         }
-
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { print("no text in text field"); return false }
+        print("\(text)" + " is a \(passwordStrength.rawValue) password")
         return true
     }
 }
