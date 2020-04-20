@@ -101,19 +101,19 @@ class PasswordField: UIControl {
             weakView.widthAnchor.constraint(equalToConstant: 60),
             weakView.heightAnchor.constraint(equalToConstant: 5)])
         
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             mediumView.widthAnchor.constraint(equalToConstant: 60),
             mediumView.heightAnchor.constraint(equalToConstant: 5)])
         
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             strongView.widthAnchor.constraint(equalToConstant: 60),
             strongView.heightAnchor.constraint(equalToConstant: 5)])
         
-        strengthDescriptionLabel.text = "too weak"
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -137,14 +137,27 @@ class PasswordField: UIControl {
     }
 }
 
-
-
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        switch oldText.count {
+        case 0...5:
+            weakView.backgroundColor = weakColor
+            strengthDescriptionLabel.text = "Too weak"
+        case 5...10:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strengthDescriptionLabel.text = " Medium"
+        case 10...15:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong"
+        default:
+            weakView.backgroundColor = unusedColor
+        }
         return true
     }
 }
