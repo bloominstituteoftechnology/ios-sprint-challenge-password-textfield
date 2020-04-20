@@ -46,9 +46,6 @@ class PasswordField: UIControl {
     
     
     func setup() {
-        
-     //   showHideButton.addTarget(self, action: #selector(showHideButton), for: .touchUpInside)
-        
         self.backgroundColor = bgColor
         textField.delegate = self
         
@@ -120,6 +117,10 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25
         ).isActive = true
+        
+        showHideButton = UIButton(type: .system)
+        showHideButton.addTarget(self, action: #selector(showHideButton), for: .touchUpInside)
+              
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -127,8 +128,9 @@ class PasswordField: UIControl {
         setup()
     }
     
-    @objc func showHideText() {
-        
+    @objc private func showHideText() {
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        textField.isSecureTextEntry = false
     }
     
 }
@@ -147,13 +149,13 @@ extension PasswordField: UITextFieldDelegate {
     private func wordStrenth(password: String) {
         
         let length = password.count
-        
         switch length {
         case 0...9:
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            animateView(which: weakView)
         case 10...19:
             strengthDescriptionLabel.text = "Can you do better?"
             mediumView.backgroundColor = mediumColor
