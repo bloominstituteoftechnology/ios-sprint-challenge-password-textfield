@@ -18,6 +18,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordShow: Bool = false
     private (set) var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
@@ -46,20 +47,17 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    private var passwordShow: Bool = false {
-        didSet {
-            let showPasswordImage = UIImage(named: "eyes-open.png")
-            let hidePasswordImage = UIImage(named: "eyes-closed.png")
-            if passwordShow {
-                showHideButton.setImage(showPasswordImage, for: .normal)
-                textField.isSecureTextEntry = false
-            } else {
-                showHideButton.setImage(hidePasswordImage, for: .normal)
-                textField.isSecureTextEntry = true
-            }
+    private func updateShowHideButtonImage() {
+        let showPasswordImage = UIImage(named: "eyes-open.png")
+        let hidePasswordImage = UIImage(named: "eyes-closed.png")
+        if passwordShow {
+            showHideButton.setImage(showPasswordImage, for: .normal)
+            textField.isSecureTextEntry = false
+        } else {
+            showHideButton.setImage(hidePasswordImage, for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
-    
     
     func setup() {
         self.backgroundColor = bgColor
@@ -158,6 +156,7 @@ class PasswordField: UIControl {
     
     @objc func changeShowHideButtonImage() {
         passwordShow.toggle()
+        updateShowHideButtonImage()
     }
     
     private func updatePasswordStrength(strength: PasswordStrength) {
@@ -202,6 +201,13 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         passwordStrength(password: newText)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        guard let password = textField.text else { return false }
+        print(password)
+        return false
     }
 }
 
