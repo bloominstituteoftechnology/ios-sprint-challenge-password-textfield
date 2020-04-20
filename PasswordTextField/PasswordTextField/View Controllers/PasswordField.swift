@@ -12,6 +12,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordShow: Bool = true
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -38,37 +39,64 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    func setTextFieldButtonImage() {
+        let showPasswordImage = UIImage(named: "eyes-open.png")
+        let hidePasswordImage = UIImage(named: "eyes-closed.png")
+        
+        if passwordShow {
+            showHideButton.setImage(showPasswordImage, for: .normal)
+        } else {
+            showHideButton.setImage(hidePasswordImage, for: .normal)
+        }
+    }
+    
     func setup() {
+        
         
         //title label
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
-        
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         
-        //textfield
-        addSubview(textField)
+        //textField formatting
+        textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.becomeFirstResponder()
+        textField.isUserInteractionEnabled = true
         textField.isSecureTextEntry = true
         textField.placeholder = "Password"
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = 6
         textField.layer.borderWidth = 2.0
+        addSubview(textField)
         
+        //textField constraints
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        
+        //textField Button
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        showHideButton.addTarget(self, action: #selector(changeShowHideButtonImage), for: .touchUpInside)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        setTextFieldButtonImage()
     }
+    
+    @objc func changeShowHideButtonImage() {
+        passwordShow.toggle()
+        setTextFieldButtonImage()
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
