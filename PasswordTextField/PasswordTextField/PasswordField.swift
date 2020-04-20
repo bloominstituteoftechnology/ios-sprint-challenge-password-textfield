@@ -38,11 +38,12 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    private let view = UIView()
+    private let mainView = UIView()
     
    // private var passwordView: UIView!
     
     func setup() {
+        
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
@@ -57,7 +58,7 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
-        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
@@ -68,34 +69,33 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldContainerHeight/2).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
-      //  showHideButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
-        
-        
+    
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        weakView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 60).isActive = true
+        weakView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        weakView.backgroundColor = weakColor
         
         
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 8).isActive = true
         
         
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8).isActive = true
         
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
         
         
     }
