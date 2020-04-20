@@ -112,7 +112,7 @@ class PasswordField: UIControl {
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.font = labelFont
-        strengthDescriptionLabel.text = "strength"
+        strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
@@ -144,17 +144,21 @@ extension PasswordField: UITextFieldDelegate {
         let length = password.count
         
         switch length {
+       
         case 0...9:
-            strengthDescriptionLabel.text = "Weak"
+            strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         case 10...19:
-            strengthDescriptionLabel.text = "Medium"
+            strengthDescriptionLabel.text = "Can you do better?"
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         case 20:
-            strengthDescriptionLabel.text = "Strong"
+            strengthDescriptionLabel.text = "There you go! Strong!"
             strongView.backgroundColor = strongColor
         default:
-            strengthDescriptionLabel.text = "Strong"
+            strengthDescriptionLabel.text = "There you go! Strong!"
             strongView.backgroundColor = strongColor
         }
     }
