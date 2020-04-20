@@ -38,11 +38,23 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+   // private var passwordView: UIView!
+    
     func setup() {
-        // Lay out your subviews here
-        
+        titleLabel.textColor = UIColor.black
+        titleLabel.text = "Enter Password"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.backgroundColor = .red
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+               titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        
+        textField.backgroundColor = .darkGray
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 8).isActive = true
+        textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: 8).isActive = true
+        textField.widthAnchor.constraint(equalToConstant: <#T##CGFloat#>)
+               
     }
     
     required init?(coder aDecoder: NSCoder) {
