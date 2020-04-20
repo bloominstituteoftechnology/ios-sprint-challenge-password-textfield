@@ -52,8 +52,8 @@ class PasswordField: UIControl {
         // TextField
         
         textField.placeholder = "Enter text here"
+        textField.isSecureTextEntry = true
         textField.font = UIFont.systemFont(ofSize: 15)
-        textField.borderStyle = UITextField.BorderStyle.roundedRect
         textField.autocorrectionType = UITextAutocorrectionType.no
         textField.keyboardType = UIKeyboardType.default
         textField.returnKeyType = UIReturnKeyType.done
@@ -61,6 +61,8 @@ class PasswordField: UIControl {
         textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
         textField.delegate = self
         textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 1.0
+        textField.layer.cornerRadius = 3.0
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -115,13 +117,15 @@ class PasswordField: UIControl {
         
         strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 50)])
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-
+    
     @objc func showHideAction(sender: UIButton) {
         iconSelected.toggle()
         if showHideButton.isEnabled{
@@ -147,17 +151,32 @@ extension PasswordField: UITextFieldDelegate {
             weakView.backgroundColor = weakColor
             strengthDescriptionLabel.text = "Too weak"
         case 5...10:
+            mediumView.performFlare()
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
-            strengthDescriptionLabel.text = " Medium"
+            strengthDescriptionLabel.text = " Strong"
         case 10...15:
+            strongView.performFlare()
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
-            strengthDescriptionLabel.text = "Strong"
+            strengthDescriptionLabel.text = "Strong Password"
         default:
-            weakView.backgroundColor = unusedColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong Password"
         }
         return true
+    }
+}
+extension UIView {
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
