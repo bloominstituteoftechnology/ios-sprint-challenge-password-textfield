@@ -32,11 +32,12 @@ class PasswordField: UIControl {
     
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
-    private var showHideButton: UIButton = UIButton()
+    @objc private var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    private var iconSelected: Bool = false
     
     func setup() {
         // Title Label
@@ -72,6 +73,7 @@ class PasswordField: UIControl {
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         textField.rightView = showHideButton
         textField.rightViewMode = .always
+        showHideButton.addTarget(self, action: #selector(showHideAction), for: .touchUpInside)
         showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
@@ -119,7 +121,23 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+
+    @objc func showHideAction(sender: UIButton) {
+        iconSelected.toggle()
+        if showHideButton.isEnabled{
+            if iconSelected == true {
+                showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+                textField.isSecureTextEntry = true
+            } else {
+                
+                showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+                textField.isSecureTextEntry = false
+            }
+        }
+    }
 }
+
+
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
