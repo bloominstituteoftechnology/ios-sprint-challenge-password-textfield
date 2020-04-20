@@ -8,14 +8,8 @@
 
 import UIKit
 
-struct WordStrength {
-    var weak: String
-    var medium: String
-    var strong: String
-}
-
 class PasswordField: UIControl {
-    
+    var showHide: Bool = true
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -118,8 +112,8 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25
         ).isActive = true
         
-        showHideButton = UIButton(type: .system)
-        showHideButton.addTarget(self, action: #selector(showHideButton), for: .touchUpInside)
+       // showHideButton = UIButton(type: .system)
+        showHideButton.addTarget(self, action: #selector(showHideText), for: .touchUpInside)
               
     }
     
@@ -129,8 +123,14 @@ class PasswordField: UIControl {
     }
     
     @objc private func showHideText() {
+        showHide.toggle()
+        if showHide {
         showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-        textField.isSecureTextEntry = false
+        textField.isSecureTextEntry = true
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = false
+        }
     }
     
 }
@@ -140,10 +140,10 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: "⦁")
+        password = oldText
         wordStrenth(password: oldText)
         return true
     }
-    
     
     
     private func wordStrenth(password: String) {
@@ -179,5 +179,4 @@ extension PasswordField: UITextFieldDelegate {
             strength.transform = .identity
         }, completion: nil)
     }
-    
 }
