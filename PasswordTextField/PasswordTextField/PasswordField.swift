@@ -17,7 +17,7 @@ enum PasswordStrength {
 
 class PasswordField: UIControl {
     
-    // Public API - these properties are used to fetch the final password and strength values
+    // Public API
     private (set) var password: String = "" {
         didSet {
             passwordStrength = checkPasswordStrength(password)
@@ -60,6 +60,11 @@ class PasswordField: UIControl {
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 150, height: 100)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
     }
     
     private func setup() {
@@ -165,17 +170,11 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = labelFont
         container.addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        //strengthDescriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorViewStackView.trailingAnchor, constant: standardMargin),
             strengthDescriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
         ])
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
     }
     
     @objc private func showHideButtonTapped() {
@@ -229,18 +228,23 @@ class PasswordField: UIControl {
 }
 
 extension PasswordField: UITextFieldDelegate {
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+
         password = newText
+
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+
         password = textField.text!
         sendActions(for: .valueChanged)
+
         return false
     }
 }
