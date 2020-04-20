@@ -75,45 +75,35 @@ class PasswordField: UIControl {
     private func setup() {
 
         #warning("stuff to do still:")
-        // remove container view
         // redo strength row stack view
         // redo vertical rows into stack view
         // redo setStrengthIndicator() to be like SwiftUI project
         
-        backgroundColor = .clear
-        
-        let container = UIView()
-        container.backgroundColor = bgColor
-        container.layer.cornerRadius = 6
-        addSubview(container)
-        container.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            container.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
+        self.backgroundColor = bgColor
+        self.layer.cornerRadius = 6
         
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.backgroundColor = .clear
-        container.addSubview(titleLabel)
+        addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: standardMargin),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
         ])
         
         let textFieldContainer = UIView()
         textFieldContainer.layer.borderWidth = 2
         textFieldContainer.layer.borderColor = textFieldBorderColor.cgColor
         textFieldContainer.layer.cornerRadius = 7
-        container.addSubview(textFieldContainer)
+        addSubview(textFieldContainer)
         textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textFieldContainer.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
-            textFieldContainer.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -standardMargin),
+            textFieldContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+            textFieldContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
             textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
@@ -169,22 +159,22 @@ class PasswordField: UIControl {
         colorViewStackView.addArrangedSubview(weakView)
         colorViewStackView.addArrangedSubview(mediumView)
         colorViewStackView.addArrangedSubview(strongView)
-        container.addSubview(colorViewStackView)
+        addSubview(colorViewStackView)
         colorViewStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             colorViewStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: 14), // cheat. I can't get centerY = label.centerY
-            colorViewStackView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: standardMargin),
+            colorViewStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
         ])
         
         strengthDescriptionLabel.text = " "
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
-        container.addSubview(strengthDescriptionLabel)
+        addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: colorViewStackView.trailingAnchor, constant: standardMargin),
-            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -standardMargin),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin),
         ])
     }
     
