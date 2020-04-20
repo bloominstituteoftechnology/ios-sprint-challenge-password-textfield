@@ -182,37 +182,37 @@ class PasswordField: UIControl {
             switch strengthOfString {
             case .strong:
                 strengthDescriptionLabel.text = "Strong"
-                UIView.animate(withDuration: 1.0, animations: {
+                UIView.animate(withDuration: 0.1, animations: {
                     self.strongStrength.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
                     self.weakStrength.backgroundColor = self.weakColor
                     self.mediumStrength.backgroundColor = self.mediumColor
                     self.strongStrength.backgroundColor = self.strongColor
                 }) { (_) in
-                    UIView.animate(withDuration: 1.0, animations: {
+                    UIView.animate(withDuration: 0.1, animations: {
                         self.strongStrength.transform = .identity
                     })
                 }
             case .medium:
                 strengthDescriptionLabel.text = "Medium"
-                UIView.animate(withDuration: 1.0, animations: {
+                UIView.animate(withDuration: 0.1, animations: {
                     self.mediumStrength.transform = CGAffineTransform (scaleX: 2.0, y: 2.0)
                     self.weakStrength.backgroundColor = self.weakColor
                     self.mediumStrength.backgroundColor = self.mediumColor
                     self.strongStrength.backgroundColor = self.unusedColor
                 }) { (_) in
-                    UIView.animate(withDuration: 1.0) {
+                    UIView.animate(withDuration: 0.1) {
                         self.mediumStrength.transform = .identity
                     }
                 }
             default:
                 strengthDescriptionLabel.text = "Weak"
-                UIView.animate(withDuration: 1.0, animations: {
+                UIView.animate(withDuration: 0.1, animations: {
                     self.weakStrength.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
                     self.weakStrength.backgroundColor = self.weakColor
                     self.mediumStrength.backgroundColor = self.unusedColor
                     self.strongStrength.backgroundColor = self.unusedColor
                 }) { (_) in
-                    UIView.animate(withDuration: 1.0) {
+                    UIView.animate(withDuration: 0.1) {
                         self.weakStrength.transform = .identity
                     }
                 }
