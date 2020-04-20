@@ -38,9 +38,6 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    private let mainView = UIView()
-    
-   // private var passwordView: UIView!
     
     func setup() {
         
@@ -52,9 +49,10 @@ class PasswordField: UIControl {
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         
+        
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = bgColor
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
@@ -62,6 +60,7 @@ class PasswordField: UIControl {
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -71,32 +70,53 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
     
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        NSLayoutConstraint.activate([
+                   stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                   stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                   stackView.topAnchor.constraint(equalTo: textField.bottomAnchor),
+                   stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+               ])
+        
+        
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        weakView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0).isActive = true
         weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         weakView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 60).isActive = true
-        weakView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        weakView.backgroundColor = weakColor
+        weakView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -28).isActive = true
         
         
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        mediumView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 8).isActive = true
+        mediumView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 0).isActive = true
         
         
         addSubview(strongView)
         strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        strongView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 8).isActive = true
+        strongView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 0).isActive = true
         
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        strengthDescriptionLabel.topAnchor.constraint(equalTo: stackView.topAnchor).isActive = true
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 0).isActive = true
         
+        
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
         
     }
     
