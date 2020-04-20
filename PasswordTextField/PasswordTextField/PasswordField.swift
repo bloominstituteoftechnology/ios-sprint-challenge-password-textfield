@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum StrengthOfPassword: Int {
+    case weak = 9
+    case medium = 18
+    case strong
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -34,9 +40,9 @@ class PasswordField: UIControl {
     private var enterPasswordLabel: UILabel = UILabel()
     private var passwordTextField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
-    private var weakView: UIView = UIView()
-    private var mediumView: UIView = UIView()
-    private var strongView: UIView = UIView()
+    private var weakStrength: UIView = UIView()
+    private var mediumStrength: UIView = UIView()
+    private var strongStrength: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     private var passwordView: UIView = UIView()
     private var passwordIsSeen: Bool = false
@@ -54,8 +60,6 @@ class PasswordField: UIControl {
         configurePasswordTextField()
         configureHideButton()
         configureStrengthViews()
-        configureStackView()
-        
     }
     
     func configureEnterPasswordLabel() {
@@ -114,35 +118,22 @@ class PasswordField: UIControl {
     }
     
     func configureStrengthViews() {
-        addSubview(weakView)
-        weakView.translatesAutoresizingMaskIntoConstraints = false
-        weakView.layer.cornerRadius = colorViewSize.height / 2.0
-        weakView.backgroundColor = weakColor
+        addSubview(weakStrength)
+        weakStrength.translatesAutoresizingMaskIntoConstraints = false
+        weakStrength.layer.cornerRadius = colorViewSize.height / 2.0
+        weakStrength.backgroundColor = weakColor
         
-        addSubview(mediumView)
-        mediumView.translatesAutoresizingMaskIntoConstraints = false
-        mediumView.layer.cornerRadius = colorViewSize.height / 2.0
-        mediumView.backgroundColor = unusedColor
+        addSubview(mediumStrength)
+        mediumStrength.translatesAutoresizingMaskIntoConstraints = false
+        mediumStrength.layer.cornerRadius = colorViewSize.height / 2.0
+        mediumStrength.backgroundColor = unusedColor
         
-        addSubview(strongView)
-        strongView.translatesAutoresizingMaskIntoConstraints = false
-        strongView.layer.cornerRadius = colorViewSize.height / 2.0
-        strongView.backgroundColor = unusedColor
+        addSubview(strongStrength)
+        strongStrength.translatesAutoresizingMaskIntoConstraints = false
+        strongStrength.layer.cornerRadius = colorViewSize.height / 2.0
+        strongStrength.backgroundColor = unusedColor
         
-        NSLayoutConstraint.activate([
-            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
-            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
-            
-            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
-            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
-            
-            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
-            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
-        ])
-    }
-    
-    func configureStackView() {
-        let strengthStackView: UIStackView = UIStackView(arrangedSubviews: [weakView, mediumView, strongView])
+        let strengthStackView: UIStackView = UIStackView(arrangedSubviews: [weakStrength, mediumStrength, strongStrength])
         addSubview(strengthStackView)
         strengthStackView.translatesAutoresizingMaskIntoConstraints = false
         strengthStackView.axis = .horizontal
@@ -150,10 +141,27 @@ class PasswordField: UIControl {
         strengthStackView.distribution = .fillEqually
         strengthStackView.spacing = 5
         
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.text = "Weak"
         
         NSLayoutConstraint.activate([
+            weakStrength.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakStrength.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
+            mediumStrength.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            mediumStrength.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
+            strongStrength.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            strongStrength.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            
             strengthStackView.topAnchor.constraint(equalTo: passwordView.bottomAnchor, constant: standardMargin),
-            strengthStackView.leadingAnchor.constraint(equalTo: passwordView.leadingAnchor)
+            strengthStackView.leadingAnchor.constraint(equalTo: passwordView.leadingAnchor),
+            
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strengthStackView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.bottomAnchor.constraint(equalTo: strengthStackView.bottomAnchor, constant: standardMargin)
         ])
     }
     
@@ -169,10 +177,20 @@ class PasswordField: UIControl {
         }
     }
     
-    // END OF TEST TIME could not finish. Will Resubmit.
+    func passwordAnimations(passwordStrength: StrengthOfPassword) {
+        
+    }
     
-    
-    
+    func stringStrength(string: String) {
+        var stringLength = StrengthOfPassword.weak
+        if string.count >= stringLength.rawValue + 13 {
+            stringLength = .strong
+        } else if string.count >= stringLength.rawValue + 9 {
+            stringLength = .medium
+        } else {
+            stringLength = .weak
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -186,6 +204,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        stringStrength(string: newText)
         return true
     }
 }
