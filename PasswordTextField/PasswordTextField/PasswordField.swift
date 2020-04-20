@@ -42,19 +42,44 @@ class PasswordField: UIControl {
     
     func setup() {
         titleLabel.textColor = UIColor.black
-        titleLabel.text = "Enter Password"
+        titleLabel.text = "ENTER PASSWORD"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.backgroundColor = .red
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-               titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         
-        textField.backgroundColor = .darkGray
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        
+        addSubview(textField)
+        textField.backgroundColor = .lightGray
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 5
+        textField.layer.borderColor = UIColor.systemBlue.cgColor
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 8).isActive = true
-        textField.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: 8).isActive = true
-        textField.widthAnchor.constraint(equalToConstant: <#T##CGFloat#>)
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        addSubview(weakView)
+        
+        
+        
+        
+        addSubview(mediumView)
+        
+        
+        
+        
+        addSubview(strongView)
+        
+        
+        
+        
+        addSubview(strengthDescriptionLabel)
                
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
