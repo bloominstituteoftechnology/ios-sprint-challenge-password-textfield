@@ -39,10 +39,80 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
-        
+        // Title Label
+        titleLabel.text = "Enter Password"
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor)])
+        
+        // TextField
+        
+        textField.placeholder = "Enter text here"
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.keyboardType = UIKeyboardType.default
+        textField.returnKeyType = UIReturnKeyType.done
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
+        textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        textField.delegate = self
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: textFieldMargin)])
+        
+        // Show/ Hide Button
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(showHideButton)
+        
+        // stackView
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin),
+            stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: textFieldMargin),
+            stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: textFieldMargin),
+            stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: textFieldMargin)])
+        
+        stackView.addArrangedSubview(weakView)
+        stackView.addArrangedSubview(mediumView)
+        stackView.addArrangedSubview(strongView)
+        stackView.addArrangedSubview(strengthDescriptionLabel)
+        
+        // Weak, Medium, Strong
+        weakView.backgroundColor = weakColor
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weakView.widthAnchor.constraint(equalToConstant: 60),
+            weakView.heightAnchor.constraint(equalToConstant: 5)])
+        
+        mediumView.backgroundColor = mediumColor
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.widthAnchor.constraint(equalToConstant: 60),
+            mediumView.heightAnchor.constraint(equalToConstant: 5)])
+        
+        strongView.backgroundColor = strongColor
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.widthAnchor.constraint(equalToConstant: 60),
+            strongView.heightAnchor.constraint(equalToConstant: 5)])
+        
+        strengthDescriptionLabel.text = "too weak"
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init?(coder aDecoder: NSCoder) {
