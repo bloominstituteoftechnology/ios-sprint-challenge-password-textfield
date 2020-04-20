@@ -38,45 +38,63 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private let view = UIView()
+    
    // private var passwordView: UIView!
     
     func setup() {
-        titleLabel.textColor = UIColor.black
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         
         addSubview(textField)
-        textField.backgroundColor = .lightGray
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .white
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 5
-        textField.layer.borderColor = UIColor.systemBlue.cgColor
-        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setTitleColor(UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldContainerHeight/2).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
+      //  showHideButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        
+        
+        
         addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
         
         
         
         
         addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        
         
         
         
         
         addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
         
         
         
         
         addSubview(strengthDescriptionLabel)
-               
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
         
