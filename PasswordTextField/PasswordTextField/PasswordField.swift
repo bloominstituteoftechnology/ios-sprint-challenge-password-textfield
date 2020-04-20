@@ -47,6 +47,8 @@ class PasswordField: UIControl {
     
     func setup() {
         
+     //   showHideButton.addTarget(self, action: #selector(showHideButton), for: .touchUpInside)
+        
         self.backgroundColor = bgColor
         textField.delegate = self
         
@@ -62,7 +64,7 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = bgColor
-        textField.layer.borderWidth = 2
+        textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
@@ -125,8 +127,9 @@ class PasswordField: UIControl {
         setup()
     }
     
-    // 0-9: weak  10-19: medium  strong: 20+
-    
+    @objc func showHideText() {
+        
+    }
     
 }
 
@@ -134,17 +137,18 @@ extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        let newText = oldText.replacingCharacters(in: stringRange, with: "⦁")
         wordStrenth(password: oldText)
         return true
     }
+    
+    
     
     private func wordStrenth(password: String) {
         
         let length = password.count
         
         switch length {
-       
         case 0...9:
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
@@ -154,13 +158,24 @@ extension PasswordField: UITextFieldDelegate {
             strengthDescriptionLabel.text = "Can you do better?"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            animateView(which: mediumView)
         case 20:
             strengthDescriptionLabel.text = "There you go! Strong!"
             strongView.backgroundColor = strongColor
+            animateView(which: strongView)
         default:
             strengthDescriptionLabel.text = "There you go! Strong!"
             strongView.backgroundColor = strongColor
+            animateView(which: strongView)
         }
+    }
+    
+    func animateView(which strength: UIView) {
+        
+        strength.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+            strength.transform = .identity
+        }, completion: nil)
     }
     
 }
