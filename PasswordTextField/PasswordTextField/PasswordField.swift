@@ -30,6 +30,21 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    var currentStrength: PasswordStrength? {
+        didSet {
+            switch currentStrength {
+            case .weak:
+                weakPasswordWasSet()
+            case .medium:
+                mediumPasswordWasSet()
+            case .strong:
+                strongPasswordWasSet()
+            case .none:
+                print("not sure what to do here")
+            }
+        }
+    }
+    
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -56,7 +71,7 @@ class PasswordField: UIControl {
         textField.isSecureTextEntry = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderColor = textFieldBorderColor.cgColor
-        textField.layer.borderWidth = 1
+        textField.layer.borderWidth = 2
         addSubview(textField)
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
@@ -125,6 +140,7 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        currentStrength = .weak
     }
     
     @objc func buttonTapped() {
@@ -137,6 +153,57 @@ class PasswordField: UIControl {
         }
     }
     
+    func weakPasswordWasSet() {
+        
+        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.weakView.transform = CGAffineTransform(scaleX: 7, y: 7)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
+                self.weakView.transform = .identity
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
+                self.strongView.backgroundColor = self.unusedColor
+                self.mediumView.backgroundColor = self.unusedColor
+            }
+        }, completion: nil)
+        
+    }
+    
+    func mediumPasswordWasSet() {
+        
+        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.mediumView.transform = CGAffineTransform(scaleX: 7, y: 7)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
+                self.mediumView.transform = .identity
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
+                self.strongView.backgroundColor = self.unusedColor
+                self.mediumView.backgroundColor = self.mediumColor
+            }
+        }, completion: nil)
+        
+    }
+    
+    func strongPasswordWasSet() {
+        
+        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.strongView.transform = CGAffineTransform(scaleX: 7, y: 7)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
+                self.strongView.transform = .identity
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
+                self.strongView.backgroundColor = self.strongColor
+                self.mediumView.backgroundColor = self.mediumColor
+            }
+        }, completion: nil)
+        
+    }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -146,7 +213,22 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+        if oldText.count <= 9 {
+            self.currentStrength = .weak
+        } else if oldText.count <= 19 {
+            self.currentStrength = .medium
+        } else if oldText.count >= 20 {
+            self.currentStrength = .strong
+        }
+        
         return true
+    }
+    
+    enum PasswordStrength {
+        case weak
+        case medium
+        case strong
     }
     
 } //End of extension
