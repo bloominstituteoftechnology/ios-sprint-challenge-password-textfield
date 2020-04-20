@@ -41,9 +41,6 @@ class PasswordField: UIControl {
     
     func setup() {
         self.backgroundColor = bgColor
-        textField.isSecureTextEntry = true
-        textField.delegate = self
-        textField.placeholder = "Enter a password"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
@@ -56,7 +53,9 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = bgColor
-        textField.keyboardType = .numbersAndPunctuation
+        textField.isSecureTextEntry = true
+        textField.delegate = self
+        textField.placeholder = "Enter a password"
         textField.layer.borderWidth = 1
         textField.font = UIFont.monospacedDigitSystemFont(ofSize: textField.font!.pointSize, weight: .medium)
         textField.layer.cornerRadius = 5
