@@ -41,8 +41,9 @@ class PasswordField: UIControl {
     
     func setup() {
         self.backgroundColor = bgColor
+        textField.isSecureTextEntry = true
         textField.delegate = self
-        
+        textField.placeholder = "Enter a password"
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.text = "ENTER PASSWORD"
@@ -55,7 +56,9 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = bgColor
+        textField.keyboardType = .numbersAndPunctuation
         textField.layer.borderWidth = 1
+        textField.font = UIFont.monospacedDigitSystemFont(ofSize: textField.font!.pointSize, weight: .medium)
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
@@ -125,10 +128,10 @@ class PasswordField: UIControl {
     @objc private func showHideText() {
         showHide.toggle()
         if showHide {
-        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         textField.isSecureTextEntry = true
         } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
         }
     }
@@ -143,6 +146,8 @@ extension PasswordField: UITextFieldDelegate {
         password = oldText
         wordStrenth(password: oldText)
         return true
+        
+        
     }
     
     
