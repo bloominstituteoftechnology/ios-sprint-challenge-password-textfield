@@ -61,6 +61,11 @@ class PasswordField: UIControl {
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 150, height: 100)
     }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -68,6 +73,12 @@ class PasswordField: UIControl {
     }
     
     private func setup() {
+
+        #warning("stuff to do still:")
+        // remove container view
+        // redo strength row stack view
+        // redo vertical rows into stack view
+        // redo setStrengthIndicator() to be like SwiftUI project
         
         backgroundColor = .clear
         
