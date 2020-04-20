@@ -39,7 +39,7 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-  
+    
     func setup() {
         // Lay out your subviews here
         
@@ -71,17 +71,57 @@ class PasswordField: UIControl {
         textField.placeholder = "Enter password here"
         
         //password strength label
-        strengthDescriptionLabel.text = "Weak"
+        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 2).isActive = true
-        strengthDescriptionLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -50).isActive = true
+        strengthDescriptionLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: 20).isActive = true
+        
+        
+        //show hide button
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setBackgroundImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.setBackgroundImage(UIImage(named: "eyes-open"), for: .disabled)
+        showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
+        showHideButton.rightAnchor.constraint(equalTo: textField.rightAnchor, constant: -10).isActive = true
+        
+        //Strength Views
+        addSubview(weakView)
+        weakView.backgroundColor = weakColor
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.frame.size.height = 5
+        weakView.frame.size.width = 50
+        weakView.frame.origin.x = 10
+        weakView.frame.origin.y = 95
+        weakView.bringSubviewToFront(self)
+        
+        addSubview(mediumView)
+        mediumView.backgroundColor = unusedColor
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.frame.size.height = 5
+        mediumView.frame.size.width = 50
+        mediumView.frame.origin.x = 70
+        mediumView.frame.origin.y = 95
+        mediumView.bringSubviewToFront(self)
+        
+        addSubview(strongView)
+        strongView.backgroundColor = unusedColor
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.frame.size.height = 5
+        strongView.frame.size.width = 50
+        strongView.frame.origin.x = 130
+        strongView.frame.origin.y = 95
+        strongView.bringSubviewToFront(self)
+        
     }
     
     override init(frame: CGRect) {
-                super.init(frame: frame)
-                setup()
-            }
+        super.init(frame: frame)
+        setup()
+    }
     
     
     required init?(coder aDecoder: NSCoder) {
