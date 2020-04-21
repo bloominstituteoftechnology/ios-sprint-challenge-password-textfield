@@ -8,15 +8,15 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "Weak"
+    case medium = "Medium"
+    case strong = "Strong"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    
-    enum PasswordStrength: String {
-        case weak = "Weak"
-        case medium = "Medium"
-        case strong = "Strong"
-    }
     
     var passwordStrength: PasswordStrength = .weak
     
@@ -52,13 +52,6 @@ class PasswordField: UIControl {
         textField.delegate = self
         setup()
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        textField.delegate = self
-        setup()
-    }
-    
     
     func setup() {
         backgroundColor = bgColor
@@ -178,7 +171,13 @@ class PasswordField: UIControl {
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        }
+    }
+}
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        textField.delegate = self
+        setup()
     }
 }
 
@@ -191,8 +190,10 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         
         password = newText
+        
         switch password.count {
         case 0...7:
+            weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "too weak"
@@ -209,6 +210,7 @@ extension PasswordField: UITextFieldDelegate {
             passwordStrength = .weak
             
         case 8...14:
+            weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "could be stronger"
@@ -225,7 +227,8 @@ extension PasswordField: UITextFieldDelegate {
             passwordStrength = .medium
             
         case 15...:
-            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "strong password"
             
@@ -249,10 +252,18 @@ extension PasswordField: UITextFieldDelegate {
             return true
     }
     
+    func resetControl() {
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = mediumColor
+        strongView.backgroundColor = strongColor
+        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         sendActions(for: .valueChanged)
+        resetControl()
+        textField.text = ""
         return true
     }
 }
