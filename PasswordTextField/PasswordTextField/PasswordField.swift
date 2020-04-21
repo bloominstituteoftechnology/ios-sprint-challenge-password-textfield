@@ -162,7 +162,7 @@ extension PasswordField: UITextFieldDelegate {
             passwordStrength = strength.weak.rawValue
             animateView(which: weakView)
         } else if length == 10 {
-            strengthDescriptionLabel.text = "Can you do better?"
+            strengthDescriptionLabel.text = "You should do better!"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             passwordStrength = strength.medium.rawValue
