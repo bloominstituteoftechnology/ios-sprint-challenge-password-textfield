@@ -11,7 +11,11 @@ import UIKit
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    private (set) var password: String = ""
+    var password: String = "" {
+        didSet {
+            print(password)
+        }
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -40,6 +44,9 @@ class PasswordField: UIControl {
     private var iconSelected: Bool = false
     
     func setup() {
+        
+        backgroundColor = bgColor
+        
         // Title Label
         titleLabel.text = "Enter Password"
         titleLabel.font = labelFont
@@ -60,6 +67,8 @@ class PasswordField: UIControl {
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
         textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldShouldReturn(_:)), for: UIControl.Event.valueChanged)
+        textField.becomeFirstResponder()
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 3.0
@@ -80,7 +89,7 @@ class PasswordField: UIControl {
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(showHideButton)
         
-        // stackView
+        // StackView
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -100,25 +109,24 @@ class PasswordField: UIControl {
         weakView.backgroundColor = weakColor
         weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            weakView.widthAnchor.constraint(equalToConstant: 60),
-            weakView.heightAnchor.constraint(equalToConstant: 5)])
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height)])
         
         mediumView.backgroundColor = unusedColor
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            mediumView.widthAnchor.constraint(equalToConstant: 60),
-            mediumView.heightAnchor.constraint(equalToConstant: 5)])
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height)])
         
         strongView.backgroundColor = unusedColor
         strongView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            strongView.widthAnchor.constraint(equalToConstant: 60),
-            strongView.heightAnchor.constraint(equalToConstant: 5)])
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)])
         
         strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            strengthDescriptionLabel.heightAnchor.constraint(equalToConstant: 50)])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -169,7 +177,23 @@ extension PasswordField: UITextFieldDelegate {
         }
         return true
     }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        sendActions(for: .valueChanged)
+        updatePassword()
+        return true
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    func updatePassword() {
+            password = textField.text!
+    }
 }
+    
 extension UIView {
     func performFlare() {
         func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
