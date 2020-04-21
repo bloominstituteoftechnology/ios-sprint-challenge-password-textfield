@@ -75,7 +75,6 @@ class PasswordField: UIControl {
     private func setup() {
 
         #warning("stuff to do still:")
-        // redo vertical rows into stack view
         // redo setStrengthIndicator() to be like SwiftUI project
         
         self.backgroundColor = bgColor
@@ -85,24 +84,13 @@ class PasswordField: UIControl {
         titleLabel.textColor = labelTextColor
         titleLabel.font = labelFont
         titleLabel.backgroundColor = .clear
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
-        ])
         
         let textFieldContainer = UIView()
         textFieldContainer.layer.borderWidth = 2
         textFieldContainer.layer.borderColor = textFieldBorderColor.cgColor
         textFieldContainer.layer.cornerRadius = 7
-        addSubview(textFieldContainer)
         textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textFieldContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
-            textFieldContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
             textFieldContainer.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
         ])
         
@@ -163,13 +151,23 @@ class PasswordField: UIControl {
         strengthStackView.addArrangedSubview(weakView)
         strengthStackView.addArrangedSubview(mediumView)
         strengthStackView.addArrangedSubview(strongView)
+        strengthStackView.setCustomSpacing(6, after: strongView)
         strengthStackView.addArrangedSubview(strengthDescriptionLabel)
-        addSubview(strengthStackView)
-        strengthStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        let masterStackView = UIStackView()
+        masterStackView.axis = .vertical
+        masterStackView.spacing = standardMargin
+        masterStackView.alignment = .fill
+        masterStackView.addArrangedSubview(titleLabel)
+        masterStackView.addArrangedSubview(textFieldContainer)
+        masterStackView.addArrangedSubview(strengthStackView)
+        addSubview(masterStackView)
+        masterStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            strengthStackView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: standardMargin),
-            strengthStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
-            strengthStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin),
+            masterStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
+            masterStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+            masterStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
+            masterStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -standardMargin),
         ])
     }
     
