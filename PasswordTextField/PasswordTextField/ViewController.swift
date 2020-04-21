@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -27,4 +28,18 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    
+    @IBAction func passwordTextField(_ sender: PasswordField) {
+        switch sender.password.count {
+        case 0...7:
+            print("Password is: \(sender.password), which is Weak!")
+        case 8...14:
+            print("Password is: \(sender.password), which is Medium!")
+        case 15:
+            print("Password is: \(sender.password), which is Strong!")
+        default:
+            print("Password is: \(sender.password), which is Invalid")
+        }
+    }
 }
