@@ -11,11 +11,7 @@ import UIKit
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
-    var password: String = "" {
-        didSet {
-            print(password)
-        }
-    }
+    var password: String = "" 
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -156,6 +152,7 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         switch oldText.count {
         case 0...5:
+            weakView.performFlare()
             weakView.backgroundColor = weakColor
             strengthDescriptionLabel.text = "Too weak"
         case 5...10:
@@ -181,7 +178,7 @@ extension PasswordField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         sendActions(for: .valueChanged)
-        updatePassword()
+        returnKeyTapped()
         return true
     }
     
@@ -191,6 +188,12 @@ extension PasswordField: UITextFieldDelegate {
     
     func updatePassword() {
             password = textField.text!
+    }
+    
+    private func returnKeyTapped() {
+        print(textField.text ?? "There is no password in the text field.")
+        guard let text = textField.text else { return }
+        updatePassword()
     }
 }
     
