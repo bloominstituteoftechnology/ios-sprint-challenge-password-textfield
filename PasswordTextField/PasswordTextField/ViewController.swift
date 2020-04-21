@@ -20,13 +20,19 @@ class ViewController: UIViewController {
     // and comment this method out again. This step only needs to run once.
     
     
- //   override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        // Uncomment this portion to set up the dictionary
-//        let str = "lambda"
-//        let referenceVC = UIReferenceLibraryViewController(term: str)
-//        present(referenceVC, animated: true, completion: nil)
- //   }
+  //  @IBAction
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.view.bounds
+        gradientLayer.colors = [ UIColor.systemYellow.cgColor, UIColor.black.cgColor]
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+        //        // Uncomment this portion to set up the dictionary
+        //        let str = "lambda"
+        //        let referenceVC = UIReferenceLibraryViewController(term: str)
+        //        present(referenceVC, animated: true, completion: nil)
+    }
     
 }

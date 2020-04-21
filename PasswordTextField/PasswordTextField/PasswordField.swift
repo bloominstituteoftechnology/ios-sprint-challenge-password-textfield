@@ -154,7 +154,7 @@ extension PasswordField: UITextFieldDelegate {
     private func wordStrenth(password: String) {
         
         let length = password.count
-        if length == 0 {
+        if password.count == 0 {
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
