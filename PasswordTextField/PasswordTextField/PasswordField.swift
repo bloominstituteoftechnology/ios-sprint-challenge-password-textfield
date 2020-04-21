@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum strength: String {
+    case weak
+    case medium
+    case strong
+}
+
 class PasswordField: UIControl {
     var showHide: Bool = true
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    var passwordStrength: String = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -141,37 +148,33 @@ extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: "⦁")
+        let newText = oldText.replacingCharacters(in: stringRange, with: string)
         password = oldText
         wordStrenth(password: oldText)
         return true
-        
-        
     }
     
     
     private func wordStrenth(password: String) {
         
         let length = password.count
-        switch length {
-        case 0...9:
+        if length == 0 {
             strengthDescriptionLabel.text = "Too weak"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            passwordStrength = strength.weak.rawValue
             animateView(which: weakView)
-        case 10...19:
+        } else if length == 10 {
             strengthDescriptionLabel.text = "Can you do better?"
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            passwordStrength = strength.medium.rawValue
             animateView(which: mediumView)
-        case 20:
+        } else if length == 20 {
             strengthDescriptionLabel.text = "There you go! Strong!"
             strongView.backgroundColor = strongColor
-            animateView(which: strongView)
-        default:
-            strengthDescriptionLabel.text = "There you go! Strong!"
-            strongView.backgroundColor = strongColor
+            passwordStrength = strength.strong.rawValue
             animateView(which: strongView)
         }
     }
@@ -179,8 +182,14 @@ extension PasswordField: UITextFieldDelegate {
     func animateView(which strength: UIView) {
         
         strength.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
             strength.transform = .identity
         }, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        print(password)
+        return true
     }
 }
