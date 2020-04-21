@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
     // For use in the stretch goal
     //
@@ -27,4 +27,37 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
+    
+    //MARK: - Methods -
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupToHideKeyboardOnTapOnView()
+    }
+    
+    @IBAction func returnWasTapped( passwordField: PasswordField) {
+        
+        
+        
+    }
+    
+} //End of class
+
+//MARK: - Extensions -
+
+extension UIViewController {
+    
+  func setupToHideKeyboardOnTapOnView() {
+    let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(UIViewController.dismissKeyboard))
+    tap.cancelsTouchesInView = false
+    view.addGestureRecognizer(tap)
+  }
+    
+  @objc func dismissKeyboard() {
+    view.endEditing(true)
+  }
+    
 }
+
