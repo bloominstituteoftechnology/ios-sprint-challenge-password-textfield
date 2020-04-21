@@ -138,7 +138,6 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = false
         }
     }
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -146,7 +145,7 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        password = oldText
+        password = newText
         wordStrenth(password: oldText)
         return true
     }
@@ -186,7 +185,7 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        print(password)
+        print("\(password), with a strength of \(passwordStrength)")
         return true
     }
 }
