@@ -27,24 +27,23 @@ class ViewController: UIViewController, UITextFieldDelegate {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
-    @IBOutlet var outlet: PasswordField!
     
-    @IBAction func passwordField(_ sender: Any) {
-        
-        hideKeyboard()
-        
-    }
-    
-    func hideKeyboard() {
-        
-    }
+    //MARK: - Methods -
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupToHideKeyboardOnTapOnView()
     }
     
-}
+    @IBAction func returnWasTapped( passwordField: PasswordField) {
+        
+        
+        
+    }
+    
+} //End of class
+
+//MARK: - Extensions -
 
 extension UIViewController {
     

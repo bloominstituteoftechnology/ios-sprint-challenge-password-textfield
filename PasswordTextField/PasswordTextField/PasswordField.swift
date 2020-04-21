@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum PasswordStrength {
+    case weak
+    case medium
+    case strong
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -55,6 +61,7 @@ class PasswordField: UIControl {
     
     func setup() {
         
+        textField.delegate = self
         self.backgroundColor = bgColor
         
         titleLabel.text = "ENTER PASSWORD"
@@ -72,6 +79,7 @@ class PasswordField: UIControl {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
+        textField.beginFloatingCursor(at: CGPoint(x: textFieldMargin, y: textFieldMargin))
         addSubview(textField)
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
@@ -140,7 +148,6 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
-        currentStrength = .weak
     }
     
     @objc func buttonTapped() {
@@ -155,9 +162,12 @@ class PasswordField: UIControl {
     
     func weakPasswordWasSet() {
         
-        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+        
+        
+        strengthDescriptionLabel.text = "Too weak"
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                self.weakView.transform = CGAffineTransform(scaleX: 7, y: 7)
+                self.weakView.transform = CGAffineTransform(scaleX: 1, y: 1.75)
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
                 self.weakView.transform = .identity
@@ -172,9 +182,10 @@ class PasswordField: UIControl {
     
     func mediumPasswordWasSet() {
         
-        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+        strengthDescriptionLabel.text = "Could be stronger"
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                self.mediumView.transform = CGAffineTransform(scaleX: 7, y: 7)
+                self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.75)
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
                 self.mediumView.transform = .identity
@@ -189,9 +200,10 @@ class PasswordField: UIControl {
     
     func strongPasswordWasSet() {
         
-        UIView.animateKeyframes(withDuration: 2, delay: 0, options: [], animations: {
+        strengthDescriptionLabel.text = "Strong Password!"
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                self.strongView.transform = CGAffineTransform(scaleX: 7, y: 7)
+                self.strongView.transform = CGAffineTransform(scaleX: 1, y: 1.75)
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 1) {
                 self.strongView.transform = .identity
@@ -204,31 +216,48 @@ class PasswordField: UIControl {
         
     }
     
-}
+} //End of class
+
+//MARK: - Extensions -
 
 extension PasswordField: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+
+        guard let numberOfCharacters = textField.text?.count else { return false }
         
-        if oldText.count <= 9 {
-            self.currentStrength = .weak
-        } else if oldText.count <= 19 {
-            self.currentStrength = .medium
-        } else if oldText.count >= 20 {
-            self.currentStrength = .strong
+        if numberOfCharacters <= 9 {
+            if currentStrength != PasswordStrength.weak {
+                currentStrength = .weak
+            }
+        } else if numberOfCharacters <= 19 {
+            if currentStrength != PasswordStrength.medium {
+                currentStrength = .medium
+            }
+        } else if numberOfCharacters >= 20 {
+            if currentStrength != PasswordStrength.strong {
+                currentStrength = .strong
+            }
         }
         
         return true
     }
     
-    enum PasswordStrength {
-        case weak
-        case medium
-        case strong
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        guard let numberOfCharacters = textField.text?.count else { return false }
+        
+        if numberOfCharacters <= 9 {
+            currentStrength = .weak
+        } else if numberOfCharacters <= 19 {
+            currentStrength = .medium
+        } else if numberOfCharacters >= 20 {
+            currentStrength = .strong
+        }
+        
+        self.textField.resignFirstResponder()
+        return true
+        
     }
     
 } //End of extension
