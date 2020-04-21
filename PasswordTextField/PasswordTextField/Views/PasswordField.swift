@@ -179,11 +179,8 @@ class PasswordField: UIControl {
     }
     
     private func returnKeyTapped() {
-        print(textField.text ?? "There is no password in the text field.")
-        
         guard let text = textField.text else { return }
         valueChanged(newValue: text)
-        
     }
     
     @objc private func showHideButtonTapped() {
@@ -224,6 +221,30 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         valueChanged(newValue: newText)
+        
+        switch oldText.count {
+        case 0...5:
+          weakView.performFlare()
+          weakView.backgroundColor = weakColor
+          strengthDescriptionLabel.text = "Too weak"
+        case 5...10:
+          mediumView.performFlare()
+          weakView.backgroundColor = weakColor
+          mediumView.backgroundColor = mediumColor
+          strengthDescriptionLabel.text = " Strong"
+        case 10...15:
+          strongView.performFlare()
+          weakView.backgroundColor = weakColor
+          mediumView.backgroundColor = mediumColor
+          strongView.backgroundColor = strongColor
+          strengthDescriptionLabel.text = "Strong Password"
+        default:
+          weakView.backgroundColor = weakColor
+          mediumView.backgroundColor = mediumColor
+          strongView.backgroundColor = strongColor
+          strengthDescriptionLabel.text = "Strong Password"
+        }
+        
         return true
     }
     
@@ -236,5 +257,17 @@ extension PasswordField: UITextFieldDelegate {
         
         sendActions(for: .valueChanged)
         return true
+    }
+}
+
+extension UIView {
+    func performFlare() {
+        func flare() { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.5) {
+            flare();
+            unflare()
+        }
     }
 }
