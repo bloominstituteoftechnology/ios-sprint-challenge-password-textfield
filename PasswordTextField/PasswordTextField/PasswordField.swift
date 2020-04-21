@@ -68,8 +68,8 @@ class PasswordField: UIControl {
         textField.layer.cornerRadius = 5
         textField.layer.borderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1).cgColor
         textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
-        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
-        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
 
         
@@ -81,7 +81,6 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
 
-        
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
@@ -121,9 +120,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25
         ).isActive = true
         
-       // showHideButton = UIButton(type: .system)
         showHideButton.addTarget(self, action: #selector(showHideText), for: .touchUpInside)
-              
     }
     
     required init?(coder aDecoder: NSCoder) {
