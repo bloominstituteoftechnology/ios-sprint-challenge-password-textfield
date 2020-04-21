@@ -22,6 +22,10 @@ class ViewController: UIViewController {
     
   //  @IBAction
     
+    @IBAction func passwordValueChanged(_ sender: PasswordField) {
+        print("This is coming from PasswordField")
+        print("\(sender.password), with a strength of \(sender.passwordStrength)")
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

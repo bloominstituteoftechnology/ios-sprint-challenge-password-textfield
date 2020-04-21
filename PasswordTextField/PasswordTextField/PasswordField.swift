@@ -185,7 +185,9 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        print("\(password), with a strength of \(passwordStrength)")
+        guard let text = textField.text else { return true }
+        wordStrenth(password: text)
+        sendActions(for: [.valueChanged])
         return true
     }
 }
