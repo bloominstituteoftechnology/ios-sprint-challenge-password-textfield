@@ -223,7 +223,7 @@ class PasswordField: UIControl {
 extension PasswordField: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
+        
         guard let numberOfCharacters = textField.text?.count else { return false }
         
         if numberOfCharacters <= 9 {
@@ -245,7 +245,8 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        guard let numberOfCharacters = textField.text?.count else { return false }
+        guard let text = self.textField.text else { return false }
+        let numberOfCharacters = text.count
         
         if numberOfCharacters <= 9 {
             currentStrength = .weak
@@ -254,6 +255,7 @@ extension PasswordField: UITextFieldDelegate {
         } else if numberOfCharacters >= 20 {
             currentStrength = .strong
         }
+        
         
         self.textField.resignFirstResponder()
         return true
