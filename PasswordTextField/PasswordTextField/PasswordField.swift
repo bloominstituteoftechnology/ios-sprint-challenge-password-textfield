@@ -186,7 +186,6 @@ extension PasswordField: UITextFieldDelegate {
             sendActions(for: .valueChanged)
             resetControl()
             textField.text = ""
-        
-        return true
+            return true
     }
 }
