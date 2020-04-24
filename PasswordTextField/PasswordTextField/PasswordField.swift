@@ -82,14 +82,19 @@ class PasswordField: UIControl {
             addSubview(strongView)
             strongView.backgroundColor = unusedColor
             strongView.frame = CGRect(x: standardMargin * 3 + colorViewSize.width * 2, y: 97, width: colorViewSize.width, height: colorViewSize.height)
-
-            addSubview(strengthDescriptionLabel)
+        
+        addSubview(strengthDescriptionLabel)
             strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor),
+                strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 10),
+                strengthDescriptionLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor)
+            ])
             strengthDescriptionLabel.text = "Too Weak"
+            strengthDescriptionLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
             strengthDescriptionLabel.textColor = labelTextColor
-            strengthDescriptionLabel.font = labelFont
+            strengthDescriptionLabel.textAlignment = .left
 
-            NSLayoutConstraint.activate([strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin), strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin), strengthDescriptionLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -standardMargin)])
         }
 
         @objc func buttonTapped() {
