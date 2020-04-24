@@ -9,8 +9,8 @@
 import UIKit
 
 enum PasswordStrength: String {
-    case weak = "Weak Password"
-    case medium = "Medium Password"
+    case weak = "Too Weak"
+    case medium = "Could Be Stronger"
     case strong = "Strong Password"
 }
 
@@ -45,16 +45,15 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
         
         self.backgroundColor = .lightGray
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
-            titleLabel.textColor = labelTextColor
-            titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
 
-            NSLayoutConstraint.activate([titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: standardMargin), titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: standardMargin), titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: standardMargin)])
+        NSLayoutConstraint.activate([titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: standardMargin), titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: standardMargin), titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: standardMargin)])
 
             addSubview(textField)
             textField.translatesAutoresizingMaskIntoConstraints = false
@@ -115,7 +114,6 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         
         self.password = newText
 
@@ -187,5 +185,17 @@ extension PasswordField: UITextFieldDelegate {
             resetControl()
             textField.text = ""
             return true
+    }
+}
+
+extension UIView {
+    // "Flare view" animation sequence
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 0.8, y: 0.8) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
     }
 }
