@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBAction func returnKeyTapped(_ sender: PasswordField) {
+       print("Password: \(sender.password)\nPassword Strength: \(sender.passwordStrength)")
+    }
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
