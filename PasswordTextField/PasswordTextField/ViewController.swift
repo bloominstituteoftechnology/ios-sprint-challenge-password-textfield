@@ -4,11 +4,15 @@
 //
 //  Created by Ben Gohlke on 6/25/19.
 //  Copyright © 2019 Lambda School. All rights reserved.
-//
+
 
 import UIKit
 
 class ViewController: UIViewController {
+    @IBAction func returnKeyPressed(_ sender: PasswordField) {
+        
+        print("Password: \(sender.password) \n\(sender.strength)")
+    }
     
     // For use in the stretch goal
     //
