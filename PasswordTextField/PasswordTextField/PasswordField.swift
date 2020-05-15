@@ -54,7 +54,16 @@ class PasswordField: UIControl {
     
     
     //MARK: - Actions -
-    
+    @objc @IBAction func showHide() {
+        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        
+        switch textField.isSecureTextEntry {
+        case true:
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        default:
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        }
+    }
     
     
     //MARK: - Methods -
@@ -63,7 +72,7 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        SLayoutConstraint.activate([
+        NSLayoutConstraint.activate([
             NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: standardMargin),
             NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: standardMargin),
             NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -standardMargin)
@@ -87,7 +96,62 @@ class PasswordField: UIControl {
         textField.autocapitalizationType = .none
         textField.delegate = self
         
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: showHideButton, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: showHideButton, attribute: .trailing, relatedBy: .equal, toItem: textField, attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: showHideButton, attribute: .width, relatedBy: .equal, toItem: textField, attribute: .width, multiplier: 0.15, constant: 0),
+            NSLayoutConstraint(item: showHideButton, attribute: .height, relatedBy: .equal, toItem: textField, attribute: .height, multiplier: 1, constant: 0)
+        ])
+        showHideButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
+        
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.backgroundColor = unusedColor
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: weakView, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: weakView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: standardMargin),
+            NSLayoutConstraint(item: weakView, attribute: .bottom, relatedBy: .equal, toItem: weakView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
+            NSLayoutConstraint(item: weakView, attribute: .trailing, relatedBy: .equal, toItem: weakView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
+        ])
+        weakView.layer.cornerRadius = 3
+        
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.backgroundColor = unusedColor
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: mediumView, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: mediumView, attribute: .leading, relatedBy: .equal, toItem: weakView, attribute: .trailing, multiplier: 1, constant: 2),
+            NSLayoutConstraint(item: mediumView, attribute: .bottom, relatedBy: .equal, toItem: mediumView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
+            NSLayoutConstraint(item: mediumView, attribute: .trailing, relatedBy: .equal, toItem: mediumView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
+        ])
+        mediumView.layer.cornerRadius = 3
+        
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.backgroundColor = unusedColor
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: strongView, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: strongView, attribute: .leading, relatedBy: .equal, toItem: mediumView, attribute: .trailing, multiplier: 1, constant: 2),
+            NSLayoutConstraint(item: strongView, attribute: .bottom, relatedBy: .equal, toItem: strongView, attribute: .top, multiplier: 1, constant: colorViewSize.height),
+            NSLayoutConstraint(item: strongView, attribute: .trailing, relatedBy: .equal, toItem: strongView, attribute: .leading, multiplier: 1, constant: colorViewSize.width)
+        ])
+        strongView.layer.cornerRadius = 3
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .top, relatedBy: .equal, toItem: textField, attribute: .bottom, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .leading, relatedBy: .equal, toItem: strongView, attribute: .trailing, multiplier: 1, constant: textFieldMargin),
+            NSLayoutConstraint(item: strengthDescriptionLabel, attribute: .trailing, relatedBy: .equal, toItem: textField, attribute: .trailing, multiplier: 1, constant: 0)
+        ])
     }
+    
+    
     
     
 }
