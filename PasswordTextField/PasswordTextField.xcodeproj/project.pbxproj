@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8EA9A2A2246EE75600084848 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA9A2A1246EE75600084848 /* PasswordTextField.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
 		CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D022C2C576008F9894 /* Assets.xcassets */; };
 		CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */; };
-		CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8EA9A2A1246EE75600084848 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -23,7 +24,6 @@
 		CE0883D022C2C576008F9894 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0883D322C2C576008F9894 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0883D522C2C576008F9894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE0883DB22C3DAAB008F9894 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +58,8 @@
 			children = (
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
 				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+				8EA9A2A1246EE75600084848 /* PasswordTextField.swift */,
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
 				CE0883D522C2C576008F9894 /* Info.plist */,
@@ -139,8 +139,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
-				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
+				8EA9A2A2246EE75600084848 /* PasswordTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
