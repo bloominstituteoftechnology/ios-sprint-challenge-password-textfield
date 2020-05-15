@@ -128,6 +128,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = "Enter password"
+        strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -156,16 +157,30 @@ class PasswordField: UIControl {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            animateStrengthViews(weakView)
         } else if string.count < 20 {
             strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            animateStrengthViews(mediumView)
         } else if string.count >= 20 {
             strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            animateStrengthViews(strongView)
+        }
+    }
+    
+    private func animateStrengthViews(_ view: UIView) {
+        UIView.animate(withDuration: 0.1, animations: {
+            view.transform = CGAffineTransform(scaleX: 1.1, y: 1.5)
+        }) {
+            ( _ ) in
+            UIView.animate(withDuration: 0.1, animations: {
+                view.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
         }
     }
     
