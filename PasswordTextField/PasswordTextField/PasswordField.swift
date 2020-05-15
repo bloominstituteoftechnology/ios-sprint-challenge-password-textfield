@@ -64,7 +64,7 @@ class PasswordField: UIControl {
         //MARK: - TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        //TITLE LABEL CHARACTERISTICS
         titleLabel.text = "Enter Password Here"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
@@ -83,7 +83,6 @@ class PasswordField: UIControl {
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.delegate = self
-        
         //CONSTRAINTS
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
@@ -97,16 +96,11 @@ class PasswordField: UIControl {
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         showHideButton.addTarget(self, action: #selector(changeEyeButtonImage), for: [.touchDragInside, .valueChanged])
         
-        strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.text = "Too weak"
-        strengthDescriptionLabel.font = labelFont
-        
         //MARK: - WEAK VIEW
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.layer.cornerRadius = 3
         weakView.backgroundColor = weakColor
-        
         //WEAK CONSTRAINTS
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
@@ -119,7 +113,6 @@ class PasswordField: UIControl {
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.layer.cornerRadius = 3
         mediumView.backgroundColor = unusedColor
-        
         //MEDIUM CONSTRAINTS
         mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
@@ -131,7 +124,6 @@ class PasswordField: UIControl {
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.layer.cornerRadius = 3
         strongView.backgroundColor = unusedColor
-        
         //STRONG CONSTRAINTS
         strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin).isActive = true
@@ -141,7 +133,10 @@ class PasswordField: UIControl {
         //MARK: - DESCRIPTION CONSTRAINTS
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        //DESCRIPTION CHARACTERISTICS
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = "Too weak"
+        strengthDescriptionLabel.font = labelFont
         //DESCRIPTION CONSTRAINTS
         strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
         strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
