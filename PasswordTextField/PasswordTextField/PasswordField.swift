@@ -12,7 +12,7 @@ enum PasswordStrength: Int {
     case strong
 }
 @IBDesignable class PasswordField : UIControl {
-    
+
     // MARK: Private properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
@@ -27,6 +27,17 @@ enum PasswordStrength: Int {
         default:
             
             return .strong
+        }
+    }
+    
+    var showPassword: Bool = true {
+        didSet {
+            textField.isSecureTextEntry = showPassword
+            if showPassword {
+                showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+            } else {
+                showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+            }
         }
     }
     // Margin and size properties
@@ -50,7 +61,7 @@ enum PasswordStrength: Int {
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private let textFieldContainer = UIView()
-    private var showHideButton: UIButton = UIButton()
+    var showHideButton: UIButton = UIButton()
     private var weakView: UIView = UIView()
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
@@ -82,16 +93,11 @@ enum PasswordStrength: Int {
         }
     }
     
-    @objc private func eyeBalls() {
-        if textField.isSecureTextEntry {
-            textField.isSecureTextEntry = false
-            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
-        } else {
-            textField.isSecureTextEntry = true
-            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        }
+    @objc private func eyeBalls(button: UIButton) {
+        print("Eyeballs")
+        showPassword.toggle()
     }
-
+    
     // MARK: - Stretch Goal
     func checkDictionary() -> Bool {
         if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
@@ -103,7 +109,7 @@ enum PasswordStrength: Int {
     // MARK: View Configuration
     
     private func setup() {
-        isUserInteractionEnabled = false
+        
         backgroundColor = bgColor
         
         // Text field config
@@ -154,8 +160,8 @@ enum PasswordStrength: Int {
         
         // Eyeballs
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        textFieldContainer.addSubview(showHideButton)
-        showHideButton.setBackgroundImage(UIImage(named: "eyes-closed"), for: .normal)
+        addSubview(showHideButton)
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(eyeBalls), for: .touchUpInside)
         
         // MARK: Constraint Activation
@@ -208,6 +214,10 @@ enum PasswordStrength: Int {
         super.init(coder: aDecoder)
         setup()
     }
+
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 160, height: 160)
+    }
 }
 // MARK: - View extension to set margins
 extension UITextField {
@@ -219,7 +229,7 @@ extension UITextField {
 }
 // Strength view animation
 extension UIView {
-
+    
     func viewWiggle() {
         func wiggleView()   { transform = CGAffineTransform(scaleX: 1.5, y: 1.5) }
         
@@ -241,7 +251,7 @@ extension PasswordField : UITextFieldDelegate {
             
             switch strengthOfPassword {
             case .weak:
-    
+                
                 strengthDescriptionLabel.text = "Too Weak"
                 mediumView.backgroundColor = unusedColor
                 strongView.backgroundColor = unusedColor
