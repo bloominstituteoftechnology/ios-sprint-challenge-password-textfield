@@ -142,8 +142,9 @@ class PasswordField: UIControl {
     private func setupShowHideButton() {
         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
         
-        textField.addSubview(showHideButton)
+        addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.isUserInteractionEnabled = true
         
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin).isActive = true
         showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: 0).isActive = true
@@ -153,23 +154,38 @@ class PasswordField: UIControl {
     
     private func updatePasswordState(_ string: String) {
         if string.count < 10 {
+            
+            if mediumView.backgroundColor == mediumColor || weakView.backgroundColor == unusedColor {
+                animateStrengthViews(weakView)
+            }
+            
             strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            animateStrengthViews(weakView)
+
         } else if string.count < 20 {
+            
+            if strongView.backgroundColor == strongColor || mediumView.backgroundColor == unusedColor {
+                animateStrengthViews(mediumView)
+            }
+            
             strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
-            animateStrengthViews(mediumView)
+
         } else if string.count >= 20 {
+            
+            if strongView.backgroundColor == unusedColor {
+                animateStrengthViews(strongView)
+            }
+            
             strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
-            animateStrengthViews(strongView)
+
         }
     }
     
@@ -212,6 +228,7 @@ extension PasswordField: UITextFieldDelegate {
 
         return true
     }
+    
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
        textField.resignFirstResponder()
