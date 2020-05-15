@@ -152,6 +152,10 @@ class PasswordField: UIControl {
         showHideButton.addTarget(self, action: #selector(showHideToggled), for: .touchUpInside)
     }
     
+    private func checkPasswordComplexity(_ string: String) -> Bool{
+        return UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: string)
+    }
+    
     private func updatePasswordState(_ string: String) {
         if string.count < 10 {
             
@@ -189,6 +193,38 @@ class PasswordField: UIControl {
         }
     }
     
+    private func updatePasswordStateWithDictionaryCheck(_ strength: PasswordStrength) {
+        switch strength {
+        case .weak:
+            if mediumView.backgroundColor == mediumColor || weakView.backgroundColor == unusedColor {
+                animateStrengthViews(weakView)
+            }
+            
+            strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        case .medium:
+            if strongView.backgroundColor == strongColor || mediumView.backgroundColor == unusedColor {
+                animateStrengthViews(mediumView)
+            }
+            
+            strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        case .strong:
+            if strongView.backgroundColor == unusedColor {
+                animateStrengthViews(strongView)
+            }
+            
+            strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
     private func animateStrengthViews(_ view: UIView) {
         UIView.animate(withDuration: 0.1, animations: {
             view.transform = CGAffineTransform(scaleX: 1.1, y: 1.5)
@@ -219,20 +255,44 @@ class PasswordField: UIControl {
 }
 
 extension PasswordField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let oldText = textField.text!
-        let stringRange = Range(range, in: oldText)!
-        let newText = oldText.replacingCharacters(in: stringRange, with: string)
-
-        updatePasswordState(newText)
-
-        return true
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        let oldText = textField.text!
+//        let stringRange = Range(range, in: oldText)!
+//        let newText = oldText.replacingCharacters(in: stringRange, with: string)
+//
+//        updatePasswordState(newText)
+//
+//        return true
+//    }
     
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
        textField.resignFirstResponder()
 
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        let text = textField.text ?? ""
+        
+        if !text.isEmpty {
+            let foundInDictionary = checkPasswordComplexity(text)
+            
+            if text.count < 3 {
+                updatePasswordStateWithDictionaryCheck(.weak)
+            } else if text.count < 5 {
+                if foundInDictionary {
+                    updatePasswordStateWithDictionaryCheck(.weak)
+                } else {
+                    updatePasswordStateWithDictionaryCheck(.medium)
+                }
+            } else if text.count >= 6 {
+                if foundInDictionary {
+                    updatePasswordStateWithDictionaryCheck(.medium)
+                } else {
+                    updatePasswordStateWithDictionaryCheck(.strong)
+                }
+            }
+        }
     }
 }
