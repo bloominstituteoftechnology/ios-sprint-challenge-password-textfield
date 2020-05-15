@@ -46,6 +46,7 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
+        
         setupTitleLabel()
         
         setupTextField()
@@ -53,6 +54,8 @@ class PasswordField: UIControl {
         setupStrengthViews()
         
         setupStrengthLabel()
+        
+        setupShowHideButton()
     }
     
     private func setupTitleLabel() {
@@ -69,7 +72,7 @@ class PasswordField: UIControl {
     
     private func setupTextField() {
         textField.delegate = self
-        
+ 
         textField.isSecureTextEntry = true
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -77,7 +80,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
         textField.layer.cornerRadius = 5
-        
+
         textField.isUserInteractionEnabled = true
         
         addSubview(textField)
@@ -124,7 +127,7 @@ class PasswordField: UIControl {
     private func setupStrengthLabel() {
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+        strengthDescriptionLabel.text = "Enter password"
         
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -135,9 +138,52 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.centerYAnchor.constraint(equalTo: weakView.centerYAnchor, constant: 0).isActive = true
     }
     
+    private func setupShowHideButton() {
+        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        
+        textField.addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin).isActive = true
+        showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: 0).isActive = true
+        
+        showHideButton.addTarget(self, action: #selector(showHideToggled), for: .touchUpInside)
+    }
+    
+    private func updatePasswordState(_ string: String) {
+        if string.count < 10 {
+            strengthDescriptionLabel.text = PasswordStrength.weak.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+        } else if string.count < 20 {
+            strengthDescriptionLabel.text = PasswordStrength.medium.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+        } else if string.count >= 20 {
+            strengthDescriptionLabel.text = PasswordStrength.strong.rawValue
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @objc private func showHideToggled() {
+        let toggleStatus = textField.isSecureTextEntry
+        
+        if toggleStatus {
+            textField.isSecureTextEntry = false
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+        } else {
+            textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        }
     }
 }
 
@@ -146,19 +192,15 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
-        
-        
+
+        updatePasswordState(newText)
+
         return true
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-    }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
+       textField.resignFirstResponder()
+
         return true
     }
 }
