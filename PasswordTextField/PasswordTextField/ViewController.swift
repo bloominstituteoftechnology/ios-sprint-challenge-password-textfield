@@ -15,9 +15,8 @@ class ViewController: UIViewController {
     @IBAction func pwReturned(_ passwordField: PasswordField) {
         passwordField.resignFirstResponder()
     }
-      //  print("The password is: \(passwordField.password) and strength is \(pwStrength)")
-    }
-    
+}
+
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
