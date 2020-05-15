@@ -10,14 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // For use in the stretch goal
-    //
-    // Uncomment this entire method, then run the app.
-    // A dictionary view should appear, with a "manage" button
-    // in the lower left corner. Tap that button and choose a dictionary
-    // to install (you can use the first one "American English"). Tap
-    // the little cloud download button to install it. Then just stop the app
-    // and comment this method out again. This step only needs to run once.
+    @IBAction func passwordChanged(_ sender: PasswordField) {
+        print("\(sender.password)")
+        print("\(sender.passwordCheck())")
+    }
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
