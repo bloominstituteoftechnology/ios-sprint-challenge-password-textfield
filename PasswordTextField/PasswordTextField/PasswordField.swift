@@ -95,8 +95,8 @@ class PasswordField: UIControl {
         passwordStrengthLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         passwordStrengthLabel.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainer.bottomAnchor, multiplier: 1).isActive = true
         passwordStrengthLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
-        passwordStrengthLabel.text = "Too Weak"
-        passwordStrengthLabel.font = UIFont.systemFont(ofSize: 8, weight: .light)
+        passwordStrengthLabel.text = "Too weak"
+        passwordStrengthLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
         
         
         
@@ -124,15 +124,15 @@ class PasswordField: UIControl {
         weakView.frame.size = CGSize(width: 60.0, height: 5.0)
         weakView.layer.backgroundColor = weakColor.cgColor
         
-        mediumView.frame = mediumView.frame.offsetBy(dx: 80, dy: 0)
+        mediumView.frame = mediumView.frame.offsetBy(dx: 75, dy: 0)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.frame.size = CGSize(width: 60.0, height: 5.0)
-        mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.layer.backgroundColor = unusedColor.cgColor
         
-        strongView.frame = mediumView.frame.offsetBy(dx: 80, dy: 0)
+        strongView.frame = mediumView.frame.offsetBy(dx: mediumView.bounds.maxX + 7, dy: 0)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.frame.size = CGSize(width: 60.0, height: 5.0)
-        strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.layer.backgroundColor = unusedColor.cgColor
     
         
         stackView.axis = .vertical
@@ -141,30 +141,6 @@ class PasswordField: UIControl {
         stackView.addSubview(weakView)
         stackView.addSubview(mediumView)
         stackView.addSubview(strongView)
-        
-        
-        
-        
-//        passwordStrengthContainer.addSubview(weakView)
-//        weakView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor, constant: 8).isActive = true
-//        weakView.topAnchor.constraint(equalTo: passwordStrengthContainer.topAnchor, constant: 8).isActive = true
-//        weakView.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -45).isActive = true
-//        weakView.bottomAnchor.constraint(equalTo: passwordStrengthContainer.bottomAnchor, constant: -8).isActive = true
-//
-//        weakView.backgroundColor = weakColor
-//        weakView.frame.size = CGSize(width: 60.0, height: 5.0)
-//
-//
-//        passwordStrengthContainer.addSubview(mediumView)
-//        mediumView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        mediumView.topAnchor.constraint(equalTo: passwordStrengthContainer.topAnchor, constant: 8).isActive = true
-//
-//
-//        mediumView.backgroundColor = mediumColor
-//        mediumView.frame.size = CGSize(width: 60.0, height: 5.0)
             
     }
     
@@ -181,19 +157,26 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         
+        if newText.count >= 5 {
+            mediumView.backgroundColor = mediumColor
+            passwordStrengthLabel.text = "Could be stronger"
+        }
+        
         //When the user taps the "return" key on the keyboard, the control should hide the keyboard and then signal to the containing view controller that the value of the password has changed using the target-action pattern (use the event type valueChanged). You'll need an IBAction that is wired to this event on the control in the view controller. When that event fires, simply print the password value and its strength to the console from the view controller.
         
-        if oldText.count <= 5 {
-            
-            
-        }
-        else if oldText.count <= 8 {
-            
-        }
-        else {
-            
-        }
         
+        
+//        if oldText.count <= 5 {
+//
+//
+//        }
+//        else if oldText.count <= 8 {
+//
+//        }
+//        else {
+//
+//        }
+//
         
         return true
     }
