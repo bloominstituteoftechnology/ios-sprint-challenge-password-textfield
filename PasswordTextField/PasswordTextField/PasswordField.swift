@@ -8,11 +8,13 @@
 
 import UIKit
 
+
+@IBDesignable
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
+   
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
     private let textFieldMargin: CGFloat = 6.0
@@ -40,15 +42,50 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
-        
+        //MARK: - TITLE LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.text = "Enter Password Here"
+        titleLabel.font = labelFont
+        //CONSTRAINTS
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        
+        //MARK: - TEXTFIELD
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.isUserInteractionEnabled = true
+        textField.isSecureTextEntry = true
+        textField.placeholder = "Password"
+        textField.layer.cornerRadius = 8
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        
+        //CONSTRAINTS
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin).isActive = true
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        //MARK: - TEXTFIELD EYE BUTTON
+     
+        
+        //THINGS TO DO :
+        // - Set up eye button, constaints
+        // - Show when a password is strong enough with switch case
+        // - indicate how strong a password is by the colors
+        // - constrain the views - weak,med,strong
+        //
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {
