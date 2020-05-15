@@ -8,7 +8,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func passwordFieldReturned(_ passwordField: PasswordTextField) {
+    @IBAction func passwordFieldReturned(_ passwordField: PasswordField) {
         var pwdStrength: PasswordStrength = .weak
         if passwordField.checkDictionary() {
             switch passwordField.strengthOfPassword {
