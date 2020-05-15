@@ -13,7 +13,7 @@ enum PasswordStrength: Int {
     case medium
     case strong
 }
-@IBDesignable class PasswordField: UIControl, UITextFieldDelegate {
+@IBDesignable class PasswordTextField: UIControl, UITextFieldDelegate {
     
     // MARK: Private properties
     
@@ -21,18 +21,18 @@ enum PasswordStrength: Int {
     
     var strengthOfPassword: PasswordStrength {
         switch password.count {
-        case 0...9:
+        case 0...5:
             return .weak
-        case 10...19:
+        case 6...10:
             return .medium
         default:
             return .strong
         }
     }
     // Margin and size properties
-    private let margin: CGFloat = 10.0
-    private let tfContainerHeight: CGFloat = 75.0
-    private let colorViewSize: CGSize = CGSize(width: 70, height: 10)
+    private let margin: CGFloat = 8.0
+    private let tfContainerHeight: CGFloat = 50.0
+    private let colorViewSize: CGSize = CGSize(width: 60, height: 6.0)
     private let textFieldMargins: CGFloat = 6.0
     private let cornerRadius: CGFloat = 5.0
     
@@ -43,7 +43,7 @@ enum PasswordStrength: Int {
     
     // Label properties
     private let labelFontSize = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
-    private let textColor: UIColor = .black
+    private let textColor = UIColor(hue: 233.0/360.0, saturation: 16/100.0, brightness: 41/100.0, alpha: 1)
     
     // Creating view obbjects
     private var titleLabel: UILabel = UILabel()
@@ -61,18 +61,16 @@ enum PasswordStrength: Int {
     private let mediumColor: UIColor = .yellow
     private let strongColor: UIColor = .green
     
-    // MARK: - View LifeCyle
-    required override init(frame: CGRect) {
-        super.init(frame: frame)
-        viewConfig()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        viewConfig()
-    }
-    
     // MARK: - private & internal helper funcs
+    
+    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        strengthDetailLabel.text = "Too Weak"
+        mediumView.backgroundColor = noPassInTextField
+        strongView.backgroundColor = noPassInTextField
+        sendActions(for: .valueChanged)
+        textField.resignFirstResponder()
+        return true
+    }
     
     private func animate(view: UIView) {
         UIView.animate(withDuration: 0.5, animations: {
@@ -121,6 +119,13 @@ enum PasswordStrength: Int {
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         }
     }
+    // MARK: - Stretch Goal
+    func isWordInDict() -> Bool {
+        if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+            return true
+        }
+        return false
+    }
     
     
     // MARK: View Configuration
@@ -134,6 +139,7 @@ enum PasswordStrength: Int {
         textField.layer.borderWidth = textFieldBorderWidth
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = cornerRadius
+        textField.becomeFirstResponder()
         textField.delegate = self
         textField.isSecureTextEntry = true
         textField.setLeftPaddingPoints(margin)
@@ -180,11 +186,55 @@ enum PasswordStrength: Int {
         
         // MARK: Constraint Activation
         
-        
-        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: margin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin),
+            titleLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: trailingAnchor, multiplier: -margin),
+            
+            textFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: margin),
+            textFieldContainer.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            textFieldContainer.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            textFieldContainer.heightAnchor.constraint(equalToConstant: tfContainerHeight),
+            
+            textField.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: margin),
+            textField.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -margin),
+            
+            weakView.topAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: margin),
+            weakView.leadingAnchor.constraint(equalTo: textFieldContainer.leadingAnchor),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            mediumView.topAnchor.constraint(equalTo: weakView.topAnchor),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: margin),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            strongView.topAnchor.constraint(equalTo: weakView.topAnchor),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: margin),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            strengthDetailLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor),
+            strengthDetailLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: margin),
+            
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor),
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -margin),
+            showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor)
+        ])
+    }
+    // MARK: - View LifeCyle
+    required override init(frame: CGRect) {
+        super.init(frame: frame)
+        viewConfig()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        viewConfig()
     }
 }
-
 // MARK: - View extension for set margins
 extension UITextField {
     func setLeftPaddingPoints(_ amount:CGFloat){
@@ -193,3 +243,4 @@ extension UITextField {
         self.leftViewMode = .always
     }
 }
+
