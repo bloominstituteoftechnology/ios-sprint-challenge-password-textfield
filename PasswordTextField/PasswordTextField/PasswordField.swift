@@ -49,7 +49,6 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     //MARK: - PASSWORD EYE OPEN/CLOSE
-    
     private func changeShowHideButton() {
         switch textField.isSecureTextEntry {
         case true:
@@ -57,10 +56,7 @@ class PasswordField: UIControl {
         default:
             showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
         }
-        let showPasswordImage = UIImage(named: "eyes-open.png")
-        let hidePasswordImage = UIImage(named: "eyes-closed.png")
     }
-    
     
     //MARK: - SUBVIEWS
     func setup() {
