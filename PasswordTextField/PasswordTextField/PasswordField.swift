@@ -41,8 +41,41 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        backgroundColor = bgColor
+        
+        
+        // ENTER PASSWORD LABEL
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "ENTER PASSWORD"
+        titleLabel.textAlignment = .left
+        titleLabel.font = labelFont
+        titleLabel.textColor = labelTextColor
+        
+            // constraints
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: standardMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: standardMargin)
+        ])
+        
+        // TEXTFIELD
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .clear
+        textField.borderStyle = .roundedRect
+        textField.layer.borderWidth = 2.0
+        textField.layer.cornerRadius = 3.0
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.isSecureTextEntry = true
+        
+            // constrains
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
