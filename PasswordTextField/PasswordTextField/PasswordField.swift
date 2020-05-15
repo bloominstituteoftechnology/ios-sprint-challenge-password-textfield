@@ -40,6 +40,7 @@ class PasswordField: UIControl {
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
     
+    //MARK: - OUTLETS
     private var titleLabel: UILabel = UILabel()
     private var textField: UITextField = UITextField()
     private var showHideButton: UIButton = UIButton()
@@ -49,12 +50,14 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     //MARK: - PASSWORD EYE OPEN/CLOSE
-    private func changeShowHideButton() {
-        switch textField.isSecureTextEntry {
-        case true:
-            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
-        default:
+    @objc func changeShowHideButton() {
+        showHideButton.isSelected.toggle()
+        if showHideButton.isSelected {
             showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+            textField.isSecureTextEntry = false
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+            textField.isSecureTextEntry = true
         }
     }
     
@@ -90,11 +93,13 @@ class PasswordField: UIControl {
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         
         //MARK: - TEXTFIELD EYE BUTTON
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
         textField.rightView = showHideButton
         textField.rightViewMode = .always
         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
-        showHideButton.addTarget(self, action: #selector(changeEyeButtonImage), for: [.touchDragInside, .valueChanged])
+        showHideButton.addTarget(self, action: #selector(changeShowHideButton), for: .touchUpInside)
         
         //MARK: - WEAK VIEW
         addSubview(weakView)
@@ -146,16 +151,13 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
-        changeEyeButtonImage()
+        
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
     
-    @objc func changeEyeButtonImage() {
-        changeShowHideButton()
-    }
     
     //MARK: - STRENGTH INDICATORS
     private func updatePasswordStrength(strength: PasswordStrength) {
