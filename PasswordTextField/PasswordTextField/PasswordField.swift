@@ -118,22 +118,25 @@ class PasswordField: UIControl {
         
         weakView.translatesAutoresizingMaskIntoConstraints = false
         
-        let spacingOffset = componentDimension * CGFloat(2-1) + CGFloat(5) //look to use stride instead
-        weakView.frame = weakView.frame.offsetBy(dx: spacingOffset, dy: 0)
+//        let spacingOffset = componentDimension * CGFloat(2-1) + CGFloat(5) //look to use stride instead
+        weakView.frame = weakView.frame.offsetBy(dx: 10, dy: 0)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.frame.size = CGSize(width: 60.0, height: 5.0)
         weakView.layer.backgroundColor = weakColor.cgColor
         
+        mediumView.frame = mediumView.frame.offsetBy(dx: 80, dy: 0)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.frame.size = CGSize(width: 60.0, height: 5.0)
         mediumView.layer.backgroundColor = mediumColor.cgColor
         
+        strongView.frame = mediumView.frame.offsetBy(dx: 80, dy: 0)
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.frame.size = CGSize(width: 60.0, height: 5.0)
         strongView.layer.backgroundColor = strongColor.cgColor
     
         
         stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         
         stackView.addSubview(weakView)
         stackView.addSubview(mediumView)
