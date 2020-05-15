@@ -41,6 +41,7 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
+        textField.delegate = self
         backgroundColor = bgColor
         
         
@@ -71,16 +72,42 @@ class PasswordField: UIControl {
         
             // constrains
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: standardMargin),
-            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: standardMargin),
-            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -standardMargin),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -textFieldMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        // SHOW BUTTON
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.frame = CGRect(x: 10, y: -100, width: 40, height: 40)
+        if let image = UIImage(named: "eyes-closed") {
+            showHideButton.setBackgroundImage(image, for: .normal)
+        }
+        showHideButton.addTarget(self, action: #selector(showHideButtonTapped(_:)), for: .touchUpInside)
+            
+            // constrains
+        NSLayoutConstraint.activate([
+            showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin * 2),
+            showHideButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    @ objc func showHideButtonTapped(_: UIButton) {
+        textField.isSecureTextEntry.toggle()
+        if textField.isSecureTextEntry {
+            showHideButton.setBackgroundImage(UIImage(named: "eyes-closed"), for: .normal)
+            print("pressed")
+        } else {
+            showHideButton.setBackgroundImage(UIImage(named: "eyes-open"), for: .normal)
+            print("toggled")
+        }
     }
 }
 
@@ -92,4 +119,5 @@ extension PasswordField: UITextFieldDelegate {
         // TODO: send new text to the determine strength method
         return true
     }
+    
 }
