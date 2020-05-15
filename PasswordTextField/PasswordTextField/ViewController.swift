@@ -9,6 +9,14 @@
 import UIKit
 
 class ViewController: UIViewController {
+    let passwordField = PasswordField()
+    
+    //MARK: - ACTION
+    @IBAction func pwReturned(_ passwordField: PasswordField) {
+        passwordField.resignFirstResponder()
+    }
+      //  print("The password is: \(passwordField.password) and strength is \(pwStrength)")
+    }
     
     // For use in the stretch goal
     //
@@ -27,4 +35,4 @@ class ViewController: UIViewController {
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
 //    }
-}
+

@@ -158,7 +158,6 @@ class PasswordField: UIControl {
         setup()
     }
     
-    
     //MARK: - STRENGTH INDICATORS
     private func updatePasswordStrength(strength: PasswordStrength) {
         switch strength {
@@ -192,6 +191,16 @@ class PasswordField: UIControl {
         default:
             updatePasswordStrength(strength: .weak)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        passwordStrength(password: textField.text!)
+        sendActions(for: [.valueChanged])
+        textField.resignFirstResponder()
+        print("The password strength is \(passwordStrength)")
+        print("The password value is \(password)")
+        
+        return false
     }
 }
 //MARK: - CLASS EXTENSION
