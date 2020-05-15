@@ -156,12 +156,63 @@ class PasswordField: UIControl {
     
 }
 
+
+//MARK: - Text Field Delegate Extension -
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        
+        if newText.count == 0 {
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
+            passwordStrength = .weak
+            
+        } else if newText.count > 0 && newText.count < 7 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Weak"
+            UIView.animate(withDuration: 0.9, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.weakView.transform = .identity
+            }
+            passwordStrength = .weak
+            
+        } else if newText.count > 6 && newText.count < 12 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
+            UIView.animate(withDuration: 0.9, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.mediumView.transform = .identity
+            }
+            passwordStrength = .medium
+            
+        } else if newText.count > 11 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong password"
+            UIView.animate(withDuration: 0.9, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1, y: 1.67)
+            }) { ( _ ) in
+                self.strongView.transform = .identity
+            }
+            passwordStrength = .strong
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { print("no text in text field"); return false }
+        print("\(text)" + " is a \(passwordStrength.rawValue) password")
         return true
     }
 }
