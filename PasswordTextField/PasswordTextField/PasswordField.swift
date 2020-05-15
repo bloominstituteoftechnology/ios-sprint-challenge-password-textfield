@@ -174,6 +174,7 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
     
     private func determinePasswordStrength(password: String, oldPassword: String) {
@@ -201,8 +202,27 @@ class PasswordField: UIControl {
     private func animateColorChange(strength: PasswordStrength) {
         switch strength {
         case .weak:
-            UIView.animate(withDuration: 0.7) {
-                self.weakView.transform = CGAffineTransform(scaleX: <#T##CGFloat#>, y: <#T##CGFloat#>)
+            UIView.animate(withDuration: 0.7, animations: {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+            }) { (_) in
+                self.weakView.transform = .identity
+            }
+            self.mediumView.backgroundColor = self.unusedColor
+            self.strongView.backgroundColor = self.unusedColor
+        case .medium:
+            UIView.animate(withDuration: 0.7, animations: {
+                self.mediumView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+                self.mediumView.backgroundColor = self.mediumColor
+                self.strongView.backgroundColor = self.unusedColor
+            }) { (_) in
+                self.mediumView.transform = .identity
+            }
+        case .strong:
+            UIView.animate(withDuration: 0.7, animations: {
+                self.strongView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+                self.strongView.backgroundColor = self.strongColor
+            }) { (_) in
+                self.strongView.transform = .identity
             }
         }
     }
@@ -238,5 +258,3 @@ extension PasswordField: UITextFieldDelegate {
     }
     
 }
-
-//  add extension to perform animation of weak / med / strong
