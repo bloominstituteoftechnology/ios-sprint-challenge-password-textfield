@@ -37,6 +37,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE61F382246EE85200957874 /* app */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		BE61F383246EE86300957874 /* storyboard */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = storyboard;
+			sourceTree = "<group>";
+		};
+		BE61F384246EE87800957874 /* viewcontroller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = viewcontroller;
+			sourceTree = "<group>";
+		};
 		CE0883BD22C2C575008F9894 = {
 			isa = PBXGroup;
 			children = (
@@ -60,8 +81,11 @@
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
 				CE0883CD22C2C575008F9894 /* Main.storyboard */,
-				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
+				BE61F384246EE87800957874 /* viewcontroller */,
+				BE61F383246EE86300957874 /* storyboard */,
+				BE61F382246EE85200957874 /* app */,
+				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D522C2C576008F9894 /* Info.plist */,
 			);
 			path = PasswordTextField;
