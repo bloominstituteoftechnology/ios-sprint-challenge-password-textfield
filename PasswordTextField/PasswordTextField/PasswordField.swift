@@ -174,31 +174,53 @@ class PasswordField: UIControl {
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        textField.isSecureTextEntry = true
         let oldText = textField.text! //assigning old text to constant
         let stringRange = Range(range, in: oldText)! //assigning the range of old text i.e. all characters
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         
-        if newText.count >= 5 && newText.count <= 8 {
+        if newText.count >= 5 && newText.count <= 6 {
+            
+            
+            mediumView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [], animations: {
+                self.mediumView.backgroundColor = self.mediumColor
+                self.mediumView.transform = .identity
+            }, completion: nil)
+            
+            
             strongView.backgroundColor = unusedColor
-            mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
             
-            passwordStrengthLabel.text = "Could Be Stronger Nigga"
+            
+            passwordStrengthLabel.text = "Could Be Stronger"
+            passwordStrengthLabel.font = labelFont
         }
-        else if newText.count >= 9  {
-            strongView.backgroundColor = strongColor
+        else if newText.count >= 7  {
+            
+            strongView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [], animations: {
+                self.strongView.backgroundColor = self.strongColor
+                self.strongView.transform = .identity
+            }, completion: nil)
+            
+            
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
             
-            passwordStrengthLabel.text = "Strong Password Nigga"
+            passwordStrengthLabel.text = "Strong Password"
+            passwordStrengthLabel.font = labelFont
 
-        } else {
+        }
+        else {
             strongView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             weakView.backgroundColor = weakColor
             
-            passwordStrengthLabel.text = "Too Weak Nigga"
+            passwordStrengthLabel.text = "Too Weak"
+            passwordStrengthLabel.font = labelFont
 
         }
         
