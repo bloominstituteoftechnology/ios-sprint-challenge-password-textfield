@@ -19,6 +19,7 @@ class PasswordField: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+        textField.delegate = self
     }
     
         
@@ -99,7 +100,7 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: 8).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 8).isActive = true
         
-        showHideButton.setTitle("👁", for: .normal)
+        showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
         showHideButton.addTarget(self, action: #selector(closeEye), for: .touchUpInside)
         
         
@@ -108,7 +109,7 @@ class PasswordField: UIControl {
         passwordStrengthLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         passwordStrengthLabel.topAnchor.constraint(equalToSystemSpacingBelow: textFieldContainer.bottomAnchor, multiplier: 1).isActive = true
         passwordStrengthLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
-        passwordStrengthLabel.text = "Too weak"
+        passwordStrengthLabel.text = ""
         passwordStrengthLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
         
         
@@ -154,6 +155,7 @@ class PasswordField: UIControl {
         stackView.addSubview(strongView)
             
     }
+    
     @objc func closeEye() {
         
         print("button pressed")
@@ -177,7 +179,39 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         
+        if newText.count >= 5 && newText.count <= 8 {
+            strongView.backgroundColor = unusedColor
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            
+            passwordStrengthLabel.text = "Could Be Stronger Nigga"
+        }
+        else if newText.count >= 9  {
+            strongView.backgroundColor = strongColor
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            
+            passwordStrengthLabel.text = "Strong Password Nigga"
+
+        } else {
+            strongView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            weakView.backgroundColor = weakColor
+            
+            passwordStrengthLabel.text = "Too Weak Nigga"
+
+        }
+        
         
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.textField = textField
     }
 }
