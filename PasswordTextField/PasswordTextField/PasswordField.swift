@@ -99,18 +99,17 @@ class PasswordField: UIControl {
         textField.bottomAnchor.constraint(equalTo: textFieldContainer.bottomAnchor, constant: -8).isActive = true
         
         textField.placeholder = "password"
-        textField.becomeFirstResponder()
         textFieldContainer.layer.borderColor = UIColor.blue.cgColor
         textFieldContainer.layer.borderWidth = 1.0
         
         
-        // showHideButton
+         showHideButton
         textFieldContainer.addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        
+
         showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: 8).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 8).isActive = true
-        
+
         showHideButton.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
         showHideButton.addTarget(self, action: #selector(closeEye(_:)), for: .touchUpInside)
         
@@ -181,6 +180,8 @@ class PasswordField: UIControl {
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        textField.becomeFirstResponder()
         
         textField.isSecureTextEntry = true
         let oldText = textField.text! //assigning old text to constant
