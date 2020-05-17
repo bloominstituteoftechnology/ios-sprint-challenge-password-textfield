@@ -9,9 +9,25 @@
 import UIKit
 
 class ViewController: UIViewController {
+
     
     
-    @IBOutlet weak var uiview: PasswordField!
+    
+    
+    @IBAction func changeVaue(_ sender: PasswordField ) {
+        print(sender.password)
+        
+        if sender.password.count <= 4 {
+            print("Too Weak")
+        } else if sender.password.count >= 5 && sender.password.count <= 6 {
+            print("Could Be Stronger")
+        } else {
+            print("Strong Password")
+        }
+        
+    
+        
+    }
     
     // For use in the stretch goal
     //

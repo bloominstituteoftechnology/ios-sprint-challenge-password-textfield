@@ -9,20 +9,30 @@
 import UIKit
 
 class PasswordField: UIControl {
-    enum StrengthType {
-        case unused
-        case weak
-        case medium
-        case strong
+    
+    //MARK: - enumerations
+    enum StrengthType: String {
+        case weak = "Too Weak"
+        case medium = "Could be stronger"
+        case strong = "Strong Password"
     }
     
+    
+    //MARK: - Required Inits
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
         textField.delegate = self
+        isUserInteractionEnabled = true
     }
     
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+        isUserInteractionEnabled = true
+    }
+    
+    //MARK: - Properties
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -54,6 +64,7 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     
+    //MARK: - UI Setup
     
     func setup() {
         // Lay out your subviews here
@@ -67,7 +78,7 @@ class PasswordField: UIControl {
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         
         titleLabel.text = "Enter Password"
-        titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        titleLabel.font = labelFont
         
         addSubview(textFieldContainer)
         textFieldContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -100,8 +111,8 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textFieldContainer.topAnchor, constant: 8).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 8).isActive = true
         
-        showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
-        showHideButton.addTarget(self, action: #selector(closeEye), for: .touchUpInside)
+        showHideButton.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(closeEye(_:)), for: .touchUpInside)
         
         
         addSubview(passwordStrengthLabel)
@@ -156,21 +167,17 @@ class PasswordField: UIControl {
             
     }
     
-    @objc func closeEye() {
+    @objc func closeEye(_ sender: UIButton) {
         
         print("button pressed")
 
-        UIView.animateKeyframes(withDuration: 1.0, delay: 0, options: [], animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25) {
-                self.showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
-            }
-            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.75) {
-                self.showHideButton.setImage(#imageLiteral(resourceName: "eyes-closed"), for: .normal)
-            }
-        }, completion: nil)
+        textField.isSecureTextEntry = false
+        showHideButton.setImage(#imageLiteral(resourceName: "eyes-open"), for: .normal)
         
     }
 }
+
+//MARK: - Extensions
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -184,8 +191,8 @@ extension PasswordField: UITextFieldDelegate {
         if newText.count >= 5 && newText.count <= 6 {
             
             
-            mediumView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
-            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [], animations: {
+            mediumView.transform = CGAffineTransform(scaleX: 0.1, y: 0.0)
+            UIView.animate(withDuration: 2.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
                 self.mediumView.backgroundColor = self.mediumColor
                 self.mediumView.transform = .identity
             }, completion: nil)
@@ -195,7 +202,7 @@ extension PasswordField: UITextFieldDelegate {
             weakView.backgroundColor = weakColor
             
             
-            passwordStrengthLabel.text = "Could Be Stronger"
+            passwordStrengthLabel.text = StrengthType.medium.rawValue
             passwordStrengthLabel.font = labelFont
         }
         else if newText.count >= 7  {
@@ -210,7 +217,7 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
             
-            passwordStrengthLabel.text = "Strong Password"
+            passwordStrengthLabel.text = StrengthType.strong.rawValue
             passwordStrengthLabel.font = labelFont
 
         }
@@ -219,7 +226,7 @@ extension PasswordField: UITextFieldDelegate {
             mediumView.backgroundColor = unusedColor
             weakView.backgroundColor = weakColor
             
-            passwordStrengthLabel.text = "Too Weak"
+            passwordStrengthLabel.text = StrengthType.weak.rawValue
             passwordStrengthLabel.font = labelFont
 
         }
@@ -230,6 +237,9 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.password = textField.text!
+        sendActions(for: .valueChanged)
+        
         return true
     }
     
