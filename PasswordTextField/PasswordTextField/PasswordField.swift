@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum PasswordStrenght: String {
+    case weak = "WEAK"
+    case medium = "MEDIUM"
+    case strong = "STRONG"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strenght: PasswordStrenght = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -70,11 +77,87 @@ class PasswordField: UIControl {
         textField.rightViewMode = .always
         showHideButton.setImage(UIImage(named: "eye-closed.png"), for: .normal)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        
+        //Views
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
+        
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = "too weak"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
+        
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        addSubview(strengthDescriptionLabel)
+        
+        weakView.layer.cornerRadius = 2
+        mediumView.layer.cornerRadius = 2
+        strongView.layer.cornerRadius = 2
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
+        mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
+        strongView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin).isActive = true
+        strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
+        strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width).isActive = true
+        
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
+        strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin).isActive = true
+        strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor).isActive = true
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+    
+    private func passwordStrength(password: String) {
+        switch password.count {
+        case ..<10:
+            updateStatus(status: .weak)
+        case 10...19:
+            updateStatus(status: .medium)
+        default:
+            updateStatus(status: .strong)
+        }
+    }
+    
+    private func updateStatus(status: PasswordStrenght) {
+        switch status {
+        case .weak:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too Weak"
+        case .medium:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
+        case .strong:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Strong password"
+        }
     }
 }
 
