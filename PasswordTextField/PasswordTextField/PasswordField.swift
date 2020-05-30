@@ -39,10 +39,37 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
-        
-        addSubview(titleLabel)
+        // Label
+        titleLabel.text = "ENTER YOUR PASSWORD:"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(titleLabel)
+        
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin).isActive = true
+        
+        //TextField
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = 1.0
+        textField.backgroundColor = bgColor
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(textField)
+        
+        textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        
+        //Hide Button
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.setImage(UIImage(named: "eye-closed.png"), for: .normal)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
