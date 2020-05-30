@@ -38,6 +38,24 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    //Gives up a condition when set to change our UIButton Image
+    private var showPassword: Bool = true {
+        didSet{
+            textField.isSecureTextEntry = showPassword
+            if showPassword{
+                showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            } else{
+                showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            }
+        }
+    }
+    
+    //Function to help us show password using the button
+    @objc private func showPasswordFunc(){
+        showPassword.toggle()
+    }
+    
+    // Gives our content an area where it can be used
     override var intrinsicContentSize: CGSize{
         return CGSize(width: 170, height: 110)
     }
@@ -80,6 +98,8 @@ class PasswordField: UIControl {
         textField.rightView = showHideButton
         textField.rightViewMode = .always
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        // Adding a target action for our button
+        showHideButton.addTarget(self, action: #selector(showPasswordFunc), for: .touchUpInside)
         addSubview(showHideButton)
         
         // Password Strength Indicator
@@ -123,7 +143,6 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.text = "Test"
         addSubview(strengthDescriptionLabel)
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin - 5),
