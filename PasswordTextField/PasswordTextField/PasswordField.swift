@@ -143,11 +143,59 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
         addSubview(strengthDescriptionLabel)
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin - 5),
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
         ])
+    }
+    
+    // Checks our password and lights up / animates our password strength colors
+    private func passwordStrengthCheck(with password: String){
+        if password.count < 1{
+            weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = ""
+        } else if password.count <= 7{
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too weak"
+            if password.count == 1{
+                passwordStrengthAnimation(with: weakView)
+            }
+        } else if password.count >= 8 && password.count <= 12{
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could be stronger"
+            if password.count == 8{
+              passwordStrengthAnimation(with: mediumView)
+            }
+        } else {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Strong Password"
+            if password.count == 13{
+                passwordStrengthAnimation(with: strongView)
+            }
+        }
+    }
+    
+    
+    //Password Strength Animation
+    private func passwordStrengthAnimation(with view: UIView){
+        UIView.animate(withDuration: 0.4, animations: {
+            view.transform = CGAffineTransform(scaleX: 1, y: 2)
+        }) { (_) in
+            UIView.animate(withDuration: 0.2) {
+                view.transform = .identity
+            }
+            
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -162,6 +210,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        self.passwordStrengthCheck(with: newText)
         return true
     }
 }
