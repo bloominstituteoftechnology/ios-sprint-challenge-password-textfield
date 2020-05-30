@@ -10,6 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    // MARK: - IBActions
+    @IBAction func returnTapped(_ sender: PasswordField) {
+        print("Password is: \(sender.password) with a type of: \(sender.strength.rawValue)")
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.

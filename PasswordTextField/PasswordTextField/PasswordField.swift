@@ -8,16 +8,18 @@
 
 import UIKit
 
-enum PasswordStrength {
-    case none
-    case weak
-    case medium
-    case strong
+enum PasswordStrength: String {
+    case none = "None"
+    case weak = "Weak"
+    case medium = "Medium"
+    case strong = "Strong"
+    case epic = "Epic"
 }
 
 class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strength: PasswordStrength = .none
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -47,6 +49,7 @@ class PasswordField: UIControl {
     private var weakThreshold: Int = 1
     private var mediumThreshold: Int = 8
     private var strongThreshold: Int = 16
+    private var epicThreshold: Int = 25
     
     private var showPassword: Bool = true {
         didSet {
@@ -177,13 +180,15 @@ class PasswordField: UIControl {
     
     private func passwordAnalyzer(password: String) {
         if password.count < weakThreshold {
-            setPasswordSrength(strength: .none)
+            setPasswordSrength(passwordStrength: .none)
         } else if password.count < mediumThreshold {
-            setPasswordSrength(strength: .weak)
+            setPasswordSrength(passwordStrength: .weak)
         } else if password.count < strongThreshold {
-            setPasswordSrength(strength: .medium)
+            setPasswordSrength(passwordStrength: .medium)
+        } else if password.count < epicThreshold {
+            setPasswordSrength(passwordStrength: .strong)
         } else {
-            setPasswordSrength(strength: .strong)
+            setPasswordSrength(passwordStrength: .epic)
         }
         
         // Animations
@@ -193,31 +198,45 @@ class PasswordField: UIControl {
             doAnimation(objectToAnimate: mediumView)
         } else if password.count == strongThreshold {
             doAnimation(objectToAnimate: strongView)
+        } else if password.count == epicThreshold {
+            doAnimation(objectToAnimate: weakView)
+            doAnimation(objectToAnimate: mediumView)
+            doAnimation(objectToAnimate: strongView)
         }
     }
     
-    private func setPasswordSrength(strength: PasswordStrength) {
+    private func setPasswordSrength(passwordStrength: PasswordStrength) {
         switch strength {
         case .none:
+            strength = passwordStrength
             strengthDescriptionLabel.text = "None"
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case .weak:
+            strength = passwordStrength
             strengthDescriptionLabel.text = "Weak"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
         case .medium:
+            strength = passwordStrength
             strengthDescriptionLabel.text = "Okay"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
         case .strong:
+            strength = passwordStrength
             strengthDescriptionLabel.text = "Strong"
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+        case .epic:
+            strength = passwordStrength
+            strengthDescriptionLabel.text = "EPIC"
+            weakView.backgroundColor = .purple
+            mediumView.backgroundColor = .purple
+            strongView.backgroundColor = .purple
         }
     }
     
@@ -243,4 +262,13 @@ extension PasswordField: UITextFieldDelegate {
         passwordAnalyzer(password: newText)
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return false }
+        password = text
+        sendActions(for: .valueChanged)
+        textField.resignFirstResponder() // Hides the keyboard
+        return false
+    }
+    
 }
