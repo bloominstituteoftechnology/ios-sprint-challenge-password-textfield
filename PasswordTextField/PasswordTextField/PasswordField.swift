@@ -44,6 +44,10 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    private var weakThreshold: Int = 1
+    private var mediumThreshold: Int = 8
+    private var strongThreshold: Int = 16
+    
     private var showPassword: Bool = true {
         didSet {
             textField.isSecureTextEntry = showPassword
@@ -167,14 +171,23 @@ class PasswordField: UIControl {
     }
     
     private func passwordAnalyzer(password: String) {
-        if password.count <= 0 {
+        if password.count < weakThreshold {
             setPasswordSrength(strength: .none)
-        } else if password.count > 0 && password.count < 8 {
+        } else if password.count < mediumThreshold {
             setPasswordSrength(strength: .weak)
-        } else if password.count > 7 && password.count < 16 {
+        } else if password.count < strongThreshold {
             setPasswordSrength(strength: .medium)
         } else {
             setPasswordSrength(strength: .strong)
+        }
+        
+        // Animations
+        if password.count == weakThreshold {
+            doAnimation(objectToAnimate: weakView)
+        } else if password.count == mediumThreshold {
+            doAnimation(objectToAnimate: mediumView)
+        } else if password.count == strongThreshold {
+            doAnimation(objectToAnimate: strongView)
         }
     }
     
@@ -205,6 +218,14 @@ class PasswordField: UIControl {
     
     @objc func showPasswordToggled() {
         showPassword.toggle()
+    }
+    
+    func doAnimation(objectToAnimate: UIView) {
+        UIView.animate(withDuration: 0.35, animations: {
+            objectToAnimate.transform = CGAffineTransform(scaleX: 1.25, y: 1.25)
+        }) { (_) in
+            objectToAnimate.transform = .identity
+        }
     }
     
 }
