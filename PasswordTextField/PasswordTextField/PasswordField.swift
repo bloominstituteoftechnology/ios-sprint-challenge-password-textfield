@@ -45,6 +45,8 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    var passwordStrength = ""
+    
     //Gives up a condition when set to change our UIButton Image
     private var showPassword: Bool = true {
         didSet{
@@ -166,21 +168,25 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = status.rawValue
+            passwordStrength = "No Password"
         case .weakPassword:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = status.rawValue
+            passwordStrength = "Weak Password"
         case .mediumPassword:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = status.rawValue
+            passwordStrength = "Medium Password"
         case .strongPassword:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = status.rawValue
+            passwordStrength = "Strong Password"
         }
     }
     
@@ -230,8 +236,16 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
         self.passwordStrengthCheck(with: newText)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        guard let text = textField.text else { return false }
+        password = text
+        passwordStrengthCheck(with: password)
+        sendActions(for: .valueChanged)
+        return false
     }
 }
