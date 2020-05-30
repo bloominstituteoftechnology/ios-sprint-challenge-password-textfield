@@ -102,9 +102,14 @@ class PasswordField: UIControl {
         // Show/Hide Button setup
         textField.rightView = showHideButton // Appends the button to the right
         textField.rightViewMode = .always
+        textField.placeholder = "Input password here"
         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         showHideButton.addTarget(self, action: #selector(showPasswordToggled), for: .touchUpInside)
+        // Adding some padding will push the text away from the wall of our text field
+        let leftPadding = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 2.0))
+        textField.leftView = leftPadding
+        textField.leftViewMode = .always
         
         // Password Strength Bars setup
         weakView.backgroundColor = weakColor
