@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case noPassword = ""
+    case weakPassword = "Too weak"
+    case mediumPassword = "Could be stronger"
+    case strongPassword = "Strong Password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
@@ -151,34 +158,48 @@ class PasswordField: UIControl {
         ])
     }
     
-    // Checks our password and lights up / animates our password strength colors
-    private func passwordStrengthCheck(with password: String){
-        if password.count < 1{
+    //Defining our enum and setting up password strength cases
+    private func passwordStrength(status: PasswordStrength){
+        switch status {
+        case .noPassword:
             weakView.backgroundColor = unusedColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = ""
-        } else if password.count <= 7{
+            strengthDescriptionLabel.text = status.rawValue
+        case .weakPassword:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = "Too weak"
+            strengthDescriptionLabel.text = status.rawValue
+        case .mediumPassword:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = status.rawValue
+        case .strongPassword:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = status.rawValue
+        }
+    }
+    
+    // Checks our password and displays accordingly
+    private func passwordStrengthCheck(with password: String){
+        if password.count < 1{
+            passwordStrength(status: .noPassword)
+        } else if password.count <= 7{
+            passwordStrength(status: .weakPassword)
             if password.count == 1{
                 passwordStrengthAnimation(with: weakView)
             }
         } else if password.count >= 8 && password.count <= 12{
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
-            strengthDescriptionLabel.text = "Could be stronger"
+            passwordStrength(status: .mediumPassword)
             if password.count == 8{
-              passwordStrengthAnimation(with: mediumView)
+                passwordStrengthAnimation(with: mediumView)
             }
         } else {
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = strongColor
-            strengthDescriptionLabel.text = "Strong Password"
+            passwordStrength(status: .strongPassword)
             if password.count == 13{
                 passwordStrengthAnimation(with: strongView)
             }
