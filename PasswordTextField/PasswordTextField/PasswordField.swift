@@ -95,7 +95,7 @@ class PasswordField: UIControl {
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin),
             textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin - 8),
-            textField.topAnchor.constraint(equalTo: self.topAnchor, constant: textFieldMargin),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
         
