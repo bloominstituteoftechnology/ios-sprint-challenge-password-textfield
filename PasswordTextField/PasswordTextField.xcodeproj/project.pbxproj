@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5224437B2482E48300FB524E /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5224437A2482E48300FB524E /* PasswordViewController.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5224437A2482E48300FB524E /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
 				CE0883D522C2C576008F9894 /* Info.plist */,
+				5224437A2482E48300FB524E /* PasswordViewController.swift */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
+				5224437B2482E48300FB524E /* PasswordViewController.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
 			);
