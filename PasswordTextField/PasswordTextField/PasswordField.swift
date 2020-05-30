@@ -39,10 +39,104 @@ class PasswordField: UIControl {
     private var strengthDescriptionLabel: UILabel = UILabel()
     
     func setup() {
-        // Lay out your subviews here
+        // Hiding the background color to the view
+        self.backgroundColor = UIColor(hue: 0, saturation: 0, brightness: 0, alpha: 0)
+        
+        // Label setup
+        titleLabel.text = "Enter Password"
+        titleLabel.textColor = labelTextColor
+        titleLabel.font = labelFont
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: standardMargin),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin)
+        ])
+        
+        // Text Field setup
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.cornerRadius = 4.5
+        textField.layer.borderWidth = 1.0
+        textField.backgroundColor = bgColor
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin - 8),
+            textField.topAnchor.constraint(equalTo: self.topAnchor, constant: textFieldMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+        
+        // Show/Hide Button setup
+        textField.rightView = showHideButton // Appends the button to the right
+        textField.rightViewMode = .always
+        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        
+        // Password Strength Bars setup
+        weakView.backgroundColor = weakColor
+        mediumView.backgroundColor = mediumColor
+        strongView.backgroundColor = strongColor
+        
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Strength Description Label setup
+        strengthDescriptionLabel.text = "Weak"
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.font = labelFont
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -standardMargin),
+            strengthDescriptionLabel.centerYAnchor.constraint(equalTo: strongView.centerYAnchor)
+        ])
+        
+        // Weak View setup
+        weakView.backgroundColor = weakColor
+        
+        NSLayoutConstraint.activate([
+            weakView.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: standardMargin),
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        // Medium View setup
+        mediumView.backgroundColor = unusedColor
+        
+        NSLayoutConstraint.activate([
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        // Strong View setup
+        strongView.backgroundColor = unusedColor
+        
+        NSLayoutConstraint.activate([
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
