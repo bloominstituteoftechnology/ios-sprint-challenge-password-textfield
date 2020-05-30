@@ -8,6 +8,18 @@
 
 import UIKit
 
+extension UIView {
+  // "Flare view" animation sequence
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
+}
+
 @IBDesignable
 class PasswordField: UIControl {
     
@@ -128,6 +140,23 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    func determineStrength(with password: String) {
+        let strength = password.count
+        
+        if strength <= 9 {
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            weakView.performFlare()
+        } else if strength > 9 && strength <= 19 {
+            strongView.backgroundColor = unusedColor
+            mediumView.backgroundColor = mediumColor
+            mediumView.performFlare()
+        } else if strength > 19 {
+            strongView.backgroundColor = strongColor
+            strongView.performFlare()
+        }
+    }
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -136,6 +165,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        determineStrength(with: newText)
         return true
     }
 }
