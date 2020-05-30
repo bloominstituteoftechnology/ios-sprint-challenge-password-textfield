@@ -38,21 +38,97 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    override var intrinsicContentSize: CGSize{
+        return CGSize(width: 170, height: 110)
+    }
+    
     func setup() {
         //Giving our content view a background
-        
+        self.backgroundColor = bgColor
         // Lay out your subviews here
+        
+        //Enter Password label
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin)
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: standardMargin),
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin)
         ])
         
+        //Password Textfield
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
+        textField.isSecureTextEntry = true
+        textField.backgroundColor = bgColor
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 2
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        addSubview(textField)
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: textFieldMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
         
+        //View Passsword Button
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        addSubview(showHideButton)
+        
+        // Password Strength Indicator
+        //Weak Password
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        weakView.layer.cornerRadius = 2
+        weakView.backgroundColor = unusedColor
+        addSubview(weakView)
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 3),
+            weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        //Medium Password
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.layer.cornerRadius = 2
+        mediumView.backgroundColor = unusedColor
+        addSubview(mediumView)
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 3),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: standardMargin),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        //Strong Password
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.layer.cornerRadius = 2
+        strongView.backgroundColor = unusedColor
+        addSubview(strongView)
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin + 3),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        
+        //Password Strength Label
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = "Test"
+        addSubview(strengthDescriptionLabel)
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin - 5),
+            strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin)
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
