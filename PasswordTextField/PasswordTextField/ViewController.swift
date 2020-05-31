@@ -9,6 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
+   
+    @IBOutlet weak var passwordControl: PasswordField!
+    
     
     // For use in the stretch goal
     //
