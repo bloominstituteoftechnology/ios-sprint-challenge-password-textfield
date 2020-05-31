@@ -208,21 +208,29 @@ class PasswordField: UIControl {
                    mediumView.backgroundColor = unusedColor
                    strongView.backgroundColor = unusedColor
                    strengthDescriptionLabel.text = passwordStrength.rawValue
-                   weakView.performFlare()
+                   if password.count == 9 {
+                    weakView.performFlare()
+                   }
+                  // weakView.performFlare()
                    
                case .couldBeStronger:
                    weakView.backgroundColor = weakColor
                    mediumView.backgroundColor = mediumColor
                    strongView.backgroundColor = unusedColor
                    strengthDescriptionLabel.text = passwordStrength.rawValue
+                   if password.count == 10 {
                    mediumView.performFlare()
-                   
+                   } else if password.count == 18 {
+                     mediumView.performFlare()
+                }
                case .strong:
                    weakView.backgroundColor = weakColor
                    mediumView.backgroundColor = mediumColor
                    strongView.backgroundColor = strongColor
                    strengthDescriptionLabel.text = passwordStrength.rawValue
-                   strongView.performFlare()
+                   if password.count == 19 {
+                     strongView.performFlare()
+                      }
                }
            } else {
                weakView.backgroundColor = unusedColor;
