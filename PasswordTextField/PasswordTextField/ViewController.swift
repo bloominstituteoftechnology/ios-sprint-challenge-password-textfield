@@ -10,6 +10,31 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var textField: UITextField!
+   
+    @IBAction func returnTapped(_sender: UIReturnKeyType) {
+       func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    
+           
+
+       
+           return false
+       }
+        
+        
+    }
+   // Need to add IBAction and and set  and dismiss first responder to allow keyboard
+    /*func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         endEditing(true)??
+         
+
+     
+         return false??
+     }
+     */
+        
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
