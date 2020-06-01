@@ -8,7 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
+    
+   
+    @IBAction func returnKeyTapped() {
+        
+  /* func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         endEditing(true)
+
+     
+         return false
+     }
+   }*/
+}
+    
     
     // For use in the stretch goal
     //
@@ -26,5 +39,5 @@ class ViewController: UIViewController {
 //        let str = "lambda"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
-//    }
-}
+   }
+
