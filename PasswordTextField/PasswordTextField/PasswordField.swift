@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 enum strength: String {
     case weak
@@ -15,7 +16,9 @@ enum strength: String {
 }
 
 class PasswordField: UIControl {
+    
     var showHide: Bool = true
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     var passwordStrength: String = ""
@@ -71,7 +74,7 @@ class PasswordField: UIControl {
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -textFieldMargin).isActive = true
         textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-
+        
         
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +83,7 @@ class PasswordField: UIControl {
         showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: standardMargin).isActive = true
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
-
+        
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
@@ -116,7 +119,7 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.text = "Too weak"
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
-        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8).isActive = true
+        strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin).isActive = true
         strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25
         ).isActive = true
         
@@ -131,8 +134,8 @@ class PasswordField: UIControl {
     @objc private func showHideText() {
         showHide.toggle()
         if showHide {
-        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        textField.isSecureTextEntry = true
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            textField.isSecureTextEntry = true
         } else {
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
@@ -150,35 +153,47 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    
     private func wordStrenth(password: String) {
         
         let length = password.count
-        if password.count == 0 {
-            strengthDescriptionLabel.text = "Too weak"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = unusedColor
-            strongView.backgroundColor = unusedColor
-            passwordStrength = strength.weak.rawValue
-            animateView(which: weakView)
+        
+//        DispatchQueue.background {
+//                DispatchQueue.main.async {
+//                    if UIReferenceLibraryViewController.dictionaryHasDefinition(forTerm: password) {
+//                        print("\(password) is in the dictionary!")
+//                        if length >= 10 {
+//                            length = 0
+//                        } else {
+//                            length -= 10
+//                       // }
+//                    }
+//                 }
+        if length == 0 {
+            self.strengthDescriptionLabel.text = "Too weak"
+            self.weakView.backgroundColor = self.weakColor
+            self.mediumView.backgroundColor = self.unusedColor
+            self.strongView.backgroundColor = self.unusedColor
+            self.passwordStrength = strength.weak.rawValue
+            self.animateView(which: self.weakView)
         } else if length == 10 {
-            strengthDescriptionLabel.text = "You should do better!"
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = unusedColor
-            passwordStrength = strength.medium.rawValue
-            animateView(which: mediumView)
+            self.strengthDescriptionLabel.text = "You should do better!"
+            self.mediumView.backgroundColor = self.mediumColor
+            self.strongView.backgroundColor = self.unusedColor
+            self.passwordStrength = strength.medium.rawValue
+            self.animateView(which: self.mediumView)
         } else if length == 20 {
-            strengthDescriptionLabel.text = "There you go! Strong!"
-            strongView.backgroundColor = strongColor
-            passwordStrength = strength.strong.rawValue
-            animateView(which: strongView)
+            self.strengthDescriptionLabel.text = "There you go! Strong!"
+            self.strongView.backgroundColor = self.strongColor
+            self.passwordStrength = strength.strong.rawValue
+            self.animateView(which: self.strongView)
         }
+        //}
     }
     
     func animateView(which strength: UIView) {
-        
         strength.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [], animations: {
+             strength.transform = .init(translationX: 50.0, y: 50.0)
             strength.transform = .identity
         }, completion: nil)
     }
@@ -189,5 +204,21 @@ extension PasswordField: UITextFieldDelegate {
         wordStrenth(password: text)
         sendActions(for: [.valueChanged])
         return true
+    }
+}
+typealias Dispatch = DispatchQueue
+
+extension Dispatch {
+    
+    static func background(_ task: @escaping () -> ()) {
+        Dispatch.global(qos: .background).async {
+            task()
+        }
+    }
+    
+    static func main(_ task: @escaping () -> ()) {
+        Dispatch.main.async {
+            task()
+        }
     }
 }
