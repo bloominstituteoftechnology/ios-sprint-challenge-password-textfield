@@ -8,31 +8,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var textField: UITextField!
    
-    @IBAction func returnTapped(_sender: UIReturnKeyType) {
-       func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    
-           
-
-       
-           return false
-       }
+    @IBAction func returnKeyTapped() {
         
-        
-    }
-   // Need to add IBAction and and set  and dismiss first responder to allow keyboard
-    /*func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-         endEditing(true)??
-         
+  /* func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         endEditing(true)
 
      
-         return false??
+         return false
      }
-     */
-        
+   }*/
+}
     
     
     // For use in the stretch goal
@@ -51,5 +39,5 @@ class ViewController: UIViewController {
 //        let str = "lambda"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
 //        present(referenceVC, animated: true, completion: nil)
-//    }
-}
+   }
+

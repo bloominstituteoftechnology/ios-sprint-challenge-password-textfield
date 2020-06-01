@@ -70,11 +70,17 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    
-  //func viewDidAppear() {
-       //   showHideButton.setImage(UIImage(named:"eye-closed.png"), for: .normal)
-    //}
 
+
+   
+  
+    
+    
+    
+    
+    
+    
+    
     
     func setup() {
         // Lay out your subviews here
@@ -94,8 +100,7 @@ class PasswordField: UIControl {
         textField.rightViewMode = .always
         
         
-        //add button info   Need to FIX, this does not show up until clicked
-        showHideButton.setImage(UIImage(named:"eye-closed.png"), for: .normal)
+        //add button info
         showHideButton.addTarget(self, action: #selector(toggleShowPassword), for: .touchUpInside)
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -12, bottom: 0, right: 0)
         
@@ -251,19 +256,20 @@ class PasswordField: UIControl {
         switch strengthStatus {
         case .weak:
             strengthDescriptionLabel.text = "Too weak"
-            
+            mediumView.backgroundColor = unusedColor
         case .medium:
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+           
             strengthDescriptionLabel.text = "Could be stronger"
            
         case .strong:
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong password"
-       
             
             
         }
-        
+        passwordStrength = strengthStatus
     }
 
         
@@ -289,14 +295,24 @@ class PasswordField: UIControl {
 
 extension PasswordField: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        self.textField.becomeFirstResponder()
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         passwordStatus(password: newText)
         return true
     }
- 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            endEditing(true)
+       guard let password = textField.text else { return false }
+        let strength = passwordStrength.rawValue
+        
+        print(password)
+        print(strength)
+            return false
+        }
+      }
     
-}
+
 
 
