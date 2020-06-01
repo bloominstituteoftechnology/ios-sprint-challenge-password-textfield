@@ -9,7 +9,21 @@
 import UIKit
 
 class ViewController: UIViewController {
+//    var passwordField: PasswordField?
     
+    
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var weakView: UIProgressView!
+    @IBOutlet weak var mediumView: UIProgressView!
+    @IBOutlet weak var strongView: UIProgressView!
+    @IBOutlet weak var strengthDescriptionLabel: UILabel!
+    
+    
+    @IBAction func showHideButton(_ sender: PasswordField) {
+        
+        
+    }
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
