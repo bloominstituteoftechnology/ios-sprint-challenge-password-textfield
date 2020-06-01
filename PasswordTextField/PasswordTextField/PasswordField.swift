@@ -237,6 +237,9 @@ class PasswordField: UIControl {
         case 20:
              updatePasswordStatus(strengthStatus: .strong)
              pulseColor(view: strongView)
+       
+             
+            
         default:
             updatePasswordStatus(strengthStatus: .strong)
         }
@@ -262,6 +265,24 @@ class PasswordField: UIControl {
         }
         
     }
+
+        
+        func pulseColor(view : UIView) {
+            
+            func pulse() { view.transform = CGAffineTransform(scaleX: 1.2, y: 1.3)}
+            
+            func revert() { view.transform = .identity}
+       
+            UIView.animate(withDuration: 0.2,
+                           animations: {pulse() },
+                           
+                           completion: { _ in UIView.animate(withDuration: 0.2) {revert()}}
+         )
+        }
+        
+
+
+    
     
     
 }
@@ -277,24 +298,5 @@ extension PasswordField: UITextFieldDelegate {
  
     
 }
-
-// need to FIX. It causes entire View to pulse.
-extension UIView {
-    
-    func pulseColor(view : UIView) {
-        
-        func pulse() { transform = CGAffineTransform(scaleX: 2.0, y: 2.0)}
-        
-        func revert() { transform = .identity}
-   
-        UIView.animate(withDuration: 0.2,
-                       animations: {pulse() },
-                       
-                       completion: { _ in UIView.animate(withDuration: 0.2) {revert()}}
-     )
-    }
-    
-}
-
 
 
