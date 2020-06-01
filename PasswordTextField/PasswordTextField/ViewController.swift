@@ -10,6 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
+
+    let gradientLayer = CAGradientLayer()
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
@@ -19,12 +22,25 @@ class ViewController: UIViewController {
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        // Uncomment this portion to set up the dictionary
-//        let str = "lambda"
+    @IBAction func passwordValueChanged(_ sender: PasswordField) {
+        print("This is coming from PasswordField")
+        print("\(sender.password), with a strength of \(sender.passwordStrength)")
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        gradientLayer.frame = self.view.bounds
+        gradientLayer.colors = [ UIColor.black.cgColor, UIColor.orange.cgColor, UIColor.blue.cgColor,UIColor.lightGray.cgColor]
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+       
+        //        // Uncomment this portion to set up the dictionary
+//        let str = "intelligent"
 //        let referenceVC = UIReferenceLibraryViewController(term: str)
-//        present(referenceVC, animated: true, completion: nil)
-//    }
+//                present(referenceVC, animated: true, completion: nil)
+    }
 }
