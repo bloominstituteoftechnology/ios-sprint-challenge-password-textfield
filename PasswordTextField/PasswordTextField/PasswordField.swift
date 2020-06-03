@@ -54,8 +54,7 @@ class PasswordField: UIControl {
 
         self.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.borderStyle = .roundedRect
-        textField.layer.borderWidth = 1
+        textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.becomeFirstResponder()
         textField.delegate = self
@@ -72,12 +71,24 @@ class PasswordField: UIControl {
    
         NSLayoutConstraint.activate([
             showHideButton.topAnchor.constraint(equalTo: textField.topAnchor, constant: 4),
+            showHideButton.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -30),
             showHideButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 4)
         ])
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
         textField.isSecureTextEntry = true
         showHideButton.addTarget(self, action: #selector(showHideTapped(_:)), for: .touchUpInside)
-
+        
+        self.addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
+        ])
+        weakView.backgroundColor = unusedColor
+        
         self.addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -87,10 +98,10 @@ class PasswordField: UIControl {
             mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
-                mediumView.backgroundColor = unusedColor
+        mediumView.backgroundColor = unusedColor
 
-                self.addSubview(strongView)
-                strongView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: standardMargin),
@@ -98,19 +109,18 @@ class PasswordField: UIControl {
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
         ])
-                strongView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
 
-                self.addSubview(strengthDescriptionLabel)
-                strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: standardMargin),
             strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin)
         ])
-                strengthDescriptionLabel.font = labelFont
-                strengthDescriptionLabel.textColor = labelTextColor
-                strengthDescriptionLabel.text = "Enter a Password"
+        strengthDescriptionLabel.font = labelFont
+        strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.text = "Enter a Password"
 
         
              }
@@ -146,7 +156,7 @@ class PasswordField: UIControl {
                     mediumView.backgroundColor = mediumColor
                     strongView.backgroundColor = strongColor
                     strengthDescriptionLabel.text = "Strong Password"
-                    mediumView.performFlare()
+                    strongView.performFlare()
                 default:
                     (print("something wrong"))
                 }
