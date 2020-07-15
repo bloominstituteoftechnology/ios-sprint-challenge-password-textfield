@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B65BE43024003EB200D7A69F /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65BE42F24003EB200D7A69F /* ColorHelper.swift */; };
 		CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883C922C2C575008F9894 /* AppDelegate.swift */; };
 		CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883CB22C2C575008F9894 /* ViewController.swift */; };
 		CE0883CF22C2C575008F9894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883CD22C2C575008F9894 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B65BE42F24003EB200D7A69F /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
 		CE0883C622C2C575008F9894 /* PasswordTextField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordTextField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0883C922C2C575008F9894 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0883CB22C2C575008F9894 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +39,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B65BE42E24003E9300D7A69F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883D522C2C576008F9894 /* Info.plist */,
+				CE0883D022C2C576008F9894 /* Assets.xcassets */,
+				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
+				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B696230924BE9486008E8276 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		B696230A24BE948F008E8276 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		B696230B24BE94F6008E8276 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+			);
+			name = Storyboard;
+			sourceTree = "<group>";
+		};
+		B696230C24BE94FF008E8276 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B65BE42F24003EB200D7A69F /* ColorHelper.swift */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
 		CE0883BD22C2C575008F9894 = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +101,11 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
-				CE0883CD22C2C575008F9894 /* Main.storyboard */,
-				CE0883D022C2C576008F9894 /* Assets.xcassets */,
-				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
-				CE0883D522C2C576008F9894 /* Info.plist */,
+				B696230924BE9486008E8276 /* Controller */,
+				B696230A24BE948F008E8276 /* View */,
+				B696230B24BE94F6008E8276 /* Storyboard */,
+				B65BE42E24003E9300D7A69F /* Resources */,
+				B696230C24BE94FF008E8276 /* Helper */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";
@@ -141,6 +184,7 @@
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
+				B65BE43024003EB200D7A69F /* ColorHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,7 +331,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4939K9623X;
 				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +350,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4939K9623X;
 				INFOPLIST_FILE = PasswordTextField/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
