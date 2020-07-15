@@ -42,11 +42,44 @@
 		B65BE42E24003E9300D7A69F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE0883D522C2C576008F9894 /* Info.plist */,
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
 				CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */,
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		B696230924BE9486008E8276 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		B696230A24BE948F008E8276 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		B696230B24BE94F6008E8276 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+			);
+			name = Storyboard;
+			sourceTree = "<group>";
+		};
+		B696230C24BE94FF008E8276 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B65BE42F24003EB200D7A69F /* ColorHelper.swift */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		CE0883BD22C2C575008F9894 = {
@@ -68,12 +101,11 @@
 		CE0883C822C2C575008F9894 /* PasswordTextField */ = {
 			isa = PBXGroup;
 			children = (
-				CE0883CB22C2C575008F9894 /* ViewController.swift */,
-				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
-				CE0883CD22C2C575008F9894 /* Main.storyboard */,
+				B696230924BE9486008E8276 /* Controller */,
+				B696230A24BE948F008E8276 /* View */,
+				B696230B24BE94F6008E8276 /* Storyboard */,
 				B65BE42E24003E9300D7A69F /* Resources */,
-				CE0883D522C2C576008F9894 /* Info.plist */,
-				B65BE42F24003EB200D7A69F /* ColorHelper.swift */,
+				B696230C24BE94FF008E8276 /* Helper */,
 			);
 			path = PasswordTextField;
 			sourceTree = "<group>";

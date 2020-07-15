@@ -9,53 +9,16 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
+  @IBOutlet weak var password: PasswordField!
+ 
+  @IBAction func editChanged(_ sender: PasswordField) {}
+  
+  @IBAction func touchUpInside(_ sender: PasswordField) {}
+  
+  @IBAction func textFieldValueChanged(_ sender: PasswordField) {
     
-    let passwordField = PasswordField()
-    @IBOutlet weak var password: PasswordField!
+    print("Password is \(sender.password), strength level is \(sender.strengthDescriptionLabel.text ?? "").")
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-     
-    }
-    
-   
-    @IBAction func editChanged(_ sender: PasswordField) {
-    }
-    
-    @IBAction func touchUpInside(_ sender: PasswordField) {
-     
-    }
-    
-    
-    @IBAction func textFieldValueChanged(_ sender: PasswordField) {
-        
-        print("Password is \(sender.password), strength level is \(sender.strengthDescriptionLabel.text ?? "").")
-        
-    }
-    
-    // For use in the stretch goal
-    //
-    // Uncomment this entire method, then run the app.
-    // A dictionary view should appear, with a "manage" button
-    // in the lower left corner. Tap that button and choose a dictionary
-    // to install (you can use the first one "American English"). Tap
-    // the little cloud download button to install it. Then just stop the app
-    // and comment this method out again. This step only needs to run once.
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        // Uncomment this portion to set up the dictionary
-//        let str = "lambda"
-//        let referenceVC = UIReferenceLibraryViewController(term: str)
-//        present(referenceVC, animated: true, completion: nil)
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
+  }
 }

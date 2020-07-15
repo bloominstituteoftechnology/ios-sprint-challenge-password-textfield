@@ -18,3 +18,20 @@ struct ColorHelper {
      static let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
      static let strongColor = UIColor(hue: 132/360.0, saturation: 60/100.0, brightness: 75/100.0, alpha: 1)
 }
+extension UIView {
+  
+  func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
+}
+public enum PasswordState: String {
+  case weak   = "Too Weak"
+  case medium = "Could be Stronger"
+  case strong = "Very Strong"
+  
+}
