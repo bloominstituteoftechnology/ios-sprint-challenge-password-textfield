@@ -10,6 +10,8 @@ import UIKit
 
 class PasswordField: UIControl {
     
+    
+    
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
@@ -40,10 +42,85 @@ class PasswordField: UIControl {
     
     func setup() {
         // Lay out your subviews here
+        configureTitle()
+        configureTextField()
+        configureStrengthViews()
+        
+//        addSubview(titleLabel)
+//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+// Configure SUbviews
+    private func configureTitle() {
+        titleLabel.text = "Enter Password"
+        
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    private func configureTextField() {
+        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = textFieldBorderColor.cgColor
+        textField.layer.borderWidth = 2
+        textField.becomeFirstResponder()
+        textField.isSecureTextEntry = true
+        
+        textField.delegate = self
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
+        ])
+     
+    }
+    
+    private func configureStrengthViews() {
+        
+        
+        weakView.backgroundColor = unusedColor
+        mediumView.backgroundColor = .blue
+        strongView.backgroundColor = unusedColor
+        
+        addSubview(weakView)
+        addSubview(mediumView)
+        addSubview(strongView)
+        
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 2),
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 2),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 5),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+            
+            strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin * 2),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 5),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height)
+          
+       ])
+        
+    }
+    
+    
+    
+    private func configureStrengthDescriptionLabel() {
+        //
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
