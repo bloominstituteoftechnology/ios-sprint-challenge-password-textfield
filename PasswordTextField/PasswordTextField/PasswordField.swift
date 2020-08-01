@@ -43,6 +43,14 @@ class PasswordField: UIControl {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([titleLabel.topAnchor.constraint(equalTo: topAnchor), titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor), titleLabel.heightAnchor.constraint(equalTo: heightAnchor), titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)])
+        
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: leadingAnchor), textField.trailingAnchor.constraint(equalTo: trailingAnchor), textField.heightAnchor.constraint(equalTo: heightAnchor), textField.bottomAnchor.constraint(equalTo: bottomAnchor)])
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
