@@ -12,6 +12,13 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var strength: Strength = .weak
+    
+    enum Strength: String {
+        case weak = "Too Weak"
+        case medium = "Could Be Stronger"
+        case strong = "Strong Password"
+    }
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -41,6 +48,7 @@ class PasswordField: UIControl {
     private var textFieldContainer: UIView = UIView()
     
     private var textIsHidden: Bool = false
+    private var oldStrength: Strength = .weak
     
     func setup() {
         
@@ -98,19 +106,19 @@ class PasswordField: UIControl {
         weakView.frame = CGRect(x: standardMargin, y: self.bounds.size.height - 16, width: 50, height: 5)
         addSubview(weakView)
         
-        mediumView.backgroundColor = mediumColor
+        mediumView.backgroundColor = unusedColor
         mediumView.layer.cornerRadius = 2
         mediumView.frame = CGRect(x: standardMargin + 52, y: self.bounds.size.height - 16, width: 50, height: 5)
         addSubview(mediumView)
         
-        strongView.backgroundColor = strongColor
+        strongView.backgroundColor = unusedColor
         strongView.layer.cornerRadius = 2
         strongView.frame = CGRect(x: standardMargin + (2 * 52), y: self.bounds.size.height - 16, width: 50, height: 5)
         addSubview(strongView)
         
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.font = labelFont
-        strengthDescriptionLabel.text = "test"
+        strengthDescriptionLabel.text = strength.rawValue
         addSubview(strengthDescriptionLabel)
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -145,11 +153,58 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        // TODO: send new text to the determine strength method
+        password = newText
+        checkStrength(password)
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        <#code#>
+        textField.resignFirstResponder()
+        sendActions(for: .valueChanged)
+        return true
     }
+    
+    func checkStrength(_ password: String) {
+        switch password.count {
+        case 10...19:
+            oldStrength = strength
+            strength = .medium
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = strength.rawValue
+            if oldStrength != strength {
+                mediumView.performFlare()
+            }
+        case 20...:
+            oldStrength = strength
+            strength = .strong
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = strength.rawValue
+            if oldStrength != strength {
+                strongView.performFlare()
+            }
+        default:
+            oldStrength = strength
+            strength = .weak
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = strength.rawValue
+            if oldStrength != strength {
+                weakView.performFlare()
+            }
+        }
+    }
+    
+}
+
+extension UIView {
+    func performFlare() {
+    func flare()   { transform = CGAffineTransform(scaleX: 1, y: 1.6) }
+    func unflare() { transform = .identity }
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { flare() },
+                   completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+  }
 }
