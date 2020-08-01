@@ -8,12 +8,21 @@
 
 import UIKit
 
+
+enum PasswordStrengthValue: String {
+    case weak = "too weak"
+    case medium = "could be stronger"
+    case strong = "strong password"
+}
+
+
 class PasswordField: UIControl {
     
     
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -45,6 +54,7 @@ class PasswordField: UIControl {
         configureTitle()
         configureTextField()
         configureStrengthViews()
+        configureStrengthDescriptionLabel()
         
 //        addSubview(titleLabel)
 //        titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -119,6 +129,18 @@ class PasswordField: UIControl {
     
     private func configureStrengthDescriptionLabel() {
         //
+        strengthDescriptionLabel.text = "(password strength)"
+        strengthDescriptionLabel.textAlignment = .right
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
+            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin)
+            
+        
+        ])
     }
     
     
@@ -126,14 +148,68 @@ class PasswordField: UIControl {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    
+    //Count characters in pw string
+    private func passwordStrength(password: String) {
+        switch password.count {
+        case 0...9:
+            print("weak")
+            weakView.backgroundColor = .red
+            strengthDescriptionLabel.text = PasswordStrengthValue.weak.rawValue
+        case 10...19:
+            print("med")
+            mediumView.backgroundColor = .orange
+            weakView.backgroundColor = .orange
+            strengthDescriptionLabel.text = PasswordStrengthValue.medium.rawValue
+        default:
+            print("strong")
+            strongView.backgroundColor = .green
+            mediumView.backgroundColor = .green
+            weakView.backgroundColor = .green
+            strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
+        }
+    }
+    
+    
+    private func
+    
 }
 
+
+
+
+
+
 extension PasswordField: UITextFieldDelegate {
+    
+    
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+        
+        textField.resignFirstResponder()
         return true
     }
+    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("user is editting")
+//    }
+    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        print("user pressed enter")
+//        return false
+//    }
 }
+
+
+
+
