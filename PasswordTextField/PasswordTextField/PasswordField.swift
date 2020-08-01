@@ -49,7 +49,16 @@ class PasswordField: UIControl {
         addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: leadingAnchor), textField.trailingAnchor.constraint(equalTo: trailingAnchor), textField.heightAnchor.constraint(equalTo: heightAnchor), textField.bottomAnchor.constraint(equalTo: bottomAnchor)])
+        NSLayoutConstraint.activate([textField.leadingAnchor.constraint(equalTo: leadingAnchor), textField.trailingAnchor.constraint(equalTo: trailingAnchor), textField.heightAnchor.constraint(equalTo: heightAnchor), textField.bottomAnchor.constraint(equalTo: bottomAnchor), textField.topAnchor.constraint(equalTo: topAnchor)])
+        
+        addSubview(strengthDescriptionLabel)
+        strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false 
+        
+        NSLayoutConstraint.activate([strengthDescriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor), strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor), strengthDescriptionLabel.heightAnchor.constraint(equalTo: heightAnchor), strengthDescriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor), strengthDescriptionLabel.topAnchor.constraint(equalTo: topAnchor)])
+        
+        
+        
+        
         
     }
     
@@ -64,6 +73,9 @@ extension PasswordField: UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
+        
+        
+        
         // TODO: send new text to the determine strength method
         return true
     }
