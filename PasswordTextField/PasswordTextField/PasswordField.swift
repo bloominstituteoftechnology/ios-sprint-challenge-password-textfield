@@ -50,14 +50,15 @@ class PasswordField: UIControl {
     
     
     private func updateButtonImage() {
-        let showPasswordImage = UIImage(named: "eyes-open.png")
-        let hidePasswordImage = UIImage(named: "eyes-closed.png")
-        if passwordShow {
-            showHideButton.setImage(showPasswordImage, for: .normal)
+
+        if passwordShow == true {
+            showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
             textField.isSecureTextEntry = false
+            print("True")
         } else {
-            showHideButton.setImage(hidePasswordImage, for: .normal)
+            showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
             textField.isSecureTextEntry = true
+            print("False")
         }
     }//
     
@@ -118,20 +119,27 @@ class PasswordField: UIControl {
     
     
     private func configureShowIcon() {
-        showHideButton.isUserInteractionEnabled = true
-        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+//        showHideButton.isUserInteractionEnabled = true
         
+        textField.rightView = showHideButton
+        textField.rightViewMode = .always
         
-        
-        addSubview(showHideButton)
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -15),
-            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
-        ])
+        showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+        showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        showHideButton.frame = CGRect(x: textField.frame.size.width - 25, y: 5, width: 25, height: 25)
         
         showHideButton.addTarget(self, action: #selector(changeShowHideButton), for: .touchUpInside)
+        
+        
+//        addSubview(showHideButton)
+//        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+//
+//        NSLayoutConstraint.activate([
+//            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -15),
+//            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+//        ])
+        
+        
     }//
     
     
@@ -210,18 +218,38 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Weak Password"
+            
+            viewsAnimations(weakView)
+            
         case .medium:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "Medium Password"
+            
+            viewsAnimations(mediumView)
+            
         case .strong:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = "Strong Password"
+            
+            viewsAnimations(strongView)
         }
     }
+    
+    private func viewsAnimations(_ colorView: UIView) {
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            colorView.transform = CGAffineTransform(scaleX: 1.1, y: 1.3)
+        }) { (true) in
+            UIView.animate(withDuration: 0.2, animations: {
+                colorView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
+        }
+        
+    }//
     
     
     private func passwordStrength(password: String) {
