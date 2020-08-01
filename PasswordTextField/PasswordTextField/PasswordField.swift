@@ -165,11 +165,19 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func checkStrength(_ password: String) {
+        let checker = UITextChecker()
+        let range = NSRange(location: 0, length: password.count)
+        let wordRange = checker.rangeOfMisspelledWord(in: password, range: range, startingAt: 0, wrap: false, language: "en")
         switch password.count {
         case 10...19:
             oldStrength = strength
-            strength = .medium
-            mediumView.backgroundColor = mediumColor
+            if wordRange.location == NSNotFound {
+                strength = .weak
+                mediumView.backgroundColor = unusedColor
+            } else {
+                strength = .medium
+                mediumView.backgroundColor = mediumColor
+            }
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = strength.rawValue
             if oldStrength != strength {
@@ -177,9 +185,14 @@ extension PasswordField: UITextFieldDelegate {
             }
         case 20...:
             oldStrength = strength
-            strength = .strong
+            if wordRange.location == NSNotFound {
+                strength = .medium
+                strongView.backgroundColor = unusedColor
+            } else {
+                strength = .strong
+                strongView.backgroundColor = strongColor
+            }
             mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = strongColor
             strengthDescriptionLabel.text = strength.rawValue
             if oldStrength != strength {
                 strongView.performFlare()
