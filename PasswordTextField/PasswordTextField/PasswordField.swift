@@ -22,6 +22,7 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private var shouldShowPassword: Bool = false
     
     
     private let standardMargin: CGFloat = 8.0
@@ -55,6 +56,7 @@ class PasswordField: UIControl {
         configureTextField()
         configureStrengthViews()
         configureStrengthDescriptionLabel()
+        configureShowHideButton()
         
 //        addSubview(titleLabel)
 //        titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -63,8 +65,6 @@ class PasswordField: UIControl {
 // Configure SUbviews
     private func configureTitle() {
         titleLabel.text = "Enter Password"
-        
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -73,8 +73,11 @@ class PasswordField: UIControl {
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
+        
         textField.becomeFirstResponder()
         textField.isSecureTextEntry = true
+        
+        
         
         textField.delegate = self
         addSubview(textField)
@@ -89,11 +92,31 @@ class PasswordField: UIControl {
      
     }
     
+    private func configureShowHideButton() {
+         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+         
+         addSubview(showHideButton)
+         
+         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -20),
+             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+         
+         ])
+     }
+    
+   
+    
+    private func shouldShowPassowrd(sender: UIButton) {
+    //code
+    }
+    
     private func configureStrengthViews() {
         
         
         weakView.backgroundColor = unusedColor
-        mediumView.backgroundColor = .blue
+        mediumView.backgroundColor = unusedColor
         strongView.backgroundColor = unusedColor
         
         addSubview(weakView)
@@ -143,7 +166,10 @@ class PasswordField: UIControl {
         ])
     }
     
+ 
     
+    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -156,28 +182,35 @@ class PasswordField: UIControl {
     
     
     //Count characters in pw string
-    private func passwordStrength(password: String) {
+    private func getPasswordStrength(password: String) {
         switch password.count {
         case 0...9:
             print("weak")
             weakView.backgroundColor = .red
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = PasswordStrengthValue.weak.rawValue
+            
         case 10...19:
             print("med")
             mediumView.backgroundColor = .orange
             weakView.backgroundColor = .orange
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = PasswordStrengthValue.medium.rawValue
-        default:
+            
+        case 20...100:
             print("strong")
-            strongView.backgroundColor = .green
             mediumView.backgroundColor = .green
             weakView.backgroundColor = .green
+            strongView.backgroundColor = .green
             strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
+        default:
+            print("out of range")
+          
+            
         }
     }
     
-    
-    private func
     
 }
 
@@ -195,21 +228,24 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-        
-        textField.resignFirstResponder()
+        getPasswordStrength(password: newText)
         return true
     }
     
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        print("user is editting")
-//    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("user is editing")
+        if password.count > 20 {
+            strongView.backgroundColor = unusedColor
+        }
+    }
     
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        print("user pressed enter")
-//        return false
-//    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        print("user pressed enter")
+        return true
+    }
 }
-
-
 
 

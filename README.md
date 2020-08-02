@@ -38,7 +38,7 @@ Please fork this repository and clone the fork to your machine to begin work.
 
 This repository contains a basic project that includes artwork, colors, and basic layout constants defined for the custom control. Use this project as the basis for your work.
 
-![Demo GIF of functionality)
+![Demo GIF of functionalityd)
 
 Your finished project must include all of the following requirements:
 
