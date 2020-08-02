@@ -8,10 +8,17 @@
 
 import UIKit
 
+enum PasswordStrength: String {
+    case weak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong password"
+}
+
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -41,8 +48,22 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         
-        addSubview(titleLabel)
+        setupTitleLabel()
+    
+    }
+    
+    private func setupTitleLabel() {
+        // Lay out your subviews here
+    
+    titleLabel.text = "ENTER PASSWORD"
+    titleLabel.textColor = labelTextColor
+    titleLabel.font = labelFont
+        
+       addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: standardMargin).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
