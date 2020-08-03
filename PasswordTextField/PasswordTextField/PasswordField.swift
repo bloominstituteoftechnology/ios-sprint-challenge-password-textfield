@@ -7,12 +7,17 @@
 //
 
 import UIKit
+enum PasswordStrength: String {
+    case weak = "Too Weak"
+    case medium = "Strong Password"
+    case hard = "Verry Strong Password"
+}
 
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    
+    private (set) var passwordStrength = ""
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -38,6 +43,23 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+    
+    var showPassword: Bool = true {
+        didSet {
+            textField.isSecureTextEntry = showPassword
+            if showPassword {
+                showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+            } else {
+                showHideButton.setImage(UIImage(named: "eyes-open.pgn"), for: .normal)
+            }
+        }
+    }
+    override var instinsicContentSize: CGSize {
+        return CGSize(width: 150, heigt: 150)
+    }
+    @objc private func showPassword() {
+        showPassword.toggle()
+    }
     
     func setup() {
         // Lay out your subviews here
@@ -79,8 +101,8 @@ class PasswordField: UIControl {
         
         //VIEW CONTAINER + PASSWORD STRENGTH
         weakView.backgroundColor = weakColor
-        mediumView.backgroundColor = mediumColor
-        strongView.backgroundColor = strongColor
+        mediumView.backgroundColor = unusedColor
+        strongView.backgroundColor = unusedColor
         
         strengthDescriptionLabel.textColor = labelTextColor
         strengthDescriptionLabel.text = "Too weak"
@@ -101,7 +123,7 @@ class PasswordField: UIControl {
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strengthDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        //PASSWORD STRENGTH CONSTRAINTS
+        //PASSWORD STRENGTH LABEL CONSTRAINTS
         weakView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin).isActive = true
         weakView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: standardMargin).isActive = true
         weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height).isActive = true
@@ -126,8 +148,36 @@ class PasswordField: UIControl {
         
     }
     
-    
+    private func passwordStrengthChecker() {
+        if password.count < 7 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Weak Password"
+         }
+        else if password.count > 12 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Strong Password"
+        }
+        else if password.count > 16 {
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+            strengthDescriptionLabel.text = "Very Strong Password"
+        }
         
+    }
+    private func passwordAnimation(with view: UIView){
+        UIView.animate(withDuration: 0.3, animations: {
+            view.transform = CGAffineTransform(scaleX: 1, y: 2)})
+        { (_) in
+            UIView.animate(durration: 0.2) {
+                view.tranform = .identity
+            }
+        }
+    }
         
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
