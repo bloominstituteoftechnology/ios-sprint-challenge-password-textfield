@@ -42,7 +42,7 @@ class PasswordField: UIControl {
     func setup() {
         // Lay out your subviews here
         // Adding my background color
-        backgroundColor = bgColor
+        backgroundColor.self = bgColor
 
 
         // Added my title Label "ENTER PASSWORD"
@@ -58,24 +58,59 @@ class PasswordField: UIControl {
         let textFieldContainerView = UIView()
         addSubview(textFieldContainerView)
         textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
-        textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
-        textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
-        trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: standardMargin).isActive = true
-        textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
-        textFieldContainerView.backgroundColor = .clear
+        NSLayoutConstraint.activate([
+            textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textFieldContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
+            textFieldContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: standardMargin),
+            textFieldContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -standardMargin),
+        ])
+        textFieldContainerView.layer.borderWidth = 2.3
+        textFieldContainerView.layer.cornerRadius = 8
         textFieldContainerView.layer.borderColor = textFieldBorderColor.cgColor
-        textFieldContainerView.layer.borderWidth = 4.0
-        textFieldContainerView.layer.cornerRadius = 7.0
 
         // Creating text field in the container
-        textFieldContainerView.addSubview(textField)
+        addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin).isActive = true
-        textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: textFieldMargin).isActive = true
-        textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -textFieldMargin).isActive = true
-        textFieldContainerView.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin).isActive = true
-        textField.tintColor = textFieldBorderColor
+        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
+            textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin),
+            textField.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor,constant: 15.0),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+            textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -textFieldMargin)
+        ])
+        textField.isSecureTextEntry = true
+        textField.isUserInteractionEnabled = true
+        textField.becomeFirstResponder()
         textField.delegate = self
+        textField.placeholder = "Password Exp: (SRn-*sl-!er-k$!)"
+
+
+
+        // Creating button to show hidden text
+        addSubview(showHideButton)
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        showHideButton.trailingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 4.0).isActive = true
+        showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin).isActive = true
+        showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+
+        textFieldContainerView.bottomAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: textFieldMargin).isActive = true
+        showHideButton.isUserInteractionEnabled = true
+        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        showHideButton.isHidden = false
+
+        // Creating weak Level views
+        addSubview(weakView)
+        weakView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2),
+            weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
+            weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        weakView.layer.backgroundColor = unusedColor.cgColor
+
+        
+
 
 
     }
@@ -92,7 +127,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-//
+        //
 
         return true
     }
