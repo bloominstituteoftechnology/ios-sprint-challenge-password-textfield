@@ -13,6 +13,7 @@
 		AB3D4C4D24D79F160008DC97 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB3D4C4B24D79F160008DC97 /* Main.storyboard */; };
 		AB3D4C4F24D79F2C0008DC97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB3D4C4E24D79F2C0008DC97 /* Assets.xcassets */; };
 		AB3D4C5224D79F2C0008DC97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB3D4C5024D79F2C0008DC97 /* LaunchScreen.storyboard */; };
+		AB3D4C5A24D7A20E0008DC97 /* CustomUIPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3D4C5924D7A20E0008DC97 /* CustomUIPassword.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		AB3D4C4E24D79F2C0008DC97 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB3D4C5124D79F2C0008DC97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB3D4C5324D79F2C0008DC97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB3D4C5924D7A20E0008DC97 /* CustomUIPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIPassword.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				AB3D4C4524D79F150008DC97 /* AppDelegate.swift */,
 				AB3D4C4724D79F150008DC97 /* SceneDelegate.swift */,
+				AB3D4C5924D7A20E0008DC97 /* CustomUIPassword.swift */,
 				AB3D4C4924D79F150008DC97 /* ViewController.swift */,
 				AB3D4C4B24D79F160008DC97 /* Main.storyboard */,
 				AB3D4C4E24D79F2C0008DC97 /* Assets.xcassets */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB3D4C4A24D79F150008DC97 /* ViewController.swift in Sources */,
+				AB3D4C5A24D7A20E0008DC97 /* CustomUIPassword.swift in Sources */,
 				AB3D4C4624D79F150008DC97 /* AppDelegate.swift in Sources */,
 				AB3D4C4824D79F150008DC97 /* SceneDelegate.swift in Sources */,
 			);
