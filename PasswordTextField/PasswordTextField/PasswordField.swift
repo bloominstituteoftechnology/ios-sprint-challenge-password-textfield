@@ -102,23 +102,37 @@ class PasswordField: UIControl {
         addSubview(weakView)
         weakView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2),
+            weakView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 1.5),
             weakView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
             weakView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
             weakView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
         ])
         weakView.layer.backgroundColor = unusedColor.cgColor
+        weakView.layer.cornerRadius = 3
 
         // Creating Medium Level view
         addSubview(mediumView)
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2),
+            mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 1.5),
             mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: textFieldMargin),
             mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
             mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
         ])
         mediumView.layer.backgroundColor = unusedColor.cgColor
+        mediumView.layer.cornerRadius = 3
+
+        // Creating Strong Level view
+        addSubview(strongView)
+        strongView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            strongView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 1.5),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: textFieldMargin),
+            strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        strongView.layer.backgroundColor = unusedColor.cgColor
+        strongView.layer.cornerRadius = 3
 
 
 
