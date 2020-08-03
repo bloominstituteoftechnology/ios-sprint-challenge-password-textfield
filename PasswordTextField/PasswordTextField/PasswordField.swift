@@ -51,6 +51,20 @@ class PasswordField: UIControl {
         titleLabel.text = "ENTER PASSWORD"
         titleLabel.font = labelFont
         titleLabel.textColor = labelTextColor
+
+        // Creating my text field container
+        let textFieldContainerView = UIView()
+        addSubview(textFieldContainerView)
+        textFieldContainerView.translatesAutoresizingMaskIntoConstraints = false
+        textFieldContainerView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1.0).isActive = true
+        textFieldContainerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
+        trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: standardMargin).isActive = true
+        textFieldContainerView.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
+        textFieldContainerView.backgroundColor = .clear
+        textFieldContainerView.layer.borderColor = textFieldBorderColor.cgColor
+        textFieldContainerView.layer.borderWidth = 4.0
+        textFieldContainerView.layer.cornerRadius = 7.0
+
     }
     
     required init?(coder aDecoder: NSCoder) {
