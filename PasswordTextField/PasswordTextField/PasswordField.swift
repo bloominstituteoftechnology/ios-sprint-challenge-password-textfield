@@ -37,11 +37,13 @@ class PasswordField: UIControl {
     private var mediumView: UIView = UIView()
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
+
     
     func setup() {
         // Lay out your subviews here
         // Adding my background color
         backgroundColor = bgColor
+
 
         // Added my title Label "ENTER PASSWORD"
         addSubview(titleLabel)
@@ -65,6 +67,17 @@ class PasswordField: UIControl {
         textFieldContainerView.layer.borderWidth = 4.0
         textFieldContainerView.layer.cornerRadius = 7.0
 
+        // Creating text field in the container
+        textFieldContainerView.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin).isActive = true
+        textField.leadingAnchor.constraint(equalTo: textFieldContainerView.leadingAnchor, constant: textFieldMargin).isActive = true
+        textField.trailingAnchor.constraint(equalTo: textFieldContainerView.trailingAnchor, constant: -textFieldMargin).isActive = true
+        textFieldContainerView.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: textFieldMargin).isActive = true
+        textField.tintColor = textFieldBorderColor
+        textField.delegate = self
+
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,6 +92,8 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
+//
+
         return true
     }
 }
