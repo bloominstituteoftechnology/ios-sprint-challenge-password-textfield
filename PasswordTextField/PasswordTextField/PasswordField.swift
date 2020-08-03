@@ -22,7 +22,6 @@ class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
-    private var shouldShowPassword: Bool = false
     
     
     private let standardMargin: CGFloat = 8.0
@@ -58,9 +57,11 @@ class PasswordField: UIControl {
         configureStrengthDescriptionLabel()
         configureShowHideButton()
         
-//        addSubview(titleLabel)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+
     }
+    
+   
     
 // Configure SUbviews
     private func configureTitle() {
@@ -73,9 +74,9 @@ class PasswordField: UIControl {
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 2
+        textField.isSecureTextEntry = true
         
         textField.becomeFirstResponder()
-        textField.isSecureTextEntry = true
         
         
         
@@ -92,28 +93,40 @@ class PasswordField: UIControl {
      
     }
     
+
+    private var shouldShowPassword: Bool = true
+    
     private func configureShowHideButton() {
-         showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
-         
-         addSubview(showHideButton)
-         
-         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-         
-         NSLayoutConstraint.activate([
-             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -20),
-             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
-         
-         ])
-     }
+        print("eyeconfigured")
+        
+       addSubview(showHideButton)
+       showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+       showHideButton.addTarget(self, action: #selector(toggleEye), for: .touchUpInside)
+       
+        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -20),
+            showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
+        
+            
+        ])
+    }
     
-   
+    @objc private func toggleEye(sender: UIButton) {
+        print("toggleEye")
+        activateToggleEye(bool: shouldShowPassword)
+    }
     
-    private func shouldShowPassowrd(sender: UIButton) {
-    //code
+    private func activateToggleEye(bool: Bool) {
+        print("ActivateTgl")
+        shouldShowPassword = bool
+        let image = bool ? UIImage(named: "eyes-open.png") : UIImage(named: "eyes-closed.png")
+        
+        showHideButton.setImage(image, for: .normal)
+        
     }
     
     private func configureStrengthViews() {
-        
         
         weakView.backgroundColor = unusedColor
         mediumView.backgroundColor = unusedColor
@@ -210,18 +223,11 @@ class PasswordField: UIControl {
             
         }
     }
-    
-    
 }
 
 
-
-
-
-
 extension PasswordField: UITextFieldDelegate {
-    
-    
+     
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let oldText = textField.text!
@@ -232,20 +238,24 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("user is editing")
-        if password.count > 20 {
-            strongView.backgroundColor = unusedColor
-        }
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("user is editing")
+//        if showHideButton == UIImage(named: "eyes-closed.png") {
+//            print("HI")
+//            textField.isSecureTextEntry = true
+//        } else {
+//            print("hi")
+//            textField.isSecureTextEntry = false
+//        }
+//    }
     
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+        // send to VC
+        resignFirstResponder()
         print("user pressed enter")
         return true
     }
 }
-
 
