@@ -38,6 +38,9 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
 
+    private var showingPassword = false
+    private var weakLevel: PasswordLevel = .weak
+
     
     func setup() {
         // Lay out your subviews here
@@ -94,9 +97,18 @@ class PasswordField: UIControl {
         showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
 
         textFieldContainerView.bottomAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: textFieldMargin).isActive = true
-        showHideButton.isUserInteractionEnabled = true
-        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
-        showHideButton.isHidden = false
+        showHideButton.addTarget(self, action: #selector(toggleHiddenButton), for: .touchUpInside)
+
+
+        // show hide button anmimation
+        if showingPassword == true {
+            showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+            textField.isSecureTextEntry = false
+        } else {
+            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+            textField.isSecureTextEntry = true
+        }
+
 
         // Creating weak Level views
         addSubview(weakView)
@@ -143,15 +155,54 @@ class PasswordField: UIControl {
         ])
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
-        strengthDescriptionLabel.text = "Strength Level"
+        strengthDescriptionLabel.text = "Weak Password"
+    }
 
+    // Creating a Switch for pass work strength levels
+    private func passwordLevel(level: PasswordLevel) {
+        switch level {
+        case .weak:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Too Weak"
+        case .medium:
+            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "Could Be Stronger"
+        case .Strong:
+            strongView.backgroundColor = strongColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strengthDescriptionLabel.text = "Strong Password"
+        }
+    }
 
-
+    // Creating a Switch for password WORD Count
+    private func wordStrengthCount(lenght: String) {
+        switch lenght.count {
+        case 0...9:
+            passwordLevel(level: .weak)
+        case 10...19:
+            passwordLevel(level: .medium)
+        default:
+            passwordLevel(level: .Strong)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    @objc func toggleHiddenButton() {
+        showingPassword.toggle()
     }
 }
 
@@ -161,7 +212,7 @@ extension PasswordField: UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
-        //
+        wordStrengthCount(lenght: newText)
 
         return true
     }
