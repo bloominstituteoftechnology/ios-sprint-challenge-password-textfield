@@ -109,7 +109,16 @@ class PasswordField: UIControl {
         ])
         weakView.layer.backgroundColor = unusedColor.cgColor
 
-        
+        // Creating Medium Level view
+        addSubview(mediumView)
+        mediumView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediumView.topAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: standardMargin * 2),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: textFieldMargin),
+            mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width),
+            mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
+        ])
+        mediumView.layer.backgroundColor = unusedColor.cgColor
 
 
 
