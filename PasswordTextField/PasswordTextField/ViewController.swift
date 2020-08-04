@@ -18,13 +18,20 @@ class ViewController: UIViewController {
     // to install (you can use the first one "American English"). Tap
     // the little cloud download button to install it. Then just stop the app
     // and comment this method out again. This step only needs to run once.
+    @IBAction func hideKeyboard(_ sender: PasswordField) {
+        if sender.password.count > 0 {
+        print("Password is \(sender.password) Strength of Password is \(sender.passwordStrength.rawValue)")
+        } else {
+          print("No Password")
+        }
+            }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 //
 //        // Uncomment this portion to set up the dictionary
-//        let str = "lambda"
-//        let referenceVC = UIReferenceLibraryViewController(term: str)
-//        present(referenceVC, animated: true, completion: nil)
-//    }
+       let str = "lambda"
+       let referenceVC = UIReferenceLibraryViewController(term: str)
+        present(referenceVC, animated: true, completion: nil)
+    }
 }
