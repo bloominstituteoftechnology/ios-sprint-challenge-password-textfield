@@ -9,7 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBAction func enterPassword(_ sender: PasswordField) {
+        
+        print("password: trength:")
+        //view.backgroundColor = sender.color
+    }
     
     // For use in the stretch goal
     //

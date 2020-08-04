@@ -23,6 +23,8 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     
+    private var shouldShowPassword: Bool = true
+    
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -94,37 +96,25 @@ class PasswordField: UIControl {
     }
     
 
-    private var shouldShowPassword: Bool = true
+    
     
     private func configureShowHideButton() {
         print("eyeconfigured")
         
-       addSubview(showHideButton)
-       showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
-       showHideButton.addTarget(self, action: #selector(toggleEye), for: .touchUpInside)
-       
+        addSubview(showHideButton)
+        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        showHideButton.addTarget(self, action: #selector(toggleEye), for: .touchUpInside)
+        
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -20),
             showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
-        
+            
             
         ])
     }
     
-    @objc private func toggleEye(sender: UIButton) {
-        print("toggleEye")
-        activateToggleEye(bool: shouldShowPassword)
-    }
-    
-    private func activateToggleEye(bool: Bool) {
-        print("ActivateTgl")
-        shouldShowPassword = bool
-        let image = bool ? UIImage(named: "eyes-open.png") : UIImage(named: "eyes-closed.png")
-        
-        showHideButton.setImage(image, for: .normal)
-        
-    }
+ 
     
     private func configureStrengthViews() {
         
@@ -194,6 +184,8 @@ class PasswordField: UIControl {
     }
     
     
+    
+    
     //Count characters in pw string
     private func getPasswordStrength(password: String) {
         switch password.count {
@@ -223,6 +215,20 @@ class PasswordField: UIControl {
             
         }
     }
+    
+    @objc private func toggleEye(sender: AnyObject ) {
+        print("toggleEye")
+        activateToggleEye(bool: shouldShowPassword)
+    }
+    
+    private func activateToggleEye(bool: Bool) {
+        print("ActivateTgl")
+        shouldShowPassword = bool
+        let image = bool ? UIImage(named: "eyes-open") : UIImage(named: "eyes-closed")
+        
+        showHideButton.setImage(image, for: .normal)
+        
+    }
 }
 
 
@@ -238,21 +244,15 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        print("user is editing")
-//        if showHideButton == UIImage(named: "eyes-closed.png") {
-//            print("HI")
-//            textField.isSecureTextEntry = true
-//        } else {
-//            print("hi")
-//            textField.isSecureTextEntry = false
-//        }
-//    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+      
+    }
     
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // send to VC
+        
         resignFirstResponder()
         print("user pressed enter")
         return true
