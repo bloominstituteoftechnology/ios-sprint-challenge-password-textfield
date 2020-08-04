@@ -189,28 +189,57 @@ class PasswordField: UIControl {
     //Count characters in pw string
     private func getPasswordStrength(password: String) {
         switch password.count {
-        case 1...9:
+        case 1:
             print("weak")
             weakView.backgroundColor = .red
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = PasswordStrengthValue.weak.rawValue
+            weakAnimation()
             
-        case 10...19:
+        case 2...9:
+            weakView.backgroundColor = .red
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = PasswordStrengthValue.weak.rawValue
+            
+            
+        
+            
+        case 10:
             print("med")
             mediumView.backgroundColor = .orange
             weakView.backgroundColor = .orange
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = PasswordStrengthValue.medium.rawValue
+            medAnimation()
             
-        case 20...100:
-            print("strong")
+        case 11...19:
+        print("med")
+        mediumView.backgroundColor = .orange
+        weakView.backgroundColor = .orange
+        strongView.backgroundColor = unusedColor
+        strengthDescriptionLabel.text = PasswordStrengthValue.medium.rawValue
+        
+            
+        case 20:
+           
+        print("strong")
+            mediumView.backgroundColor = .green
+            weakView.backgroundColor = .green
+            strongView.backgroundColor = .green
+            strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
+            strongAnimation()
+            
+        case 21...100:
             mediumView.backgroundColor = .green
             weakView.backgroundColor = .green
             strongView.backgroundColor = .green
             strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
         default:
             weakView.backgroundColor = unusedColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "(password strength)"
             print("out of range")
           
@@ -239,8 +268,93 @@ class PasswordField: UIControl {
         showHideButton.setImage(image, for: .normal)
         
     }
-}
+    
+   // MARK: Animation
+    
+    @objc private func strongAnimation() {
+        strongView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        self.strongView.transform = .identity
+                        
+        },
+                       completion: nil)
+        
+        mediumView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        self.mediumView.transform = .identity
+                        
+        },
+                       completion: nil)
+        weakView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        self.weakView.transform = .identity
+                        
+        },
+                       completion: nil)
 
+    }
+    
+    @objc private func medAnimation() {
+        mediumView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        self.mediumView.transform = .identity
+                        
+        },
+                       completion: nil)
+        weakView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        UIView.animate(withDuration: 1.0,
+                       delay: 0,
+                       usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        self.weakView.transform = .identity
+                        
+        },
+                       completion: nil)
+
+    }
+    @objc private func weakAnimation() {
+    weakView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+    UIView.animate(withDuration: 1.0,
+                   delay: 0,
+                   usingSpringWithDamping: 0.2,
+                   initialSpringVelocity: 0,
+                   options: [],
+                   animations: {
+                    self.weakView.transform = .identity
+                    
+    },
+                   completion: nil)
+}
+    
+    
+    
+    
+    
+    
+    
+}
 
 extension PasswordField: UITextFieldDelegate {
      
