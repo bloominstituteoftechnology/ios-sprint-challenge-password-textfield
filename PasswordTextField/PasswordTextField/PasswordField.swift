@@ -43,9 +43,8 @@ class PasswordField: UIControl {
     
     private var strengthDescriptionLabel: UILabel = UILabel()
     
-    
-    
     //all views
+    
     func setupViews() {
         // Lay out your subviews here
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +69,7 @@ class PasswordField: UIControl {
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: textFieldMargin),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: textFieldMargin),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldMargin),
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight)
         ])
@@ -179,14 +178,17 @@ extension PasswordField: UITextFieldDelegate {
         if password.count < 8 {
             strengthDescriptionLabel.text = "Too Weak"
             weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
         } else if password.count < 12 {
             strengthDescriptionLabel.text = "Average"
-            weakView.backgroundColor = weakColor
+            weakView.backgroundColor = mediumColor
             mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = unusedColor
         } else if password.count >= 15 {
             strengthDescriptionLabel.text = "Strong"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
+            weakView.backgroundColor = strongColor
+            mediumView.backgroundColor = strongColor
             strongView.backgroundColor = strongColor
         }
     }
@@ -220,4 +222,13 @@ extension PasswordField: UITextFieldDelegate {
     private func strengthDescriptionAnimate(_view: UIView) {
         
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+      guard let text = textField.text else {return false}
+      password = text
+      sendActions(for: .valueChanged)
+      textField.resignFirstResponder()
+      return false
+    }
+    
 }
