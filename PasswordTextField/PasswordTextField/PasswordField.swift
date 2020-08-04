@@ -8,17 +8,18 @@
 
 import UIKit
 
-//Did not use Enum in Code
 enum PasswordEnum: String {
-    case weak
-    case medium
-    case strong
+    case none = "No password"
+    case weak = "Too weak"
+    case medium = "Could be stronger"
+    case strong = "Strong Password"
 }
 
 class PasswordField: UIControl {
     
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
+    private (set) var passwordEnum : PasswordEnum = .none
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -45,8 +46,14 @@ class PasswordField: UIControl {
     private var strongView: UIView = UIView()
     private var strengthDescriptionLabel: UILabel = UILabel()
     
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 160, height: 140)
+    }
+    
     func setup() {
         
+        self.becomeFirstResponder()
         //Title Label
         titleLabel.text = "Enter Password"
         titleLabel.textColor = labelTextColor
@@ -68,6 +75,7 @@ class PasswordField: UIControl {
         textField.font = labelFont
         textField.textColor = labelTextColor
         
+        
         let tfTop = textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10)
         let tfLeading = textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 2)
         let tfTrailing = textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -2)
@@ -82,6 +90,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.cornerRadius = 4
         textField.isSecureTextEntry = true
+        textField.rightViewMode = .always
         
 
         
@@ -141,29 +150,13 @@ class PasswordField: UIControl {
         
         
         //Show Hide Button
-        
-        showHideButton.translatesAutoresizingMaskIntoConstraints = false
+
         showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
-        showHideButton.isUserInteractionEnabled = true
-       
-        
-//        self.bringSubviewToFront(showHideButton)
-//
-//        let shbTrailing = showHideButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-//        let shbTop = showHideButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
-        
-        
-        let shbWidth = showHideButton.widthAnchor.constraint(equalToConstant: 20)
-        let shbHeight = showHideButton.heightAnchor.constraint(equalToConstant: 20)
-        
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         showHideButton.frame = CGRect(x: CGFloat(textField.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
         textField.rightViewMode = .always
         textField.rightView = showHideButton
-        showHideButton.addTarget(showHideButton, action: #selector(self.showButtonTapped), for: .allTouchEvents)
-        
-        
-        NSLayoutConstraint.activate([shbWidth, shbHeight])
+        showHideButton.addTarget(self, action: #selector(showButtonTapped), for: .touchUpInside)
 
     }
     
@@ -174,22 +167,32 @@ class PasswordField: UIControl {
     
     func calculatePasswordStrength(password: String) {
         switch password.count {
-        case 0...9:
+        case 0:
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            passwordEnum = .none
+            strengthDescriptionLabel.text = "Too Weak"
+            
+        case 1...9:
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = unusedColor
+            strongView.backgroundColor = unusedColor
+            passwordEnum = .weak
             strengthDescriptionLabel.text = "Too Weak"
             viewAnimate(password: password)
         case 10...19:
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
             strongView.backgroundColor = unusedColor
+            passwordEnum = .medium
             strengthDescriptionLabel.text = "Could Be Stronger"
             viewAnimate(password: password)
         case 20...99:
             strongView.backgroundColor = strongColor
             mediumView.backgroundColor = mediumColor
             weakView.backgroundColor = weakColor
+            passwordEnum = .strong
             strengthDescriptionLabel.text = "Strong Password"
             viewAnimate(password: password)
         default:
@@ -230,6 +233,7 @@ class PasswordField: UIControl {
             textField.isSecureTextEntry = true
         }
     }
+    
 }
 
 extension PasswordField: UITextFieldDelegate {

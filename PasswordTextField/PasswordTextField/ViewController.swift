@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBAction func returnTapped(_ sender: PasswordField) {
+        if sender.password.count > 0 {
+        print("Password is \(sender.password) Strength of Password is \(sender.passwordEnum.rawValue)")
+        } else {
+            print("No Password")
+        }
+    }
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
