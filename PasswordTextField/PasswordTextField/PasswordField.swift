@@ -58,6 +58,7 @@ class PasswordField: UIControl {
         configureStrengthViews()
         configureStrengthDescriptionLabel()
         configureShowHideButton()
+        backgroundColor = bgColor
         
         
 
@@ -181,6 +182,7 @@ class PasswordField: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        
     }
     
     
@@ -190,7 +192,7 @@ class PasswordField: UIControl {
     private func getPasswordStrength(password: String) {
         switch password.count {
         case 1:
-            print("weak")
+            
             weakView.backgroundColor = .red
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
@@ -207,7 +209,6 @@ class PasswordField: UIControl {
         
             
         case 10:
-            print("med")
             mediumView.backgroundColor = .orange
             weakView.backgroundColor = .orange
             strongView.backgroundColor = unusedColor
@@ -215,7 +216,7 @@ class PasswordField: UIControl {
             medAnimation()
             
         case 11...19:
-        print("med")
+        
         mediumView.backgroundColor = .orange
         weakView.backgroundColor = .orange
         strongView.backgroundColor = unusedColor
@@ -224,12 +225,13 @@ class PasswordField: UIControl {
             
         case 20:
            
-        print("strong")
+       
             mediumView.backgroundColor = .green
             weakView.backgroundColor = .green
             strongView.backgroundColor = .green
             strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
             strongAnimation()
+            print("strong")
             
         case 21...100:
             mediumView.backgroundColor = .green
@@ -241,7 +243,7 @@ class PasswordField: UIControl {
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
             strengthDescriptionLabel.text = "(password strength)"
-            print("out of range")
+            
           
             
         }
@@ -376,7 +378,8 @@ extension PasswordField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //send to VC
-        //guard let text = textField.text else { return }
+        guard let password = textField.text else { return false}
+        print("passwprd: \(password)")
         
         resignFirstResponder()
         print("user pressed enter")
