@@ -65,8 +65,7 @@ class PasswordField: UIControl {
         textField.layer.borderColor = textFieldBorderColor.cgColor
         textField.layer.borderWidth = 1
         textField.isSecureTextEntry = true
-        textField.isUserInteractionEnabled = true
-        
+        //textField.isUserInteractionEnabled
         addSubview(textField)
         
         NSLayoutConstraint.activate([
@@ -143,26 +142,11 @@ class PasswordField: UIControl {
         ])
         
     }
+    // done with constraints
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupViews()
-    }
-    
-    private func updatePassword(_ password: String) {
-        if password.count < 8 {
-            strengthDescriptionLabel.text = "weak"
-            weakView.backgroundColor = weakColor
-        } else if password.count < 12 {
-            strengthDescriptionLabel.text = "medium"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-        } else if password.count >= 15 {
-            strengthDescriptionLabel.text = "strong"
-            weakView.backgroundColor = weakColor
-            mediumView.backgroundColor = mediumColor
-            strongView.backgroundColor = strongColor
-        }
     }
 }
 
@@ -189,12 +173,30 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
+    //password strength
+    
+    private func updatePassword(_ password: String) {
+        if password.count < 8 {
+            strengthDescriptionLabel.text = "Too Weak"
+            weakView.backgroundColor = weakColor
+        } else if password.count < 12 {
+            strengthDescriptionLabel.text = "Average"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+        } else if password.count >= 15 {
+            strengthDescriptionLabel.text = "Strong"
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
+            strongView.backgroundColor = strongColor
+        }
+    }
+    
     //animations
     
     @objc private func showHideButtonTapped() {
         
-        let toggle = textField.isSecureTextEntry
-        if toggle {
+        let toggled = textField.isSecureTextEntry
+        if toggled {
             textField.isSecureTextEntry = false
             showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
         } else {
