@@ -189,7 +189,7 @@ class PasswordField: UIControl {
     //Count characters in pw string
     private func getPasswordStrength(password: String) {
         switch password.count {
-        case 0...9:
+        case 1...9:
             print("weak")
             weakView.backgroundColor = .red
             mediumView.backgroundColor = unusedColor
@@ -210,21 +210,31 @@ class PasswordField: UIControl {
             strongView.backgroundColor = .green
             strengthDescriptionLabel.text = PasswordStrengthValue.strong.rawValue
         default:
+            weakView.backgroundColor = unusedColor
+            strengthDescriptionLabel.text = "(password strength)"
             print("out of range")
           
             
         }
     }
     
-    @objc private func toggleEye(sender: AnyObject ) {
+    @objc private func toggleEye(sender: UIButton ) {
         print("toggleEye")
+        shouldShowPassword.toggle()
         activateToggleEye(bool: shouldShowPassword)
     }
+    
+    
     
     private func activateToggleEye(bool: Bool) {
         print("ActivateTgl")
         shouldShowPassword = bool
         let image = bool ? UIImage(named: "eyes-open") : UIImage(named: "eyes-closed")
+        if image == UIImage(named: "eyes-open") {
+            textField.isSecureTextEntry = false
+        } else {
+            textField.isSecureTextEntry = true
+        }
         
         showHideButton.setImage(image, for: .normal)
         
@@ -251,11 +261,14 @@ extension PasswordField: UITextFieldDelegate {
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // send to VC
+        //send to VC
+        //guard let text = textField.text else { return }
         
         resignFirstResponder()
         print("user pressed enter")
-        return true
+        return false
+        
+            }
     }
-}
+
 

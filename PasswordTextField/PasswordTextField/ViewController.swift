@@ -10,9 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
+    
     @IBAction func enterPassword(_ sender: PasswordField) {
         
-        print("password: trength:")
+        
+        
+        
+        print("password: ")
         //view.backgroundColor = sender.color
     }
     
