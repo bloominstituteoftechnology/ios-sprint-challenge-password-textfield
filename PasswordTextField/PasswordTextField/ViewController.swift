@@ -10,6 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    @IBAction func savePassword(_ sender: PasswordField) {
+        if sender.password.count > 11 {
+           print("Password is \(sender.password)")
+        } else {
+            print("Enter a stronger password.")
+        }
+    }
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
