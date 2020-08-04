@@ -9,6 +9,7 @@
 import UIKit
 
 enum PasswordStrength: String {
+    case zero = "enter password"
     case weak = "weak"
     case medium = "could be stronger"
     case strong = "strong password"
@@ -33,7 +34,7 @@ class PasswordField: UIControl {
     private let textFieldBorderColor = UIColor(hue: 208/360.0, saturation: 80/100.0, brightness: 94/100.0, alpha: 1)
     private let bgColor = UIColor(hue: 0, saturation: 0, brightness: 97/100.0, alpha: 1)
     
-    // States of the password strength indicators
+    //  States of the password strength indicators
     private let unusedColor = UIColor(hue: 210/360.0, saturation: 5/100.0, brightness: 86/100.0, alpha: 1)
     private let weakColor = UIColor(hue: 0/360, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
     private let mediumColor = UIColor(hue: 39/360.0, saturation: 60/100.0, brightness: 90/100.0, alpha: 1)
@@ -127,7 +128,7 @@ class PasswordField: UIControl {
         //  medium view
         mediumView.translatesAutoresizingMaskIntoConstraints = false
         mediumView.layer.cornerRadius = 2
-        mediumView.layer.backgroundColor = mediumColor.cgColor
+        mediumView.backgroundColor = .gray
         addSubview(mediumView)
         
         NSLayoutConstraint.activate([
@@ -140,7 +141,7 @@ class PasswordField: UIControl {
         //  strong view
         strongView.translatesAutoresizingMaskIntoConstraints = false
         strongView.layer.cornerRadius = 2
-        strongView.layer.backgroundColor = strongColor.cgColor
+        strongView.backgroundColor = .gray
         addSubview(strongView)
         
         NSLayoutConstraint.activate([
@@ -178,7 +179,13 @@ class PasswordField: UIControl {
     }
     
     private func determinePasswordStrength(password: String, oldPassword: String) {
-        if password.count <= 9 {
+        if password.count == 0 {
+            strengthDescriptionLabel.text = "enter password"
+            passwordStrength = .weak
+            if oldPassword.count == 0 {
+                animateColorChange(strength: .zero)
+            }
+        } else if password.count <= 9 {
             strengthDescriptionLabel.text = "too weak"
             passwordStrength = .weak
             if oldPassword.count > 9 {
@@ -223,6 +230,12 @@ class PasswordField: UIControl {
                 self.strongView.backgroundColor = self.strongColor
             }) { (_) in
                 self.strongView.transform = .identity
+            }
+        case .zero:
+            UIView.animate(withDuration: 0.5) {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.0, y: 1.8)
+                self.weakView.backgroundColor = self.unusedColor
+                self.mediumView.backgroundColor = self.unusedColor 
             }
         }
     }
