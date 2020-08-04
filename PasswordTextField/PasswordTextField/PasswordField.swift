@@ -47,6 +47,8 @@ class PasswordField: UIControl {
     
     func setupViews() {
         // Lay out your subviews here
+        self.backgroundColor = bgColor
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Enter Password"
         titleLabel.textColor = .black
@@ -108,7 +110,7 @@ class PasswordField: UIControl {
         addSubview(mediumView)
         
         NSLayoutConstraint.activate([
-            mediumView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+            mediumView.leadingAnchor.constraint(equalTo: weakView.trailingAnchor, constant: 0),
             mediumView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             mediumView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             mediumView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
@@ -121,7 +123,7 @@ class PasswordField: UIControl {
         addSubview(strongView)
         
         NSLayoutConstraint.activate([
-            strongView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+            strongView.leadingAnchor.constraint(equalTo: mediumView.trailingAnchor, constant: 0),
             strongView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: standardMargin),
             strongView.heightAnchor.constraint(equalToConstant: colorViewSize.height),
             strongView.widthAnchor.constraint(equalToConstant: colorViewSize.width)
@@ -132,12 +134,14 @@ class PasswordField: UIControl {
         strengthDescriptionLabel.adjustsFontSizeToFitWidth = true
         strengthDescriptionLabel.font = labelFont
         strengthDescriptionLabel.textColor = labelTextColor
+        strengthDescriptionLabel.textAlignment = .right
         
         addSubview(strengthDescriptionLabel)
         
         NSLayoutConstraint.activate([
             strengthDescriptionLabel.leadingAnchor.constraint(equalTo: strongView.trailingAnchor, constant: 8),
-            strengthDescriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+            strengthDescriptionLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 4)
+            
         ])
         
     }
@@ -180,20 +184,105 @@ extension PasswordField: UITextFieldDelegate {
             weakView.backgroundColor = weakColor
             mediumView.backgroundColor = unusedColor
             strongView.backgroundColor = unusedColor
+            animateWeakColorLabel()
         } else if password.count < 12 {
             strengthDescriptionLabel.text = "Average"
-            weakView.backgroundColor = mediumColor
+            weakView.backgroundColor = weakColor
             mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = unusedColor
+            animateMediumColorLabel()
         } else if password.count >= 15 {
             strengthDescriptionLabel.text = "Strong"
-            weakView.backgroundColor = strongColor
-            mediumView.backgroundColor = strongColor
+            weakView.backgroundColor = weakColor
+            mediumView.backgroundColor = mediumColor
             strongView.backgroundColor = strongColor
+            animateStrongColorLabel()
         }
     }
     
     //animations
+    
+    //color change animation
+    @objc private func animateWeakColorLabel() {
+        
+        let animBlock = {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+                self.weakView.center = self.weakView.center
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.2) {
+                self.weakView.transform = CGAffineTransform(scaleX: 2.7, y: 0.6)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+                self.weakView.transform = CGAffineTransform(scaleX: 0.6, y: 2.7)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.15) {
+                self.weakView.transform = CGAffineTransform(scaleX: 1.11, y: 0.9)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.85, relativeDuration: 0.15) {
+                self.weakView.transform = .identity
+            }
+        }
+        
+        UIView.animateKeyframes(withDuration: 1.5, delay: 0, options: [], animations: animBlock, completion: nil)
+    }
+    
+    @objc private func animateMediumColorLabel() {
+           
+           let animBlock = {
+               UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+                   self.weakView.center = self.weakView.center
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.2) {
+                   self.mediumView.transform = CGAffineTransform(scaleX: 2.7, y: 0.6)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+                   self.mediumView.transform = CGAffineTransform(scaleX: 0.6, y: 2.7)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.15) {
+                   self.mediumView.transform = CGAffineTransform(scaleX: 1.11, y: 0.9)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.85, relativeDuration: 0.15) {
+                   self.mediumView.transform = .identity
+               }
+           }
+           
+           UIView.animateKeyframes(withDuration: 1.5, delay: 0, options: [], animations: animBlock, completion: nil)
+       }
+    
+    @objc private func animateStrongColorLabel() {
+           
+           let animBlock = {
+               UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+                   self.weakView.center = self.weakView.center
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.2) {
+                   self.strongView.transform = CGAffineTransform(scaleX: 2.7, y: 0.6)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+                   self.strongView.transform = CGAffineTransform(scaleX: 0.6, y: 2.7)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.15) {
+                   self.strongView.transform = CGAffineTransform(scaleX: 1.11, y: 0.9)
+               }
+               
+               UIView.addKeyframe(withRelativeStartTime: 0.85, relativeDuration: 0.15) {
+                   self.strongView.transform = .identity
+               }
+           }
+           
+           UIView.animateKeyframes(withDuration: 1.5, delay: 0, options: [], animations: animBlock, completion: nil)
+       }
     
     @objc private func showHideButtonTapped() {
         
@@ -224,11 +313,48 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-      guard let text = textField.text else {return false}
-      password = text
-      sendActions(for: .valueChanged)
-      textField.resignFirstResponder()
-      return false
+        guard let text = textField.text else {return false}
+        password = text
+        sendActions(for: .valueChanged)
+        textField.resignFirstResponder()
+        return false
     }
     
 }
+/*
+ 
+ let squashButton = UIButton(type: .system)
+ squashButton.translatesAutoresizingMaskIntoConstraints = false
+ squashButton.setTitle("Squash", for: .normal)
+ squashButton.addTarget(self, action: #selector(squashButtonTapped), for: .touchUpInside)
+ 
+ @objc private func squashButtonTapped() {
+ label.center = CGPoint(x: view.center.x, y: -label.bounds.size.height)
+ 
+ let animBlock = {
+ UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.4) {
+ self.label.center = self.view.center
+ }
+ 
+ UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.2) {
+ self.label.transform = CGAffineTransform(scaleX: 2.7, y: 0.6)
+ }
+ 
+ UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.2) {
+ self.label.transform = CGAffineTransform(scaleX: 0.6, y: 2.7)
+ }
+ 
+ UIView.addKeyframe(withRelativeStartTime: 0.7, relativeDuration: 0.15) {
+ self.label.transform = CGAffineTransform(scaleX: 1.11, y: 0.9)
+ }
+ 
+ UIView.addKeyframe(withRelativeStartTime: 0.85, relativeDuration: 0.15) {
+ self.label.transform = .identity
+ }
+ }
+ 
+ UIView.animateKeyframes(withDuration: 1.5, delay: 0, options: [], animations: animBlock, completion: nil)
+ }
+ */
+
+

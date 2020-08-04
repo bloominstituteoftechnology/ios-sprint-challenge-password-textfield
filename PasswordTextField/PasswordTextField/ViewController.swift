@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         if sender.password.count > 11 {
            print("Password is \(sender.password)")
         } else {
-            print("Enter a strong password.")
+            print("Enter a stronger password.")
         }
     }
     
