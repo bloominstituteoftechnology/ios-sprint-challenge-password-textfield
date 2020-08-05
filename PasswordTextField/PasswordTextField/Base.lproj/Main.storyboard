@@ -22,6 +22,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="OX7-Ds-wru"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="passwordView:" destination="BYZ-38-t0r" eventType="valueChanged" id="1rm-kb-8Tw"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

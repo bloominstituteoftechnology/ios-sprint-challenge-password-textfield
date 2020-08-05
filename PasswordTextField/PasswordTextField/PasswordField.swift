@@ -16,10 +16,17 @@ enum PasswordStrength: String {
 
 class PasswordField: UIControl {
     
+    
+//    var password: String = "" {
+//        didSet {
+//            sendActions(for: .valueChanged)
+//        }
+//    }
 
-    private (set) var password: String = ""
+    var password: String = ""  //{didset {sendAction(for: .valueChange)}}
     private (set) var passwordShow: Bool = false
-    private (set) var passwordStrength: PasswordStrength = .weak
+    
+    var passwordStrength: PasswordStrength = .weak
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -126,7 +133,7 @@ class PasswordField: UIControl {
         showHideButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         showHideButton.frame = CGRect(x: textField.frame.size.width - 25, y: 5, width: 25, height: 25)
         
-        showHideButton.addTarget(self, action: #selector(changeShowHideButton), for: .touchUpInside)
+        showHideButton.addTarget(self, action: #selector(changeShowHideButton), for: .valueChanged)
     }//
     
     
@@ -185,11 +192,13 @@ class PasswordField: UIControl {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        textField.delegate = self
         setup()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        textField.delegate = self
         setup()
     }
     
@@ -240,6 +249,7 @@ class PasswordField: UIControl {
     }//
     
     
+   // MARK: - Password
     private func passwordStrength(password: String) {
         switch password.count {
         case 0...9:
@@ -261,10 +271,16 @@ extension PasswordField: UITextFieldDelegate {
         passwordStrength(password: newText)
         return true
     }
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        endEditing(true)
-        guard let password = textField.text else { return false }
-        print(password)
-        return false
+        guard let password = textField.text else { return false}
+        
+        self.password = password
+        textField.resignFirstResponder()
+        sendActions(for: [.valueChanged])
+        return true
     }
 }
+
+

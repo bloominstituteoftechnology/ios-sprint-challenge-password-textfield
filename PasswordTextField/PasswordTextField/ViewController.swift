@@ -10,6 +10,20 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
+    @IBAction func passwordView(_ sender: PasswordField) {
+        
+        print("Password: \(sender.password) and Strength: \(sender.passwordStrength)")
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
