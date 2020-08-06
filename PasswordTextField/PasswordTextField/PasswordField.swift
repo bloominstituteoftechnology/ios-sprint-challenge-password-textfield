@@ -19,6 +19,7 @@ class PasswordField: UIControl {
     // Public API - these properties are used to fetch the final password and strength values
     private (set) var password: String = ""
     private (set) var passwordStrength: PasswordStrength = .weak
+    private (set) var passwordshow: Bool = false
     
     private let standardMargin: CGFloat = 8.0
     private let textFieldContainerHeight: CGFloat = 50.0
@@ -188,6 +189,7 @@ class PasswordField: UIControl {
             if strongView.backgroundColor == unusedColor {
                 animateStrengthViews(strongView)
             }
+            
         }
     }
     
@@ -239,14 +241,16 @@ class PasswordField: UIControl {
     }
     
     @objc private func showHideToggled() {
-        let toggleStatus = textField.isSecureTextEntry
+        var toggleStatus = textField.isSecureTextEntry
         
         if toggleStatus {
             textField.isSecureTextEntry = false
             showHideButton.setImage(UIImage(named: "eyes-open"), for: .normal)
+            
         } else {
             textField.isSecureTextEntry = true
             showHideButton.setImage(UIImage(named: "eyes-closed"), for: .normal)
+            toggleStatus.toggle()
         }
     }
 }
@@ -284,7 +288,10 @@ extension PasswordField: UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+      //  textField.resignFirstResponder()
+        endEditing(true)
+        guard let password = textField.text else { return false }
+        print(password)
+        return false
     }
 }
