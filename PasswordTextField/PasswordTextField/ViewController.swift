@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
+    
+    @IBAction func enterPassword(_ sender: PasswordField) {
+        print("passwordFromVC:\(sender.password)")
+        
+    }
+    
     // For use in the stretch goal
     //
     // Uncomment this entire method, then run the app.
