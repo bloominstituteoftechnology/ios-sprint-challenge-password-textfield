@@ -350,12 +350,6 @@ class PasswordField: UIControl {
                    completion: nil)
 }
     
-    
-    
-    
-    
-    
-    
 }
 
 extension PasswordField: UITextFieldDelegate {
@@ -370,19 +364,16 @@ extension PasswordField: UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-      
-    }
-    
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //send to VC
-        guard let password = textField.text else { return false}
-        print("passwprd: \(password)")
+       
+        guard let text = textField.text else {return false}
+        password = text
         
-        resignFirstResponder()
-        print("user pressed enter")
+        sendActions(for: .valueChanged)
+        print("passwordFromPF: \(password)")
+        
         return false
         
             }
