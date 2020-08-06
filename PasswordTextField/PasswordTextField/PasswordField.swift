@@ -361,20 +361,18 @@ extension PasswordField: UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         // TODO: send new text to the determine strength method
         getPasswordStrength(password: newText)
+        password = newText
         return true
     }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //send to VC
-       
-        guard let text = textField.text else {return false}
-        password = text
-        
         sendActions(for: .valueChanged)
         print("passwordFromPF: \(password)")
+        textField.resignFirstResponder()
         
-        return false
+        return true
         
             }
     }
