@@ -78,7 +78,7 @@ class PasswordField: UIControl {
             textField.heightAnchor.constraint(equalToConstant: textFieldContainerHeight),
             textField.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin),
             textField.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor,constant: 15.0),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50),
             textField.bottomAnchor.constraint(equalTo: textFieldContainerView.bottomAnchor, constant: -textFieldMargin)
         ])
         textField.isSecureTextEntry = true
@@ -92,22 +92,20 @@ class PasswordField: UIControl {
         // Creating button to show hidden text
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
+        //        NSLayoutConstraint.activate(<#T##constraints: [NSLayoutConstraint]##[NSLayoutConstraint]#>)
+
+        showHideButton.heightAnchor.constraint(equalToConstant: textFieldContainerHeight).isActive = true
         showHideButton.trailingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 4.0).isActive = true
         showHideButton.topAnchor.constraint(equalTo: textFieldContainerView.topAnchor, constant: textFieldMargin).isActive = true
-        showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
-
+        showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         textFieldContainerView.bottomAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: textFieldMargin).isActive = true
+
+        showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        //        showHideButton.layer.borderColor = textFieldBorderColor.cgColor
+        //        showHideButton.layer.borderWidth = 1.0
+        //        showHideButton.layer.cornerRadius = 4
+
         showHideButton.addTarget(self, action: #selector(toggleHiddenButton), for: .touchUpInside)
-
-
-        // show hide button anmimation
-        if showingPassword == true {
-            showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
-            textField.isSecureTextEntry = false
-        } else {
-            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
-            textField.isSecureTextEntry = true
-        }
 
 
         // Creating weak Level views
@@ -201,8 +199,18 @@ class PasswordField: UIControl {
         setup()
     }
 
-    @objc func toggleHiddenButton() {
-        showingPassword.toggle()
+    @objc func toggleHiddenButton(sender: UIButton) {
+
+        print("The Toggled Workds!!!")
+
+        textField.isSecureTextEntry.toggle()
+        if textField.isSecureTextEntry == false {
+            showHideButton.setImage(UIImage(named: "eyes-open.png"), for: .normal)
+
+        } else {
+
+            showHideButton.setImage(UIImage(named: "eyes-closed.png"), for: .normal)
+        }
     }
 }
 
