@@ -13,6 +13,7 @@
 		CE0883D122C2C576008F9894 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D022C2C576008F9894 /* Assets.xcassets */; };
 		CE0883D422C2C576008F9894 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0883D222C2C576008F9894 /* LaunchScreen.storyboard */; };
 		CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0883DB22C3DAAB008F9894 /* PasswordField.swift */; };
+		E101936724D7EFC2009319ED /* PasswordLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101936624D7EFC2009319ED /* PasswordLevel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		CE0883D322C2C576008F9894 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0883D522C2C576008F9894 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE0883DB22C3DAAB008F9894 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
+		E101936624D7EFC2009319ED /* PasswordLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordLevel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				CE0883C922C2C575008F9894 /* AppDelegate.swift */,
 				CE0883CB22C2C575008F9894 /* ViewController.swift */,
+				E101936624D7EFC2009319ED /* PasswordLevel.swift */,
 				CE0883DB22C3DAAB008F9894 /* PasswordField.swift */,
 				CE0883CD22C2C575008F9894 /* Main.storyboard */,
 				CE0883D022C2C576008F9894 /* Assets.xcassets */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE0883CC22C2C575008F9894 /* ViewController.swift in Sources */,
+				E101936724D7EFC2009319ED /* PasswordLevel.swift in Sources */,
 				CE0883DC22C3DAAB008F9894 /* PasswordField.swift in Sources */,
 				CE0883CA22C2C575008F9894 /* AppDelegate.swift in Sources */,
 			);
