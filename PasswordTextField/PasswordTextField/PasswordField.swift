@@ -149,7 +149,7 @@ class PasswordField: UIControl {
 
         addSubview(showHideButton)
         showHideButton.translatesAutoresizingMaskIntoConstraints = false
-        showHideButton.isUserInteractionEnabled = false
+        showHideButton.isUserInteractionEnabled = true
 
         showHideButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: -standardMargin).isActive = true
         showHideButton.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: 0).isActive = true
@@ -190,6 +190,15 @@ class PasswordField: UIControl {
                 animateStrengthViews(strongView)
             }
             
+//            if string.count == 1 {
+//                animateStrengthViews(weakView)
+//            }
+//            if string.count == 10 {
+//                animateStrengthViews(mediumView)
+//            }
+//            if string.count == 20 {
+//                animateStrengthViews(strongView)
+//            }
         }
     }
     
@@ -291,7 +300,10 @@ extension PasswordField: UITextFieldDelegate {
       //  textField.resignFirstResponder()
         endEditing(true)
         guard let password = textField.text else { return false }
-        print(password)
-        return false
+      //  print(password)
+        self.password = password
+        sendActions(for: .valueChanged)
+        
+        return true
     }
 }
